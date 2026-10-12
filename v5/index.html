@@ -2,16 +2,20 @@
 <html lang="id" class="no-js">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
   <title>Maison XIONCO — Quality shouldn't be a luxury</title>
   <meta name="description" content="Maison XIONCO — furnitur minimalis dengan pengerjaan tanpa kompromi, diproduksi sendiri di empat pabrik di Jawa. Pilih koleksi, rancang sofa modular dalam 3D, dan konsultasi privat.">
   <meta name="theme-color" content="#0f0c0a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.xionco.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Inter:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Inter:wght@300;400;500&display=swap">
   <link rel="stylesheet" href="css/v5.css">
-  <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    // tema & bahasa tersimpan dipasang sebelum halaman tampil (tanpa kedip)
+    (function (d) { try { d.setAttribute('data-theme', localStorage.getItem('xv5_theme') === 'light' ? 'light' : 'dark'); d.lang = localStorage.getItem('xv5_lang') === 'en' ? 'en' : 'id'; } catch (e) { d.setAttribute('data-theme', 'dark'); } })(document.documentElement);
+  </script>
 </head>
 <body>
 
@@ -29,6 +33,12 @@
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.6"/><path d="M12 3.5v2.2M12 18.3v2.2M20.5 12h-2.2M5.7 12H3.5M18 6l-1.6 1.6M7.6 16.4 6 18M18 18l-1.6-1.6M7.6 7.6 6 6"/><circle cx="12" cy="12" r="5.6"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="1.2"/><path d="M12 2.5v3.5M12 18v3.5M2.5 12H6M18 12h3.5"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="1.6"/><path d="M3.5 10h17M7 14.5h3.5"/></symbol>
+  <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M4 15.5 15.5 4l4.5 4.5L8.5 20z"/><path d="m8 11.5 1.8 1.8M10.5 9l1.2 1.2M13 6.5l1.8 1.8M5.5 14l1.2 1.2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4.5 19.5l1.1-3.6A8 8 0 1 1 8.4 18.6z"/><path d="M9 8.6c.2-.5.6-.6.9-.6h.4c.2 0 .4.1.5.4l.6 1.5c.1.3 0 .5-.1.7l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.2.5-.2.7-.1l1.5.6c.3.1.4.3.4.5v.4c0 .3-.1.7-.6.9-.6.3-1.6.4-3.1-.3a8.3 8.3 0 0 1-3.6-3.6c-.7-1.5-.6-2.5-.3-3.1z"/></symbol>
 </svg>
 
@@ -48,6 +58,8 @@
   <a class="top__logo" href="#/" data-go="home" aria-label="Maison XIONCO — beranda"><svg viewBox="0 0 206 28" aria-hidden="true"><path class="logo-path"/></svg></a>
   <div class="top__actions">
     <a class="top__link" data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener">Konsultasi</a>
+    <button class="top__ic" id="setBtn" type="button" data-go="setelan" aria-label="Pengaturan"><svg><use href="#i-gear"/></svg></button>
+    <button class="top__ic" id="userBtn" type="button" data-go="profil" aria-label="Profil"><svg><use href="#i-user"/></svg></button>
     <button class="top__bag" id="bagBtn" type="button" data-go="tas" aria-label="Tas belanja"><svg><use href="#i-bag"/></svg><span id="bagCount">0</span></button>
   </div>
 </header>
@@ -86,6 +98,8 @@
   <a class="detail__act" id="dAct" href="#" aria-label="Aksi"><svg><use href="#i-plus"/></svg><span id="dActT">Tambah</span></a>
 </div>
 
+<button class="recenter" id="recenter" type="button" aria-label="Kembali ke posisi awal"><svg><use href="#i-target"/></svg></button>
+
 <!-- panel kanan: konten tiap menu bergeser masuk di sini -->
 <aside class="panel" id="panel" aria-hidden="true">
   <button class="panel__close" type="button" data-go="home" aria-label="Tutup panel"><svg><use href="#i-close"/></svg></button>
@@ -100,19 +114,26 @@
       <p class="empty" id="kEmpty">Tidak ada karya yang cocok.</p>
     </div>
     <div class="pane__scroll pd" id="pd" aria-hidden="true">
-      <button class="back" type="button" id="pdBack"><svg><use href="#i-back"/></svg>Koleksi</button>
+      <button class="back" type="button" id="pdBack"><svg><use href="#i-back"/></svg><span>Koleksi</span></button>
       <p class="eyebrow" id="pdCat"></p>
-      <h3 class="pane__t pd__name" id="pdName"></h3>
+      <h3 class="pd__name" id="pdName"></h3>
       <p class="pd__type" id="pdType"></p>
+      <div class="pd__photo tile__img" id="pdPhoto" hidden></div>
       <div class="pd__price" id="pdPrice"></div>
-      <p class="pd__desc" id="pdDesc"></p>
-      <dl class="spec" id="pdSpec"></dl>
+      <div class="pd__var" id="pdVar"></div>
+      <div class="pd__sub" id="pdSub"></div>
       <div class="pd__buy" id="pdBuy">
         <div class="qty"><button type="button" id="pdMinus" aria-label="Kurangi"><svg><use href="#i-minus"/></svg></button><span id="pdQty">1</span><button type="button" id="pdPlus" aria-label="Tambah"><svg><use href="#i-plus"/></svg></button></div>
-        <button class="btn btn--dark" type="button" id="pdAdd">Tambahkan ke tas</button>
+        <button class="btn btn--line" type="button" id="pdAdd"><svg><use href="#i-bag"/></svg><span>Tambah ke tas</span></button>
       </div>
-      <a class="btn btn--line btn--full" id="pdWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span id="pdWaText">Tanya via WhatsApp</span></a>
-      <a class="link" id="pdLink" href="#" target="_blank" rel="noopener">Detail di xionco.com<svg><use href="#i-arrow"/></svg></a>
+      <button class="btn btn--dark btn--full" type="button" id="pdNow"><svg><use href="#i-card"/></svg><span>Beli langsung</span></button>
+      <div class="pd__more">
+        <button class="btn btn--line" type="button" id="pdCustom"><svg><use href="#i-ruler"/></svg><span>Custom</span></button>
+        <a class="btn btn--line" id="pdWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span id="pdWaText">Tanya</span></a>
+      </div>
+      <p class="pd__desc" id="pdDesc"></p>
+      <dl class="spec" id="pdSpec"></dl>
+      <a class="link" id="pdLink" href="#" target="_blank" rel="noopener"><span>Lihat di xionco.shop</span><svg><use href="#i-arrow"/></svg></a>
       <div class="pd__nav"><button type="button" id="pdPrev">‹ Sebelumnya</button><span id="pdN"></span><button type="button" id="pdNext">Berikutnya ›</button></div>
     </div>
   </section>
@@ -134,7 +155,7 @@
         <p class="sum__dims" id="aDims"></p>
       </div>
       <p class="note">Angka contoh untuk demo — harga final melalui penawaran resmi.</p>
-      <a class="btn btn--dark btn--full" id="aQuote" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Minta penawaran</a>
+      <a class="btn btn--dark btn--full" id="aQuote" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span>Minta penawaran</span></a>
       <p class="tools"><button type="button" id="aRandom">Acak</button><button type="button" id="aReset">Reset</button></p>
     </div>
   </section>
@@ -176,7 +197,7 @@
         <div class="f f--sel"><select id="fType"><option>Kantor</option><option>Hotel &amp; hospitality</option><option>Retail</option><option>Residensial</option><option>Lainnya</option></select><label for="fType">Jenis proyek</label></div>
         <div class="f f--sel"><select id="fValue"><option>&lt; IDR 50 juta</option><option>IDR 50–250 juta</option><option>IDR 250 juta – 1 M</option><option>&gt; IDR 1 M</option></select><label for="fValue">Nilai proyek</label></div>
         <div class="f"><textarea id="fNeed" rows="2" placeholder=" "></textarea><label for="fNeed">Kebutuhan (opsional)</label></div>
-        <button class="btn btn--dark btn--full" type="submit"><svg><use href="#i-wa"/></svg>Kirim via WhatsApp</button>
+        <button class="btn btn--dark btn--full" type="submit"><svg><use href="#i-wa"/></svg><span>Kirim via WhatsApp</span></button>
         <p class="note" id="bNote">Pesan dikirim melalui WhatsApp resmi XIONCO.</p>
       </form>
       <p class="opt__h">Dipercaya oleh</p>
@@ -197,7 +218,7 @@
     <div class="pane__scroll">
       <header class="pane__head"><p class="eyebrow">06 · Kontak</p><h2 class="pane__t">Mari wujudkan ruang Anda</h2></header>
       <p class="pane__lede">Tim kami siap membantu memilih, merancang, hingga mengirim — konsultasi privat tanpa biaya.</p>
-      <a class="btn btn--dark btn--full" data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Konsultasi via WhatsApp</a>
+      <a class="btn btn--dark btn--full" data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span>Konsultasi via WhatsApp</span></a>
       <dl class="spec spec--contact">
         <dt>Showroom</dt><dd>Jl. Ciputat Raya No. 8, Jakarta Selatan 12310</dd>
         <dt>WhatsApp</dt><dd><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener">+62 822-4040-8055</a></dd>
@@ -223,9 +244,100 @@
       <p class="empty is-on" id="bagEmpty">Tas masih kosong. <a href="#/koleksi" data-go="koleksi">Lihat koleksi</a></p>
       <div class="bag__foot" id="bagFoot">
         <div class="sum"><div><p class="eyebrow">Subtotal</p><p class="sum__price" id="bagTotal">IDR 0</p></div></div>
-        <a class="btn btn--dark btn--full" id="bagCheckout" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Checkout via WhatsApp</a>
-        <a class="link" href="https://xionco.shop/" target="_blank" rel="noopener">Atau belanja di xionco.shop<svg><use href="#i-arrow"/></svg></a>
+        <button class="btn btn--dark btn--full" id="bagCheckout" type="button"><svg><use href="#i-card"/></svg><span>Lanjut ke pembayaran</span></button>
+        <a class="link" href="https://xionco.shop/" target="_blank" rel="noopener"><span>Atau belanja di xionco.shop</span><svg><use href="#i-arrow"/></svg></a>
       </div>
+    </div>
+  </section>
+
+  <!-- PEMBAYARAN (payment gateway disematkan di js/pay.js) -->
+  <section class="pane" data-pane="bayar" aria-label="Pembayaran">
+    <div class="pane__scroll" id="payScroll">
+      <button class="back" type="button" id="payBack"><svg><use href="#i-back"/></svg><span>Kembali</span></button>
+      <header class="pane__head"><p class="eyebrow">Pembayaran</p><h2 class="pane__t">Ringkasan pesanan</h2></header>
+      <ul class="bag bag--sum" id="payList"></ul>
+      <dl class="totals"><dt>Subtotal</dt><dd id="paySub">IDR 0</dd><dt>Pengiriman</dt><dd id="payShip">Dikonfirmasi tim kami</dd></dl>
+      <div class="sum"><div><p class="eyebrow">Total</p><p class="sum__price" id="payTotal">IDR 0</p></div></div>
+      <form class="form" id="payForm" novalidate>
+        <p class="opt__h">Data pengiriman</p>
+        <div class="f"><input id="pName" required placeholder=" " autocomplete="name"><label for="pName">Nama</label></div>
+        <div class="f2">
+          <div class="f"><input id="pPhone" required placeholder=" " inputmode="tel" autocomplete="tel"><label for="pPhone">WhatsApp</label></div>
+          <div class="f"><input id="pEmail" type="email" placeholder=" " autocomplete="email"><label for="pEmail">Email</label></div>
+        </div>
+        <div class="f"><textarea id="pAddr" rows="2" required placeholder=" " autocomplete="street-address"></textarea><label for="pAddr">Alamat lengkap</label></div>
+        <div class="f2">
+          <div class="f"><input id="pCity" required placeholder=" " autocomplete="address-level2"><label for="pCity">Kota</label></div>
+          <div class="f"><input id="pZip" placeholder=" " inputmode="numeric" autocomplete="postal-code"><label for="pZip">Kode pos</label></div>
+        </div>
+        <div class="f"><input id="pNote" placeholder=" "><label for="pNote">Catatan (opsional)</label></div>
+        <p class="opt__h">Metode pembayaran</p>
+        <div class="methods" id="payMethods"></div>
+        <button class="btn btn--dark btn--full" type="submit" id="paySubmit"><svg><use href="#i-card"/></svg><span>Bayar sekarang</span></button>
+        <p class="note" id="payNote">Pembayaran diproses aman melalui payment gateway resmi.</p>
+      </form>
+      <div class="done" id="payDone" hidden>
+        <svg><use href="#i-check"/></svg>
+        <p class="pane__t" id="payDoneT">Pesanan tersimpan</p>
+        <p class="pane__lede" id="payDoneP"></p>
+        <a class="btn btn--line btn--full" id="payDoneWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span>Konfirmasi via WhatsApp</span></a>
+        <a class="link" href="#/profil" data-go="profil"><span>Lihat pesanan saya</span><svg><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOM (dari produk reguler) -->
+  <section class="pane" data-pane="custom" aria-label="Custom">
+    <div class="pane__scroll">
+      <button class="back" type="button" id="cusBack"><svg><use href="#i-back"/></svg><span>Produk</span></button>
+      <header class="pane__head"><p class="eyebrow">Custom</p><h2 class="pane__t" id="cusName">Custom</h2><p class="pd__type" id="cusType"></p></header>
+      <p class="pane__lede">Ubah ukuran, material, warna, atau detail. Tim kami menghitung penawaran resmi dalam 1 jam kerja.</p>
+      <form class="form" id="cusForm" novalidate>
+        <p class="opt__h">Ukuran (cm)</p>
+        <div class="f3">
+          <div class="f"><input id="cW" inputmode="numeric" placeholder=" "><label for="cW">Lebar</label></div>
+          <div class="f"><input id="cD" inputmode="numeric" placeholder=" "><label for="cD">Dalam</label></div>
+          <div class="f"><input id="cH" inputmode="numeric" placeholder=" "><label for="cH">Tinggi</label></div>
+        </div>
+        <p class="opt__h">Material &amp; detail</p>
+        <div class="f2">
+          <div class="f f--sel"><select id="cMat"><option>Fabric</option><option>Velvet</option><option>Boucle</option><option>Faux leather</option><option>Kulit asli</option><option>Kayu solid</option><option>Lainnya</option></select><label for="cMat">Material</label></div>
+          <div class="f f--sel"><select id="cColor"></select><label for="cColor">Warna</label></div>
+        </div>
+        <div class="f2">
+          <div class="f f--sel"><select id="cLeg"><option>Sesuai produk</option><option>Kaki kayu</option><option>Kaki besi</option><option>Kaki kuningan</option><option>Base tertutup</option><option>Lainnya</option></select><label for="cLeg">Kaki / base</label></div>
+          <div class="f"><input id="cQty" inputmode="numeric" placeholder=" " value="1"><label for="cQty">Jumlah</label></div>
+        </div>
+        <div class="f"><textarea id="cNote" rows="2" placeholder=" "></textarea><label for="cNote">Catatan (opsional)</label></div>
+        <p class="opt__h">Kontak</p>
+        <div class="f"><input id="cName" required placeholder=" " autocomplete="name"><label for="cName">Nama</label></div>
+        <div class="f2">
+          <div class="f"><input id="cPhone" required placeholder=" " inputmode="tel" autocomplete="tel"><label for="cPhone">WhatsApp</label></div>
+          <div class="f"><input id="cCity" placeholder=" " autocomplete="address-level2"><label for="cCity">Kota</label></div>
+        </div>
+        <button class="btn btn--dark btn--full" type="submit"><svg><use href="#i-wa"/></svg><span>Kirim permintaan</span></button>
+        <p class="note" id="cusNote">Permintaan dikirim melalui WhatsApp resmi XIONCO.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- PENGATURAN -->
+  <section class="pane" data-pane="setelan" aria-label="Pengaturan">
+    <div class="pane__scroll">
+      <header class="pane__head"><p class="eyebrow">Pengaturan</p><h2 class="pane__t">Pengaturan</h2></header>
+      <div class="opt"><p class="opt__h">Bahasa</p><div class="seg" id="setLang"><button type="button" data-lang="id">Indonesia</button><button type="button" data-lang="en">English</button></div></div>
+      <div class="opt"><p class="opt__h">Tema</p><div class="seg" id="setTheme"><button type="button" data-theme="dark">Gelap</button><button type="button" data-theme="light">Terang</button></div></div>
+    </div>
+  </section>
+
+  <!-- PROFIL -->
+  <section class="pane" data-pane="profil" aria-label="Profil">
+    <div class="pane__scroll">
+      <header class="pane__head"><p class="eyebrow">Profil</p><h2 class="pane__t">Akun Anda</h2></header>
+      <p class="pane__lede">Masuk untuk menyimpan alamat, pesanan, dan permintaan custom di semua perangkat.</p>
+      <button class="btn btn--line btn--full" type="button" id="acctLogin"><svg><use href="#i-user"/></svg><span>Masuk / Daftar</span></button>
+      <div class="opt"><p class="opt__h">Pesanan</p><ul class="orders" id="ordList"></ul><p class="empty" id="ordEmpty">Belum ada pesanan.</p></div>
+      <div class="opt"><p class="opt__h">Permintaan custom</p><ul class="orders" id="reqList"></ul><p class="empty" id="reqEmpty">Belum ada permintaan custom.</p></div>
     </div>
   </section>
 </aside>
@@ -248,9 +360,12 @@
   })(window, document);
 </script>
 <script src="js/data.js"></script>
+<script src="js/catalog.js"></script>
 <script src="../shared/db.js"></script>
 <script src="js/cutout.js"></script>
 <script src="js/world.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/pay.js"></script>
 <script src="js/app.js"></script>
 <script src="../shared/devkit/devkit.js"></script>
 </body>

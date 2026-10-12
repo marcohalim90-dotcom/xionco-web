@@ -4,6 +4,7 @@
    • cubix   — sofa modular CUBIX prosedural (bisa dirancang di Atelier)
    • product — foto produk xionco.com yang latarnya dihapus di browser (CORS
                diizinkan oleh xionco.com) lalu berdiri sebagai objek di panggung
+   • model   — model 3D asli (GLB) bila item punya model.glb; bisa diputar
    • art     — karya galeri dalam bingkai tipis
    • map     — peta manik emas Pulau Jawa (manufaktur)
    Kamera selalu membingkai objek di ruang kosong antara panel kiri & kanan.
@@ -29,7 +30,7 @@
   var canvas, renderer, scene, camera, controls;
   var W = 1, H = 1, MOBILE = false, last = 0, frame = 0, dtAvg = 16, slow = 0, clock = 0;
   var mats = {}, L = {}, O = {};
-  var st = { room: 'home', kind: 'cubix', drag: false, spin: 0, spinV: 0, lastDrag: -1e9, map: 0, mapT: 0 };
+  var st = { room: 'home', kind: 'cubix', drag: false, spin: 0, spinV: 0, lastDrag: -1e9, map: 0, mapT: 0, zoom: 1, zoomC: 1, off: false, orbitMoved: false, recenter: false };
   var view = { tx: 0, ty: .42, tz: 0, dist: 6.4, yaw: -.3, pitch: .17, fov: 30 };
   var inset = { l: 0, r: 0, b: 0, t: 0, x: 0, y: 0 };
   var mouse = { x: 0, y: 0, sx: 0, sy: 0 };
@@ -60,9 +61,15 @@
       }
     };
   }
+  /* tema: gelap (bawaan) & terang (ivory hangat — tanpa putih murni) */
+  var THEMES = {
+    dark: { bg: '#0f0c0a', floor: '#17130f', disc: '#1c1814', wall: ['#0b0907', '#1a1511', '#14100d'], hemiG: '#140f0b', halo: 1, exp: 1, env: 1 },
+    light: { bg: '#e4ddd1', floor: '#d3cabb', disc: '#c8bead', wall: ['#ebe5db', '#e0d8cb', '#d2c9b9'], hemiG: '#7d705f', halo: .3, exp: 1.12, env: 1.35 }
+  };
+  var themeName = 'dark', theme = { halo: 1, exp: 1, env: 1 };
   function backdrop(g, w, h) {
-    var gr = g.createLinearGradient(0, 0, 0, h);
-    gr.addColorStop(0, '#0b0907'); gr.addColorStop(.55, '#1a1511'); gr.addColorStop(1, '#14100d');
+    var c = THEMES[themeName].wall, gr = g.createLinearGradient(0, 0, 0, h);
+    gr.addColorStop(0, c[0]); gr.addColorStop(.55, c[1]); gr.addColorStop(1, c[2]);
     g.fillStyle = gr; g.fillRect(0, 0, w, h);
   }
   function radial(stops) {
@@ -79,14 +86,14 @@
     mats.floor = new T.MeshStandardMaterial({ color: col('#17130f'), roughness: .38, metalness: 0, envMapIntensity: .22 });
     var floor = new T.Mesh(new T.CircleGeometry(60, 96), mats.floor);
     floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
-    var wall = new T.Mesh(new T.CylinderGeometry(15, 15, 14, 128, 1, true), new T.MeshBasicMaterial({ map: canvasTex(16, 512, backdrop), side: T.BackSide, toneMapped: false }));
+    var wall = O.wall = new T.Mesh(new T.CylinderGeometry(15, 15, 14, 128, 1, true), new T.MeshBasicMaterial({ map: canvasTex(16, 512, backdrop), side: T.BackSide, toneMapped: false }));
     wall.position.y = 7; scene.add(wall);
     // cahaya hangat lembut di belakang panggung
     O.halo = new T.Mesh(new T.PlaneGeometry(14, 9), new T.MeshBasicMaterial({ map: radial([[0, 'rgba(201,160,108,.34)'], [.45, 'rgba(150,110,70,.1)'], [1, 'rgba(0,0,0,0)']]), transparent: true, depthWrite: false, toneMapped: false }));
     O.halo.position.set(0, 2.6, -9.5); scene.add(O.halo);
     // panggung bundar rendah + garis champagne
     O.plinth = new T.Group();
-    var disc = shadowed(new T.Mesh(new T.CylinderGeometry(1, 1.02, .06, 128), new T.MeshStandardMaterial({ color: col('#1c1814'), roughness: .5, metalness: .1, envMapIntensity: .3 })));
+    var disc = O.disc = shadowed(new T.Mesh(new T.CylinderGeometry(1, 1.02, .06, 128), new T.MeshStandardMaterial({ color: col('#1c1814'), roughness: .5, metalness: .1, envMapIntensity: .3 })));
     disc.position.y = .03; O.plinth.add(disc);
     var rim = new T.Mesh(new T.TorusGeometry(1.004, .0035, 8, 200), new T.MeshStandardMaterial({ color: col('#c4a674'), metalness: 1, roughness: .3, envMapIntensity: 1.2 }));
     rim.rotation.x = Math.PI / 2; rim.position.y = .061; O.plinth.add(rim);
@@ -183,6 +190,7 @@
     mats.base = new T.MeshStandardMaterial({ color: col('#5b3e2b'), roughness: .5, metalness: 0, map: O.wood, envMapIntensity: .7 });
     sofa = new T.Group(); sofa.position.y = LIFT;
     O.cubix = new T.Group(); O.cubix.add(sofa); scene.add(O.cubix);
+    O.cubix.userData.spin = sofa;
     applyCfg(cfg, false);
   }
 
@@ -194,7 +202,7 @@
     if (!cutCache[url]) cutCache[url] = loadImage(url).then(function (im) {
       var r = cutout(im), t = new T.CanvasTexture(r.canvas);
       t.encoding = T.sRGBEncoding; t.anisotropy = 8;
-      return { tex: t, aspect: r.aspect, canvas: r.canvas };
+      return { tex: t, aspect: r.aspect, canvas: r.canvas, ok: r.ok !== false };
     });
     return cutCache[url];
   }
@@ -221,9 +229,77 @@
       var rod = shadowed(new T.Mesh(new T.CylinderGeometry(.012, .012, .34, 12), mats.brass)); rod.position.set(0, LIFT + .17, -.05); g.add(rod);
     }
     var blob = new T.Mesh(new T.PlaneGeometry(1, 1), new T.MeshBasicMaterial({ map: O.blobTex, transparent: true, depthWrite: false, opacity: framed ? .45 : .6 }));
-    blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.scale.set(w * 1.15, framed ? .5 : Math.max(.35, w * .45), 1);
+    blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.scale.set(w * 1.15, framed ? .5 : Math.max(.35, w * .45), 1); blob.userData.noPick = true;
     g.add(blob);
     g.userData.bounds = { w: w, h: h + (framed ? .32 : 0), d: .4 };
+    return g;
+  }
+
+  /* ---------------------------------------------------------------- produk: model 3D asli (GLB)
+     assets/items/<id>/model.glb — skala meter, depan menghadap +Z, pivot di lantai tengah.
+     GLTFLoader (+Draco) baru dimuat saat model pertama dibutuhkan. Satuan yang keliru
+     (cm / inci / mm, umum dari SketchUp) dikoreksi otomatis terhadap ukuran wajar kategorinya. */
+  var LIBS = ['https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/', 'https://unpkg.com/three@0.147.0/examples/js/'];
+  function addScript(path, i) {
+    i = i || 0;
+    return new Promise(function (res, rej) {
+      var s = document.createElement('script'); s.src = LIBS[i] + path;
+      s.onload = res;
+      s.onerror = function () { s.remove(); if (i + 1 < LIBS.length) addScript(path, i + 1).then(res, rej); else rej(new Error('gagal memuat ' + path)); };
+      document.head.appendChild(s);
+    });
+  }
+  var gltfP = null, modelCache = {};
+  function gltfLoader() {
+    if (!gltfP) {
+      gltfP = (T.GLTFLoader ? Promise.resolve() : addScript('loaders/GLTFLoader.js').then(function () { return addScript('loaders/DRACOLoader.js').catch(function () {}); }))
+        .then(function () {
+          var l = new T.GLTFLoader();
+          if (T.DRACOLoader) { var d = new T.DRACOLoader(); d.setDecoderPath(LIBS[0] + 'libs/draco/gltf/'); l.setDRACOLoader(d); }
+          return l;
+        });
+      gltfP.catch(function () { gltfP = null; });
+    }
+    return gltfP;
+  }
+  function getModel(url) {
+    if (!modelCache[url]) {
+      modelCache[url] = gltfLoader().then(function (l) {
+        return new Promise(function (res, rej) { l.load(url, function (gl) { res(gl.scene || gl.scenes[0]); }, null, rej); });
+      });
+      modelCache[url].catch(function () { delete modelCache[url]; });
+    }
+    return modelCache[url];
+  }
+  var UNITS = [1, .01, .0254, .001];   // meter, cm, inci, mm
+  function makeModel(srcScene, p) {
+    var m = srcScene.clone(true), box = new T.Box3(), size = new T.Vector3(), want = sizeFor(p);
+    m.rotation.y = (+p.modelRot || 0) * Math.PI / 180;
+    m.updateMatrixWorld(true); box.setFromObject(m); box.getSize(size);
+    var wide = Math.max(size.x, size.z) || 1, s = 1, best = 1e9;
+    UNITS.forEach(function (u) { var e = Math.abs(Math.log(wide * u / want)); if (e < best) { best = e; s = u; } });
+    m.scale.setScalar(s);
+    m.updateMatrixWorld(true); box.setFromObject(m); box.getSize(size);
+    var c = box.getCenter(new T.Vector3());
+    m.position.set(-c.x, LIFT - box.min.y, -c.z);
+    var list = [];
+    m.traverse(function (o) {
+      if (!o.isMesh) return;
+      o.castShadow = o.receiveShadow = true;
+      (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (mt) {
+        if (!mt || !('envMapIntensity' in mt) || list.indexOf(mt) >= 0) return;
+        // pantulan lingkungan disamakan dengan CUBIX (kain .5, logam 1.1) — nilai bawaan GLB (1) membuat kain gelap tampak abu-abu
+        if (mt.userData.env0 == null) mt.userData.env0 = mt.metalness > .5 ? 1.1 : .5;
+        list.push(mt);
+      });
+    });
+    var spin = new T.Group(), g = new T.Group();
+    spin.add(m); g.add(spin);
+    var blob = new T.Mesh(new T.PlaneGeometry(1, 1), new T.MeshBasicMaterial({ map: O.blobTex, transparent: true, depthWrite: false, opacity: .4 }));
+    blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.scale.set(size.x * 1.12, size.z * 1.2, 1); blob.userData.noPick = true;
+    g.add(blob);
+    g.userData = { bounds: { w: size.x, h: size.y, d: size.z }, spin: spin, mats: list, unit: s };
+    g.userData.dispose = function () { scene.remove(g); blob.geometry.dispose(); blob.material.dispose(); };
     return g;
   }
 
@@ -300,6 +376,8 @@
     var prev = item;
     st.kind = kind; item = obj;
     st.mapT = kind === 'map' ? 1 : 0;
+    if (prev !== obj && obj.userData.spin) { st.spin = 0; st.spinV = 0; obj.userData.spin.rotation.y = 0; }
+    if (prev !== obj) { st.zoom = 1; st.recenter = false; }
     if (prev && prev !== obj && prev !== O.map) sink(prev, function () { if (prev.userData.dispose) prev.userData.dispose(); });
     if (obj === O.map) { O.map.position.y = 0; O.map.visible = true; }
     else if (prev !== obj) rise(obj, prev && prev !== O.map ? .45 : .1);
@@ -318,6 +396,71 @@
     return /track/.test(t) ? .7 : .3;
   }
 
+  /* ---------------------------------------------------------------- zoom & sentuh objek */
+  var ZMIN = .32, ZMAX = 2.8;
+  function setZoom(z) { st.zoom = clamp(z, ZMIN, ZMAX); }
+  var ray = new T.Raycaster(), ndc = new T.Vector2();
+  // objek di panggung yang tersentuh di titik layar (x, y) → jenisnya, atau null
+  function hit(x, y) {
+    if (!item || !item.visible || st.kind === 'map' || !camera) return null;
+    ndc.set(x / W * 2 - 1, -(y / H) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    var hits = ray.intersectObject(item, true);
+    for (var i = 0; i < hits.length; i++) {
+      var h = hits[i], o = h.object;
+      if (o.userData.noPick) continue;
+      var im = o.material && o.material.map && o.material.map.image;
+      if (o.material && o.material.alphaTest && im && im.getContext && h.uv) {   // foto potong: abaikan area transparan
+        var px = im.getContext('2d').getImageData(clamp(Math.floor(h.uv.x * im.width), 0, im.width - 1), clamp(Math.floor((1 - h.uv.y) * im.height), 0, im.height - 1), 1, 1).data;
+        if (px[3] < 40) continue;
+      }
+      return st.kind;
+    }
+    return null;
+  }
+
+  /* warna kain model 3D mengikuti varian (kode hex xionco.shop). Tekstur kain dinormalkan
+     sekali (terang rata-rata, kontras serat dijaga) lalu dikalikan warna varian. */
+  var TINT_GAIN = 1.25;
+  function normalMap(tex) {
+    var im = tex && tex.image; if (!im || !im.width) return null;
+    var w = Math.min(512, im.width), h = Math.min(512, im.height);
+    var c = document.createElement('canvas'); c.width = w; c.height = h;
+    var g = c.getContext('2d'); g.drawImage(im, 0, 0, w, h);
+    var d = g.getImageData(0, 0, w, h), a = d.data, sum = 0, i;
+    for (i = 0; i < a.length; i += 4) sum += (a[i] + a[i + 1] + a[i + 2]) / 3;
+    var mean = sum / (a.length / 4) || 1;
+    for (i = 0; i < a.length; i += 4) { var l = clamp(190 * (1 + ((a[i] + a[i + 1] + a[i + 2]) / 3 / mean - 1) * .3), 0, 255); a[i] = a[i + 1] = a[i + 2] = l; }
+    g.putImageData(d, 0, 0);
+    var t = new T.CanvasTexture(c);
+    t.encoding = T.sRGBEncoding; t.anisotropy = 8; t.flipY = tex.flipY;
+    t.wrapS = tex.wrapS; t.wrapT = tex.wrapT; t.repeat.copy(tex.repeat); t.offset.copy(tex.offset);
+    return t;
+  }
+  function tintModel(obj, hexStr, dur) {
+    if (!obj || !obj.userData.mats) return;
+    obj.userData.mats.forEach(function (mt) {
+      if (mt.metalness > .5 || !mt.map && !mt.userData.map0) return;      // logam (kuningan) tidak diwarnai
+      if (!mt.userData.map0) { mt.userData.map0 = mt.map; mt.userData.col0 = mt.color.clone(); }
+      if (!hexStr) { mt.map = mt.userData.map0; mt.color.copy(mt.userData.col0); mt.needsUpdate = true; return; }
+      if (mt.userData.mapN === undefined) mt.userData.mapN = normalMap(mt.userData.map0);
+      if (mt.map !== (mt.userData.mapN || mt.userData.map0)) { mt.map = mt.userData.mapN || mt.userData.map0; mt.needsUpdate = true; }
+      var c = col(hexStr).multiplyScalar(TINT_GAIN);
+      tw(mt.color, { r: c.r, g: c.g, b: c.b, duration: dur == null ? .8 : dur, ease: 'power2.inOut' });
+    });
+  }
+
+  /* ---------------------------------------------------------------- tema terang / gelap */
+  function setTheme(name, dur) {
+    if (!THEMES[name]) name = 'dark';
+    themeName = name;
+    var th = THEMES[name], d = dur == null ? 1.2 : dur;
+    var to = function (c, hexStr) { var v = col(hexStr); tw(c, { r: v.r, g: v.g, b: v.b, duration: d, ease: 'power2.inOut' }); };
+    to(scene.background, th.bg); to(scene.fog.color, th.bg); to(mats.floor.color, th.floor); to(O.disc.material.color, th.disc); to(L.hemi.groundColor, th.hemiG);
+    tw(theme, { halo: th.halo, exp: th.exp, env: th.env, duration: d, ease: 'power2.inOut' });
+    var old = O.wall.material.map; O.wall.material.map = canvasTex(16, 512, backdrop); O.wall.material.needsUpdate = true; if (old) old.dispose();
+  }
+
   /* ---------------------------------------------------------------- kamera membingkai objek */
   var camTw = null, orbit = false;
   function frameItem(b, dur) {
@@ -334,12 +477,13 @@
     var fw = Math.max(200, W - inset.l - inset.r), fh = Math.max(200, H - inset.t - inset.b);
     var tight = inset.r > 0 || inset.b > 200;            // ada panel → objek dibingkai lebih dekat
     var kh = st.kind === 'art' ? 1.45 : tight ? 2.3 : 3.6, kw = st.kind === 'art' ? 1.3 : tight ? 1.6 : 2.25;
-    if (portrait) { kw = st.kind === 'art' ? 1.15 : 1.3; kh = st.kind === 'art' ? 1.3 : 1.9; }
+    if (portrait) { kw = st.kind === 'art' ? 1.15 : st.kind === 'model' || st.kind === 'cubix' ? 1.5 : 1.3; kh = st.kind === 'art' ? 1.3 : 1.9; }
     var needH = b.h * kh + .3, needW = (b.w * kw + .2) * (H / W);
     var span = Math.max(needH * H / fh, needW * W / fw);
     var dist = span / vf;
-    var yaw = st.kind === 'cubix' ? -.3 : 0, pitch = st.kind === 'cubix' ? .17 : .09;
-    animView({ tx: 0, ty: LIFT + b.h * .48, tz: st.kind === 'cubix' ? b.d * .12 : 0, dist: clamp(dist, 2.2, 16), yaw: yaw, pitch: pitch, fov: fov }, dur);
+    var turn = st.kind === 'cubix' || st.kind === 'model';   // objek 3D sungguhan: tampak 3/4
+    var yaw = turn ? -.3 : 0, pitch = turn ? .17 : .09;
+    animView({ tx: 0, ty: LIFT + b.h * .48, tz: turn ? b.d * .12 : 0, dist: clamp(dist, 2.2, 16), yaw: yaw, pitch: pitch, fov: fov }, dur);
   }
   function animView(to, dur) {
     if (camTw && camTw.kill) camTw.kill();
@@ -394,17 +538,18 @@
     var k = 1 - Math.pow(.001, dt);
     mouse.sx = lerp(mouse.sx, mouse.x, k * .5); mouse.sy = lerp(mouse.sy, mouse.y, k * .5);
     L.key.intensity = mood.key; L.hemi.intensity = mood.hemi; L.fill.intensity = mood.fill;
-    O.halo.material.opacity = mood.halo; renderer.toneMappingExposure = mood.exp;
-    mats.fabric.envMapIntensity = .5 * mood.env / .42;
+    O.halo.material.opacity = mood.halo * theme.halo; renderer.toneMappingExposure = mood.exp * theme.exp;
+    mats.fabric.envMapIntensity = .5 * mood.env / .42 * theme.env;
+    if (item && item.userData.mats) item.userData.mats.forEach(function (mt) { mt.envMapIntensity = mt.userData.env0 * mood.env / .42 * theme.env; });
     // geser titik pusat pandang agar objek berada di tengah ruang kosong
     inset.x = lerp(inset.x, (inset.r - inset.l) / 2, k * 1.1);
     inset.y = lerp(inset.y, (inset.b - inset.t) / 2, k * 1.1);
     camera.setViewOffset(W, H, inset.x, inset.y, W, H);
     if (!st.drag) {
       st.spinV = lerp(st.spinV, 0, k * .5); st.spin += st.spinV * dt;
-      if (now - st.lastDrag > 2600 && !orbit) st.spin = lerp(st.spin, 0, k * .25);
+      if (st.recenter) { st.spin = lerp(st.spin, 0, k * .7); if (Math.abs(st.spin) < .002) { st.spin = 0; st.recenter = false; } }
     }
-    sofa.rotation.y = st.spin;
+    if (item && item.userData.spin) item.userData.spin.rotation.y = st.spin;
     st.map = lerp(st.map, st.mapT, k * .7);
     O.map.visible = st.map > .01;
     if (O.map.visible) {
@@ -421,9 +566,13 @@
     if (orbit) controls.update();
     else {
       var yaw = view.yaw + mouse.sx * .05 + (st.kind !== 'map' ? Math.sin(clock * .11) * .03 : 0), pitch = view.pitch - mouse.sy * .025;
-      camera.position.set(view.tx + Math.sin(yaw) * Math.cos(pitch) * view.dist, view.ty + Math.sin(pitch) * view.dist, view.tz + Math.cos(yaw) * Math.cos(pitch) * view.dist);
+      st.zoomC = lerp(st.zoomC, st.zoom, k * .9);
+      var dist = view.dist * st.zoomC;
+      camera.position.set(view.tx + Math.sin(yaw) * Math.cos(pitch) * dist, view.ty + Math.sin(pitch) * dist, view.tz + Math.cos(yaw) * Math.cos(pitch) * dist);
       camera.lookAt(view.tx, view.ty, view.tz);
     }
+    var off = Math.abs(st.zoom - 1) > .02 || Math.abs(st.spin) > .03 || st.orbitMoved;
+    if (off !== st.off) { st.off = off; if (XW.onView) XW.onView(off); }
     if (Math.abs(camera.fov - view.fov) > .01) { camera.fov = view.fov; camera.updateProjectionMatrix(); }
     var Lb = XW.labels;
     if (st.kind === 'cubix' && st.room === 'atelier' && Math.abs(O.cubix.position.y) < .01) {
@@ -472,17 +621,48 @@
     if (T.OrbitControls) {
       controls = new T.OrbitControls(camera, canvas);
       controls.enabled = false; controls.enableDamping = true; controls.dampingFactor = .07;
-      controls.enablePan = false; controls.minDistance = 2.4; controls.maxDistance = 10;
+      controls.enablePan = false; controls.minDistance = .9; controls.maxDistance = 24;
       controls.minPolarAngle = .55; controls.maxPolarAngle = 1.48; controls.rotateSpeed = .6;
+      controls.addEventListener('start', function () { st.orbitMoved = true; });
     }
     XW.quality = 2;
     resize();
     window.addEventListener('resize', resize);
     window.addEventListener('pointermove', function (e) { mouse.x = e.clientX / W * 2 - 1; mouse.y = e.clientY / H * 2 - 1; }, { passive: true });
-    var dx0 = 0;
-    canvas.addEventListener('pointerdown', function (e) { if (orbit || st.kind !== 'cubix') return; st.drag = true; dx0 = e.clientX; st.spinV = 0; });
-    window.addEventListener('pointermove', function (e) { if (!st.drag) return; var dx = e.clientX - dx0; dx0 = e.clientX; st.spin += dx * .006; st.spinV = dx * .35; st.lastDrag = performance.now(); });
-    window.addEventListener('pointerup', function () { if (st.drag) { st.drag = false; st.lastDrag = performance.now(); } });
+    /* masukan: geser = putar · roda / cubit = zoom (objek apa pun, kapan pun) · ketuk objek = XW.onPick */
+    var dx0 = 0, ptrs = {}, pinch = null, down = null, hoverT = 0;
+    var gap = function () { var k = Object.keys(ptrs), a = ptrs[k[0]], b = ptrs[k[1]]; return Math.hypot(a.x - b.x, a.y - b.y) || 1; };
+    canvas.addEventListener('pointerdown', function (e) {
+      ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var n = Object.keys(ptrs).length;
+      down = n === 1 ? { x: e.clientX, y: e.clientY, t: performance.now() } : null;
+      if (n === 2 && !orbit) { st.drag = false; pinch = { d: gap(), z: st.zoom }; return; }
+      if (n > 1 || orbit || !(item && item.userData.spin)) return;
+      st.drag = true; dx0 = e.clientX; st.spinV = 0; st.recenter = false;
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (ptrs[e.pointerId]) { ptrs[e.pointerId].x = e.clientX; ptrs[e.pointerId].y = e.clientY; }
+      if (pinch && Object.keys(ptrs).length >= 2) { setZoom(pinch.z * pinch.d / gap()); return; }
+      if (st.drag) { var dx = e.clientX - dx0; dx0 = e.clientX; st.spin += dx * .006; st.spinV = dx * .35; st.lastDrag = performance.now(); return; }
+      if (!e.buttons && e.target === canvas && XW.onHover && performance.now() - hoverT > 90) { hoverT = performance.now(); XW.onHover(hit(e.clientX, e.clientY)); }
+    }, { passive: true });
+    var up = function (e) {
+      delete ptrs[e.pointerId];
+      if (Object.keys(ptrs).length < 2) pinch = null;
+      if (st.drag) { st.drag = false; st.lastDrag = performance.now(); }
+      if (down && e.type === 'pointerup' && e.target === canvas && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 7 && performance.now() - down.t < 550) {
+        var k = hit(e.clientX, e.clientY);
+        if (k && XW.onPick) XW.onPick(k);
+      }
+      down = null;
+    };
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
+    canvas.addEventListener('wheel', function (e) {
+      if (orbit) return;                                   // Atelier: OrbitControls yang mengurus zoom
+      e.preventDefault();
+      setZoom(st.zoom * Math.exp(e.deltaY * (e.deltaMode ? .06 : .0013)));
+    }, { passive: false });
     canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); XW.ok = false; if (XW.onLost) XW.onLost(); });
     setMood('senja', 0);
     requestAnimationFrame(loop);
@@ -507,10 +687,12 @@
     if (item === O.cubix) { frameItem(null, 1.2); return; }
     present('cubix', O.cubix);
   };
-  XW.showProduct = function (p, url) {
+  // fallback: foto lain (mis. foto utama) bila latar foto ini terlalu rumit untuk dipotong rapi
+  XW.showProduct = function (p, url, fallback) {
     var my = ++req;
     return getCutout(url).then(function (r) {
       if (my !== req) return;
+      if (!r.ok && fallback && fallback !== url) return XW.showProduct(p, fallback);
       var w = sizeFor(p), h = w / r.aspect;
       if (h > 2.2) { h = 2.2; w = h * r.aspect; }
       var g = makeBillboard(r.tex, w, h, false);
@@ -519,6 +701,36 @@
       present('product', g);
     });
   };
+  // model 3D asli; bila gagal dimuat (belum ada / rusak / dibuka dari file://) kembali ke foto
+  XW.showModel = function (p, url, photo, hexStr) {
+    var my = ++req;
+    return getModel(url).then(function (s) {
+      if (my !== req) return;
+      var g = makeModel(s, p);
+      g.visible = false; scene.add(g);
+      tintModel(g, hexStr, 0);
+      present('model', g);
+    }, function (e) {
+      if (my !== req) return;
+      if (window.console) console.warn('[XW] model 3D tidak bisa dimuat, memakai foto:', url, e && e.message ? e.message : e);
+      if (photo) return XW.showProduct(p, photo);
+    });
+  };
+  XW.preloadModel = function (url) { getModel(url).catch(function () {}); };
+  XW.setTint = function (hexStr) { if (st.kind === 'model') tintModel(item, hexStr); };
+  // kembali ke posisi awal: zoom normal, putaran 0, bingkai kamera semula
+  XW.recenter = function () {
+    st.zoom = 1; st.spinV = 0; st.recenter = true; st.orbitMoved = false;
+    if (orbit) {
+      setOrbit(false, true); frameItem(null, 1.1);
+      var back = function () { if (st.room === 'atelier' && st.kind === 'cubix') setOrbit(true); };
+      if (G && !XW.reduced) G.delayedCall(1.2, back); else back();
+    } else frameItem(null, 1.1);
+  };
+  XW.zoomBy = function (f) { setZoom(st.zoom * f); };
+  XW.setTheme = function (n, dur) { setTheme(n, dur); };
+  XW.hit = function (x, y) { return hit(x, y); };
+  XW.canSpin = function () { return !!(item && item.userData.spin); };
   XW.showArt = function (url) {
     var my = ++req;
     return getRaw(url).then(function (r) {

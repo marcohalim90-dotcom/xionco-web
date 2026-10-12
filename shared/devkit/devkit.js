@@ -743,7 +743,7 @@
       state.scanning = false;
       var used = adoptLocalPhotos();
       renderTab();
-      toast(found ? found + ' aset terdeteksi' + (used ? ' · ' + used + ' foto utama dipakai di situs' : '') : 'Belum ada aset di folder assets/');
+      toast(found ? found + ' aset terdeteksi' + (used ? ' · ' + used + ' aset (foto/model 3D) dipakai di situs' : '') : 'Belum ada aset di folder assets/');
     });
   }
   function scanProbe() {
@@ -754,7 +754,7 @@
           state.scanning = false;
           var used = adoptLocalPhotos();
           renderTab();
-          toast(found ? found + ' aset terdeteksi' + (used ? ' · ' + used + ' foto utama dipakai di situs' : '') : 'Belum ada aset di folder assets/');
+          toast(found ? found + ' aset terdeteksi' + (used ? ' · ' + used + ' aset (foto/model 3D) dipakai di situs' : '') : 'Belum ada aset di folder assets/');
           return resolve();
         }
         while (active < 6 && i < rows.length) {
@@ -766,13 +766,16 @@
     });
   }
 
-  // foto utama yang ditemukan di assets/items/<id>/ langsung dipakai situs (via database)
+  // foto utama & model 3D yang ditemukan di assets/items/<id>/ langsung dipakai situs (via database)
   function adoptLocalPhotos() {
     var n = 0;
     products.forEach(function (p) {
       var key = 'item:' + p.id + ':utama', local = XVDB.ASSET_ROOT + 'items/' + p.id + '/foto-utama.png';
       if (state.detect[key] && p.img !== local) { p.imgOriginal = p.imgOriginal || p.img; p.img = local; n++; }
       else if (!state.detect[key] && p.img === local && p.imgOriginal) { p.img = p.imgOriginal; n++; }
+      var mk = 'item:' + p.id + ':model', glb = XVDB.ASSET_ROOT + 'items/' + p.id + '/model.glb';
+      if (state.detect[mk] && !p.model) { p.model = glb; n++; }
+      else if (state.detect[mk] === false && p.model === glb) { p.model = ''; n++; }
     });
     if (n) XVDB.saveProducts(products);
     return n;
@@ -844,6 +847,8 @@
       { h: 'Media & tautan', f: [
         { k: 'img', l: 'Gambar (path xionco.com, URL, atau assets/items/…)', t: 'text', s: 6 },
         { k: '_prev', l: 'Pratinjau', t: 'preview', s: 6 },
+        { k: 'model', l: 'Model 3D (assets/items/…/model.glb · kosong = pakai foto)', t: 'text', s: 4 },
+        { k: 'modelRot', l: 'Putar model', t: 'number', s: 2, u: '°', ph: '0' },
         { k: 'url', l: 'URL halaman produk', t: 'text', s: 6 },
         { k: 'note', l: 'Catatan internal', t: 'textarea', s: 6 }
       ] }

@@ -3,7 +3,8 @@
    Dipakai panggung 3D (world.js) dan thumbnail panel (app.js).
    xionco.com mengizinkan akses gambar lintas domain (CORS), jadi piksel
    bisa dibaca: latar putih/hitam dihapus dengan flood-fill dari tepi,
-   tepi dihaluskan, lalu dipotong ke batas objek.
+   tepi dihaluskan, lalu dipotong ke batas objek. Hasil diberi tanda ok:false bila
+   latarnya terlalu rumit (mis. render studio bergradasi) — pemanggil memakai foto asli.
    API: window.XCUT.load(url) · .cutout(img, max) · .url(url, max) → objectURL
    ========================================================================== */
 (function () {
@@ -29,6 +30,7 @@
     for (x = 0; x < s; x += 4) { acc(x); acc((h - 1) * s + x); }
     for (y = 0; y < h; y += 4) { acc(y * s); acc(y * s + s - 1); }
     br /= cnt; bgc /= cnt; bb /= cnt; ba /= cnt;
+    var removed = 0;
     if (ba > 200) {
       var dark = (br + bgc + bb) / 3 < 80;
       var tolG = dark ? 95 : 42, tolS = dark ? 14 : 20, tG = tolG * tolG, tS = tolS * tolS;
@@ -45,7 +47,7 @@
           if (dist2(d, ko, br, bgc, bb) < tG && dist2(d, ko, d[k], d[k + 1], d[k + 2]) < tS) { seen[o] = 1; q[tail++] = o; }
         }
       }
-      for (i = 0; i < n; i++) if (seen[i]) d[i * 4 + 3] = 0;
+      for (i = 0; i < n; i++) if (seen[i]) { d[i * 4 + 3] = 0; removed++; }
       for (i = 0; i < n; i++) {
         if (seen[i]) continue;
         var ix = i % s;
@@ -55,13 +57,16 @@
       }
       g.putImageData(id, 0, 0);
     }
-    var x0 = s, y0 = h, x1 = 0, y1 = 0;
-    for (y = 0; y < h; y++) for (x = 0; x < s; x++) if (d[(y * s + x) * 4 + 3] > 24) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
-    if (x1 <= x0 || y1 <= y0) return { canvas: c, aspect: s / h };
+    var x0 = s, y0 = h, x1 = 0, y1 = 0, solid = 0;
+    for (y = 0; y < h; y++) for (x = 0; x < s; x++) if (d[(y * s + x) * 4 + 3] > 24) { solid++; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    if (x1 <= x0 || y1 <= y0) return { canvas: c, aspect: s / h, ok: false };
+    /* mutu potongan: latar harus benar-benar terhapus (≥ 8 %) dan objek tersisa padat
+       (≥ 38 % kotak batasnya). Foto studio bergradasi yang "termakan" jadi serpihan → ok: false */
+    var fill = solid / ((x1 - x0 + 1) * (y1 - y0 + 1)), ok = removed / n > .08 && fill > .38;
     var cw = x1 - x0 + 1, ch = y1 - y0 + 1, out = document.createElement('canvas');
     out.width = cw; out.height = ch;
     out.getContext('2d').drawImage(c, x0, y0, cw, ch, 0, 0, cw, ch);
-    return { canvas: out, aspect: cw / ch };
+    return { canvas: out, aspect: cw / ch, ok: ok, fill: fill, removed: removed / n };
   }
   // objectURL hasil potong (untuk <img>), di-cache per url+ukuran
   function toUrl(url, max) {
@@ -69,6 +74,7 @@
     if (!urlCache[key]) urlCache[key] = load(url).then(function (im) {
       var r = cutout(im, max);
       if (r.tainted) throw new Error('tainted');
+      if (!r.ok) throw new Error('complex');               // latar rumit → tampilkan foto apa adanya
       return new Promise(function (res, rej) { r.canvas.toBlob(function (b) { if (b) res(URL.createObjectURL(b)); else rej(new Error('blob')); }, 'image/png'); });
     }).catch(function (e) { delete urlCache[key]; throw e; });
     return urlCache[key];

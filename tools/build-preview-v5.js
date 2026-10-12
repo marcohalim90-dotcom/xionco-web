@@ -2,7 +2,7 @@
    Maison XIONCO (v5) — Build 1 file HTML untuk presentasi / dibagikan
    Pakai:  node tools/build-preview-v5.js
    Hasil:  dist/XIONCO-v5-Maison.html
-   - v5.css, data.js, cutout.js, world.js, app.js digabung ke dalam satu file
+   - v5.css, data.js, catalog.js, cutout.js, world.js, i18n.js, pay.js, app.js digabung ke dalam satu file
    - Three.js, GSAP, font, dan foto produk tetap dimuat dari internet (butuh koneksi)
    ========================================================================== */
 const fs = require('fs');
@@ -21,7 +21,7 @@ const cssTag = /<link rel="stylesheet" href="css\/v5\.css">/;
 if (!cssTag.test(html)) throw new Error('Tag CSS tidak ditemukan: css/v5.css');
 html = html.replace(cssTag, () => '<style>\n' + read('css/v5.css') + '\n</style>');
 
-for (const src of ['js/data.js', 'js/cutout.js', 'js/world.js', 'js/app.js']) {
+for (const src of ['js/data.js', 'js/catalog.js', 'js/cutout.js', 'js/world.js', 'js/i18n.js', 'js/pay.js', 'js/app.js']) {
   const tag = new RegExp('<script src="' + src.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&') + '"></script>\\n?');
   if (!tag.test(html)) throw new Error('Script tag tidak ditemukan: ' + src);
   html = html.replace(tag, () => '<script>\n' + safeJs(read(src)) + '\n</script>\n');

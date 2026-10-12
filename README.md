@@ -153,8 +153,21 @@ dengan **satu gaya kotak** untuk navigator, kotak deskripsi, panel kanan, bar ri
 (kaca gelap hangat, garis champagne, radius 16). Kursor baru: titik champagne → cincin tipis di atas tombol →
 cincin dengan ‹ › di atas sofa yang bisa diputar. Foto katalog di panel dipotong latarnya otomatis.
 
+Pembaruan 13 Okt 2026:
+
+- **Skala huruf** berpedoman navigator kiri: teks terbesar = label "Beranda / Koleksi" (10.5px), sisanya
+  lebih kecil & tipis; harga satu-satunya pengecualian. Ikon terbesar = ikon navigator (18px).
+- **Katalog xionco.shop** (187 produk aktif) lengkap dengan **varian** (warna/material + ukuran/opsi,
+  masing-masing dengan harga & foto). Model 3D ikut berganti warna kain sesuai varian.
+- Halaman produk: **Beli langsung**, **Tambah ke tas**, **Custom** (tercatat di Developer Settings › Custom),
+  Tanya via WhatsApp. Semua pembelian berakhir di panel **Pembayaran** (gateway: `v5/js/pay.js`).
+- Panggung: **zoom** (roda / cubit) di objek apa pun, tombol **kembali ke posisi awal**, dan **ketuk objek**
+  untuk membuka lagi halamannya di panel kanan.
+- Kanan atas: **Pengaturan** (bahasa Indonesia/English, tema gelap/terang) & **Profil** (pesanan, permintaan custom).
+
 ```
-v5/                 index.html · css/v5.css · js/data.js · js/cutout.js · js/world.js · js/app.js
+v5/                 index.html · css/v5.css · js/data.js · js/catalog.js · js/cutout.js · js/world.js
+                    js/i18n.js · js/pay.js · js/app.js
 shared/versions.js  Daftar versi & checkpoint (dibaca Developer Settings)
 shared/db.js        Database lokal: katalog, pesanan custom, centang aset, pengaturan
 shared/devkit/      Developer Settings (dipasang di semua versi)
@@ -162,6 +175,26 @@ tools/checkpoint.js Buat checkpoint sebelum merombak
 ```
 
 File tunggal: `node tools/build-preview-v5.js` → `dist/XIONCO-v5-Maison.html` (Developer Settings tidak ikut).
+
+### Katalog dari xionco.shop
+
+Sumber data: tabel HIG `databaseallitem_web` (produk xionco.shop), diekspor lewat MCP hig ke
+`data/source/xionco-shop.json` (tidak ikut online). Lalu:
+
+```
+node tools/import-shop.js
+```
+
+→ menulis `v5/js/catalog.js` (kategori + produk bawaan) dan `data/products.json` (katalog yang dipublish).
+Item v5 lama dipetakan ke produk shop sehingga id-nya tetap (aset seperti `assets/items/kyrios/model.glb`
+tidak hilang); kolom khusus v5 (`model`, `modelRot`, `dims`, `leadTime`, `note`) dipertahankan.
+Produk tanpa kategori di shop masuk sebagai `draft`.
+
+### Pembayaran
+
+`v5/js/pay.js` — `XPAY.pay(order)` masih kosong: pesanan tersimpan dengan status *Menunggu pembayaran*
+dan pembeli diarahkan konfirmasi via WhatsApp. Untuk menyematkan gateway (Midtrans / Xendit / DOKU),
+isi `XPAY.provider` & ganti `XPAY.pay` di file itu saja — kunci rahasia gateway hanya di server.
 
 ## Developer Settings
 
