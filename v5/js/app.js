@@ -5,7 +5,8 @@
    • Memilih karya di Koleksi / Galeri → objek di tengah panggung berganti.
    Hash (#/koleksi dst.) hanya untuk tautan langsung; layar tidak berganti.
    ========================================================================== */
-(function () {
+// mulai setelah database (shared/db.js) selesai dimuat — katalog bisa datang dari folder data/
+(function (run) { if (window.XVDB && XVDB.ready) XVDB.ready.then(run, run); else run(); })(function () {
   'use strict';
 
   var XV = window.XV, G = window.gsap, XW = window.XW || {};
@@ -695,4 +696,4 @@
         .from(['.top', '.rail', '.desc', '.detail'], { opacity: 0, duration: 1.2, ease: 'power2.out', stagger: .08, clearProps: 'opacity' }, '-=.6');
     });
   })();
-})();
+});

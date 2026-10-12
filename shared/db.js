@@ -1,29 +1,40 @@
 /* ==========================================================================
-   XIONCO — Database lokal (prototipe backend)
-   Disimpan di localStorage browser. Dibaca situs (v5) dan diubah lewat
-   Developer Settings. Export / import JSON tersedia di Developer Settings.
-   Muat SETELAH data.js agar katalog situs memakai data terbaru.
+   XIONCO — Database (prototipe backend)
+   Tiga mode, dipilih otomatis:
+   • folder  — dibuka lewat `node tools/serve.js` di komputer lokal:
+               dibaca & disimpan langsung ke file di folder data/
+                 data/products.json          katalog item       (ikut online saat di-push)
+                 data/checks.json            centang aset       (ikut online)
+                 data/private/customs.json   pesanan custom     (TIDAK ikut online)
+   • online  — situs yang sudah online: membaca data/*.json yang dipublish;
+               perubahan di Developer Settings hanya tersimpan di browser itu
+   • browser — dibuka langsung dari file (double-click): tersimpan di browser
 
    API: window.XVDB
-     products()            semua item (termasuk draft/arsip)
-     activeProducts()      item berstatus aktif (yang tampil di situs)
-     saveProducts(list)    simpan katalog
-     resetProducts()       kembali ke data bawaan (data.js)
+     ready                 Promise — selesai memuat (situs v5 menunggu ini)
+     mode()                'folder' | 'online' | 'browser'
+     products() / activeProducts() / saveProducts(list) / resetProducts()
      customs() / saveCustom(rec) / deleteCustom(id)
-     checks() / setCheck(key, bool)        centang aset manual
-     settings() / setSetting(key, value)
-     exportAll() / importAll(obj)
-   Event: window 'xvdb:change'  { detail: { what: 'products'|'customs'|'checks'|'settings' } }
+     checks() / setCheck(key, bool)
+     settings() / setSetting(key, value)          (selalu per browser)
+     assetList()           Promise<string[]> daftar file di assets/ (mode folder)
+     exportAll() / importAll(obj) / resetAll()
+   Event: window 'xvdb:change'  { detail: { what } }  ·  'xvdb:error' { detail: { message } }
    ========================================================================== */
 (function () {
   'use strict';
+  var SCRIPT = document.currentScript;
+  var ROOT = ((SCRIPT && SCRIPT.src) || '').replace(/shared\/db\.js(\?.*)?$/, '');
   var NS = 'xionco.db.';
   var XV = window.XV || {};
   var clone = function (o) { return JSON.parse(JSON.stringify(o)); };
   var read = function (k, d) { try { var v = localStorage.getItem(NS + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
   var write = function (k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); return true; } catch (e) { return false; } };
   var drop = function (k) { try { localStorage.removeItem(NS + k); } catch (e) {} };
-  var emit = function (what) { try { window.dispatchEvent(new CustomEvent('xvdb:change', { detail: { what: what } })); } catch (e) {} };
+  var emit = function (what, extra) { try { window.dispatchEvent(new CustomEvent('xvdb:' + (extra ? 'error' : 'change'), { detail: extra ? { message: extra } : { what: what } })); } catch (e) {} };
+  var LOCALHOST = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  var HTTP = /^https?:$/.test(location.protocol);
+  var chan = 'BroadcastChannel' in window ? new BroadcastChannel('xionco-db') : null;
 
   // kolom tambahan katalog (tidak ada di data.js awal)
   var EXTRA = { status: 'aktif', dims: '', leadTime: '', customizable: false, stock: 'Ready', note: '' };
@@ -41,55 +52,142 @@
     return o;
   });
 
-  var DB = window.XVDB = {
-    defaults: function () { return clone(DEFAULTS); },
-    products: function () { var s = read('products', null); return s ? s.map(normalize) : clone(DEFAULTS); },
-    isModified: function () { return !!read('products', null); },
-    activeProducts: function () { return DB.products().filter(function (p) { return p.status === 'aktif'; }); },
-    saveProducts: function (list) { write('products', list.map(normalize)); write('products.at', Date.now()); emit('products'); },
-    resetProducts: function () { drop('products'); drop('products.at'); emit('products'); },
-    savedAt: function (k) { return read(k + '.at', null); },
+  /* ------------------------------------------------------------------ penyimpanan */
+  // isi file: { app:'XIONCO', kind, updated, items|records|checks }
+  var FIELD = { products: 'items', customs: 'records', checks: 'checks' };
+  var EMPTY = { products: function () { return clone(DEFAULTS); }, customs: function () { return []; }, checks: function () { return {}; } };
+  var state = { mode: 'browser', products: null, customs: null, checks: null, updated: {} };
+  function getJSON(url) {
+    return fetch(url, { cache: 'no-store', headers: { 'X-XIONCO': '1' } }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+  }
+  function fromFile(name, doc) {
+    if (!doc || doc.app !== 'XIONCO' || doc.kind !== name) return null;
+    state.updated[name] = doc.updated || null;
+    var v = doc[FIELD[name]];
+    return name === 'products' ? (v || []).map(normalize) : v;
+  }
+  function docOf(name) { var d = { app: 'XIONCO', kind: name, updated: state.updated[name] || null }; d[FIELD[name]] = state[name]; return d; }
+  var pending = {};
+  function persist(name, isDefault) {
+    state.updated[name] = isDefault ? null : Date.now();
+    if (state.mode !== 'folder') {
+      if (isDefault) { drop(name); drop(name + '.at'); } else { write(name, state[name]); write(name + '.at', state.updated[name]); }
+      return Promise.resolve(true);
+    }
+    // folder: tulis ke file lewat server lokal (berurutan per file)
+    var body = JSON.stringify(docOf(name));
+    pending[name] = (pending[name] || Promise.resolve()).then(function () {
+      return fetch(ROOT + 'api/db/' + name, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-XIONCO': '1' }, body: body })
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); if (chan) chan.postMessage({ what: name }); return true; })
+        .catch(function (e) { emit(name, 'Gagal menyimpan ' + name + ' ke folder data/ (' + e.message + '). Pastikan "node tools/serve.js" masih berjalan.'); return false; });
+    });
+    return pending[name];
+  }
+  function load() {
+    var tryFolder = HTTP && LOCALHOST ? getJSON(ROOT + 'api/db') : Promise.resolve(null);
+    return tryFolder.then(function (info) {
+      if (info && info.ok && info.writable) {
+        state.mode = 'folder';
+        return Promise.all(['products', 'customs', 'checks'].map(function (n) { return getJSON(ROOT + 'api/db/' + n); })).then(function (docs) {
+          ['products', 'customs', 'checks'].forEach(function (n, i) { state[n] = fromFile(n, docs[i]); });
+          // pindahkan data lama dari browser ke folder (sekali saja)
+          ['products', 'customs', 'checks'].forEach(function (n) {
+            var local = read(n, null), fileIsDefault = state[n] == null || (n === 'products' ? !state.updated.products : (n === 'customs' ? !state[n].length : !Object.keys(state[n]).length));
+            if (local && fileIsDefault) {
+              state[n] = n === 'products' ? local.map(normalize) : local;
+              var same = n === 'products' && JSON.stringify(state[n]) === JSON.stringify(DEFAULTS);
+              persist(n, same);
+            }
+            if (local) { drop(n); drop(n + '.at'); }
+          });
+        });
+      }
+      state.mode = HTTP ? 'online' : 'browser';
+      var pub = HTTP ? Promise.all([getJSON(ROOT + 'data/products.json'), getJSON(ROOT + 'data/checks.json')]) : Promise.resolve([null, null]);
+      return pub.then(function (docs) {
+        // perubahan di browser ini (bila ada) didahulukan, lalu file yang dipublish
+        var lp = read('products', null), lc = read('checks', null);
+        state.products = lp ? lp.map(normalize) : fromFile('products', docs[0]);
+        if (lp) state.updated.products = read('products.at', Date.now());
+        state.checks = lc || fromFile('checks', docs[1]);
+        state.customs = read('customs', null);
+      });
+    }).then(function () {
+      ['products', 'customs', 'checks'].forEach(function (n) { if (state[n] == null) { state[n] = EMPTY[n](); state.updated[n] = null; } });
+      if (XV.PRODUCTS) XV.PRODUCTS = DB.activeProducts();
+      return DB;
+    });
+  }
+  function reload(name) {
+    var url = state.mode === 'folder' ? ROOT + 'api/db/' + name : null;
+    if (!url) { if (name === 'settings') emit('settings'); else { var v = read(name, null); if (v) state[name] = name === 'products' ? v.map(normalize) : v; emit(name); } return; }
+    getJSON(url).then(function (doc) { var v = fromFile(name, doc); state[name] = v == null ? EMPTY[name]() : v; emit(name); });
+  }
 
-    customs: function () { return read('customs', []); },
+  var DB = window.XVDB = {
+    root: ROOT,
+    mode: function () { return state.mode; },
+    defaults: function () { return clone(DEFAULTS); },
+    products: function () { return clone(state.products || DEFAULTS); },
+    isModified: function () { return !!state.updated.products; },
+    activeProducts: function () { return DB.products().filter(function (p) { return p.status === 'aktif'; }); },
+    saveProducts: function (list) { state.products = list.map(normalize); emit('products'); return persist('products'); },
+    resetProducts: function () { state.products = clone(DEFAULTS); emit('products'); return persist('products', true); },
+    savedAt: function (k) { return state.updated[k] || null; },
+
+    customs: function () { return clone(state.customs || []); },
     saveCustom: function (rec) {
-      var list = DB.customs(), i = list.findIndex(function (r) { return r.id === rec.id; });
+      var list = state.customs || [];
       rec.updated = Date.now();
       if (!rec.id) { rec.id = 'C' + Date.now().toString(36).toUpperCase(); rec.created = rec.updated; }
+      var i = list.findIndex(function (r) { return r.id === rec.id; });
       if (i >= 0) list[i] = rec; else list.unshift(rec);
-      write('customs', list); emit('customs');
+      state.customs = list; emit('customs'); persist('customs');
       return rec;
     },
-    deleteCustom: function (id) { write('customs', DB.customs().filter(function (r) { return r.id !== id; })); emit('customs'); },
+    deleteCustom: function (id) { state.customs = (state.customs || []).filter(function (r) { return r.id !== id; }); emit('customs'); return persist('customs'); },
 
-    checks: function () { return read('checks', {}); },
-    setCheck: function (key, on) { var c = DB.checks(); if (on) c[key] = Date.now(); else delete c[key]; write('checks', c); emit('checks'); },
+    checks: function () { return clone(state.checks || {}); },
+    setCheck: function (key, on) { var c = state.checks || {}; if (on) c[key] = Date.now(); else delete c[key]; state.checks = c; emit('checks'); return persist('checks'); },
 
-    settings: function () { return Object.assign({ position: 'bl', hidden: false, devOn: true }, read('settings', {})); },
+    settings: function () { return Object.assign({ position: 'bl', hidden: false }, read('settings', {})); },
     setSetting: function (k, v) { var s = DB.settings(); s[k] = v; write('settings', s); emit('settings'); },
 
+    assetList: function () {
+      if (state.mode !== 'folder') return Promise.resolve(null);
+      return getJSON(ROOT + 'api/assets').then(function (r) { return r && r.ok ? r.files : null; });
+    },
     exportAll: function () {
       return { app: 'XIONCO', kind: 'database', exported: new Date().toISOString(), products: DB.products(), customs: DB.customs(), checks: DB.checks(), settings: DB.settings() };
     },
     importAll: function (o) {
       if (!o || o.app !== 'XIONCO') throw new Error('Bukan file database XIONCO');
-      if (o.products) write('products', o.products.map(normalize));
-      if (o.customs) write('customs', o.customs);
-      if (o.checks) write('checks', o.checks);
-      if (o.settings) write('settings', o.settings);
-      emit('products'); emit('customs'); emit('checks'); emit('settings');
+      if (o.products) { state.products = o.products.map(normalize); persist('products'); emit('products'); }
+      if (o.customs) { state.customs = o.customs; persist('customs'); emit('customs'); }
+      if (o.checks) { state.checks = o.checks; persist('checks'); emit('checks'); }
+      if (o.settings) { write('settings', o.settings); emit('settings'); }
     },
-    resetAll: function () { ['products', 'products.at', 'customs', 'checks', 'settings'].forEach(drop); emit('products'); emit('customs'); emit('checks'); emit('settings'); }
+    resetAll: function () {
+      state.products = clone(DEFAULTS); persist('products', true);
+      state.customs = []; persist('customs');
+      state.checks = {}; persist('checks');
+      drop('settings');
+      ['products', 'customs', 'checks', 'settings'].forEach(function (n) { emit(n); });
+    }
   };
 
-  // perubahan dari tab lain ikut tersinkron
+  // sinkron antar tab: mode folder lewat BroadcastChannel, mode lain lewat event storage
+  if (chan) chan.onmessage = function (e) { if (e.data && e.data.what) reload(e.data.what); };
   window.addEventListener('storage', function (e) {
     if (!e.key || e.key.indexOf(NS) !== 0) return;
     var what = e.key.slice(NS.length).split('.')[0];
-    emit(what);
+    if (what === 'settings' || state.mode !== 'folder') reload(what);
   });
 
-  // situs memakai katalog dari database (hanya item aktif)
-  if (XV.PRODUCTS) XV.PRODUCTS = DB.activeProducts();
+  DB.ready = load().catch(function () {
+    ['products', 'customs', 'checks'].forEach(function (n) { if (state[n] == null) state[n] = EMPTY[n](); });
+    return DB;
+  });
 
   /* ------------------------------------------------------------------------
      Spesifikasi aset — daftar "PR" aset yang perlu disiapkan per item

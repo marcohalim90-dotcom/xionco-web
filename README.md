@@ -176,7 +176,20 @@ hampir layar penuh dari kanan — tidak membuka halaman baru. Ada di semua versi
 | **Custom** | Pesanan custom 2 tipe: **dari item** (item dasar, ukuran W/D/H, dudukan, lengan, material, rangka, kaki, kenyamanan, fitur, harga, pelanggan, referensi — dengan estimasi otomatis) dan **full custom** (proyek, kategori, ruang, dimensi, gambar kerja, material, kelistrikan, survei/instalasi, anggaran, pelanggan). Status: Draft → Konsultasi → … → Selesai. Export CSV. |
 | **Pengaturan** | Posisi tombol, sembunyikan tombol, export / import / hapus data, pintasan. |
 
-Data tersimpan di **browser** (localStorage) — gunakan *Export semua* untuk cadangan atau pindah komputer.
+### Database (folder lokal)
+
+Jalankan `node tools/serve.js`, lalu buka http://localhost:5173 — Developer Settings menyimpan langsung ke folder `data/`:
+
+| File | Isi | Online? |
+|---|---|---|
+| `data/products.json` | Katalog item (harga, status, dll.) | Ya — situs online memakai katalog ini setelah dipublish |
+| `data/checks.json` | Centang aset manual | Ya |
+| `data/private/customs.json` | Pesanan custom + data pelanggan | **Tidak** (tidak masuk GitHub maupun situs) |
+| `data/history/` | Cadangan otomatis tiap kali disimpan (30 terakhir per file) | Tidak |
+
+Bila situs dibuka langsung dari file (double-click), data tersimpan di browser. Di situs online, perubahan di
+Developer Settings hanya berlaku di browser itu — ubah di komputer lokal lalu publish agar tampil untuk semua.
+Posisi tombol dan pengaturan lain selalu per browser.
 
 ### Checkpoint (sebelum merombak)
 

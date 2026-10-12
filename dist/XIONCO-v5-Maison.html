@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="id" class="no-js">
 <head>
-  <!-- Maison XIONCO v5 — build 2026-10-12 12:52 (tools/build-preview-v5.js) -->
+  <!-- Maison XIONCO v5 — build 2026-10-12 18:26 (tools/build-preview-v5.js) -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Maison XIONCO — Quality shouldn't be a luxury</title>
@@ -1530,7 +1530,8 @@ XV.MADURA = [[112.7, -6.9], [113.3, -6.88], [113.95, -6.9], [114.1, -7.05], [113
    • Memilih karya di Koleksi / Galeri → objek di tengah panggung berganti.
    Hash (#/koleksi dst.) hanya untuk tautan langsung; layar tidak berganti.
    ========================================================================== */
-(function () {
+// mulai setelah database (shared/db.js) selesai dimuat — katalog bisa datang dari folder data/
+(function (run) { if (window.XVDB && XVDB.ready) XVDB.ready.then(run, run); else run(); })(function () {
   'use strict';
 
   var XV = window.XV, G = window.gsap, XW = window.XW || {};
@@ -2220,7 +2221,7 @@ XV.MADURA = [[112.7, -6.9], [113.3, -6.88], [113.95, -6.9], [114.1, -7.05], [113
         .from(['.top', '.rail', '.desc', '.detail'], { opacity: 0, duration: 1.2, ease: 'power2.out', stagger: .08, clearProps: 'opacity' }, '-=.6');
     });
   })();
-})();
+});
 
 </script>
 </body>

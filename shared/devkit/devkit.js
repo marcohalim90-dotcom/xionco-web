@@ -450,7 +450,7 @@
     var needData = !(window.XV && XV.PRODUCTS && XV.STUDIO);
     var chain = Promise.all(jobs);
     if (needData) chain = chain.then(function () { return loadScript(ROOT + 'v5/js/data.js'); });
-    return chain.then(function () { if (!window.XVDB) return loadScript(ROOT + 'shared/db.js'); });
+    return chain.then(function () { if (!window.XVDB) return loadScript(ROOT + 'shared/db.js'); }).then(function () { return window.XVDB && XVDB.ready; });
   }
   function mount() {
     if (!window.XVDB || !window.XV) return;
@@ -485,6 +485,7 @@
     window.addEventListener('keydown', function (e) {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'D' || e.key === 'd')) { e.preventDefault(); toggle(); }
     }, true);
+    window.addEventListener('xvdb:error', function (e) { toast(e.detail && e.detail.message ? 'Gagal menyimpan — cek serve.js' : 'Gagal menyimpan'); });
     window.addEventListener('xvdb:change', function (e) {
       if (e.detail && e.detail.what === 'settings') placeFab();
       if (state.open && (!state.editor || e.detail.what !== 'customs')) renderTab();
@@ -577,7 +578,7 @@
     }).join('');
     var cur = currentVersion();
     el.side.innerHTML = '<b>Sedang dibuka</b>' + esc(cur ? cur.name + ' — ' + cur.title : location.pathname.split('/').slice(-2).join('/')) +
-      '<br><br><b>Penyimpanan</b>Lokal di browser ini · ' + (XVDB.isModified() ? 'katalog diubah' : 'katalog bawaan');
+      '<br><br><b>Penyimpanan</b>' + MODE_TEXT[XVDB.mode()] + ' · ' + (XVDB.isModified() ? 'katalog diubah' : 'katalog bawaan');
   }
   function renderTab() {
     renderTabs();
@@ -734,6 +735,18 @@
   function scan() {
     if (state.scanning) return;
     state.scanning = true; renderAset();
+    return XVDB.assetList().then(function (files) {
+      if (!files) return scanProbe();
+      var set = {}; files.forEach(function (f) { set[f.toLowerCase()] = 1; });
+      var found = 0;
+      assetRows().forEach(function (r) { var ok = !!set[r.path.toLowerCase()]; state.detect[r.key] = ok; if (ok) found++; });
+      state.scanning = false;
+      var used = adoptLocalPhotos();
+      renderTab();
+      toast(found ? found + ' aset terdeteksi' + (used ? ' · ' + used + ' foto utama dipakai di situs' : '') : 'Belum ada aset di folder assets/');
+    });
+  }
+  function scanProbe() {
     var rows = assetRows(), i = 0, active = 0, found = 0;
     return new Promise(function (resolve) {
       var next = function () {
@@ -881,6 +894,7 @@
   }
 
   /* ---------------------------------------------------------------- PENGATURAN */
+  var MODE_TEXT = { folder: 'Folder data/ (lokal)', online: 'Online — hanya di browser ini', browser: 'Browser ini (buka lewat serve.js)' };
   function storageSize() { var n = 0; try { for (var k in localStorage) if (k.indexOf('xionco') === 0) n += (localStorage.getItem(k) || '').length; } catch (e) {} return n; }
   function renderSet() {
     var s = XVDB.settings();
@@ -890,7 +904,7 @@
         [['tl', 'Kiri atas'], ['tr', 'Kanan atas'], ['bl', 'Kiri bawah'], ['br', 'Kanan bawah']].map(function (c) { return '<button type="button" data-act="pos" data-pos="' + c[0] + '"' + (s.position === c[0] ? ' class="is-on"' : '') + '>' + c[1] + '</button>'; }).join('') + '</div></div>' +
       '<div class="card set"><h3>Tampilan tombol</h3><p>Sembunyikan tombol melayang. Panel tetap bisa dibuka dengan Ctrl + Shift + D.</p>' +
         '<button class="tg' + (s.hidden ? ' is-on' : '') + '" type="button" data-act="hide"><span class="sw"></span>Sembunyikan tombol</button></div>' +
-      '<div class="card set"><h3>Data</h3><p>Katalog, pesanan custom, centang aset, dan pengaturan. Terpakai ' + Math.round(storageSize() / 1024) + ' KB.</p>' +
+      '<div class="card set"><h3>Database</h3><p>' + (XVDB.mode() === 'folder' ? 'Tersimpan di folder proyek: <span class="mono">data/products.json</span>, <span class="mono">data/checks.json</span> (ikut online saat dipublish) dan <span class="mono">data/private/customs.json</span> (data pelanggan — tidak pernah online). Cadangan otomatis di <span class="mono">data/history/</span>.' : XVDB.mode() === 'online' ? 'Situs online membaca katalog yang dipublish. Perubahan di sini hanya tersimpan di browser ini — ubah di komputer lokal lalu publish agar tampil untuk semua.' : 'Dibuka langsung dari file, jadi data tersimpan di browser ini. Jalankan <span class="mono">node tools/serve.js</span> agar tersimpan ke folder data/.') + '</p>' +
         '<div class="acts" style="justify-content:flex-start"><button class="btn" type="button" data-act="all-export">' + ic('down') + 'Export semua</button><button class="btn" type="button" data-act="import">' + ic('up') + 'Import</button><button class="btn btn--danger" type="button" data-act="all-reset">' + ic('trash') + 'Hapus semua data lokal</button></div></div>' +
       '<div class="card set"><h3>Situs online</h3><p>' + (LOCAL ? 'Anda sedang di komputer lokal — tombol selalu tampil.' : 'Tombol developer hanya tampil di browser yang sudah diaktifkan (sekarang: <b>' + (devAllowed() ? 'aktif' : 'tidak aktif') + '</b>). Pengunjung umum tidak melihatnya.') + '</p><div class="keys"><kbd>?dev</kbd><span>Tambahkan di akhir alamat untuk mengaktifkan di browser ini</span><kbd>?dev=0</kbd><span>Menonaktifkan lagi</span></div></div>' +
       '<div class="card set"><h3>Pintasan</h3><div class="keys"><kbd>Ctrl Shift D</kbd><span>Buka / tutup developer settings</span><kbd>Esc</kbd><span>Tutup editor / panel</span></div></div>' +
