@@ -1,0 +1,10 @@
+// Cloudflare Workers — situs statis XIONCO (tanpa kode server).
+// Dipakai oleh deploy command "npx wrangler deploy" di dashboard Cloudflare.
+{
+  "name": "xionco-web",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./",
+    "html_handling": "auto-trailing-slash"
+  }
+}

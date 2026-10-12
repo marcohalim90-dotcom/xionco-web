@@ -4,3 +4,8 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# database lokal yang tidak boleh online (data pelanggan & cadangan)
+data/private/
+data/history/
+.wrangler/

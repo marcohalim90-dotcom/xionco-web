@@ -1,0 +1,13 @@
+# File yang TIDAK ikut ditayangkan online
+.git
+.gitignore
+.gitattributes
+.assetsignore
+.wrangler
+.claude
+node_modules
+wrangler.jsonc
+tools
+data/private
+data/history
+README.md
