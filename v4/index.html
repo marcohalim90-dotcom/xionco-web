@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="id" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Maison XIONCO — Quality shouldn't be a luxury</title>
+  <meta name="description" content="Maison XIONCO — furnitur minimalis dengan pengerjaan tanpa kompromi, diproduksi sendiri di empat pabrik di Jawa. Pilih koleksi, rancang sofa modular dalam 3D, dan konsultasi privat.">
+  <meta name="theme-color" content="#0f0c0a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.xionco.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Inter:wght@400;500&display=swap">
+  <link rel="stylesheet" href="css/v4.css">
+  <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4.5l8 6.5v8.5h-5.5v-5.5h-5v5.5H4z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="6" height="6" rx=".6"/><rect x="13.5" y="4.5" width="6" height="6" rx=".6"/><rect x="4.5" y="13.5" width="6" height="6" rx=".6"/><rect x="13.5" y="13.5" width="6" height="6" rx=".6"/></symbol>
+  <symbol id="i-sofa" viewBox="0 0 24 24"><path d="M5.5 11V8.5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2V11"/><path d="M3.5 12.5a1.5 1.5 0 0 1 3 0v1.5h11v-1.5a1.5 1.5 0 0 1 3 0V17h-17z"/><path d="M5.5 17v1.5M18.5 17v1.5"/></symbol>
+  <symbol id="i-factory" viewBox="0 0 24 24"><path d="M3.5 19.5v-8l5 3v-3l5 3v-3l5 3V4.5h2v15z"/><path d="M7 16.5h2M11.5 16.5h2M16 16.5h2"/></symbol>
+  <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="1.5"/><path d="M9 7.5V5.5h6v2M3.5 12.5h17"/></symbol>
+  <symbol id="i-frame" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx=".6"/><path d="m4.5 16 4.5-4.5 4 4 2.5-2.5 4 4"/><circle cx="15.5" cy="8.5" r="1.4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 18.5 5.6 15A7.5 7.5 0 1 1 9 18.2z"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 8.5h13l-1 11h-11z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M20 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4.5 19.5l1.1-3.6A8 8 0 1 1 8.4 18.6z"/><path d="M9 8.6c.2-.5.6-.6.9-.6h.4c.2 0 .4.1.5.4l.6 1.5c.1.3 0 .5-.1.7l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.2.5-.2.7-.1l1.5.6c.3.1.4.3.4.5v.4c0 .3-.1.7-.6.9-.6.3-1.6.4-3.1-.3a8.3 8.3 0 0 1-3.6-3.6c-.7-1.5-.6-2.5-.3-3.1z"/></symbol>
+</svg>
+
+<canvas class="world" id="world" aria-hidden="true"></canvas>
+<div class="world-fallback" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__ring"><span class="cursor__label" id="cursorLabel"></span></span><span class="cursor__dot"></span></div>
+
+<!-- pembuka -->
+<div class="veil" id="veil" role="status" aria-live="polite">
+  <svg class="veil__logo" viewBox="-1 -1 208 30" aria-hidden="true"><path class="logo-path veil__stroke"/><path class="logo-path veil__fill"/></svg>
+  <div class="veil__line"><i id="veilLine"></i></div>
+</div>
+
+<!-- bar atas: hanya logo & tas -->
+<header class="top">
+  <a class="top__logo" href="#/" data-go="home" aria-label="Maison XIONCO — beranda"><svg viewBox="0 0 206 28" aria-hidden="true"><path class="logo-path"/></svg></a>
+  <div class="top__actions">
+    <a class="top__link" data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener">Konsultasi</a>
+    <button class="top__bag" id="bagBtn" type="button" data-go="tas" aria-label="Tas belanja"><svg><use href="#i-bag"/></svg><span id="bagCount">0</span></button>
+  </div>
+</header>
+
+<!-- navigator kiri (seperti versi 1) -->
+<nav class="rail" id="rail" aria-label="Navigasi">
+  <span class="rail__hover" id="railHover" aria-hidden="true"></span>
+  <ul class="rail__group">
+    <li><a class="rail__item" href="#/" data-go="home" data-key="home" style="--i:0"><svg><use href="#i-home"/></svg><span class="rail__label">Beranda</span></a></li>
+  </ul>
+  <ul class="rail__group">
+    <li><a class="rail__item" href="#/koleksi" data-go="koleksi" data-key="koleksi" style="--i:1"><svg><use href="#i-grid"/></svg><span class="rail__label">Koleksi</span></a></li>
+    <li><a class="rail__item" href="#/atelier" data-go="atelier" data-key="atelier" style="--i:2"><svg><use href="#i-sofa"/></svg><span class="rail__label">Atelier</span></a></li>
+    <li><a class="rail__item" href="#/manufaktur" data-go="manufaktur" data-key="manufaktur" style="--i:3"><svg><use href="#i-factory"/></svg><span class="rail__label">Manufaktur</span></a></li>
+    <li><a class="rail__item" href="#/bisnis" data-go="bisnis" data-key="bisnis" style="--i:4"><svg><use href="#i-brief"/></svg><span class="rail__label">Bisnis</span></a></li>
+    <li><a class="rail__item" href="#/galeri" data-go="galeri" data-key="galeri" style="--i:5"><svg><use href="#i-frame"/></svg><span class="rail__label">Galeri</span></a></li>
+  </ul>
+  <ul class="rail__group">
+    <li><a class="rail__item" href="#/kontak" data-go="kontak" data-key="kontak" style="--i:6"><svg><use href="#i-chat"/></svg><span class="rail__label">Kontak</span></a></li>
+  </ul>
+</nav>
+
+<!-- kotak deskripsi (kanan): teks ditulis ulang saat menu disorot -->
+<aside class="desc" id="desc" aria-live="polite">
+  <p class="desc__n" id="descN">Maison XIONCO</p>
+  <h1 class="desc__t" id="descT">Quality shouldn't be a luxury</h1>
+  <p class="desc__p" id="descP">Furnitur minimalis dengan pengerjaan tanpa kompromi — dirancang dan diproduksi sendiri di empat pabrik kami di Jawa.</p>
+  <p class="desc__m" id="descM">34 karya · 4 pabrik · garansi 3 tahun</p>
+</aside>
+
+<!-- rincian objek di panggung: nama, detail, harga -->
+<div class="detail" id="detail" aria-live="polite">
+  <div class="detail__name"><b id="dName">CUBIX Modular</b><span id="dSub">3 Seater</span></div>
+  <dl class="detail__cols" id="dCols"></dl>
+  <div class="detail__price" id="dPriceBox"><span id="dPriceK">Estimasi</span><b id="dPrice">IDR 0</b><s id="dWas"></s></div>
+  <a class="detail__act" id="dAct" href="#" aria-label="Aksi"><svg><use href="#i-plus"/></svg><span id="dActT">Tambah</span></a>
+</div>
+
+<!-- panel kanan: konten tiap menu bergeser masuk di sini -->
+<aside class="panel" id="panel" aria-hidden="true">
+  <button class="panel__close" type="button" data-go="home" aria-label="Tutup panel"><svg><use href="#i-close"/></svg></button>
+
+  <!-- KOLEKSI -->
+  <section class="pane" data-pane="koleksi" aria-label="Koleksi">
+    <div class="pane__scroll" id="kolList">
+      <header class="pane__head"><p class="eyebrow">01 · Koleksi</p><h2 class="pane__t">Koleksi <span id="kCount">34</span></h2></header>
+      <div class="cats" id="kCats"></div>
+      <label class="search"><input id="kSearch" type="search" placeholder="Cari sofa, meja, lampu…" autocomplete="off" aria-label="Cari di koleksi"></label>
+      <div class="tiles" id="kGrid"></div>
+      <p class="empty" id="kEmpty">Tidak ada karya yang cocok.</p>
+    </div>
+    <div class="pane__scroll pd" id="pd" aria-hidden="true">
+      <button class="back" type="button" id="pdBack"><svg><use href="#i-back"/></svg>Koleksi</button>
+      <p class="eyebrow" id="pdCat"></p>
+      <h3 class="pane__t pd__name" id="pdName"></h3>
+      <p class="pd__type" id="pdType"></p>
+      <div class="pd__price" id="pdPrice"></div>
+      <p class="pd__desc" id="pdDesc"></p>
+      <dl class="spec" id="pdSpec"></dl>
+      <div class="pd__buy" id="pdBuy">
+        <div class="qty"><button type="button" id="pdMinus" aria-label="Kurangi"><svg><use href="#i-minus"/></svg></button><span id="pdQty">1</span><button type="button" id="pdPlus" aria-label="Tambah"><svg><use href="#i-plus"/></svg></button></div>
+        <button class="btn btn--dark" type="button" id="pdAdd">Tambahkan ke tas</button>
+      </div>
+      <a class="btn btn--line btn--full" id="pdWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span id="pdWaText">Tanya via WhatsApp</span></a>
+      <a class="link" id="pdLink" href="#" target="_blank" rel="noopener">Detail di xionco.com<svg><use href="#i-arrow"/></svg></a>
+      <div class="pd__nav"><button type="button" id="pdPrev">‹ Sebelumnya</button><span id="pdN"></span><button type="button" id="pdNext">Berikutnya ›</button></div>
+    </div>
+  </section>
+
+  <!-- ATELIER -->
+  <section class="pane" data-pane="atelier" aria-label="Atelier">
+    <div class="pane__scroll">
+      <header class="pane__head"><p class="eyebrow">02 · Atelier</p><h2 class="pane__t">CUBIX Modular</h2></header>
+      <div class="opt"><p class="opt__h">Komposisi</p><div class="nums" id="aSeats"><button type="button" data-seats="1">1</button><button type="button" data-seats="2">2</button><button type="button" data-seats="3">3</button><button type="button" data-seats="4">4</button></div></div>
+      <div class="opt opt--row">
+        <div><p class="opt__h">Lengan</p><button class="sw" type="button" id="aArms" aria-pressed="true"><span>Dengan</span><span>Tanpa</span></button></div>
+        <div><p class="opt__h">Ottoman</p><button class="sw" type="button" id="aOtt" aria-pressed="false"><span>Dengan</span><span>Tanpa</span></button></div>
+      </div>
+      <div class="opt"><p class="opt__h">Material <span id="aFabricName"></span></p><div class="swatches" id="aFabrics"></div></div>
+      <div class="opt"><p class="opt__h">Base</p><div class="choices" id="aBases"></div></div>
+      <div class="opt"><p class="opt__h">Suasana</p><div class="choices choices--3" id="aMood"><button type="button" data-mood="siang">Siang</button><button type="button" data-mood="senja">Senja</button><button type="button" data-mood="malam">Malam</button></div></div>
+      <div class="sum">
+        <div><p class="eyebrow">Estimasi</p><p class="sum__price" id="aPrice">IDR 0</p></div>
+        <p class="sum__dims" id="aDims"></p>
+      </div>
+      <p class="note">Angka contoh untuk demo — harga final melalui penawaran resmi.</p>
+      <a class="btn btn--dark btn--full" id="aQuote" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Minta penawaran</a>
+      <p class="tools"><button type="button" id="aRandom">Acak</button><button type="button" id="aReset">Reset</button></p>
+    </div>
+  </section>
+
+  <!-- MANUFAKTUR -->
+  <section class="pane" data-pane="manufaktur" aria-label="Manufaktur">
+    <div class="pane__scroll">
+      <header class="pane__head"><p class="eyebrow">03 · Manufaktur</p><h2 class="pane__t">Empat pabrik, satu standar</h2></header>
+      <p class="pane__lede">Dari kayu mentah hingga kemasan, setiap tahap dikerjakan sendiri — tidak ada detail yang lolos.</p>
+      <ol class="stages" id="stages"></ol>
+      <button class="link" type="button" id="stageAll">Lihat seluruh rute<svg><use href="#i-arrow"/></svg></button>
+      <div class="figs" id="figs">
+        <div><b data-count="4">0</b><span>Pabrik di Jawa</span></div>
+        <div><b data-count="30" data-suffix="+">0</b><span>Sofa per hari</span></div>
+        <div><b data-count="100" data-suffix="+">0</b><span>Item kecil per hari</span></div>
+        <div><b data-count="80" data-suffix="+">0</b><span>Pekerja &amp; kreatif</span></div>
+        <div><b data-count="3" data-prefix="1–">0</b><span>Hari kerja kirim</span></div>
+        <div><b data-count="3">0</b><span>Tahun garansi</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BISNIS -->
+  <section class="pane" data-pane="bisnis" aria-label="XIONCO for Business">
+    <div class="pane__scroll">
+      <header class="pane__head"><p class="eyebrow">04 · Bisnis</p><h2 class="pane__t">XIONCO for Business</h2></header>
+      <p class="pane__lede">Produk custom, saran desain interior, kolaborasi, atau proyek B2B — penawaran dalam 1 jam.</p>
+      <ul class="services" id="services"></ul>
+      <div class="figs figs--4">
+        <div><b>1 jam</b><span>Penawaran</span></div>
+        <div><b>0%</b><span>Cicilan</span></div>
+        <div><b>3 thn</b><span>Garansi</span></div>
+        <div><b>1–3 hr</b><span>Pengiriman</span></div>
+      </div>
+      <form class="form" id="bform" novalidate>
+        <p class="opt__h">Permintaan penawaran</p>
+        <div class="f"><input id="fName" required placeholder=" " autocomplete="name"><label for="fName">Nama</label></div>
+        <div class="f"><input id="fPhone" required placeholder=" " inputmode="tel" autocomplete="tel"><label for="fPhone">WhatsApp</label></div>
+        <div class="f f--sel"><select id="fType"><option>Kantor</option><option>Hotel &amp; hospitality</option><option>Retail</option><option>Residensial</option><option>Lainnya</option></select><label for="fType">Jenis proyek</label></div>
+        <div class="f f--sel"><select id="fValue"><option>&lt; IDR 50 juta</option><option>IDR 50–250 juta</option><option>IDR 250 juta – 1 M</option><option>&gt; IDR 1 M</option></select><label for="fValue">Nilai proyek</label></div>
+        <div class="f"><textarea id="fNeed" rows="2" placeholder=" "></textarea><label for="fNeed">Kebutuhan (opsional)</label></div>
+        <button class="btn btn--dark btn--full" type="submit"><svg><use href="#i-wa"/></svg>Kirim via WhatsApp</button>
+        <p class="note" id="bNote">Pesan dikirim melalui WhatsApp resmi XIONCO.</p>
+      </form>
+      <p class="opt__h">Dipercaya oleh</p>
+      <p class="clients" id="clients"></p>
+    </div>
+  </section>
+
+  <!-- GALERI -->
+  <section class="pane" data-pane="galeri" aria-label="Galeri">
+    <div class="pane__scroll">
+      <header class="pane__head"><p class="eyebrow">05 · Galeri</p><h2 class="pane__t">Ruang yang diwujudkan</h2></header>
+      <div class="gal" id="gal"></div>
+    </div>
+  </section>
+
+  <!-- KONTAK -->
+  <section class="pane" data-pane="kontak" aria-label="Kontak">
+    <div class="pane__scroll">
+      <header class="pane__head"><p class="eyebrow">06 · Kontak</p><h2 class="pane__t">Mari wujudkan ruang Anda</h2></header>
+      <p class="pane__lede">Tim kami siap membantu memilih, merancang, hingga mengirim — konsultasi privat tanpa biaya.</p>
+      <a class="btn btn--dark btn--full" data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Konsultasi via WhatsApp</a>
+      <dl class="spec spec--contact">
+        <dt>Showroom</dt><dd>Jl. Ciputat Raya No. 8, Jakarta Selatan 12310</dd>
+        <dt>WhatsApp</dt><dd><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener">+62 822-4040-8055</a></dd>
+        <dt>Instagram</dt><dd><a href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener">@xionco.official</a></dd>
+        <dt>Toko online</dt><dd><a href="https://xionco.shop/" target="_blank" rel="noopener">xionco.shop</a></dd>
+      </dl>
+      <p class="links">
+        <a href="https://www.xionco.com/about/" target="_blank" rel="noopener">Tentang</a>
+        <a href="https://www.xionco.com/warranty-policy/" target="_blank" rel="noopener">Garansi</a>
+        <a href="https://www.xionco.com/refund_returns/" target="_blank" rel="noopener">Pengembalian</a>
+        <a href="https://www.xionco.com/privacy-policy/" target="_blank" rel="noopener">Privasi</a>
+        <a href="https://www.xionco.com/terms-and-condition/" target="_blank" rel="noopener">Syarat</a>
+      </p>
+      <p class="note">© 2026 PT Halim Inti Gahara</p>
+    </div>
+  </section>
+
+  <!-- TAS -->
+  <section class="pane" data-pane="tas" aria-label="Tas belanja">
+    <div class="pane__scroll">
+      <header class="pane__head"><p class="eyebrow">Tas belanja</p><h2 class="pane__t">Tas Anda <span id="bagItems">0</span></h2></header>
+      <ul class="bag" id="bagList"></ul>
+      <p class="empty is-on" id="bagEmpty">Tas masih kosong. <a href="#/koleksi" data-go="koleksi">Lihat koleksi</a></p>
+      <div class="bag__foot" id="bagFoot">
+        <div class="sum"><div><p class="eyebrow">Subtotal</p><p class="sum__price" id="bagTotal">IDR 0</p></div></div>
+        <a class="btn btn--dark btn--full" id="bagCheckout" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Checkout via WhatsApp</a>
+        <a class="link" href="https://xionco.shop/" target="_blank" rel="noopener">Atau belanja di xionco.shop<svg><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+</aside>
+
+<div class="mlabels" id="mLabels" aria-hidden="true"></div>
+<div class="dim" id="dim" aria-hidden="true"><i></i><span id="dimText">248 cm</span></div>
+<p class="notice" id="notice" role="status" aria-live="polite"></p>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script>
+  (function (w, d) {
+    var u = 'https://unpkg.com/', t = 'three@0.147.0/';
+    if (!w.THREE) ['build/three.min.js', 'examples/js/geometries/RoundedBoxGeometry.js', 'examples/js/environments/RoomEnvironment.js', 'examples/js/controls/OrbitControls.js']
+      .forEach(function (f) { d.write('<script src="' + u + t + f + '"><\/script>'); });
+    if (!w.gsap) d.write('<script src="' + u + 'gsap@3.13.0/dist/gsap.min.js"><\/script>');
+  })(window, document);
+</script>
+<script src="js/data.js"></script>
+<script src="js/world.js"></script>
+<script src="js/app.js"></script>
+<script src="../shared/devkit/devkit.js"></script>
+</body>
+</html>

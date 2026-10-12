@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asset Ledger — XIONCO Business</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Jost:wght@500&display=swap">
+  <link rel="stylesheet" href="assets/css/ledger.css">
+</head>
+<body>
+
+<header class="lg-top">
+  <a class="lg-brand" href="index.html">XIONCO <span>BUSINESS</span></a>
+  <span class="lg-top__title">Asset Ledger</span>
+  <a class="lg-back" href="index.html"><svg viewBox="0 0 16 16"><path d="M13.5 8h-11M6.5 4l-4 4 4 4"/></svg>Kembali ke website</a>
+</header>
+
+<main class="lg">
+
+  <!-- Hero -->
+  <section class="lg-hero">
+    <p class="lg-eyebrow">XIONCO.COM · Homepage v<span id="ver">0.1</span></p>
+    <h1>Asset Ledger</h1>
+    <p class="lg-lede">Daftar semua aset yang dibutuhkan website, lengkap dengan ukuran, format, dan nama file. Status di bawah <b>terdeteksi otomatis</b>: begitu file disimpan dengan nama yang tepat di folder <code>assets/media/</code>, halaman ini dan website langsung memakainya. Cukup refresh.</p>
+    <ol class="lg-steps">
+      <li><span>1</span>Siapkan file sesuai ukuran &amp; format di tabel.</li>
+      <li><span>2</span>Simpan dengan nama file persis di kolom <em>File</em>.</li>
+      <li><span>3</span>Refresh. Status berubah menjadi <b class="ok">Ready</b>.</li>
+    </ol>
+    <p class="lg-meta">Diperbarui <span id="updated">—</span> · Data: <code>assets/js/manifest.js</code></p>
+  </section>
+
+  <!-- Stats -->
+  <section class="lg-stats" aria-label="Ringkasan">
+    <div class="lg-stat"><b id="stTotal">–</b><span>Total aset</span></div>
+    <div class="lg-stat lg-stat--ok"><b id="stReady">–</b><span>Ready</span></div>
+    <div class="lg-stat lg-stat--miss"><b id="stMissing">–</b><span>Belum ada</span></div>
+    <div class="lg-stat"><b id="stManual">–</b><span>Cek manual</span></div>
+    <div class="lg-stat lg-stat--wide">
+      <span>Progress Phase 1 (Homepage)</span>
+      <div class="lg-bar"><i id="stBar"></i></div>
+      <small id="stBarTxt">Memeriksa file…</small>
+    </div>
+  </section>
+
+  <!-- Nav -->
+  <nav class="lg-nav" id="lgNav">
+    <div class="lg-chips" role="tablist" aria-label="Filter aset">
+      <button class="lg-chip is-on" data-f="all">Semua</button>
+      <button class="lg-chip" data-f="missing">Belum ada</button>
+      <button class="lg-chip" data-f="ready">Ready</button>
+      <button class="lg-chip" data-f="p1">Phase 1</button>
+      <button class="lg-chip" data-f="p2">Phase 2</button>
+      <button class="lg-chip" data-f="high">Prioritas tinggi</button>
+    </div>
+    <div class="lg-jump">
+      <a href="#assets">Aset</a><a href="#spec">Spesifikasi video</a><a href="#copy">Teks</a><a href="#decisions">Keputusan</a><a href="#roadmap">Roadmap</a>
+    </div>
+  </nav>
+
+  <!-- Assets -->
+  <section id="assets" class="lg-section">
+    <div id="groups"></div>
+  </section>
+
+  <!-- Spec -->
+  <section id="spec" class="lg-section">
+    <header class="lg-h">
+      <span>02</span>
+      <h2>Spesifikasi produksi — Main Frame</h2>
+      <p>Untuk tim video/3D. Semua frame memakai "layar" 5 × 4 block. Ekspor <b>1200 × 960 px</b> (1 block = 240 px).</p>
+    </header>
+
+    <div class="lg-spec">
+      <figure class="lg-card lg-fig">
+        <figcaption><b>Template layar 5 × 4</b> — posisi orb &amp; area aman</figcaption>
+        <div id="specCanvas"></div>
+        <ul class="lg-legend">
+          <li><i class="k-orb"></i>Orb Ø 240 px, pusat (960, 480)</li>
+          <li><i class="k-text"></i>Area teks overlay (B–D: kiri-bawah · A: kiri-atas)</li>
+          <li><i class="k-win"></i>Area yang terlihat saat frame tertutup (1 block)</li>
+        </ul>
+      </figure>
+
+      <figure class="lg-card lg-fig">
+        <figcaption><b>Bagian video yang terlihat</b> di tiap ukuran frame</figcaption>
+        <div id="specWindows"></div>
+        <p class="lg-note">Saat tertutup, frame selalu "membidik" orb (Frame A: titik tengah sofa). Jadi detail penting harus berada di dalam jendela 1 block.</p>
+      </figure>
+
+      <figure class="lg-card lg-fig lg-fig--wide">
+        <figcaption><b>Block system</b> — klik untuk melihat tiap state (sama persis dengan website)</figcaption>
+        <div class="lg-sim" id="sim">
+          <div class="lg-sim__track" id="simTrack">
+            <div data-k="a">A</div><div data-k="b">B</div><div data-k="c">C</div><div data-k="d">D</div>
+          </div>
+          <div class="lg-sim__btns" id="simBtns">
+            <button data-s="idle" class="is-on">Default · 4 · 2 · 1 · 1</button>
+            <button data-s="0">Hover A · 5 · 1 · 1 · 1</button>
+            <button data-s="1">Hover B · 1 · 5 · 1 · 1</button>
+            <button data-s="2">Hover C · 1 · 1 · 5 · 1</button>
+            <button data-s="3">Hover D · 1 · 1 · 1 · 5</button>
+          </div>
+        </div>
+      </figure>
+
+      <div class="lg-card lg-checklist">
+        <h3>Checklist video frame</h3>
+        <ul>
+          <li>1200 × 960 px (5:4), MP4 H.264, tanpa audio, ≤ 4 MB</li>
+          <li>6–10 detik, <b>loop mulus</b> (frame terakhir = frame pertama)</li>
+          <li>24–30 fps, tanpa flash/kedipan</li>
+          <li>Orb Ø 240 px, pusat (960, 480): tetap di tempat sepanjang video</li>
+          <li>Jangan taruh teks/logo di dalam video (judul sudah di-overlay oleh website)</li>
+          <li>Warna hangat, netral; hitam &amp; taupe sesuai brand</li>
+          <li>Poster (still) = frame pertama, WebP/JPG ≤ 200 KB</li>
+          <li>Area play button di bawah orb, pusat (960, 690) Ø ±110: biarkan bersih (tombol di-overlay website)</li>
+          <li>Opsional: versi mobile 960 × 1200 (4:5), orb di tengah (480, 408)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Copy -->
+  <section id="copy" class="lg-section">
+    <header class="lg-h">
+      <span>03</span>
+      <h2>Teks yang perlu konfirmasi</h2>
+      <p>Teks dummy saat ini. Ubah di <code>index.html</code> (frame) dan <code>assets/js/config.js</code> (halaman dalam).</p>
+    </header>
+    <div class="lg-card lg-table-wrap"><table class="lg-table" id="copyTable"><thead><tr><th>Lokasi</th><th>Elemen</th><th>Teks sekarang</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <!-- Decisions -->
+  <section id="decisions" class="lg-section">
+    <header class="lg-h">
+      <span>04</span>
+      <h2>Keputusan &amp; asumsi</h2>
+      <p>Hal yang belum eksplisit di mockup. Ini yang saya pakai, dan mohon dicek.</p>
+    </header>
+    <div class="lg-decisions" id="decisionList"></div>
+  </section>
+
+  <!-- Roadmap -->
+  <section id="roadmap" class="lg-section">
+    <header class="lg-h">
+      <span>05</span>
+      <h2>Roadmap modul</h2>
+      <p>Fitur berikutnya, menunggu penjelasan detail.</p>
+    </header>
+    <ol class="lg-roadmap" id="roadmapList"></ol>
+  </section>
+
+  <footer class="lg-foot">XIONCO Business · Asset Ledger · halaman internal (noindex)</footer>
+</main>
+
+<div class="lg-toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/manifest.js"></script>
+<script src="assets/js/ledger.js"></script>
+</body>
+</html>

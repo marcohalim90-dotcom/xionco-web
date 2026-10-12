@@ -1,0 +1,2846 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <!-- XIONCO Homepage — preview build 2026-10-12 17:46 (dibuat oleh tools/build-preview.js) -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>XIONCO Business — #1 Furniture Manufacturer in Indonesia</title>
+  <meta name="description" content="XIONCO Business — produsen furnitur nomor 1 di Indonesia. Katalog, furnitur custom, wholesale, dan layanan desain.">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:title" content="XIONCO Business — #1 Furniture Manufacturer in Indonesia">
+  <meta property="og:description" content="Katalog, furnitur custom, wholesale, dan layanan desain.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Inter = semua teks. Jost hanya untuk placeholder wordmark (nanti diganti file logo) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Jost:wght@500&display=swap">
+  <style>
+/* ==========================================================================
+   XIONCO BUSINESS — Core stylesheet  (v0.2)
+   Palet diambil langsung dari mockup (sampling piksel). Tidak ada warna putih:
+   yang terlihat "putih" di mockup adalah highlight hangat.
+   Block system: 1 block = var(--u). Main Frame = 8 × 4 block.
+   ========================================================================== */
+
+:root {
+  --u: 120px;            /* 1 block */
+  --bz: 12px;            /* tebal bezel frame */
+  --hdr: 72px;
+  --fx: 0px; --fy: 0px; --fw: 0px; --fh: 0px;   /* frame */
+  --tw: 0px; --th: 0px;                          /* track */
+  --sw: 0px; --sh: 0px;                          /* "layar" panel (5 × 4 block) */
+  --pd: 48px;            /* diameter play button */
+  --py: 0px;             /* posisi vertikal play button (pusat) */
+
+  /* teks — highlight hangat, bukan putih */
+  --ink-hi: #d3c3ad;
+  --ink: #c2af99;
+  --ink-2: #a89d92;
+  --ink-3: #898784;
+  --ink-4: #5d564d;
+  /* emas (mockup: puncak #917a57) */
+  --gold-lo: #5f4a31;
+  --gold: #917a57;
+  --gold-hi: #d6c09b;
+  /* tepi/bingkai (mockup: #978877 kiri-atas → #494138 kanan-bawah) */
+  --edge-hi: #978877;
+  --edge-mid: #6a5e51;
+  --edge-lo: #3a332c;
+  /* sidebar (mockup) */
+  --side-bg: #464039;
+  --side-line: #585148;
+  --side-icon: #a39f9b;
+  --side-label: #898784;
+  --side-active: #ad9a81;
+  /* play button */
+  --play-bg: #26262a;
+  --play-ring: #5a5a5d;
+  --play-tri: #efe9e1;
+
+  --dev: #5fb2ff;
+
+  --font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-brand: 'Jost', 'Futura', 'Century Gothic', sans-serif;
+
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-soft: cubic-bezier(.22, .8, .24, 1);
+  --ease-inout: cubic-bezier(.76, 0, .24, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; background: #000; }
+body {
+  color: var(--ink);
+  font-family: var(--font);
+  font-feature-settings: 'cv11', 'case';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
+h1, h2, p { margin: 0; }
+:focus { outline: none; }
+:focus-visible { outline: 1px solid var(--gold); outline-offset: 3px; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.app { position: fixed; inset: 0; overflow: hidden; background: #000; }
+.frame, .sidebar, .topbar, .subnav, .stack-nav { -webkit-user-select: none; user-select: none; }
+.page__body { -webkit-user-select: text; user-select: text; }
+a, img { -webkit-user-drag: none; }
+
+/* ==========================================================================
+   Background — kolam cahaya di lantai (mockup: pusat ±#72614c, puncak #b69e81)
+   ========================================================================== */
+.bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.bg__image {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: 50% 100%;
+  opacity: 0; transition: opacity 1.4s var(--ease-soft);
+}
+.bg__image.is-ready { opacity: 1; }
+/* lantai: dari bawah frame sampai bawah layar, paling terang di tengah-bawah */
+.bg__floor {
+  position: absolute; left: 50%; bottom: 0;
+  top: calc(var(--fy) + var(--fh) * .82);
+  width: max(calc(var(--fw) * 1.6), 80vw);
+  transform: translateX(-50%);
+  background:
+    radial-gradient(50% 80% at 50% 96%, rgba(176, 150, 117, .95) 0%, rgba(146, 124, 96, .74) 16%, rgba(110, 93, 72, .5) 36%, rgba(72, 61, 47, .28) 60%, rgba(40, 34, 26, .1) 80%, rgba(0, 0, 0, 0) 92%);
+  transition: opacity 1.8s var(--ease-soft);
+}
+/* kilau lembut tepat di bawah frame (pantulan bingkai) */
+.bg__floor::before {
+  content: ''; position: absolute; left: 50%; top: 0;
+  width: 58%; height: 34%; transform: translateX(-50%);
+  background: radial-gradient(50% 60% at 50% 30%, rgba(128, 109, 85, .38), rgba(0, 0, 0, 0) 80%);
+}
+.bg__grain {
+  position: absolute; inset: -50%;
+  opacity: .06; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .8  0 0 0 0 .74  0 0 0 0 .66  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+.topbar {
+  position: absolute; left: 0; right: 0; top: 0; z-index: 20;
+  height: var(--hdr);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 56px;
+  background: #000;
+  border-bottom: 1px solid #1a1816;
+  transition: border-color 1.4s var(--ease-soft);
+}
+.brand {
+  position: relative; display: inline-flex; align-items: center;
+  font-family: var(--font-brand); font-weight: 500;
+  font-size: clamp(12px, calc(8px + .4vw), 16px); letter-spacing: .42em; line-height: 1;
+  padding: 10px 0; white-space: nowrap;
+}
+.brand__ch {
+  display: inline-block; color: var(--c, var(--ink));
+  transition: color .45s var(--ease-soft), opacity .9s var(--ease-out), transform 1s var(--ease-out), filter .9s var(--ease-out);
+}
+.brand__sp { display: inline-block; width: .55em; }
+.brand:hover .brand__ch { color: var(--ink-hi); transition-delay: calc(var(--i) * 22ms); }
+.brand__img { display: block; height: 14px; width: auto; }
+
+.slogan {
+  font-size: clamp(8.5px, calc(5.5px + .26vw), 10px); font-weight: 500; letter-spacing: .16em;
+  color: #4a4238; white-space: nowrap;
+  transition: opacity 1s var(--ease-out), transform 1s var(--ease-out);
+}
+.slogan b { color: #887b6b; font-weight: 600; }
+.slogan__img { display: block; height: 9px; width: auto; }
+
+.menu-btn {
+  display: none; width: 40px; height: 40px; margin-right: -10px;
+  align-items: center; justify-content: center; flex-direction: column; gap: 6px;
+}
+.menu-btn i { display: block; width: 20px; height: 1px; background: var(--ink-2); transition: transform .5s var(--ease-out), width .5s var(--ease-out); }
+.menu-btn i:last-child { width: 13px; margin-left: 7px; }
+.app.is-drawer .menu-btn i:first-child { transform: translateY(3.5px) rotate(45deg); }
+.app.is-drawer .menu-btn i:last-child { width: 20px; margin-left: 0; transform: translateY(-3.5px) rotate(-45deg); }
+
+/* ==========================================================================
+   Sub-navigation & breadcrumb (halaman dalam)
+   ========================================================================== */
+.subnav {
+  position: absolute; left: 0; right: 0; top: var(--hdr); z-index: 15;
+  height: 42px;
+  background: linear-gradient(180deg, #0a0a09 0%, #060606 100%);
+  border-bottom: 1px solid #1a1816;
+  transform: translateY(-101%); opacity: 0;
+  transition: transform .75s var(--ease-out), opacity .45s var(--ease-soft);
+}
+.app.is-page .subnav { transform: none; opacity: 1; }
+.subnav__inner {
+  position: absolute; top: 0; bottom: 0; left: calc(var(--fx) - 16px);
+  display: flex; align-items: stretch;
+}
+.subnav__tab {
+  position: relative; display: flex; align-items: center;
+  padding: 0 16px;
+  font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-4); white-space: nowrap;
+  opacity: 0; transition: color .3s;
+}
+.app.is-page .subnav__tab { animation: tabIn .7s var(--ease-out) both; animation-delay: calc(.2s + var(--i) * 45ms); }
+@keyframes tabIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.subnav__tab:hover { color: var(--ink-2); }
+.subnav__tab.is-active { color: var(--ink); font-weight: 600; }
+.subnav__tab::after {
+  content: ''; position: absolute; left: 16px; right: 16px; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, rgba(95, 74, 49, 0), var(--gold) 30%, var(--gold-hi) 50%, var(--gold) 70%, rgba(95, 74, 49, 0));
+  transform: scaleX(0); transition: transform .55s var(--ease-out);
+}
+.subnav__tab.is-active::after { transform: scaleX(1); }
+
+.crumbs {
+  position: absolute; z-index: 11;
+  left: var(--fx); top: calc(var(--fy) - 28px);
+  display: flex; align-items: center; gap: 9px;
+  font-size: 9.5px; letter-spacing: .14em; font-weight: 500; text-transform: uppercase;
+  color: var(--ink-4);
+  opacity: 0; transform: translateY(6px); pointer-events: none;
+  transition: opacity .5s var(--ease-soft), transform .7s var(--ease-out);
+}
+.app.is-page .crumbs { opacity: 1; transform: none; pointer-events: auto; transition-delay: .35s; }
+.crumbs a:hover { color: var(--ink-2); }
+.crumbs span[aria-current] { color: var(--ink-3); }
+.crumbs i { font-style: normal; opacity: .7; }
+
+/* ==========================================================================
+   Sidebar / Navigator bar (warna dari mockup)
+   ========================================================================== */
+.sidebar {
+  position: absolute; left: 16px; z-index: 30;
+  top: calc(var(--hdr) + (100% - var(--hdr)) / 2);
+  transform: translateY(-50%);
+  transition: opacity .9s var(--ease-out), transform 1s var(--ease-out);
+}
+.sidebar__panel {
+  position: relative; width: 44px; border-radius: 9px; overflow: hidden;
+  background: linear-gradient(180deg, #4c463e 0%, var(--side-bg) 45%, #403a33 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(151, 136, 119, .35),
+    inset 0 0 0 1px rgba(151, 136, 119, .12),
+    0 30px 70px rgba(0, 0, 0, .75),
+    0 2px 8px rgba(0, 0, 0, .5);
+  transition: width .62s var(--ease-out);
+}
+.sidebar.is-open .sidebar__panel { width: 178px; }
+.sidebar__group { position: relative; padding: 4px 0; }
+.sidebar__group + .sidebar__group { border-top: 1px solid var(--side-line); }
+.sidebar__group--home { padding: 6px 0; }
+.sidebar__item { position: relative; }
+.sidebar__link {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; gap: 20px;
+  height: 40px; padding-left: 14px; white-space: nowrap;
+  color: var(--side-icon);
+}
+.sidebar__group--home .sidebar__link { height: 44px; }
+.sidebar__icon {
+  width: 16px; height: 16px; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.15; stroke-linecap: round; stroke-linejoin: round;
+  transition: color .3s, transform .5s var(--ease-out);
+}
+.sidebar__label {
+  font-size: 9.5px; font-weight: 500; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--side-label);
+  opacity: 0; transform: translateX(-10px);
+  transition: opacity .2s, transform .3s var(--ease-out), color .3s;
+}
+.sidebar.is-open .sidebar__label {
+  opacity: 1; transform: none;
+  transition: opacity .45s var(--ease-soft), transform .6s var(--ease-out), color .3s;
+  transition-delay: calc(.08s + var(--i) * 26ms);
+}
+.sidebar__link:hover { color: #c4bcb2; }
+.sidebar__link:hover .sidebar__label { color: #b3aca4; }
+.sidebar__item.is-active .sidebar__link { color: #c4bcb2; }
+.sidebar__item.is-active .sidebar__label { color: var(--ink); }
+
+/* aktif: band gradasi + garis highlight di tepi kanan (mockup #ad9a81) */
+.sidebar__item::before {
+  content: ''; position: absolute; z-index: 1;
+  top: 50%; right: 0; height: 22px; width: 60%;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, rgba(99, 90, 79, 0) 0%, rgba(132, 120, 105, .55) 100%);
+  opacity: 0; transition: opacity .5s var(--ease-soft);
+}
+.sidebar__item::after {
+  content: ''; position: absolute; z-index: 3;
+  top: 50%; right: 0; width: 2px; height: 20px;
+  transform: translateY(-50%) scaleY(0);
+  background: linear-gradient(180deg, #8a7a66, var(--side-active) 50%, #8a7a66);
+  box-shadow: 0 0 8px rgba(173, 154, 129, .55);
+  transition: transform .5s var(--ease-out);
+}
+.sidebar__item.is-active::after { transform: translateY(-50%) scaleY(1); }
+.sidebar.is-open .sidebar__item.is-active::before { opacity: 1; }
+
+.sidebar__hover {
+  position: absolute; left: 0; right: 0; top: 0; height: 40px; z-index: 1;
+  background: linear-gradient(90deg, rgba(99, 90, 79, 0) 10%, rgba(99, 90, 79, .45) 100%);
+  opacity: 0; pointer-events: none;
+  transition: transform .42s var(--ease-out), height .42s var(--ease-out), opacity .3s;
+}
+.sidebar__hover.is-on { opacity: 1; }
+.sidebar::after {
+  content: ''; position: absolute; right: -16px; bottom: 30px;
+  width: 22px; height: 1px; background: linear-gradient(90deg, rgba(103, 96, 86, .9), rgba(103, 96, 86, 0));
+  transform: rotate(-42deg); transform-origin: 0 50%;
+  transition: transform .7s var(--ease-out);
+}
+.sidebar.is-open::after { transform: rotate(-42deg) scaleX(1.35); }
+
+.drawer-scrim {
+  position: absolute; inset: 0; z-index: 25;
+  background: rgba(0, 0, 0, .62); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none; transition: opacity .5s var(--ease-soft);
+}
+
+/* ==========================================================================
+   Main Frame
+   ========================================================================== */
+.frame {
+  position: absolute; z-index: 10;
+  left: var(--fx); top: var(--fy); width: var(--fw); height: var(--fh);
+  transform-origin: 50% 60%;
+  will-change: transform;
+}
+/* bingkai: tepi taupe yang diterangi dari kiri-atas (bukan putih) */
+.frame__shell {
+  position: absolute; inset: 0; border-radius: 6px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, #13110f 0%, #0b0a08 55%, #0d0b09 100%) padding-box,
+    linear-gradient(150deg, var(--edge-hi) 0%, #85776a 16%, var(--edge-mid) 34%, #453d35 58%, var(--edge-lo) 78%, #4f463c 100%) border-box;
+  box-shadow:
+    0 30px 70px -20px rgba(0, 0, 0, .85),
+    0 0 0 1px rgba(0, 0, 0, .5),
+    inset 0 1px 0 rgba(151, 136, 119, .18);
+  transition: opacity 1.2s var(--ease-soft), transform 1.4s var(--ease-out);
+}
+/* garis emas atas (mockup: emas penuh di bezel atas) */
+.frame__shell::after {
+  content: ''; position: absolute; left: 4%; right: 4%;
+  top: calc(var(--bz) / 2 - 1px); height: 1px;
+  background: linear-gradient(90deg, rgba(95, 74, 49, 0), rgba(145, 122, 87, .55) 18%, rgba(170, 146, 108, .8) 38%, rgba(145, 122, 87, .55) 70%, rgba(95, 74, 49, 0));
+}
+.frame__track {
+  position: absolute; left: var(--bz); top: var(--bz);
+  width: var(--tw); height: var(--th);
+  border-radius: 3px; overflow: hidden;
+  background: #0a0908;
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1.25s var(--ease-out), opacity .7s var(--ease-soft), transform .9s var(--ease-out), filter .7s;
+}
+.frame__track::after {
+  content: ''; position: absolute; inset: 0; z-index: 20; pointer-events: none; border-radius: inherit;
+  box-shadow: inset 1px 1px 0 rgba(150, 141, 129, .42), inset -1px -1px 0 rgba(90, 82, 72, .4);
+}
+.frame__track.is-hidden { opacity: 0; transform: scale(.985); filter: blur(4px); }
+
+/* ---------------- Panel ---------------- */
+.panel {
+  position: absolute; left: 0; top: 0;
+  width: 0; height: 100%;
+  overflow: hidden;
+  will-change: transform, width;
+  contain: layout paint style;
+}
+/* pemisah antar frame: highlight hangat (mockup puncak #8f8b87) */
+.frame[data-mode="x"] .panel:not(:first-child)::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; z-index: 8;
+  background: linear-gradient(180deg, rgba(143, 135, 125, .08), rgba(160, 150, 138, .5) 45%, rgba(143, 135, 125, .1));
+  pointer-events: none;
+}
+
+.panel__stage {
+  position: absolute; left: 0; top: 0;
+  width: var(--sw); height: var(--sh);
+  transform-origin: 0 50%;
+  will-change: transform;
+}
+.panel__media { position: absolute; inset: 0; overflow: hidden; }
+.panel__canvas, .panel__video, .panel__img {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  object-fit: cover;
+}
+.panel__video, .panel__img { opacity: 0; transition: opacity .8s var(--ease-soft); }
+.panel__video.is-ready, .panel__img.is-ready { opacity: 1; }
+
+.panel__dim {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: #050403; opacity: .48;
+  transition: opacity .8s var(--ease-soft);
+}
+.panel.is-open .panel__dim { opacity: .12; }
+.panel.is-active .panel__dim { opacity: 0; }
+
+.panel__shade {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  opacity: 0; transition: opacity .7s var(--ease-soft);
+  background: linear-gradient(0deg, rgba(8, 6, 4, .6) 0%, rgba(8, 6, 4, .26) 26%, rgba(8, 6, 4, 0) 48%);
+}
+.panel[data-align="top"] .panel__shade {
+  background: linear-gradient(180deg, rgba(8, 6, 4, .5) 0%, rgba(8, 6, 4, .2) 26%, rgba(8, 6, 4, 0) 44%);
+}
+.panel.is-open .panel__shade { opacity: 1; }
+
+.panel__sheen {
+  position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  background: radial-gradient(circle calc(var(--u) * 2.4) at var(--mx, 50%) var(--my, 50%), rgba(214, 192, 155, .1), rgba(214, 192, 155, 0) 70%);
+  mix-blend-mode: screen;
+  opacity: 0; transition: opacity .7s var(--ease-soft);
+}
+.panel.is-active .panel__sheen { opacity: 1; }
+
+.panel__hit { position: absolute; inset: 0; z-index: 5; }
+
+/* ---------------- Teks frame: judul + subjudul saja ---------------- */
+.panel__content {
+  position: absolute; z-index: 6;
+  left: calc(var(--u) * .5);
+  bottom: calc(var(--u) * .5);
+  width: calc(var(--u) * 3.3);
+  pointer-events: none;
+}
+.panel[data-align="top"] .panel__content { bottom: auto; top: calc(var(--u) * .5); }
+.panel__title {
+  font-weight: 300;
+  font-size: calc(var(--u) * .22); line-height: 1.1;
+  letter-spacing: .16em; white-space: nowrap;
+}
+.panel__title .ch {
+  display: inline-block; opacity: 0;
+  /* highlight vertikal per huruf: terang di atas, hangat di bawah */
+  background: linear-gradient(180deg, var(--ink-hi) 0%, var(--ink) 55%, #a8957d 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  transform: translateY(.35em); filter: blur(5px);
+  transition: opacity .18s, transform .25s, filter .25s;
+}
+.panel__title .sp { display: inline-block; width: .32em; }
+.panel__sub {
+  margin-top: calc(var(--u) * .085);
+  font-size: max(11.5px, calc(var(--u) * .092)); font-weight: 400; letter-spacing: .01em; line-height: 1.45;
+  color: var(--ink-2); white-space: nowrap;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .18s, transform .25s;
+}
+.panel.is-open .panel__title .ch {
+  opacity: 1; transform: none; filter: blur(0);
+  transition: opacity .8s var(--ease-soft), transform 1s var(--ease-out), filter .8s var(--ease-out);
+  transition-delay: calc(.14s + var(--ci) * 28ms);
+}
+.panel.is-open .panel__sub { opacity: 1; transform: none; transition: opacity .8s var(--ease-soft) .32s, transform 1s var(--ease-out) .32s; }
+
+/* ---------------- Play button = tombol ke halaman ----------------
+   Selalu terlihat, tepat di bawah orb, rata tengah terhadap orb.      */
+.panel__play {
+  position: absolute; z-index: 7;
+  left: var(--px, 50%); top: var(--py);
+  width: var(--pd); height: var(--pd);
+  margin: calc(var(--pd) / -2) 0 0 calc(var(--pd) / -2);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 50% 35%, #2f2f33 0%, var(--play-bg) 70%);
+  box-shadow:
+    inset 0 0 0 1px rgba(90, 90, 93, .9),
+    inset 0 1px 0 rgba(150, 146, 140, .25),
+    0 10px 26px rgba(0, 0, 0, .45);
+  transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-soft), opacity .3s;
+}
+.panel__play svg { width: 36%; height: 36%; margin-left: 6%; fill: var(--play-tri); transition: transform .5s var(--ease-out); }
+.panel__play::after {
+  content: ''; position: absolute; inset: -5px; border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(173, 154, 129, .0);
+  transition: box-shadow .5s var(--ease-soft), inset .5s var(--ease-out);
+}
+.panel.is-active .panel__play::after { box-shadow: 0 0 0 1px rgba(173, 154, 129, .35); }
+.panel__play:hover { transform: scale(1.07); box-shadow: inset 0 0 0 1px rgba(150, 140, 126, .95), inset 0 1px 0 rgba(170, 160, 146, .35), 0 12px 30px rgba(0, 0, 0, .5); }
+.panel__play:hover::after { inset: -8px; box-shadow: 0 0 0 1px rgba(173, 154, 129, .55); }
+.panel__play:hover svg { transform: translateX(1px); }
+.panel__play:focus-visible { outline-offset: 5px; border-radius: 50%; }
+
+/* ---------------- Garis emas (rail) — mockup puncak #917a57 ---------------- */
+.rail {
+  position: absolute; left: 0; top: 0; z-index: 12;
+  width: 0; height: 2px; pointer-events: none;
+  will-change: transform, width;
+}
+.rail__beam {
+  position: absolute; inset: 0; border-radius: 2px;
+  overflow: hidden; /* kilau tidak boleh keluar dari garis (tidak menembus sisi frame) */
+  background: linear-gradient(90deg, rgba(95, 74, 49, 0) 0%, var(--gold-lo) 10%, var(--gold) 32%, var(--gold-hi) 50%, var(--gold) 68%, var(--gold-lo) 90%, rgba(95, 74, 49, 0) 100%);
+  box-shadow: 0 0 8px rgba(145, 122, 87, .55), 0 0 22px rgba(145, 122, 87, .25);
+  transition: transform 1.2s var(--ease-inout), opacity .8s var(--ease-soft);
+}
+.rail__glow {
+  position: absolute; left: 8%; right: 8%; top: 1px;
+  height: calc(var(--bz) * 1.4);
+  background: radial-gradient(50% 100% at 50% 0%, rgba(145, 122, 87, .45), rgba(145, 122, 87, 0) 72%);
+  transition: opacity .8s var(--ease-soft);
+}
+.rail__shine {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 16%;
+  background: linear-gradient(90deg, rgba(214, 192, 155, 0), rgba(230, 210, 175, .85), rgba(214, 192, 155, 0));
+  opacity: 0;
+}
+.frame[data-state="idle"] .rail__beam { opacity: .78; }
+.frame[data-state="idle"] .rail__glow { opacity: .55; }
+.frame[data-state="idle"] .rail__shine { animation: shine 8s var(--ease-inout) 2.4s infinite; }
+@keyframes shine {
+  0% { transform: translateX(-100%); opacity: 0; }
+  8% { opacity: .6; }
+  30% { transform: translateX(620%); opacity: 0; }
+  100% { transform: translateX(620%); opacity: 0; }
+}
+
+/* cahaya di bawah frame — dikunci di dalam lebar frame (tidak bocor ke samping) */
+.underglow {
+  position: absolute; left: 0; right: 0; top: 100%;
+  height: calc(var(--u) * 1.3);
+  overflow: hidden; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+.underglow__light {
+  position: absolute; left: 0; top: 0; width: 10px; height: 100%;
+  background: radial-gradient(50% 72% at 50% 0%, rgba(145, 122, 87, .34) 0%, rgba(120, 100, 72, .12) 50%, rgba(0, 0, 0, 0) 80%);
+  will-change: transform, width;
+  transition: opacity 1s var(--ease-soft);
+}
+.frame[data-state="idle"] .underglow__light { opacity: .7; }
+
+/* ==========================================================================
+   Halaman dalam (di dalam frame)
+   ========================================================================== */
+.page {
+  position: absolute; z-index: 11;
+  left: var(--bz); top: var(--bz); width: var(--tw); height: var(--th);
+  border-radius: 3px; overflow: hidden;
+  pointer-events: none;
+}
+.page.is-visible { pointer-events: auto; }
+.page__backdrop {
+  position: absolute; inset: 0; opacity: 0;
+  background:
+    radial-gradient(60% 80% at 78% 50%, rgba(120, 100, 76, .32), rgba(0, 0, 0, 0) 70%),
+    linear-gradient(180deg, #12100d, #0a0908);
+  transition: opacity .9s var(--ease-soft);
+}
+.page__backdrop::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(48deg, rgba(151, 136, 119, .06) 0 1px, transparent 1px calc(var(--u) * .9)),
+    repeating-linear-gradient(-48deg, rgba(151, 136, 119, .06) 0 1px, transparent 1px calc(var(--u) * .9));
+}
+.page__glyph {
+  position: absolute; right: calc(var(--u) * .9); top: 50%;
+  width: calc(var(--u) * 1.5); height: calc(var(--u) * 1.5);
+  transform: translateY(-50%) scale(.9);
+  fill: none; stroke: rgba(145, 122, 87, .8); stroke-width: .45; stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0; transition: opacity 1.2s var(--ease-soft) .2s, transform 1.4s var(--ease-out) .2s;
+}
+.page.is-neutral .page__backdrop { opacity: 1; }
+.page.is-neutral.is-visible .page__glyph { opacity: 1; transform: translateY(-50%) scale(1); }
+
+.page__scrim {
+  position: absolute; inset: 0; opacity: 0;
+  background: linear-gradient(90deg, rgba(7, 6, 5, .95) 0%, rgba(7, 6, 5, .9) 40%, rgba(7, 6, 5, .5) 66%, rgba(7, 6, 5, .14) 100%);
+  transition: opacity .9s var(--ease-soft);
+}
+.page.is-visible .page__scrim { opacity: 1; }
+
+.page__body {
+  position: absolute;
+  left: calc(var(--u) * .62); top: calc(var(--u) * .52); bottom: calc(var(--u) * .46);
+  width: calc(var(--u) * 4.4);
+  display: flex; flex-direction: column;
+}
+.page__body > * { opacity: 0; transform: translateY(14px); transition: opacity .25s, transform .3s; }
+.page.is-visible .page__body > * {
+  opacity: 1; transform: none;
+  transition: opacity .8s var(--ease-soft), transform 1s var(--ease-out);
+  transition-delay: calc(.05s + var(--bi) * 70ms);
+}
+.page__eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--gold);
+}
+.page__eyebrow .chip {
+  padding: 5px 9px; border-radius: 999px; white-space: nowrap;
+  font-size: 9px; letter-spacing: .1em; font-weight: 500;
+  color: var(--ink-2); background: rgba(145, 122, 87, .1); box-shadow: inset 0 0 0 1px rgba(145, 122, 87, .4);
+}
+.page__eyebrow .chip::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); margin-right: 7px; vertical-align: 1px; animation: blink 2.4s ease-in-out infinite; }
+@keyframes blink { 50% { opacity: .25; } }
+.page__title {
+  margin-top: calc(var(--u) * .16);
+  font-weight: 300;
+  font-size: calc(var(--u) * .32); line-height: 1.08; letter-spacing: .12em; text-transform: uppercase;
+  background: linear-gradient(180deg, var(--ink-hi), var(--ink) 60%, #a8957d);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.page__lede {
+  margin-top: calc(var(--u) * .15);
+  max-width: calc(var(--u) * 4);
+  font-size: max(12px, calc(var(--u) * .1)); line-height: 1.65; font-weight: 400;
+  color: var(--ink-2);
+}
+.page__modules {
+  margin-top: auto;
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: calc(var(--u) * .3);
+}
+.page__modules li {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: calc(var(--u) * .07) 0;
+  border-top: 1px solid rgba(151, 136, 119, .16);
+  font-size: max(11px, calc(var(--u) * .085)); color: var(--ink-2);
+}
+.page__modules li span { font-size: 9.5px; letter-spacing: .06em; color: var(--gold); font-weight: 500; font-variant-numeric: tabular-nums; }
+.page__actions { margin-top: calc(var(--u) * .24); display: flex; align-items: center; gap: 18px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 34px; padding: 0 16px; border-radius: 999px;
+  font-size: 10px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink); box-shadow: inset 0 0 0 1px rgba(151, 136, 119, .45);
+  transition: background .35s, box-shadow .35s;
+}
+.btn svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; transition: transform .5s var(--ease-out); }
+.btn:hover { background: rgba(151, 136, 119, .08); box-shadow: inset 0 0 0 1px rgba(151, 136, 119, .75); }
+.btn:hover svg { transform: translateX(-3px); }
+.page__note { font-size: 10.5px; color: var(--ink-4); }
+
+/* ==========================================================================
+   MOBILE / PORTRAIT — kartu bertumpuk (gambar 6)
+   ========================================================================== */
+.frame[data-mode="stack"] .frame__shell { opacity: 0; }
+.frame[data-mode="stack"] .frame__track { overflow: visible; background: transparent; border-radius: 0; touch-action: none; }
+.frame[data-mode="stack"] .frame__track::after { display: none; }
+.frame[data-mode="stack"] .panel {
+  height: auto; border-radius: 6px;
+  transform-origin: 50% 50%;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .75);
+}
+.frame[data-mode="stack"] .panel::after {
+  content: ''; position: absolute; inset: 0; z-index: 9; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 1px 1px 0 rgba(151, 136, 119, .75), inset -1px -1px 0 rgba(73, 65, 56, .9), inset 0 0 0 1px rgba(110, 99, 86, .45);
+}
+.frame[data-mode="stack"] .panel__stage { transform-origin: 0 0; }
+.frame[data-mode="stack"] .panel__dim { opacity: var(--dim, 0) !important; }
+.frame[data-mode="stack"] .panel__content { left: 20px; bottom: 22px; width: calc(100% - 40px); }
+.frame[data-mode="stack"] .panel__title { font-size: clamp(19px, calc(var(--u) * .3), 30px); letter-spacing: .14em; }
+.frame[data-mode="stack"] .panel__sub { font-size: 12px; white-space: normal; }
+.frame[data-mode="stack"] .panel[data-align="top"] .panel__content { top: auto; bottom: 22px; }
+.frame[data-mode="stack"] .panel[data-align="top"] .panel__shade { background: linear-gradient(0deg, rgba(8, 6, 4, .6) 0%, rgba(8, 6, 4, .26) 26%, rgba(8, 6, 4, 0) 48%); }
+.frame[data-mode="stack"] .underglow { display: none; }
+.frame[data-mode="stack"] .frame__track.is-hidden { transform: none; }
+
+.stack-nav {
+  position: absolute; z-index: 12; left: 50%; top: 0;
+  display: none; gap: 8px; transform: translateX(-50%);
+  transition: opacity .5s var(--ease-soft);
+}
+.app.is-stack .stack-nav { display: flex; }
+.app.is-page .stack-nav { opacity: 0; pointer-events: none; }
+.stack-nav button { position: relative; width: 22px; height: 24px; }
+.stack-nav button::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
+  background: var(--ink-4); transition: background .4s, transform .5s var(--ease-out);
+}
+.stack-nav button.is-on::before { background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi), var(--gold-lo)); transform: scaleY(2); }
+
+/* ==========================================================================
+   Dev tools — guideline overlay & dock
+   ========================================================================== */
+.frame__grid {
+  position: absolute; z-index: 30; pointer-events: none; display: none;
+  left: var(--bz); top: var(--bz); width: var(--tw); height: var(--th);
+  background-image:
+    linear-gradient(90deg, rgba(95, 178, 255, .5) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(95, 178, 255, .5) 1px, transparent 1px);
+  background-size: var(--u) var(--u);
+  box-shadow: inset 0 0 0 1px rgba(95, 178, 255, .9);
+}
+.frame__grid span { position: absolute; font: 600 9px/1 ui-monospace, Menlo, Consolas, monospace; color: var(--dev); }
+.app.dev-grid .frame[data-mode="x"] .frame__grid { display: block; }
+.panel__orbguide {
+  position: absolute; z-index: 1; display: none;
+  left: calc(var(--ox) - var(--or)); top: calc(var(--oy) - var(--or));
+  width: calc(var(--or) * 2); height: calc(var(--or) * 2);
+  border-radius: 50%; border: 1px dashed var(--dev);
+}
+.panel__orbguide::before, .panel__orbguide::after { content: ''; position: absolute; left: 50%; top: 50%; background: var(--dev); }
+.panel__orbguide::before { width: 14px; height: 1px; margin: 0 0 0 -7px; }
+.panel__orbguide::after { width: 1px; height: 14px; margin: -7px 0 0 0; }
+.app.dev-grid .panel__orbguide { display: block; }
+.panel__devtag {
+  position: absolute; z-index: 9; left: 6px; top: 6px; display: none;
+  font: 600 8px/1.35 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .04em;
+  color: #0b1a2a; background: var(--dev); padding: 2px 5px; border-radius: 2px; white-space: pre;
+}
+.app.dev-grid .panel__devtag { display: block; }
+.hud {
+  position: absolute; z-index: 40; left: 16px; bottom: 14px; display: none;
+  font: 500 9px/1.7 ui-monospace, Menlo, Consolas, monospace; color: var(--dev);
+  background: rgba(4, 12, 22, .78); padding: 8px 10px; border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgba(95, 178, 255, .35);
+  white-space: pre; pointer-events: none;
+}
+.app.dev-grid .hud { display: block; }
+.devdock {
+  position: absolute; z-index: 40; right: 16px; bottom: 14px;
+  display: flex; gap: 6px; opacity: .3;
+  transition: opacity .35s;
+}
+.devdock:hover, .devdock:focus-within { opacity: 1; }
+.devdock button, .devdock a {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 10px; border-radius: 999px;
+  font-size: 8.5px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-3); background: rgba(20, 18, 15, .7);
+  box-shadow: inset 0 0 0 1px rgba(151, 136, 119, .25);
+  transition: color .3s, box-shadow .3s;
+}
+.devdock kbd { font: inherit; opacity: .5; }
+.devdock button:hover, .devdock a:hover { color: var(--ink); box-shadow: inset 0 0 0 1px rgba(151, 136, 119, .55); }
+.devdock .is-on { color: var(--dev); box-shadow: inset 0 0 0 1px var(--dev); }
+
+/* ==========================================================================
+   Intro
+   ========================================================================== */
+.app[data-intro="0"] .frame__shell { opacity: 0; transform: scale(.975); }
+.app[data-intro="0"] .frame__track,
+.app[data-intro="1"] .frame__track { clip-path: inset(100% 0 0 0); }
+.app[data-intro="0"] .rail__beam { transform: scaleX(0); }
+.app[data-intro="0"] .rail__glow { opacity: 0; }
+.app[data-intro="0"] .brand__ch,
+.app[data-intro="1"] .brand__ch { opacity: 0; transform: translateY(6px); filter: blur(5px); }
+.app[data-intro="0"] .slogan,
+.app[data-intro="1"] .slogan { opacity: 0; transform: translateY(-4px); }
+.app[data-intro="0"] .sidebar,
+.app[data-intro="1"] .sidebar { opacity: 0; transform: translate(-18px, -50%); }
+.app[data-intro="0"] .bg__floor,
+.app[data-intro="1"] .bg__floor { opacity: 0; }
+.app[data-intro="0"] .underglow,
+.app[data-intro="1"] .underglow { opacity: 0; }
+.app[data-intro="0"] .topbar { border-bottom-color: transparent; }
+.app[data-intro="0"] .stack-nav, .app[data-intro="1"] .stack-nav { opacity: 0; }
+.app[data-intro="2"] .brand__ch { transition-delay: calc(var(--i) * 38ms); }
+.app[data-intro="2"] .slogan { transition-delay: .5s; }
+.app[data-intro="2"] .sidebar { transition-delay: .25s; }
+.underglow { transition: opacity 1.4s var(--ease-soft); }
+.app.no-anim *, .app.no-anim *::before, .app.no-anim *::after { transition: none !important; }
+
+/* ==========================================================================
+   Mode halaman dalam
+   ========================================================================== */
+.frame[data-state="page"] .panel__content,
+.frame[data-state="page"] .panel__play { opacity: 0 !important; pointer-events: none; transition: opacity .25s !important; }
+.frame[data-state="page"] .panel__hit { pointer-events: none; }
+.frame[data-state="boot"] .panel__play { opacity: 0; transform: scale(.7); }
+.frame[data-state="boot"] .panel__play { transition: opacity .6s var(--ease-soft), transform .9s var(--ease-out); }
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .topbar { padding: 0 32px; }
+}
+@media (max-width: 699px) {
+  .topbar { padding: 0 20px; }
+  .brand { font-size: 11.5px; letter-spacing: .36em; }
+  .slogan { display: none; }
+  .menu-btn { display: flex; }
+
+  .sidebar { left: 14px; transform: translate(calc(-100% - 30px), -50%); opacity: 0; transition: transform .7s var(--ease-out), opacity .4s; }
+  .app.is-drawer .sidebar { transform: translate(0, -50%); opacity: 1; }
+  .sidebar .sidebar__panel { width: 236px; }
+  .sidebar .sidebar__link { height: 50px; padding-left: 18px; gap: 22px; }
+  .sidebar .sidebar__group--home .sidebar__link { height: 54px; }
+  .sidebar .sidebar__label { font-size: 11px; opacity: 1; transform: none; }
+  .sidebar .sidebar__item.is-active::before { opacity: 1; }
+  .sidebar::after { display: none; }
+  .app.is-drawer .drawer-scrim { opacity: 1; pointer-events: auto; }
+
+  .subnav { height: 38px; overflow-x: auto; scrollbar-width: none; }
+  .subnav::-webkit-scrollbar { display: none; }
+  .subnav__inner { left: 6px; }
+  .subnav__tab { padding: 0 12px; }
+  .subnav__tab::after { left: 12px; right: 12px; }
+  .crumbs { display: none; }
+
+  .devdock { right: 10px; bottom: 8px; }
+  .devdock button:not(#devGrid), .devdock a { display: none; }
+}
+
+/* halaman dalam pada mode kartu (portrait) */
+.frame[data-mode="stack"] .page { border-radius: 6px; top: var(--pt); height: calc(var(--th) - var(--pt)); }
+.frame[data-mode="stack"] .page__body { left: 22px; right: 22px; width: auto; top: 26px; bottom: 26px; }
+.frame[data-mode="stack"] .page__scrim { background: linear-gradient(180deg, rgba(7, 6, 5, .93) 0%, rgba(7, 6, 5, .84) 55%, rgba(7, 6, 5, .45) 100%); }
+.frame[data-mode="stack"] .page__title { font-size: clamp(26px, 8vw, 40px); }
+.frame[data-mode="stack"] .page__lede { font-size: 13.5px; }
+.frame[data-mode="stack"] .page__modules { grid-template-columns: 1fr; }
+.frame[data-mode="stack"] .page__modules li { font-size: 13px; padding: 10px 0; }
+.frame[data-mode="stack"] .page__glyph { right: 50%; top: auto; bottom: 30%; transform: translateX(50%); width: 120px; height: 120px; }
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .panel__title .ch, .panel__sub, .page__body > * { filter: none !important; transform: none !important; }
+  .rail__shine, .page__eyebrow .chip::before { animation: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.6"/><circle cx="8" cy="8" r="5.1"/></symbol>
+  <symbol id="i-catalog" viewBox="0 0 16 16"><path d="M1.6 4.1c2.2-.9 4.3-.6 6.4.9 2.1-1.5 4.2-1.8 6.4-.9v7.6c-2.2-.9-4.3-.6-6.4.9-2.1-1.5-4.2-1.8-6.4-.9z"/><path d="M8 5v7.6"/><path d="M1.6 13.6h4.2M10.2 13.6h4.2"/></symbol>
+  <symbol id="i-custom" viewBox="0 0 16 16"><path d="M1.8 5.2h3.6M8.6 5.2h5.6M1.8 10.8h7.2M12.2 10.8h2"/><circle cx="7" cy="5.2" r="1.6"/><circle cx="10.6" cy="10.8" r="1.6"/></symbol>
+  <symbol id="i-wholesale" viewBox="0 0 16 16"><path d="M8 1.8 14.2 5 8 8.2 1.8 5z"/><path d="M1.8 8l6.2 3.2L14.2 8"/><path d="M1.8 10.9 8 14.1l6.2-3.2"/></symbol>
+  <symbol id="i-design" viewBox="0 0 16 16"><path d="M1.6 12.6C2.9 9.4 3.9 6 4.9 6c.9 0 .2 6.1 1.5 6.1 1.4 0 2.5-7.2 3.9-7.2 1 0 .5 4.3 1.5 4.3.8 0 1.7-1.7 2.6-3.4"/><path d="M12.3 4.1l2.2 1.6-1.6 2.2"/></symbol>
+  <symbol id="i-material" viewBox="0 0 16 16"><path d="M8 5.7 10.3 8 8 10.3 5.7 8z"/><path d="M8 1.5l1.3 1.3L8 4.1 6.7 2.8zM8 11.9l1.3 1.3L8 14.5l-1.3-1.3zM1.5 8l1.3-1.3L4.1 8 2.8 9.3zM11.9 8l1.3-1.3L14.5 8l-1.3 1.3z"/><path d="M4 4l1.3 1.3M12 4l-1.3 1.3M4 12l1.3-1.3M12 12l-1.3-1.3"/></symbol>
+  <symbol id="i-company" viewBox="0 0 16 16"><path d="M1.8 4.3c0-.6.4-1 1-1h3.3l1.5 1.6h5.6c.6 0 1 .4 1 1v6.4c0 .6-.4 1-1 1H2.8c-.6 0-1-.4-1-1z"/><path d="M1.8 6.6h12.4"/></symbol>
+  <symbol id="i-policies" viewBox="0 0 16 16"><circle cx="6.3" cy="9.4" r="4.3"/><circle cx="9.7" cy="6.6" r="4.3"/></symbol>
+  <symbol id="i-back" viewBox="0 0 16 16"><path d="M13.5 8h-11M6.5 4l-4 4 4 4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 12 12"><path d="M3 1.6v8.8c0 .5.5.8.9.5l6.6-4.4c.4-.3.4-.8 0-1L3.9 1.1c-.4-.3-.9 0-.9.5z"/></symbol>
+</svg>
+
+<div class="app" id="app" data-intro="0">
+
+  <!-- Background (format IMAGE — lihat Asset Ledger: home-bg) -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg__image" id="bgImage"></div>
+    <div class="bg__floor"></div>
+    <div class="bg__grain"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="topbar">
+    <a class="brand" id="brand" href="#/" aria-label="XIONCO Business — kembali ke Home">
+      <span class="brand__text" id="brandText">XIONCO BUSINESS</span>
+    </a>
+    <div class="slogan" id="slogan"><b>#1 FURNITURE MANUFACTURER</b> IN INDONESIA</div>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="sidebar"><i></i><i></i></button>
+  </header>
+
+  <!-- Sub navigation (halaman dalam) -->
+  <nav class="subnav" id="subnav" aria-label="Sub navigasi"><div class="subnav__inner" id="subnavInner"></div></nav>
+
+  <!-- Sidebar / Navigator bar -->
+  <nav class="sidebar" id="sidebar" aria-label="Navigasi utama">
+    <div class="sidebar__panel">
+      <span class="sidebar__hover" id="sidebarHover" aria-hidden="true"></span>
+      <ul class="sidebar__group sidebar__group--home">
+        <li class="sidebar__item" data-route="home" style="--i:0"><a class="sidebar__link" href="#/"><svg class="sidebar__icon"><use href="#i-home"/></svg><span class="sidebar__label">Home</span></a></li>
+      </ul>
+      <ul class="sidebar__group">
+        <li class="sidebar__item" data-route="catalog" style="--i:1"><a class="sidebar__link" href="#/catalog"><svg class="sidebar__icon"><use href="#i-catalog"/></svg><span class="sidebar__label">Catalog</span></a></li>
+        <li class="sidebar__item" data-route="custom" style="--i:2"><a class="sidebar__link" href="#/custom"><svg class="sidebar__icon"><use href="#i-custom"/></svg><span class="sidebar__label">Custom Furniture</span></a></li>
+        <li class="sidebar__item" data-route="wholesale" style="--i:3"><a class="sidebar__link" href="#/wholesale"><svg class="sidebar__icon"><use href="#i-wholesale"/></svg><span class="sidebar__label">Wholesale</span></a></li>
+        <li class="sidebar__item" data-route="design-services" style="--i:4"><a class="sidebar__link" href="#/design-services"><svg class="sidebar__icon"><use href="#i-design"/></svg><span class="sidebar__label">Design Services</span></a></li>
+      </ul>
+      <ul class="sidebar__group">
+        <li class="sidebar__item" data-route="material-bank" style="--i:5"><a class="sidebar__link" href="#/material-bank"><svg class="sidebar__icon"><use href="#i-material"/></svg><span class="sidebar__label">Material Bank</span></a></li>
+        <li class="sidebar__item" data-route="company-profile" style="--i:6"><a class="sidebar__link" href="#/company-profile"><svg class="sidebar__icon"><use href="#i-company"/></svg><span class="sidebar__label">Company Profile</span></a></li>
+        <li class="sidebar__item" data-route="policies" style="--i:7"><a class="sidebar__link" href="#/policies"><svg class="sidebar__icon"><use href="#i-policies"/></svg><span class="sidebar__label">Policies</span></a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="drawer-scrim" id="drawerScrim"></div>
+
+  <!-- Breadcrumb (halaman dalam) -->
+  <div class="crumbs" id="crumbs" aria-label="Breadcrumb"></div>
+
+  <!-- ===================== MAIN FRAME ===================== -->
+  <main class="frame" id="frame" data-state="boot" data-mode="x">
+    <div class="frame__shell"></div>
+
+    <div class="frame__track" id="track">
+
+      <!-- A — Catalog -->
+      <article class="panel" data-key="a" data-route="catalog" data-align="top" data-focus="2.5">
+        <div class="panel__stage">
+          <div class="panel__media"><canvas class="panel__canvas" aria-hidden="true"></canvas></div>
+          <i class="panel__orbguide" aria-hidden="true"></i>
+        </div>
+        <div class="panel__dim"></div>
+        <div class="panel__shade"></div>
+        <div class="panel__sheen"></div>
+        <a class="panel__hit" href="#/catalog" tabindex="-1" aria-hidden="true"></a>
+        <div class="panel__content">
+          <h2 class="panel__title" data-split>CATALOG</h2>
+          <p class="panel__sub">Terpercaya dan terbesar di Indonesia</p>
+        </div>
+        <a class="panel__play" href="#/catalog" aria-label="Buka Catalog"><svg><use href="#i-play"/></svg></a>
+        <span class="panel__devtag" aria-hidden="true"></span>
+      </article>
+
+      <!-- B — Customize -->
+      <article class="panel" data-key="b" data-route="custom" data-orb data-focus="4">
+        <div class="panel__stage">
+          <div class="panel__media"><canvas class="panel__canvas" aria-hidden="true"></canvas></div>
+          <i class="panel__orbguide" aria-hidden="true"></i>
+        </div>
+        <div class="panel__dim"></div>
+        <div class="panel__shade"></div>
+        <div class="panel__sheen"></div>
+        <a class="panel__hit" href="#/custom" tabindex="-1" aria-hidden="true"></a>
+        <div class="panel__content">
+          <h2 class="panel__title" data-split>CUSTOMIZE</h2>
+          <p class="panel__sub">Kalkulasi produk custom dalam hitungan menit</p>
+        </div>
+        <a class="panel__play" href="#/custom" aria-label="Buka Customize"><svg><use href="#i-play"/></svg></a>
+        <span class="panel__devtag" aria-hidden="true"></span>
+      </article>
+
+      <!-- C — Wholesale / Bulk -->
+      <article class="panel" data-key="c" data-route="wholesale" data-orb data-focus="4">
+        <div class="panel__stage">
+          <div class="panel__media"><canvas class="panel__canvas" aria-hidden="true"></canvas></div>
+          <i class="panel__orbguide" aria-hidden="true"></i>
+        </div>
+        <div class="panel__dim"></div>
+        <div class="panel__shade"></div>
+        <div class="panel__sheen"></div>
+        <a class="panel__hit" href="#/wholesale" tabindex="-1" aria-hidden="true"></a>
+        <div class="panel__content">
+          <h2 class="panel__title" data-split>WHOLESALE</h2>
+          <p class="panel__sub">Harga khusus untuk partai besar &amp; proyek</p>
+        </div>
+        <a class="panel__play" href="#/wholesale" aria-label="Buka Wholesale"><svg><use href="#i-play"/></svg></a>
+        <span class="panel__devtag" aria-hidden="true"></span>
+      </article>
+
+      <!-- D — Design Services -->
+      <article class="panel" data-key="d" data-route="design-services" data-orb data-focus="4">
+        <div class="panel__stage">
+          <div class="panel__media"><canvas class="panel__canvas" aria-hidden="true"></canvas></div>
+          <i class="panel__orbguide" aria-hidden="true"></i>
+        </div>
+        <div class="panel__dim"></div>
+        <div class="panel__shade"></div>
+        <div class="panel__sheen"></div>
+        <a class="panel__hit" href="#/design-services" tabindex="-1" aria-hidden="true"></a>
+        <div class="panel__content">
+          <h2 class="panel__title" data-split>DESIGN SERVICES</h2>
+          <p class="panel__sub">Dari konsep hingga produksi, bersama tim desain kami</p>
+        </div>
+        <a class="panel__play" href="#/design-services" aria-label="Buka Design Services"><svg><use href="#i-play"/></svg></a>
+        <span class="panel__devtag" aria-hidden="true"></span>
+      </article>
+    </div>
+
+    <!-- Halaman dalam (frame berubah menjadi container halaman) -->
+    <section class="page" id="page" aria-live="polite">
+      <div class="page__backdrop"></div>
+      <svg class="page__glyph" id="pageGlyph" aria-hidden="true"><use href="#i-material"/></svg>
+      <div class="page__scrim"></div>
+      <div class="page__body" id="pageBody"></div>
+    </section>
+
+    <!-- Garis emas: ikut expand dengan frame -->
+    <div class="rail" id="rail" aria-hidden="true">
+      <div class="rail__glow"></div>
+      <div class="rail__beam"><i class="rail__shine"></i></div>
+    </div>
+    <!-- Cahaya di bawah frame (terkunci di dalam lebar frame) -->
+    <div class="underglow" aria-hidden="true"><i class="underglow__light" id="underglow"></i></div>
+
+    <div class="frame__grid" id="frameGrid" aria-hidden="true"></div>
+  </main>
+
+  <!-- Navigasi kartu (mobile) -->
+  <div class="stack-nav" id="stackNav" aria-label="Pilih frame">
+    <button type="button" data-i="0" aria-label="Catalog"></button>
+    <button type="button" data-i="1" aria-label="Customize"></button>
+    <button type="button" data-i="2" aria-label="Wholesale"></button>
+    <button type="button" data-i="3" aria-label="Design Services"></button>
+  </div>
+</div>
+
+<noscript><p style="color:#a89d92;font:14px sans-serif;padding:24px">Website ini membutuhkan JavaScript.</p></noscript>
+
+<script>
+/* ==========================================================================
+   XIONCO BUSINESS — Site configuration
+   Semua angka motion & konten halaman dalam bisa diubah di sini.
+   ========================================================================== */
+window.XIONCO_CONFIG = {
+  version: '0.1.0',
+
+  /* Tampilkan dock DEV (Grid guideline, Ledger, Replay intro). Set false saat production. */
+  dev: true,
+
+  /* Cek otomatis apakah file aset (assets/media/...) sudah ada. Lihat manifest.js */
+  probeAssets: true,
+
+  /* ---- Block system (Guideline Main Frame) ----------------------------------
+     1 block = lebar 1, tinggi 4. Guideline: 1 block = 120px pada desain 1920px.
+     Di layar, ukuran block mengikuti viewport (±58% lebar layar, seperti mockup). */
+  block: {
+    design: 120,         // px, referensi guideline
+    min: 44,
+    max: 168,
+    widthRatio: 0.0705,  // u = vw × ratio
+    heightRatio: 0.135   // u = (vh - header) × ratio  (diambil yang terkecil)
+  },
+  frame: {
+    span: 8,             // lebar main frame (block)
+    depth: 4,            // tinggi main frame (block)
+    expanded: 5,         // ukuran frame saat hover
+    idle: [4, 2, 1, 1]   // Default Frame — A:4 | B:2 | C:1 | D:1
+  },
+
+  /* ---- Motion -------------------------------------------------------------- */
+  motion: {
+    hover: { k: 118, c: 21 },   // spring frame saat hover (stiffness / damping)
+    enter: { k: 56, c: 14.6 },  // spring saat frame membuka halaman
+    rail:  { k: 420, c: 41 },   // garis emas mengikuti frame
+    hoverIntent: 45,            // ms sebelum hover dianggap disengaja
+    leaveDelay: 200,            // ms sebelum kembali ke Default Frame
+    tilt: { x: 1.1, y: 1.5 }    // derajat kemiringan frame mengikuti kursor
+  },
+
+  intro: { enabled: true },
+
+  /* ---- Routes / halaman ----------------------------------------------------
+     panel: index frame (0=A,1=B,2=C,3=D). Halaman tanpa panel memakai backdrop netral. */
+  routes: {
+    home: { label: 'Home' },
+
+    catalog: {
+      panel: 0, index: '01', label: 'Catalog', title: 'Catalog',
+      lede: 'Koleksi furnitur XIONCO yang siap diproduksi — dari sofa hingga cabinetry. Terpercaya dan terbesar di Indonesia.',
+      tabs: ['Sofas', 'Chairs', 'Tables', 'Beds', 'Cabinetry'],
+      modules: ['Grid produk & filter kategori', 'Detail produk & galeri', 'Spesifikasi material & dimensi', 'Purchase / checkout']
+    },
+
+    custom: {
+      panel: 1, index: '02', label: 'Custom Furniture', title: 'Customize',
+      lede: 'Rancang furnitur sesuai kebutuhan — pilih varian, material, dan dimensi, lalu dapatkan kalkulasi harga dalam hitungan menit.',
+      tabs: ['Sofas', 'Tables', 'Beds', 'Cabinetry'],
+      modules: ['Variant selection', 'Material selection', 'Dimension', 'Current calculation & quotation', 'Custom fee & private labeling']
+    },
+
+    wholesale: {
+      panel: 2, index: '03', label: 'Wholesale', title: 'Wholesale',
+      lede: 'Program pembelian partai besar untuk proyek, reseller, dan private label — dengan harga bertingkat.',
+      tabs: ['Project', 'Reseller', 'Private Label'],
+      modules: ['Tiered pricing & MOQ', 'Request for quotation', 'Private label program', 'Jadwal produksi & pengiriman']
+    },
+
+    'design-services': {
+      panel: 3, index: '04', label: 'Design Services', title: 'Design Services',
+      lede: 'Tim desain kami mendampingi dari konsep, gambar kerja, hingga produksi.',
+      tabs: ['Residential', 'Commercial', 'Hospitality'],
+      modules: ['Portfolio proyek', 'Paket layanan desain', 'Booking konsultasi', 'Brief & upload referensi']
+    },
+
+    'material-bank': {
+      index: '05', label: 'Material Bank', title: 'Material Bank', icon: 'material',
+      lede: 'Perpustakaan material XIONCO — fabric, faux leather, leather, special fabric, dan outdoor.',
+      tabs: ['Fabric', 'Faux Leather', 'Leather', 'Special Fabric', 'Outdoor'],
+      modules: ['Swatch library', 'Filter jenis & warna', 'Spesifikasi (double rubs, komposisi)', 'Request sample']
+    },
+
+    'company-profile': {
+      index: '06', label: 'Company Profile', title: 'Company Profile', icon: 'company',
+      lede: 'Mengenal XIONCO — pabrik, kapasitas produksi, sertifikasi, dan klien kami.',
+      tabs: ['About', 'Factory', 'Certification', 'Clients'],
+      modules: ['Tentang kami', 'Fasilitas produksi', 'Sertifikasi', 'Klien & proyek']
+    },
+
+    policies: {
+      index: '07', label: 'Policies', title: 'Policies', icon: 'policies',
+      lede: 'Kebijakan garansi, pengiriman, pembayaran, dan privasi.',
+      tabs: ['Warranty', 'Shipping', 'Payment', 'Privacy'],
+      modules: ['Garansi', 'Pengiriman', 'Pembayaran', 'Privasi & cookies']
+    }
+  }
+};
+
+// --- preview build ---
+window.XIONCO_CONFIG.dev = false;
+window.XIONCO_CONFIG.probeAssets = false;
+
+</script>
+<script>
+/* ==========================================================================
+   XIONCO BUSINESS — Procedural placeholders untuk Main Frame A–D
+   Dipakai selama video/GIF final belum ada. Begitu file video ditemukan
+   (lihat manifest.js), canvas ini otomatis digantikan oleh video.
+
+   Setiap scene digambar di "layar" 5 × 4 block (guideline orb):
+   orb berdiameter 1 block, pusat di (4, 2) block.
+   ========================================================================== */
+window.XIONCO_SCENES = (function () {
+  'use strict';
+
+  var TAU = Math.PI * 2;
+  var F = 4.6; // jarak kamera (perspektif)
+
+  /* ---------------- utils ---------------- */
+  function rng(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function smooth(a, b, x) { var t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+  function norm(v) { var l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; }
+  function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+  function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+  function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
+  function rgb(c) { return 'rgb(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ')'; }
+  function clamp255(v) { return v < 0 ? 0 : v > 255 ? 255 : v; }
+
+  /* Rotasi: Y lalu X (cy/sy = cos/sin yaw, cx/sx = cos/sin pitch) */
+  function rotate(p, cy, sy, cx, sx) {
+    var x = p[0] * cy + p[2] * sy;
+    var z = -p[0] * sy + p[2] * cy;
+    var y = p[1];
+    return [x, y * cx - z * sx, y * sx + z * cx];
+  }
+
+  function fibonacci(n, rand, jitter) {
+    var pts = [], ga = Math.PI * (3 - Math.sqrt(5));
+    for (var i = 0; i < n; i++) {
+      var y = 1 - (i + 0.5) / n * 2;
+      var r = Math.sqrt(1 - y * y);
+      var th = ga * i + (jitter ? (rand() - 0.5) * jitter : 0);
+      pts.push(norm([Math.cos(th) * r, y + (jitter ? (rand() - 0.5) * jitter * 0.2 : 0), Math.sin(th) * r]));
+    }
+    return pts;
+  }
+
+  function rr(c, x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.arcTo(x + w, y, x + w, y + h, r);
+    c.arcTo(x + w, y + h, x, y + h, r);
+    c.arcTo(x, y + h, x, y, r);
+    c.arcTo(x, y, x + w, y, r);
+    c.closePath();
+  }
+  function vgrad(c, y0, y1, a, b) { var g = c.createLinearGradient(0, y0, 0, y1); g.addColorStop(0, a); g.addColorStop(1, b); return g; }
+  function hgrad(c, x0, x1, a, b) { var g = c.createLinearGradient(x0, 0, x1, 0); g.addColorStop(0, a); g.addColorStop(1, b); return g; }
+
+  function vignette(b, w, h, strength, cy) {
+    var g = b.createRadialGradient(w / 2, h * (cy || 0.5), Math.min(w, h) * 0.32, w / 2, h * (cy || 0.5), Math.max(w, h) * 0.8);
+    g.addColorStop(0, 'rgba(0,0,0,0)');
+    g.addColorStop(1, 'rgba(0,0,0,' + strength + ')');
+    b.fillStyle = g; b.fillRect(0, 0, w, h);
+  }
+
+  /* ---------------- base scene ---------------- */
+  function Scene(canvas, impl) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.bg = document.createElement('canvas');
+    this.impl = impl;
+    this.t = impl.t0 || 0;
+    this.ready = false;
+  }
+  /* orb = { x, y, r } dari engine (guideline: Ø 1 block, pusat (4, 2) block) */
+  Scene.prototype.resize = function (w, h, dpr, orb, u, mode) {
+    this.w = w; this.h = h; this.dpr = dpr; this.u = u; this.mode = mode || 'x';
+    var W = Math.max(2, Math.round(w * dpr)), H = Math.max(2, Math.round(h * dpr));
+    this.canvas.width = W; this.canvas.height = H;
+    this.bg.width = W; this.bg.height = H;
+    this.orb = { x: orb.x, y: orb.y, r: orb.r };
+    var b = this.bg.getContext('2d');
+    b.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (this.impl.setup) this.impl.setup.call(this);
+    this.impl.paint.call(this, b, w, h, u);
+    this.ready = true;
+    this.full = true;
+    this.render(this.t);
+  };
+  /* Hanya area yang bergerak (dirty rect) yang digambar ulang tiap frame */
+  Scene.prototype.render = function (t) {
+    if (!this.ready) return;
+    this.t = t;
+    var c = this.ctx, d = this.dpr;
+    var r = !this.full && this.impl.dirty ? this.impl.dirty.call(this) : null;
+    this.full = false;
+    c.setTransform(1, 0, 0, 1, 0, 0);
+    c.globalCompositeOperation = 'source-over';
+    c.globalAlpha = 1;
+    if (r) {
+      var x = Math.max(0, Math.floor(r.x * d)), y = Math.max(0, Math.floor(r.y * d));
+      var w = Math.min(this.canvas.width - x, Math.ceil(r.w * d) + 2);
+      var h = Math.min(this.canvas.height - y, Math.ceil(r.h * d) + 2);
+      if (w <= 0 || h <= 0) return;
+      c.drawImage(this.bg, x, y, w, h, x, y, w, h);
+      c.save();
+      c.beginPath(); c.rect(x, y, w, h); c.clip();
+      c.setTransform(d, 0, 0, d, 0, 0);
+      this.impl.draw.call(this, c, t, this.w, this.h, this.u);
+      c.restore();
+    } else {
+      c.drawImage(this.bg, 0, 0);
+      c.setTransform(d, 0, 0, d, 0, 0);
+      this.impl.draw.call(this, c, t, this.w, this.h, this.u);
+    }
+  };
+  function orbBox(s, k) { var o = s.orb, R = o.r * k; return { x: o.x - R, y: o.y - R, w: R * 2, h: R * 2 }; }
+
+  /* ======================================================================
+     A — CATALOG : atelier dengan sofa, cahaya jendela & debu melayang
+     ====================================================================== */
+  function drawSofa(b, cx, fy, W) {
+    var s = W, L = cx - W / 2, R = cx + W / 2;
+
+    // bayangan lantai
+    b.save();
+    b.translate(cx, fy + s * 0.004);
+    b.scale(1, 0.1);
+    var sg = b.createRadialGradient(0, 0, 0, 0, 0, W * 0.62);
+    sg.addColorStop(0, 'rgba(0,0,0,.62)');
+    sg.addColorStop(0.6, 'rgba(0,0,0,.25)');
+    sg.addColorStop(1, 'rgba(0,0,0,0)');
+    b.fillStyle = sg;
+    b.beginPath(); b.arc(0, 0, W * 0.62, 0, TAU); b.fill();
+    b.restore();
+
+    // kaki
+    b.fillStyle = '#1b1612';
+    [L + s * 0.075, R - s * 0.075].forEach(function (x) {
+      b.fillRect(x - s * 0.005, fy - s * 0.05, s * 0.01, s * 0.05);
+    });
+
+    // sandaran belakang
+    rr(b, L + s * 0.035, fy - s * 0.425, W - s * 0.07, s * 0.3, s * 0.045);
+    b.fillStyle = vgrad(b, fy - s * 0.425, fy - s * 0.12, '#a89884', '#7f705e'); b.fill();
+
+    // bantal sandaran
+    var bx0 = L + s * 0.118, bw = (W - s * 0.236) / 3;
+    for (var i = 0; i < 3; i++) {
+      rr(b, bx0 + i * bw + s * 0.004, fy - s * 0.4, bw - s * 0.008, s * 0.215, s * 0.045);
+      b.fillStyle = vgrad(b, fy - s * 0.4, fy - s * 0.185, '#d3c6b1', '#a29280'); b.fill();
+      b.strokeStyle = 'rgba(255,248,236,.18)'; b.lineWidth = 0.8; b.stroke();
+    }
+
+    // bantal hias
+    function pillow(x, y, size, rot, col) {
+      b.save(); b.translate(x, y); b.rotate(rot);
+      rr(b, -size / 2, -size / 2, size, size, size * 0.28);
+      b.fillStyle = vgrad(b, -size / 2, size / 2, col[0], col[1]); b.fill();
+      b.strokeStyle = 'rgba(255,248,236,.16)'; b.lineWidth = 0.8; b.stroke();
+      b.restore();
+    }
+    pillow(L + s * 0.2, fy - s * 0.25, s * 0.135, -0.2, ['#c8b9a1', '#998a75']);
+    pillow(R - s * 0.2, fy - s * 0.25, s * 0.13, 0.17, ['#bcae97', '#8d7e6a']);
+
+    // dudukan
+    for (i = 0; i < 3; i++) {
+      rr(b, bx0 + i * bw + s * 0.003, fy - s * 0.205, bw - s * 0.006, s * 0.09, s * 0.024);
+      b.fillStyle = vgrad(b, fy - s * 0.205, fy - s * 0.115, '#ded2be', '#ab9b86'); b.fill();
+    }
+    // sisi depan dudukan
+    rr(b, L + s * 0.1, fy - s * 0.13, W - s * 0.2, s * 0.07, s * 0.016);
+    b.fillStyle = vgrad(b, fy - s * 0.13, fy - s * 0.06, '#a39480', '#7a6b59'); b.fill();
+    // base
+    rr(b, L + s * 0.03, fy - s * 0.075, W - s * 0.06, s * 0.035, s * 0.01);
+    b.fillStyle = '#5a4e41'; b.fill();
+
+    // lengan
+    rr(b, L, fy - s * 0.275, s * 0.118, s * 0.235, s * 0.048);
+    b.fillStyle = hgrad(b, L, L + s * 0.118, '#cdbfa9', '#9c8d79'); b.fill();
+    rr(b, R - s * 0.118, fy - s * 0.275, s * 0.118, s * 0.235, s * 0.048);
+    b.fillStyle = hgrad(b, R - s * 0.118, R, '#a99a86', '#7c6d5b'); b.fill();
+    b.strokeStyle = 'rgba(255,248,236,.14)'; b.lineWidth = 0.8;
+    rr(b, L, fy - s * 0.275, s * 0.118, s * 0.235, s * 0.048); b.stroke();
+  }
+
+  var atelier = {
+    t0: 3.2,
+    setup: function () {
+      var r = rng(11);
+      this.dust = [];
+      for (var i = 0; i < 90; i++) {
+        this.dust.push({ x: r(), y: r(), v: 0.012 + r() * 0.03, f: 0.3 + r() * 0.6, ph: r() * TAU, tw: 0.6 + r() * 1.6, a: 0.25 + r() * 0.6, s: 0.5 + r() * 1.3 });
+      }
+    },
+    paint: function (b, w, h, u) {
+      // sofa berdiri tepat di atas posisi play button (titik fokus = "orb" Frame A)
+      var o = this.orb, floorY = o.y + o.r;
+      var sw = this.mode === 'stack' ? w * 0.72 : u * 2.4;
+      var hz = floorY - sw * 0.13;
+      this.hz = hz;
+      // dinding
+      var wg = b.createLinearGradient(0, 0, 0, hz);
+      wg.addColorStop(0, '#372f27'); wg.addColorStop(0.5, '#665949'); wg.addColorStop(1, '#8a7b67');
+      b.fillStyle = wg;
+      b.fillRect(0, 0, w, hz);
+      // panel dinding (garis vertikal halus)
+      b.fillStyle = 'rgba(0,0,0,.08)';
+      for (var x = w * 0.08; x < w; x += u * 0.9) b.fillRect(x, 0, 1, hz);
+      // cahaya jendela di dinding
+      var rg = b.createRadialGradient(w * 0.16, h * 0.18, 0, w * 0.16, h * 0.18, w * 0.75);
+      rg.addColorStop(0, 'rgba(255,236,206,.26)'); rg.addColorStop(1, 'rgba(255,236,206,0)');
+      b.fillStyle = rg; b.fillRect(0, 0, w, hz);
+      // lantai
+      var fg = b.createLinearGradient(0, hz, 0, h);
+      fg.addColorStop(0, '#5a4e41'); fg.addColorStop(1, '#1d1915');
+      b.fillStyle = fg; b.fillRect(0, hz, w, h - hz);
+      // garis papan lantai (perspektif)
+      b.save();
+      b.beginPath(); b.rect(0, hz, w, h - hz); b.clip();
+      var vpX = w * 0.46, vpY = hz - h * 1.1;
+      b.strokeStyle = 'rgba(0,0,0,.18)'; b.lineWidth = 1;
+      for (var i = -16; i <= 16; i++) {
+        var bx = w / 2 + i * w * 0.085;
+        var tx = vpX + (bx - vpX) * ((hz - vpY) / (h - vpY));
+        b.beginPath(); b.moveTo(tx, hz); b.lineTo(bx, h); b.stroke();
+      }
+      // pantulan cahaya di lantai
+      var fr = b.createRadialGradient(w * 0.36, hz + (h - hz) * 0.3, 0, w * 0.36, hz + (h - hz) * 0.3, w * 0.45);
+      fr.addColorStop(0, 'rgba(255,232,196,.13)'); fr.addColorStop(1, 'rgba(255,232,196,0)');
+      b.fillStyle = fr; b.fillRect(0, hz, w, h - hz);
+      b.restore();
+      // plint
+      b.fillStyle = 'rgba(255,240,215,.12)'; b.fillRect(0, hz - 1, w, 1);
+      b.fillStyle = 'rgba(0,0,0,.28)'; b.fillRect(0, hz, w, Math.max(2, u * 0.035));
+
+      // sofa
+      drawSofa(b, o.x, floorY, sw);
+
+      vignette(b, w, h, 0.55, 0.55);
+    },
+    draw: function (c, t, w, h, u) {
+      var sway = Math.sin(t * 0.32) * w * 0.018;
+      var pulse = 0.82 + 0.18 * Math.sin(t * 0.5);
+      var x0 = w * 0.0 + sway, x1 = w * 0.3 + sway, x2 = w * 0.78 + sway * 2, x3 = w * 0.3 + sway * 2;
+      c.save();
+      c.globalCompositeOperation = 'screen';
+      var beam = c.createLinearGradient(w * 0.1, 0, w * 0.5, h);
+      beam.addColorStop(0, 'rgba(255,236,206,' + (0.17 * pulse) + ')');
+      beam.addColorStop(0.7, 'rgba(255,236,206,' + (0.05 * pulse) + ')');
+      beam.addColorStop(1, 'rgba(255,236,206,0)');
+      c.fillStyle = beam;
+      c.beginPath(); c.moveTo(x0, 0); c.lineTo(x1, 0); c.lineTo(x2, h); c.lineTo(x3, h); c.closePath(); c.fill();
+
+      for (var i = 0; i < this.dust.length; i++) {
+        var p = this.dust[i];
+        var py = (((p.y - t * p.v) % 1) + 1) % 1 * h;
+        var k = py / h;
+        var xl = x0 + (x3 - x0) * k, xr = x1 + (x2 - x1) * k;
+        var px = xl + (xr - xl) * p.x + Math.sin(t * p.f + p.ph) * u * 0.07;
+        var inside = Math.sin(Math.PI * Math.max(0, Math.min(1, (px - xl) / (xr - xl))));
+        var a = p.a * inside * (0.45 + 0.55 * Math.sin(t * p.tw + p.ph)) * (1 - k * 0.6);
+        if (a <= 0.02) continue;
+        c.fillStyle = 'rgba(255,240,214,' + a.toFixed(3) + ')';
+        c.beginPath(); c.arc(px, py, p.s, 0, TAU); c.fill();
+      }
+      c.restore();
+    }
+  };
+
+  /* ======================================================================
+     B — CUSTOMIZE : orb geodesic melayang di atas riak air
+     ====================================================================== */
+  var GEO = (function () {
+    var t = (1 + Math.sqrt(5)) / 2;
+    var V = [[-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0], [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t], [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1]].map(norm);
+    var Fc = [[0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11], [1, 5, 9], [5, 11, 4], [11, 10, 2], [10, 7, 6], [7, 1, 8], [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9], [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1]];
+    var cache = {};
+    function mid(a, b) {
+      var k = a < b ? a + '_' + b : b + '_' + a;
+      if (cache[k] != null) return cache[k];
+      V.push(norm([(V[a][0] + V[b][0]) / 2, (V[a][1] + V[b][1]) / 2, (V[a][2] + V[b][2]) / 2]));
+      return (cache[k] = V.length - 1);
+    }
+    for (var s = 0; s < 2; s++) {
+      var nf = [];
+      Fc.forEach(function (f) {
+        var a = mid(f[0], f[1]), b = mid(f[1], f[2]), c = mid(f[2], f[0]);
+        nf.push([f[0], a, c], [f[1], b, a], [f[2], c, b], [a, b, c]);
+      });
+      Fc = nf; cache = {};
+    }
+    // origami: titik tengah tiap segitiga ditekan ke dalam → lipatan bintang
+    var T = [];
+    Fc.forEach(function (f) {
+      var a = V[f[0]], b = V[f[1]], c = V[f[2]];
+      var m = norm([a[0] + b[0] + c[0], a[1] + b[1] + c[1], a[2] + b[2] + c[2]]);
+      V.push([m[0] * 0.9, m[1] * 0.9, m[2] * 0.9]);
+      var mi = V.length - 1;
+      T.push([f[0], f[1], mi], [f[1], f[2], mi], [f[2], f[0], mi]);
+    });
+    return { V: V, T: T };
+  })();
+
+  var LIGHT = norm([-0.55, 0.7, 0.72]);
+  var FILL = norm([0.7, -0.15, 0.7]);
+  var HALF = norm([LIGHT[0], LIGHT[1], LIGHT[2] + 1]);
+
+  function drawGeo(c, cx, cy, r, t) {
+    var ay = t * 0.3 + 0.6, ax = 0.42 + Math.sin(t * 0.27) * 0.08;
+    var cY = Math.cos(ay), sY = Math.sin(ay), cX = Math.cos(ax), sX = Math.sin(ax);
+    var V = GEO.V, T = GEO.T, P = new Array(V.length), S = new Array(V.length);
+    var rr2 = r * (F - 1) / F;
+    for (var i = 0; i < V.length; i++) {
+      var p = rotate(V[i], cY, sY, cX, sX);
+      P[i] = p;
+      var k = F / (F - p[2]);
+      S[i] = [cx + p[0] * rr2 * k, cy - p[1] * rr2 * k];
+    }
+    var faces = [];
+    for (i = 0; i < T.length; i++) {
+      var f = T[i], A = P[f[0]], B = P[f[1]], C = P[f[2]];
+      var n = norm(cross(sub(B, A), sub(C, A)));
+      if (dot(n, [A[0], A[1], A[2]]) < 0) { n = [-n[0], -n[1], -n[2]]; }
+      // backface (normal menjauhi kamera)
+      var cz = (A[2] + B[2] + C[2]) / 3;
+      if (n[2] < -0.05 && cz < 0.2) continue;
+      var d = Math.max(0, dot(n, LIGHT));
+      var spec = Math.pow(Math.max(0, dot(n, HALF)), 28);
+      var bounce = Math.max(0, -n[1]) * 0.35;
+      var d2 = Math.max(0, dot(n, FILL));
+      var lv = Math.min(1.08, 0.26 + 0.66 * d + 0.2 * d2);
+      var col = [
+        clamp255(70 + (240 - 70) * lv + spec * 70 + bounce * 40),
+        clamp255(56 + (228 - 56) * lv + spec * 64 + bounce * 30),
+        clamp255(42 + (208 - 42) * lv + spec * 52 + bounce * 18)
+      ];
+      faces.push({ z: cz, i: f, c: rgb(col) });
+    }
+    faces.sort(function (a, b) { return a.z - b.z; });
+    c.lineJoin = 'round';
+    c.lineWidth = 0.6;
+    for (i = 0; i < faces.length; i++) {
+      var fc = faces[i], a = S[fc.i[0]], b = S[fc.i[1]], d2 = S[fc.i[2]];
+      c.beginPath(); c.moveTo(a[0], a[1]); c.lineTo(b[0], b[1]); c.lineTo(d2[0], d2[1]); c.closePath();
+      c.fillStyle = fc.c; c.strokeStyle = fc.c;
+      c.fill(); c.stroke();
+    }
+    // rim light lembut
+    var g = c.createRadialGradient(cx - r * 0.35, cy - r * 0.45, r * 0.1, cx, cy, r * 1.05);
+    g.addColorStop(0, 'rgba(255,248,236,.10)');
+    g.addColorStop(0.75, 'rgba(255,248,236,0)');
+    g.addColorStop(1, 'rgba(40,30,20,.18)');
+    c.fillStyle = g;
+    c.beginPath(); c.arc(cx, cy, r * 1.0, 0, TAU); c.fill();
+  }
+
+  function ellipse(c, x, y, rx, ry) { c.beginPath(); c.ellipse(x, y, Math.max(0.1, rx), Math.max(0.1, ry), 0, 0, TAU); }
+
+  var ripple = {
+    t0: 4.4,
+    dirty: function () { var top = this.orb.y - this.orb.r * 1.5; return { x: 0, y: top, w: this.w, h: this.h - top }; },
+    paint: function (b, w, h, u) {
+      var g = b.createLinearGradient(0, 0, 0, h);
+      g.addColorStop(0, '#d2c3ab'); g.addColorStop(0.35, '#bba991'); g.addColorStop(0.6, '#9b8970'); g.addColorStop(1, '#5a4c3d');
+      b.fillStyle = g; b.fillRect(0, 0, w, h);
+      var o = this.orb;
+      // cahaya dari atas
+      var rg = b.createRadialGradient(o.x - u * 0.6, -h * 0.2, 0, o.x - u * 0.6, -h * 0.2, w * 0.9);
+      rg.addColorStop(0, 'rgba(255,250,240,.32)'); rg.addColorStop(1, 'rgba(255,250,240,0)');
+      b.fillStyle = rg; b.fillRect(0, 0, w, h);
+      // permukaan air (pantulan horizontal)
+      var wy = o.y + u * 0.98;
+      var wg = b.createLinearGradient(0, wy - u * 1.6, 0, h);
+      wg.addColorStop(0, 'rgba(255,248,236,0)');
+      wg.addColorStop(0.35, 'rgba(255,248,236,.07)');
+      wg.addColorStop(1, 'rgba(0,0,0,.12)');
+      b.fillStyle = wg; b.fillRect(0, wy - u * 1.6, w, h);
+      vignette(b, w, h, 0.42, 0.55);
+    },
+    draw: function (c, t, w, h, u) {
+      var o = this.orb;
+      var bob = Math.sin(t * 1.05) * u * 0.035;
+      var wy = o.y + u * 0.98;
+      c.save();
+      for (var k = 0; k < 13; k++) {
+        var ph = (((t * 0.07 + k / 13) % 1) + 1) % 1;
+        var R = u * 0.32 + ph * u * 4.6;
+        var a = Math.pow(1 - ph, 1.35) * smooth(0, 0.07, ph);
+        c.lineWidth = 0.7 + ph * 2.4;
+        c.strokeStyle = 'rgba(255,250,240,' + (a * 0.55).toFixed(3) + ')';
+        ellipse(c, o.x, wy - 0.7, R, R * 0.25); c.stroke();
+        c.strokeStyle = 'rgba(58,44,30,' + (a * 0.34).toFixed(3) + ')';
+        ellipse(c, o.x, wy + 1.4 + ph * 2.2, R * 0.993, R * 0.25); c.stroke();
+      }
+      c.restore();
+      // bayangan orb di air
+      c.save();
+      c.translate(o.x, wy);
+      c.scale(1, 0.24);
+      var sr = o.r * (1.3 - bob / u * 2);
+      var sg = c.createRadialGradient(0, 0, 0, 0, 0, sr);
+      sg.addColorStop(0, 'rgba(40,28,18,.42)'); sg.addColorStop(1, 'rgba(40,28,18,0)');
+      c.fillStyle = sg; c.beginPath(); c.arc(0, 0, sr, 0, TAU); c.fill();
+      c.restore();
+      drawGeo(c, o.x, o.y + bob, o.r, t);
+    }
+  };
+
+  /* ======================================================================
+     C — WHOLESALE : orb partikel di ruang gelap
+     ====================================================================== */
+  var particles = {
+    t0: 2.2,
+    dirty: function () { return orbBox(this, 2.1); },
+    setup: function () {
+      var r = rng(29);
+      var dirs = fibonacci(1500, r, 0.6);
+      this.pts = dirs.map(function (d) {
+        var big = r() < 0.14;
+        return { d: d, amp: big ? 0.18 + r() * 0.65 : 0.01 + r() * 0.03, ph: r() * TAU, s: 0.5 + r() * 1.1, b: 0.55 + r() * 0.45, big: big };
+      });
+      this.buckets = [];
+      for (var i = 0; i < 10; i++) this.buckets.push([]);
+    },
+    paint: function (b, w, h, u) {
+      b.fillStyle = '#080706'; b.fillRect(0, 0, w, h);
+      var o = this.orb;
+      var g = b.createRadialGradient(o.x, o.y, 0, o.x, o.y, u * 1.7);
+      g.addColorStop(0, 'rgba(150,122,88,.20)'); g.addColorStop(1, 'rgba(150,122,88,0)');
+      b.fillStyle = g; b.fillRect(0, 0, w, h);
+      var r = rng(7);
+      for (var i = 0; i < 260; i++) {
+        var a = 0.05 + r() * 0.35;
+        b.fillStyle = 'rgba(255,240,220,' + a.toFixed(3) + ')';
+        var s = 0.4 + r() * 0.9;
+        b.fillRect(r() * w, r() * h, s, s);
+      }
+      vignette(b, w, h, 0.6, 0.5);
+    },
+    draw: function (c, t, w, h, u) {
+      var o = this.orb, R = o.r * 0.9;
+      var ay = t * 0.21 + 1.1, ax = 0.36 + Math.sin(t * 0.17) * 0.06;
+      var cY = Math.cos(ay), sY = Math.sin(ay), cX = Math.cos(ax), sX = Math.sin(ax);
+      var B = this.buckets, i, j;
+      for (i = 0; i < B.length; i++) B[i].length = 0;
+      for (i = 0; i < this.pts.length; i++) {
+        var p = this.pts[i];
+        var e = 0.5 - 0.5 * Math.cos(t * 0.55 + p.ph);
+        var k = 1 + p.amp * e;
+        var q = rotate(p.d, cY, sY, cX, sX);
+        var z = q[2] * k;
+        var pr = F / (F - z);
+        var x = o.x + q[0] * k * R * pr, y = o.y - q[1] * k * R * pr;
+        var depth = (q[2] + 1) / 2;
+        var a = (0.1 + 0.9 * depth) * p.b * (p.big ? 1 - 0.55 * e : 1);
+        var s = p.s * (0.7 + 0.7 * depth);
+        var bi = Math.min(9, (a * 10) | 0);
+        B[bi].push(x, y, s);
+      }
+      c.save();
+      c.globalCompositeOperation = 'lighter';
+      for (i = 0; i < B.length; i++) {
+        var arr = B[i];
+        if (!arr.length) continue;
+        c.fillStyle = 'rgba(255,236,208,' + ((i + 0.5) / 10).toFixed(2) + ')';
+        for (j = 0; j < arr.length; j += 3) c.fillRect(arr[j], arr[j + 1], arr[j + 2], arr[j + 2]);
+      }
+      var g = c.createRadialGradient(o.x, o.y, 0, o.x, o.y, R * 1.2);
+      g.addColorStop(0, 'rgba(255,226,186,.07)'); g.addColorStop(1, 'rgba(255,226,186,0)');
+      c.fillStyle = g; c.fillRect(o.x - R * 1.3, o.y - R * 1.3, R * 2.6, R * 2.6);
+      c.restore();
+    }
+  };
+
+  /* ======================================================================
+     D — DESIGN SERVICES : orb tersusun dari kubus
+     ====================================================================== */
+  function randRot(r) {
+    // matriks rotasi acak (euler)
+    var a = r() * TAU, b = r() * TAU, g = r() * TAU;
+    var ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b), cg = Math.cos(g), sg = Math.sin(g);
+    return [
+      [ca * cb, ca * sb * sg - sa * cg, ca * sb * cg + sa * sg],
+      [sa * cb, sa * sb * sg + ca * cg, sa * sb * cg - ca * sg],
+      [-sb, cb * sg, cb * cg]
+    ];
+  }
+  var PAL_D = [[238, 231, 218], [238, 231, 218], [232, 224, 210], [214, 196, 165], [176, 148, 104], [112, 92, 68]];
+
+  var cubes = {
+    t0: 1.4,
+    dirty: function () { return orbBox(this, 1.9); },
+    setup: function () {
+      var r = rng(41);
+      var dirs = fibonacci(120, r, 0.4);
+      this.cubes = dirs.map(function (d) {
+        var m = randRot(r);
+        var pick = r();
+        var col = pick < 0.72 ? PAL_D[(r() * 3) | 0] : pick < 0.88 ? PAL_D[3] : pick < 0.96 ? PAL_D[4] : PAL_D[5];
+        return {
+          d: d, m: m, s: 0.2 + r() * 0.16, dist: 0.7 + r() * 0.08,
+          ph: r() * TAU, amp: 0.35 + r() * 0.65, col: col
+        };
+      });
+    },
+    paint: function (b, w, h, u) {
+      var g = b.createLinearGradient(0, 0, 0, h);
+      g.addColorStop(0, '#a59b8d'); g.addColorStop(0.5, '#746a5e'); g.addColorStop(1, '#342e27');
+      b.fillStyle = g; b.fillRect(0, 0, w, h);
+      // kisi diagonal halus
+      b.save();
+      b.strokeStyle = 'rgba(255,250,240,.075)'; b.lineWidth = 1;
+      var step = u * 1.05;
+      for (var x = -h; x < w + h; x += step) {
+        b.beginPath(); b.moveTo(x, 0); b.lineTo(x + h * 0.9, h); b.stroke();
+        b.beginPath(); b.moveTo(x + h * 0.9, 0); b.lineTo(x, h); b.stroke();
+      }
+      b.restore();
+      var o = this.orb;
+      var rg = b.createRadialGradient(o.x, o.y, 0, o.x, o.y, u * 1.6);
+      rg.addColorStop(0, 'rgba(255,246,230,.22)'); rg.addColorStop(1, 'rgba(255,246,230,0)');
+      b.fillStyle = rg; b.fillRect(0, 0, w, h);
+      vignette(b, w, h, 0.5, 0.5);
+    },
+    draw: function (c, t, w, h, u) {
+      var o = this.orb, R = o.r * 0.86;
+      var ay = t * 0.27 + 0.4, ax = 0.48 + Math.sin(t * 0.21) * 0.1;
+      var cY = Math.cos(ay), sY = Math.sin(ay), cX = Math.cos(ax), sX = Math.sin(ax);
+      var faces = [];
+      for (var i = 0; i < this.cubes.length; i++) {
+        var q = this.cubes[i];
+        var br = q.amp * 0.26 * (0.5 - 0.5 * Math.cos(t * 0.8 + q.ph));
+        var dd = q.dist + br;
+        var ctr = rotate([q.d[0] * dd, q.d[1] * dd, q.d[2] * dd], cY, sY, cX, sX);
+        var ax0 = rotate([q.m[0][0], q.m[1][0], q.m[2][0]], cY, sY, cX, sX);
+        var ax1 = rotate([q.m[0][1], q.m[1][1], q.m[2][1]], cY, sY, cX, sX);
+        var ax2 = rotate([q.m[0][2], q.m[1][2], q.m[2][2]], cY, sY, cX, sX);
+        var hs = q.s / 2;
+        var axes = [ax0, ax1, ax2];
+        for (var k = 0; k < 3; k++) {
+          for (var sgn = -1; sgn <= 1; sgn += 2) {
+            var n = [axes[k][0] * sgn, axes[k][1] * sgn, axes[k][2] * sgn];
+            if (n[2] <= 0.02) continue;
+            var u1 = axes[(k + 1) % 3], u2 = axes[(k + 2) % 3];
+            var fc = [ctr[0] + n[0] * hs, ctr[1] + n[1] * hs, ctr[2] + n[2] * hs];
+            var pts = [];
+            var sgnA = [1, 1, -1, -1], sgnB = [1, -1, -1, 1];
+            for (var v = 0; v < 4; v++) {
+              var px = fc[0] + (u1[0] * sgnA[v] + u2[0] * sgnB[v]) * hs;
+              var py = fc[1] + (u1[1] * sgnA[v] + u2[1] * sgnB[v]) * hs;
+              var pz = fc[2] + (u1[2] * sgnA[v] + u2[2] * sgnB[v]) * hs;
+              var pr = F / (F - pz);
+              pts.push(o.x + px * R * pr, o.y - py * R * pr);
+            }
+            var dl = Math.max(0, dot(n, LIGHT));
+            var sp = Math.pow(Math.max(0, dot(n, HALF)), 22);
+            var lv = 0.3 + 0.7 * dl;
+            var col = [clamp255(q.col[0] * lv + sp * 60), clamp255(q.col[1] * lv + sp * 56), clamp255(q.col[2] * lv + sp * 48)];
+            faces.push({ z: fc[2], p: pts, c: rgb(col) });
+          }
+        }
+      }
+      faces.sort(function (a, b) { return a.z - b.z; });
+      c.lineJoin = 'round';
+      for (i = 0; i < faces.length; i++) {
+        var f = faces[i], p2 = f.p;
+        c.beginPath();
+        c.moveTo(p2[0], p2[1]); c.lineTo(p2[2], p2[3]); c.lineTo(p2[4], p2[5]); c.lineTo(p2[6], p2[7]);
+        c.closePath();
+        c.fillStyle = f.c; c.fill();
+        c.lineWidth = 0.6; c.strokeStyle = 'rgba(255,252,246,.22)'; c.stroke();
+      }
+    }
+  };
+
+  var IMPL = { a: atelier, b: ripple, c: particles, d: cubes };
+
+  return {
+    create: function (key, canvas) {
+      var impl = IMPL[key];
+      return impl ? new Scene(canvas, impl) : null;
+    }
+  };
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   XIONCO BUSINESS — Core interaction engine (v0.2)
+   Mode "x"     : desktop / landscape — Main Frame accordion 8 × 4 block
+   Mode "stack" : mobile / portrait   — kartu bertumpuk (gambar 6), swipe
+   - Spring physics, garis emas, cahaya bawah frame (terkunci di lebar frame)
+   - Play button = tombol ke halaman, selalu terlihat, tepat di bawah orb
+   - Video/animasi berjalan hanya saat frame aktif (hover / kartu tengah)
+   - Routing (hash), transisi frame → halaman, sidebar, intro, keyboard, dev
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var CFG = window.XIONCO_CONFIG || {};
+  var ASSETS = window.XIONCO_ASSETS;
+  var SCENES = window.XIONCO_SCENES;
+  var ROUTES = CFG.routes || { home: {} };
+  var MOTION = CFG.motion || {};
+  var IDLE = (CFG.frame && CFG.frame.idle) || [4, 2, 1, 1];
+  var EXPANDED = (CFG.frame && CFG.frame.expanded) || 5;
+  var STACK_START = 1; // kartu awal di mobile (gambar 6: Customize di tengah)
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var slug = function (s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); };
+  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+  function store(kind, key, val) {
+    try {
+      var s = kind === 'local' ? localStorage : sessionStorage;
+      if (val === undefined) return s.getItem(key);
+      s.setItem(key, val);
+    } catch (e) { return null; }
+  }
+
+  var REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (REDUCED) MOTION = Object.assign({}, MOTION, { hover: { k: 520, c: 46 }, enter: { k: 420, c: 41 } });
+
+  /* ---------------------------------------------------------------------- */
+  /* State                                                                  */
+  /* ---------------------------------------------------------------------- */
+  var S = {
+    route: null, tab: null,
+    state: 'boot',          // boot | idle | hover | page
+    active: -1,
+    ready: false,
+    introRunning: false,
+    pointer: FINE ? 'mouse' : 'touch',
+    devGrid: false,
+    suppressClick: false
+  };
+
+  /* ---------------------------------------------------------------------- */
+  /* Tracking — UTM (first & last touch) + window.dataLayer                 */
+  /* ---------------------------------------------------------------------- */
+  var Track = (function () {
+    var KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid', 'ttclid'];
+    var utm = {};
+    try {
+      var q = new URLSearchParams(location.search);
+      KEYS.forEach(function (k) { if (q.get(k)) utm[k] = q.get(k); });
+      if (Object.keys(utm).length) {
+        utm.landing = location.pathname + location.search;
+        utm.referrer = document.referrer || '';
+        utm.ts = new Date().toISOString();
+        store('session', 'xc_utm_last', JSON.stringify(utm));
+        if (!store('local', 'xc_utm_first')) store('local', 'xc_utm_first', JSON.stringify(utm));
+      } else {
+        utm = JSON.parse(store('session', 'xc_utm_last') || '{}');
+      }
+    } catch (e) { utm = {}; }
+    window.dataLayer = window.dataLayer || [];
+    return {
+      utm: function () { return utm; },
+      event: function (name, data) {
+        var payload = { event: 'xc_' + name, xc_route: S.route || 'home' };
+        for (var k in data) if (data[k] !== undefined) payload[k] = data[k];
+        if (utm.utm_source) payload.utm_source = utm.utm_source;
+        if (utm.utm_campaign) payload.utm_campaign = utm.utm_campaign;
+        window.dataLayer.push(payload);
+      }
+    };
+  })();
+  window.XIONCO = { track: Track.event, utm: Track.utm };
+
+  /* ---------------------------------------------------------------------- */
+  /* Spring                                                                 */
+  /* ---------------------------------------------------------------------- */
+  function Spring(x, cfg, eps) {
+    this.x = x; this.v = 0; this.t = x;
+    this.eps = eps || 1e-4;
+    this.set(cfg || { k: 120, c: 21 });
+  }
+  Spring.prototype.set = function (cfg) { this.k = cfg.k; this.c = cfg.c; return this; };
+  Spring.prototype.step = function (dt) {
+    if (this.x === this.t && this.v === 0) return false;
+    var n = Math.ceil(dt / 0.004), h = dt / n;
+    for (var i = 0; i < n; i++) {
+      var a = -this.k * (this.x - this.t) - this.c * this.v;
+      this.v += a * h;
+      this.x += this.v * h;
+    }
+    if (Math.abs(this.x - this.t) < this.eps && Math.abs(this.v) < this.eps * 10) { this.x = this.t; this.v = 0; return false; }
+    return true;
+  };
+  Spring.prototype.snap = function (v) { if (v != null) this.t = v; this.x = this.t; this.v = 0; };
+
+  /* ---------------------------------------------------------------------- */
+  /* Elements                                                               */
+  /* ---------------------------------------------------------------------- */
+  var root = document.documentElement;
+  var app = $('#app'), frame = $('#frame'), track = $('#track'), rail = $('#rail');
+  var underglow = $('#underglow');
+  var page = $('#page'), pageBody = $('#pageBody'), pageGlyph = $('#pageGlyph');
+  var subnavInner = $('#subnavInner'), crumbs = $('#crumbs');
+  var sidebar = $('#sidebar'), sbHover = $('#sidebarHover');
+  var menuBtn = $('#menuBtn'), drawerScrim = $('#drawerScrim');
+  var stackNav = $('#stackNav'), stackDots = $$('#stackNav button');
+  var hud = $('#hud'), grid = $('#frameGrid');
+
+  var panels = $$('.panel', track).map(function (el, i) {
+    var p = {
+      el: el, i: i, key: el.dataset.key, route: el.dataset.route,
+      focusX: parseFloat(el.dataset.focus || '2.5'),
+      stage: $('.panel__stage', el), media: $('.panel__media', el), canvas: $('.panel__canvas', el),
+      hit: $('.panel__hit', el), play: $('.panel__play', el), devtag: $('.panel__devtag', el),
+      w: new Spring(2, MOTION.hover),
+      rate: 0, rateT: 0, time: 0, dirty: true,
+      scene: null, video: null, gif: null, poster: null, mediaKind: 'procedural',
+      orb: { x: 0, y: 0, r: 0 }, rect: { x: 0, y: 0, w: 0, h: 0 },
+      pos: 0, size: 0, _k: ''
+    };
+    p.scene = SCENES ? SCENES.create(p.key, p.canvas) : null;
+    if (p.scene) p.time = p.scene.t;
+    return p;
+  });
+  var N = panels.length;
+
+  var railX = new Spring(0, MOTION.rail, 0.02);
+  var railW = new Spring(0, MOTION.rail, 0.02);
+  var tiltX = new Spring(0, { k: 38, c: 11.5 }, 1e-4);
+  var tiltY = new Spring(0, { k: 38, c: 11.5 }, 1e-4);
+  var stackPos = new Spring(STACK_START, { k: 165, c: 25 }, 1e-4);
+  var expand = new Spring(0, MOTION.enter, 1e-4);
+
+  /* ---------------------------------------------------------------------- */
+  /* Text splitting                                                         */
+  /* ---------------------------------------------------------------------- */
+  function splitTitles() {
+    $$('[data-split]').forEach(function (h) {
+      var txt = h.textContent.trim();
+      h.textContent = '';
+      var sr = document.createElement('span');
+      sr.className = 'sr-only';
+      sr.textContent = txt;
+      h.appendChild(sr);
+      var ci = 0;
+      txt.split('').forEach(function (ch) {
+        var s = document.createElement('span');
+        s.setAttribute('aria-hidden', 'true');
+        if (ch === ' ') s.className = 'sp';
+        else { s.className = 'ch'; s.textContent = ch; s.style.setProperty('--ci', ci++); }
+        h.appendChild(s);
+      });
+    });
+  }
+
+  function splitBrand() {
+    var el = $('#brandText');
+    if (!el) return;
+    var txt = el.textContent.trim();
+    el.textContent = '';
+    el.setAttribute('aria-hidden', 'true');
+    // gradasi highlight hangat → emas → perunggu (mockup: puncak #c2af99)
+    var stops = [[0, [205, 189, 166]], [0.5, [184, 160, 120]], [1, [106, 90, 71]]];
+    function colorAt(t) {
+      for (var k = 1; k < stops.length; k++) {
+        if (t <= stops[k][0]) {
+          var a = stops[k - 1], b = stops[k], f = (t - a[0]) / (b[0] - a[0]);
+          return [0, 1, 2].map(function (j) { return Math.round(a[1][j] + (b[1][j] - a[1][j]) * f); });
+        }
+      }
+      return stops[stops.length - 1][1];
+    }
+    var n = txt.length;
+    txt.split('').forEach(function (ch, i) {
+      var s = document.createElement('span');
+      if (ch === ' ') { s.className = 'brand__sp'; el.appendChild(s); return; }
+      s.className = 'brand__ch';
+      s.textContent = ch;
+      s.style.setProperty('--c', 'rgb(' + colorAt(i / (n - 1)).join(',') + ')');
+      s.style.setProperty('--i', i);
+      el.appendChild(s);
+    });
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Geometry                                                               */
+  /* ---------------------------------------------------------------------- */
+  var G = { mode: '', u: 0, bz: 0, hdr: 72, vw: 0, vh: 0, fx: 0, fy: 0, fw: 0, fh: 0, tw: 0, th: 0, sw: 0, sh: 0, cw: 0, ch: 0, pd: 48, py: 0, mobile: false, dpr: 1 };
+
+  function measure() {
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var mobile = vw < 700;
+    var hdr = mobile ? 60 : 72;
+    var mode = vw / vh < 0.9 ? 'stack' : 'x';
+    var B = CFG.block || {};
+    var u, bz, tw, th, fx, fy, sw, sh, cw = 0, ch = 0, pd, py;
+
+    if (mode === 'x') {
+      var wr = (B.widthRatio || 0.0705) + clamp((1440 - vw) / 416, 0, 1) * 0.012;
+      u = Math.min(vw * wr, (vh - hdr) * (B.heightRatio || 0.135));
+      u = Math.min(u, (vw - (mobile ? 32 : 168)) / 8.25);
+      u = Math.round(clamp(u, B.min || 44, B.max || 168) * 2) / 2;
+      bz = Math.max(6, Math.round(u * 0.1));
+      tw = u * 8; th = u * 4;
+      fx = Math.round((vw - tw - bz * 2) / 2);
+      fy = Math.round(hdr + (vh - hdr) * 0.475 - (th + bz * 2) / 2);
+      sw = u * 5; sh = u * 4;
+      pd = Math.round(clamp(u * 0.46, 40, 58));
+      py = u * 2 + u * 0.5 + u * 0.14 + pd / 2;       // tepat di bawah orb (pusat orb di 2 block)
+    } else {
+      var side = mobile ? 46 : 120;                   // ruang untuk irisan kartu kiri/kanan
+      var top = hdr + (mobile ? 16 : 40), bottom = mobile ? 64 : 100;
+      var availH = vh - top - bottom;
+      cw = Math.min(vw - side * 2, availH * 0.8, 560);
+      ch = cw * 1.25;
+      u = cw / 4;
+      bz = 0;
+      tw = vw - (mobile ? 24 : 64); th = availH;
+      fx = Math.round((vw - tw) / 2); fy = top;
+      sw = cw; sh = ch;
+      pd = Math.round(clamp(cw * 0.15, 42, 56));
+      py = ch * 0.34 + cw / 8 + 12 + pd / 2;
+    }
+
+    var modeChanged = mode !== G.mode;
+    var unitChanged = u !== G.u || cw !== G.cw;
+    G.mode = mode; G.u = u; G.bz = bz; G.hdr = hdr; G.vw = vw; G.vh = vh; G.mobile = mobile;
+    G.fx = fx; G.fy = fy; G.fw = tw + bz * 2; G.fh = th + bz * 2; G.tw = tw; G.th = th; G.sw = sw; G.sh = sh;
+    G.cw = cw; G.ch = ch; G.pd = pd; G.py = py;
+    // mode kartu: jarak atas halaman agar tidak tertutup sub-navigasi
+    G.pt = mode === 'stack' ? Math.max(0, hdr + (mobile ? 38 : 42) + 12 - fy) : 0;
+    G.dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.75 : 2);
+
+    var st = root.style;
+    st.setProperty('--u', u + 'px');
+    st.setProperty('--bz', bz + 'px');
+    st.setProperty('--hdr', hdr + 'px');
+    st.setProperty('--fx', fx + 'px');
+    st.setProperty('--fy', fy + 'px');
+    st.setProperty('--fw', G.fw + 'px');
+    st.setProperty('--fh', G.fh + 'px');
+    st.setProperty('--tw', tw + 'px');
+    st.setProperty('--th', th + 'px');
+    st.setProperty('--sw', sw + 'px');
+    st.setProperty('--sh', sh + 'px');
+    st.setProperty('--pd', pd + 'px');
+    st.setProperty('--py', py + 'px');
+    st.setProperty('--pt', G.pt + 'px');
+
+    // orb per panel (koordinat "layar")
+    panels.forEach(function (p) {
+      p.orb = mode === 'x'
+        ? { x: p.focusX * u, y: u * 2, r: u / 2 }
+        : { x: cw / 2, y: ch * 0.34, r: cw / 8 };
+      p.el.style.setProperty('--ox', p.orb.x + 'px');
+      p.el.style.setProperty('--oy', p.orb.y + 'px');
+      p.el.style.setProperty('--or', p.orb.r + 'px');
+    });
+
+    frame.dataset.mode = mode;
+    app.classList.toggle('is-stack', mode === 'stack');
+    app.classList.toggle('is-mobile', mobile);
+    if (mode === 'stack') {
+      stackNav.style.top = (fy + (th - ch) * 0.42 + ch + 16) + 'px';
+    }
+
+    if (modeChanged) {
+      panels.forEach(function (p) {
+        ['left', 'top', 'width', 'height', 'opacity', 'zIndex', 'transform', 'visibility'].forEach(function (k) { p.el.style[k] = ''; });
+        p.el.style.removeProperty('--dim');
+        p._k = '';
+        if (p.video) p.video.style.objectPosition = objectPos(p);
+        if (p.poster) p.poster.style.objectPosition = objectPos(p);
+      });
+      rail.style.width = ''; rail.style.height = '';
+      frame.style.transform = '';
+    } else if (unitChanged) {
+      panels.forEach(function (p) { p._k = ''; });
+    }
+    if ((modeChanged || unitChanged) && S.devGrid) buildGrid();
+    return modeChanged;
+  }
+
+  /* Resolusi canvas: normal di homepage; saat frame membuka halaman, layar di-zoom
+     (desktop 1.6×, mobile ±1.8×) → canvas digambar ulang lebih tajam agar tidak pecah. */
+  function sceneDensity(z) {
+    return z > 1.01 ? Math.min(Math.min(G.dpr, 2) * z, 3.4) : Math.min(G.dpr, 1.5);
+  }
+  function pageZoom() {
+    return G.mode === 'x' ? 8 / EXPANDED : Math.max(G.tw / G.cw, (G.th - G.pt) / G.ch, 1);
+  }
+  function resizeScene(p) {
+    if (p.scene && !p.video && !p.poster) {
+      p.scene.resize(G.sw, G.sh, sceneDensity(p.zoom || 1), p.orb, G.u, G.mode);
+      p.dirty = true;
+    }
+  }
+  function setZoom(p, z) {
+    if (Math.abs((p.zoom || 1) - z) < 0.01) return;
+    p.zoom = z;
+    resizeScene(p);
+  }
+  function resizeScenes() {
+    panels.forEach(function (p) {
+      if (S.state === 'page' && p.i === S.active) p.zoom = pageZoom();
+      resizeScene(p);
+    });
+  }
+
+  function objectPos(p) {
+    return G.mode === 'x' ? '50% 50%' : (p.focusX / 5 * 100).toFixed(1) + '% 50%';
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Layout per frame                                                       */
+  /* ---------------------------------------------------------------------- */
+  function layout() { if (G.mode === 'stack') layoutStack(); else layoutAccordion(); }
+
+  function layoutAccordion() {
+    var main = G.tw, unit = G.u, dpr = G.dpr;
+    var total = 0, i, p;
+    for (i = 0; i < N; i++) total += Math.max(0, panels[i].w.x);
+    if (total < 1e-6) total = 1;
+    var scale = main / total, pos = 0;
+    for (i = 0; i < N; i++) {
+      p = panels[i];
+      var size = Math.max(0, p.w.x) * scale;
+      var a = Math.round(pos * dpr) / dpr;
+      var b = Math.round((pos + size) * dpr) / dpr;
+      var len = Math.max(0, b - a);
+      var key = a + '|' + len;
+      if (p._k !== key) {
+        // "layar" 5 × 4 block; saat panel > 5 block (masuk halaman) layar di-zoom
+        var stageMain = EXPANDED * unit;
+        var s = Math.max(1, len / stageMain);
+        var focus = p.focusX * unit * s;
+        var off = clamp(focus - len / 2, 0, Math.max(0, stageMain * s - len));
+        p.el.style.transform = 'translate3d(' + a + 'px,0,0)';
+        p.el.style.width = len + 'px';
+        p.stage.style.transform = 'translate3d(' + (-off).toFixed(2) + 'px,0,0) scale(' + s.toFixed(4) + ')';
+        p.el.style.setProperty('--px', (p.orb.x * s - off).toFixed(1) + 'px');   // play tepat di bawah orb
+        p.el.style.visibility = len < 0.5 ? 'hidden' : '';
+        p._k = key;
+      }
+      p.pos = a; p.size = len;
+      pos += size;
+    }
+  }
+
+  function layoutStack() {
+    var pos = stackPos.x, E = clamp(expand.x, 0, 1.15);
+    var cw = G.cw, ch = G.ch, tw = G.tw, th = G.th, pt = G.pt;
+    var bL = (tw - cw) / 2, bT = (th - ch) * 0.42;
+    for (var i = 0; i < N; i++) {
+      var p = panels[i];
+      var d = i - pos, ad = Math.abs(d), sg = d < 0 ? -1 : 1, k = Math.min(ad, 3);
+      var s = 1 - 0.07 * k;
+      var slice = k <= 1 ? 26 * k : k <= 2 ? 26 + 18 * (k - 1) : 44 + 14 * (k - 2);
+      var tx = ad < 1e-4 ? 0 : sg * (cw / 2 + slice - cw * s / 2);
+      var ry = -sg * Math.min(ad, 1) * 8;
+      var W = cw, H = ch, L = bL, T = bT, op = 1;
+      if (E > 0.0001 && S.state === 'page' && i === S.active) {
+        // halaman: kartu melebar mengisi area di bawah sub-navigasi
+        W = cw + (tw - cw) * E; H = ch + (th - pt - ch) * E;
+        L = bL * (1 - E); T = bT + (pt - bT) * E;
+        tx *= 1 - E; ry *= 1 - E; s += (1 - s) * E;
+      } else if (E > 0.0001) {
+        op = Math.max(0, 1 - E * 1.5); tx += sg * 30 * E;
+      }
+      var key = [L, T, W, H, tx, ry, s, op].map(function (v) { return v.toFixed(2); }).join('|');
+      if (p._k !== key) {
+        p.el.style.left = L + 'px';
+        p.el.style.top = T + 'px';
+        p.el.style.width = W + 'px';
+        p.el.style.height = H + 'px';
+        p.el.style.transform = 'perspective(1400px) translate3d(' + tx.toFixed(2) + 'px,0,0) rotateY(' + ry.toFixed(2) + 'deg) scale(' + s.toFixed(4) + ')';
+        p.el.style.opacity = op.toFixed(3);
+        p.el.style.zIndex = String(100 - Math.round(ad * 10));
+        p.el.style.setProperty('--dim', (k * 0.26).toFixed(3));
+        p.el.style.setProperty('--px', (W / 2) + 'px');
+        var sc = Math.max(W / cw, H / ch);
+        p.stage.style.transform = 'translate3d(' + ((W - cw * sc) / 2).toFixed(2) + 'px,' + ((H - ch * sc) / 2).toFixed(2) + 'px,0) scale(' + sc.toFixed(4) + ')';
+        p._k = key;
+      }
+      // rect visual (untuk garis emas)
+      p.rect.x = L + tx + W * (1 - s) / 2;
+      p.rect.y = T + H * (1 - s) / 2;
+      p.rect.w = W * s; p.rect.h = H * s;
+      p.size = W;
+    }
+  }
+
+  function railTarget() {
+    if (S.active >= 0 && (S.state === 'hover' || S.state === 'page')) {
+      var p = panels[S.active];
+      return [p.pos, p.size];
+    }
+    return [0, G.tw];
+  }
+
+  function drawRail() {
+    var x, w;
+    if (G.mode === 'x') {
+      x = railX.x; w = Math.max(0, railW.x);
+      rail.style.transform = 'translate3d(' + (G.bz + x).toFixed(2) + 'px,' + (G.bz + G.th - 1) + 'px,0)';
+      rail.style.width = w.toFixed(2) + 'px';
+      underglow.style.transform = 'translate3d(' + (G.bz + x).toFixed(1) + 'px,0,0)';
+      underglow.style.width = w.toFixed(1) + 'px';
+    } else {
+      var idx = clamp(Math.round(stackPos.x), 0, N - 1);
+      var r = panels[S.state === 'page' && S.active >= 0 ? S.active : idx].rect;
+      rail.style.transform = 'translate3d(' + r.x.toFixed(2) + 'px,' + (r.y + r.h - 1).toFixed(2) + 'px,0)';
+      rail.style.width = r.w.toFixed(2) + 'px';
+    }
+  }
+
+  function tiltEnabled() { return FINE && !REDUCED && G.mode === 'x' && MOTION.tilt; }
+  function applyTilt() {
+    var k = S.state === 'page' ? 0.25 : 1;
+    var T = MOTION.tilt;
+    frame.style.transform = 'perspective(2400px) rotateX(' + (tiltY.x * T.x * k).toFixed(3) + 'deg) rotateY(' + (-tiltX.x * T.y * k).toFixed(3) + 'deg)';
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Media (video / GIF / poster / procedural)                              */
+  /* ---------------------------------------------------------------------- */
+  function setRate(p, r) { p.rateT = r; }
+
+  function updateMedia(p, dt) {
+    var up = p.rateT > p.rate;
+    p.rate += (p.rateT - p.rate) * (1 - Math.exp(-dt * (up ? 4.2 : 2.8)));
+    if (Math.abs(p.rate - p.rateT) < 0.003) p.rate = p.rateT;
+    var moving = p.rate > 0.0008;
+    var visible = p.size > 0.5 && p.el.style.opacity !== '0.000';
+
+    if (p.video) {
+      var v = p.video;
+      if (p.rateT > 0 && v.paused && visible) {
+        try { v.playbackRate = Math.max(0.25, p.rate); } catch (e) {}
+        var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
+      }
+      if (!v.paused) {
+        var target = Math.max(0.0625, Math.round(p.rate * 20) / 20);
+        if (Math.abs(v.playbackRate - target) > 0.04) { try { v.playbackRate = target; } catch (e) {} }
+        if ((p.rateT === 0 && p.rate < 0.1) || !visible) v.pause();
+      }
+    } else if (p.gif) {
+      var want = p.rateT > 0 && visible;
+      if (want && !p.gifOn) { p.gif.src = p.gifSrc; p.gifOn = true; }
+      else if (!want && p.gifOn && p.rate < 0.2 && p.posterSrc) { p.gif.src = p.posterSrc; p.gifOn = false; }
+    } else if (p.scene && !p.poster) {
+      if (moving && visible) { p.time += dt * p.rate; p.scene.render(p.time); }
+      else if (p.dirty && visible) { p.scene.render(p.time); p.dirty = false; }
+    }
+    return moving || p.rate !== p.rateT;
+  }
+
+  function attachVideo(p, src, poster) {
+    if (/\.gif$/i.test(src)) return attachGif(p, src, poster);
+    var v = document.createElement('video');
+    v.className = 'panel__video';
+    v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true; v.preload = 'auto';
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('aria-hidden', 'true');
+    if (poster) v.poster = poster;
+    v.style.objectPosition = objectPos(p);
+    v.addEventListener('loadeddata', function () {
+      v.classList.add('is-ready');
+      p.video = v; p.mediaKind = 'video';
+      setTimeout(function () { p.canvas.style.display = 'none'; p.scene = null; }, 900);
+      kick();
+    }, { once: true });
+    v.src = src;
+    p.media.appendChild(v);
+  }
+
+  function attachGif(p, src, poster) {
+    var img = new Image();
+    img.className = 'panel__img';
+    img.alt = '';
+    img.style.objectPosition = objectPos(p);
+    img.onload = function () {
+      img.classList.add('is-ready');
+      setTimeout(function () { p.canvas.style.display = 'none'; p.scene = null; }, 900);
+    };
+    p.gif = img; p.gifSrc = src; p.posterSrc = poster; p.gifOn = !poster; p.mediaKind = 'gif';
+    img.src = poster || src;
+    p.media.appendChild(img);
+  }
+
+  function attachPoster(p, src) {
+    var img = new Image();
+    img.className = 'panel__img';
+    img.alt = '';
+    img.style.objectPosition = objectPos(p);
+    img.onload = function () {
+      img.classList.add('is-ready');
+      p.poster = img; p.mediaKind = 'poster';
+      setTimeout(function () { p.canvas.style.display = 'none'; }, 900);
+    };
+    img.src = src;
+    p.media.appendChild(img);
+  }
+
+  function loadAssets() {
+    if (!CFG.probeAssets || !ASSETS) return;
+    ASSETS.resolve('brand-wordmark').then(function (src) {
+      if (!src) return;
+      var img = new Image();
+      img.className = 'brand__img'; img.alt = '';
+      img.onload = function () { var t = $('#brandText'); if (t) t.replaceWith(img); };
+      img.src = src;
+    });
+    ASSETS.resolve('brand-slogan').then(function (src) {
+      if (!src) return;
+      var img = new Image();
+      img.className = 'slogan__img'; img.alt = '#1 Furniture Manufacturer in Indonesia';
+      img.onload = function () { var s = $('#slogan'); s.textContent = ''; s.appendChild(img); };
+      img.src = src;
+    });
+    ASSETS.resolve('brand-favicon').then(function (src) {
+      if (!src) return;
+      var l = document.createElement('link'); l.rel = 'icon'; l.href = src; document.head.appendChild(l);
+    });
+    (G.mobile ? ASSETS.resolve('home-bg-mobile') : Promise.resolve(null)).then(function (m) {
+      return m || ASSETS.resolve('home-bg');
+    }).then(function (src) {
+      if (!src) return;
+      var img = new Image();
+      img.onload = function () { var bg = $('#bgImage'); bg.style.backgroundImage = 'url("' + src + '")'; bg.classList.add('is-ready'); };
+      img.src = src;
+    });
+    panels.forEach(function (p) {
+      var k = p.key;
+      Promise.all([
+        ASSETS.resolve('frame-' + k + '-poster'),
+        ASSETS.resolve('frame-' + k + '-video'),
+        G.mode === 'stack' ? ASSETS.resolve('frame-' + k + '-mobile') : Promise.resolve(null)
+      ]).then(function (r) {
+        var poster = r[0], video = r[2] || r[1];
+        if (video) attachVideo(p, video, poster);
+        else if (poster) attachPoster(p, poster);
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Loop                                                                   */
+  /* ---------------------------------------------------------------------- */
+  var running = false, lastT = 0;
+  function kick() {
+    if (running) return;
+    running = true; lastT = performance.now();
+    requestAnimationFrame(tick);
+  }
+  function tick(now) {
+    var dt = Math.min(0.064, Math.max(0.001, (now - lastT) / 1000));
+    lastT = now;
+    var busy = false, i;
+    if (G.mode === 'x') {
+      for (i = 0; i < N; i++) if (panels[i].w.step(dt)) busy = true;
+    } else {
+      if (stackPos.step(dt)) busy = true;
+      if (expand.step(dt)) busy = true;
+    }
+    layout();
+    if (G.mode === 'x') {
+      var rt = railTarget();
+      railX.t = rt[0]; railW.t = rt[1];
+      if (railX.step(dt)) busy = true;
+      if (railW.step(dt)) busy = true;
+    }
+    drawRail();
+    if (tiltEnabled()) {
+      if (tiltX.step(dt)) busy = true;
+      if (tiltY.step(dt)) busy = true;
+      applyTilt();
+    }
+    for (i = 0; i < N; i++) if (updateMedia(panels[i], dt)) busy = true;
+    if (S.devGrid) drawHud();
+    if (busy || drag) requestAnimationFrame(tick);
+    else running = false;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Frame states                                                           */
+  /* ---------------------------------------------------------------------- */
+  function setTargets(arr, cfg) {
+    panels.forEach(function (p, j) { p.w.set(cfg || MOTION.hover); p.w.t = arr[j]; });
+  }
+  function applyClasses() {
+    var inPage = S.state === 'page';
+    var stack = G.mode === 'stack';
+    panels.forEach(function (p, j) {
+      var t = p.w.t;
+      var open = stack ? (!inPage && j === S.active) : (!inPage && t >= 4);
+      p.el.classList.toggle('is-active', j === S.active);
+      p.el.classList.toggle('is-open', open);
+      p.play.tabIndex = inPage ? -1 : 0;
+    });
+    stackDots.forEach(function (b, j) { b.classList.toggle('is-on', j === S.active); });
+  }
+  function setState(st) { S.state = st; frame.dataset.state = st; }
+
+  function activate(i) {
+    if (!S.ready || S.route !== 'home') return;
+    if (G.mode === 'stack') { stackTo(i); return; }
+    if (S.active === i && S.state === 'hover') return;
+    S.active = i;
+    setState('hover');
+    setTargets(panels.map(function (_, j) { return j === i ? EXPANDED : 1; }), MOTION.hover);
+    panels.forEach(function (p, j) { setRate(p, j === i ? 1 : 0); });
+    applyClasses();
+    kick();
+  }
+  function idle(cfg) {
+    setState('idle');
+    if (G.mode === 'stack') {
+      if (S.active < 0) S.active = clamp(Math.round(stackPos.t), 0, N - 1);
+      panels.forEach(function (p, j) { setRate(p, j === S.active ? 1 : 0); });
+    } else {
+      S.active = -1;
+      setTargets(IDLE, cfg || MOTION.hover);
+      panels.forEach(function (p) { setRate(p, 0); });
+    }
+    applyClasses();
+    kick();
+  }
+
+  /* mobile: geser ke kartu i */
+  function stackTo(i) {
+    i = clamp(i, 0, N - 1);
+    stackPos.t = i;
+    if (S.active !== i) {
+      S.active = i;
+      if (S.state !== 'page') panels.forEach(function (p, j) { setRate(p, j === i ? 1 : 0); });
+      applyClasses();
+    }
+    kick();
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Panel interaction                                                      */
+  /* ---------------------------------------------------------------------- */
+  var intentT = 0, leaveT = 0, drag = null;
+
+  function bindPanels() {
+    panels.forEach(function (p) {
+      p.el.addEventListener('pointerenter', function (e) {
+        if (e.pointerType !== 'mouse' || G.mode !== 'x') return;
+        clearTimeout(leaveT); clearTimeout(intentT);
+        intentT = setTimeout(function () { activate(p.i); }, MOTION.hoverIntent || 45);
+      });
+      p.el.addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse' || S.active !== p.i || G.mode !== 'x') return;
+        var r = p.el.getBoundingClientRect();
+        p.el.style.setProperty('--mx', (e.clientX - r.left).toFixed(0) + 'px');
+        p.el.style.setProperty('--my', (e.clientY - r.top).toFixed(0) + 'px');
+      });
+      p.play.addEventListener('focus', function () {
+        if (S.pointer !== 'keyboard') return;
+        clearTimeout(leaveT);
+        activate(p.i);
+      });
+      p.el.addEventListener('click', function (e) {
+        var link = e.target.closest('a');
+        if (!link) return;
+        if (!S.ready || S.suppressClick) { e.preventDefault(); return; }
+        if (S.route !== 'home') return;
+        var isPlay = !!link.closest('.panel__play');
+        if (G.mode === 'stack') {
+          if (p.i !== S.active) { e.preventDefault(); stackTo(p.i); return; }
+        } else if (S.pointer !== 'mouse' && !isPlay && S.active !== p.i) {
+          // layar sentuh (landscape): tap pertama membuka frame, play = langsung ke halaman
+          e.preventDefault();
+          activate(p.i);
+          return;
+        }
+        Track.event('frame_click', { frame: p.key.toUpperCase(), target: link.getAttribute('href'), via: isPlay ? 'play' : 'frame' });
+      });
+    });
+
+    track.addEventListener('pointerleave', function (e) {
+      if (e.pointerType !== 'mouse' || G.mode !== 'x') return;
+      clearTimeout(intentT);
+      leaveT = setTimeout(function () { if (S.route === 'home' && S.ready) idle(); }, MOTION.leaveDelay || 200);
+    });
+    track.addEventListener('focusout', function (e) {
+      if (track.contains(e.relatedTarget) || S.pointer !== 'keyboard' || G.mode !== 'x') return;
+      if (S.route === 'home' && S.ready && !track.matches(':hover')) idle();
+    });
+
+    /* swipe kartu (mobile) */
+    track.addEventListener('pointerdown', function (e) {
+      if (G.mode !== 'stack' || S.route !== 'home' || !S.ready) return;
+      drag = { id: e.pointerId, x0: e.clientX, y0: e.clientY, p0: stackPos.x, moved: false, lx: e.clientX, lt: performance.now(), vx: 0 };
+    });
+    track.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.x0, dy = e.clientY - drag.y0;
+      if (!drag.moved) {
+        if (Math.abs(dx) < 8) return;
+        if (Math.abs(dy) > Math.abs(dx)) { drag = null; return; }
+        drag.moved = true;
+        try { track.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      var now = performance.now();
+      drag.vx = (e.clientX - drag.lx) / Math.max(1, now - drag.lt);
+      drag.lx = e.clientX; drag.lt = now;
+      var pos = drag.p0 - dx / (G.cw * 0.62);
+      if (pos < 0) pos *= 0.35;
+      if (pos > N - 1) pos = N - 1 + (pos - (N - 1)) * 0.35;
+      stackPos.x = pos; stackPos.t = pos; stackPos.v = 0;
+      var near = clamp(Math.round(pos), 0, N - 1);
+      if (near !== S.active) { S.active = near; panels.forEach(function (q, j) { setRate(q, j === near ? 1 : 0); }); applyClasses(); }
+      kick();
+    });
+    function endDrag() {
+      if (!drag) return;
+      if (drag.moved) {
+        var proj = drag.vx * 260 / (G.cw * 0.62);
+        stackTo(Math.round(stackPos.x - proj));
+        S.suppressClick = true;
+        setTimeout(function () { S.suppressClick = false; }, 80);
+        Track.event('stack_swipe', { to: panels[S.active].key.toUpperCase() });
+      }
+      drag = null;
+      kick();
+    }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    stackDots.forEach(function (b) {
+      b.addEventListener('click', function () { stackTo(+b.dataset.i); });
+    });
+
+    document.addEventListener('pointerdown', function (e) {
+      S.pointer = e.pointerType || 'mouse';
+      if (S.introRunning) skipIntro();
+      if (G.mode === 'x' && S.pointer !== 'mouse' && S.route === 'home' && S.ready && S.active >= 0 && !track.contains(e.target)) idle();
+    }, true);
+
+    window.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || !tiltEnabled()) return;
+      tiltX.t = clamp(e.clientX / G.vw * 2 - 1, -1, 1);
+      tiltY.t = clamp(e.clientY / G.vh * 2 - 1, -1, 1);
+      kick();
+    }, { passive: true });
+    document.documentElement.addEventListener('mouseleave', function () { tiltX.t = 0; tiltY.t = 0; kick(); });
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Router                                                                 */
+  /* ---------------------------------------------------------------------- */
+  var pageT = 0, zoomT = 0;
+
+  function parse() {
+    var h = (location.hash || '').replace(/^#\/?/, '').split('?')[0];
+    var parts = h.split('/').filter(Boolean);
+    var route = parts[0] || 'home';
+    if (!ROUTES[route]) route = 'home';
+    return { route: route, tab: route === 'home' ? null : (parts[1] || null) };
+  }
+
+  function go(r, force) {
+    var prev = S.route;
+    if (!force && prev === r.route && S.tab === r.tab) return;
+    S.route = r.route; S.tab = r.tab;
+    setSidebarActive(r.route);
+    closeDrawer();
+    var meta = ROUTES[r.route] || {};
+    document.title = r.route === 'home'
+      ? 'XIONCO Business — #1 Furniture Manufacturer in Indonesia'
+      : (meta.title || meta.label) + ' — XIONCO Business';
+    if (r.route === 'home') toHome(prev);
+    else if (prev === r.route) swapTab(r.route, r.tab);
+    else toPage(r.route, prev, r.tab);
+    Track.event('page_view', { page: r.route, tab: r.tab || undefined });
+  }
+
+  function onHash() {
+    if (S.introRunning) skipIntro();
+    if (!S.ready) return;
+    go(parse());
+  }
+
+  function toPage(route, prev, tab) {
+    var meta = ROUTES[route];
+    clearTimeout(pageT); clearTimeout(intentT); clearTimeout(leaveT);
+    var fromPage = prev && prev !== 'home';
+    page.classList.remove('is-visible');
+    app.classList.add('is-page');
+    setState('page');
+    renderSubnav(route, tab);
+    renderCrumbs(route, tab);
+    var idx = typeof meta.panel === 'number' ? meta.panel : -1;
+    clearTimeout(zoomT);
+    if (idx >= 0) {
+      S.active = idx;
+      setZoom(panels[idx], pageZoom());               // gambar ulang tajam sebelum di-zoom
+      zoomT = setTimeout(function () {                 // frame lain kembali ke resolusi normal
+        panels.forEach(function (p, j) { if (j !== idx) setZoom(p, 1); });
+      }, 1300);
+      track.classList.remove('is-hidden');
+      page.classList.remove('is-neutral');
+      if (G.mode === 'stack') { stackPos.t = idx; expand.set(MOTION.enter); expand.t = 1; }
+      else setTargets(panels.map(function (_, j) { return j === idx ? 8 : 0; }), MOTION.enter);
+      panels.forEach(function (p, j) { setRate(p, j === idx ? 0.45 : 0); });
+    } else {
+      S.active = -1;
+      if (G.mode === 'stack') expand.t = 0;
+      else setTargets([2, 2, 2, 2], MOTION.enter);
+      panels.forEach(function (p) { setRate(p, 0); });
+      track.classList.add('is-hidden');
+      page.classList.add('is-neutral');
+      var use = pageGlyph.querySelector('use');
+      if (use) use.setAttribute('href', '#i-' + (meta.icon || 'material'));
+    }
+    applyClasses();
+    kick();
+    pageT = setTimeout(function () {
+      renderPage(route, tab);
+      page.classList.add('is-visible');
+    }, fromPage ? 430 : 600);
+  }
+
+  function swapTab(route, tab) {
+    renderSubnav(route, tab);
+    renderCrumbs(route, tab);
+    clearTimeout(pageT);
+    page.classList.remove('is-visible');
+    pageT = setTimeout(function () { renderPage(route, tab); page.classList.add('is-visible'); }, 260);
+  }
+
+  function toHome(prev) {
+    clearTimeout(pageT);
+    page.classList.remove('is-visible');
+    app.classList.remove('is-page');
+    track.classList.remove('is-hidden');
+    var fromPage = prev && prev !== 'home';
+    pageT = setTimeout(function () {
+      page.classList.remove('is-neutral');
+      if (G.mode === 'stack') {
+        expand.t = 0;
+        if (S.active < 0) S.active = clamp(Math.round(stackPos.t), 0, N - 1);
+      }
+      idle(fromPage ? MOTION.enter : MOTION.hover);
+      subnavInner.innerHTML = ''; subnavInner.dataset.route = '';
+    }, fromPage ? 240 : 0);
+    clearTimeout(zoomT);
+    zoomT = setTimeout(function () {                   // setelah frame kembali kecil → resolusi normal
+      if (S.route === 'home') panels.forEach(function (p) { setZoom(p, 1); });
+    }, 1600);
+  }
+
+  function tabLabel(meta, tab) {
+    var tabs = meta.tabs || [];
+    for (var i = 0; i < tabs.length; i++) if (slug(tabs[i]) === tab) return tabs[i];
+    return tab ? tab.replace(/-/g, ' ') : null;
+  }
+
+  function renderSubnav(route, tab) {
+    var meta = ROUTES[route] || {};
+    var tabs = meta.tabs || [];
+    var active = tab || (tabs[0] ? slug(tabs[0]) : '');
+    if (subnavInner.dataset.route !== route) {
+      subnavInner.innerHTML = tabs.map(function (t, i) {
+        var s = slug(t);
+        return '<a class="subnav__tab" style="--i:' + i + '" data-tab="' + s + '" href="#/' + route + '/' + s + '">' + esc(t) + '</a>';
+      }).join('');
+      subnavInner.dataset.route = route;
+    }
+    $$('.subnav__tab', subnavInner).forEach(function (a) {
+      var on = a.dataset.tab === active;
+      a.classList.toggle('is-active', on);
+      if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+  }
+
+  function renderCrumbs(route, tab) {
+    var meta = ROUTES[route] || {};
+    var tl = tabLabel(meta, tab);
+    crumbs.innerHTML = '<a href="#/">Home</a><i>›</i>' + (tl
+      ? '<a href="#/' + route + '">' + esc(meta.title) + '</a><i>›</i><span aria-current="page">' + esc(tl) + '</span>'
+      : '<span aria-current="page">' + esc(meta.title) + '</span>');
+  }
+
+  function renderPage(route, tab) {
+    var meta = ROUTES[route] || {};
+    var tl = tabLabel(meta, tab);
+    var mods = (meta.modules || []).map(function (m, i) {
+      return '<li><span>' + pad(i + 1) + '</span>' + esc(m) + '</li>';
+    }).join('');
+    pageBody.innerHTML =
+      '<div class="page__eyebrow" style="--bi:0"><span>' + esc(meta.index) + ' — ' + esc(meta.label) + '</span><span class="chip">In development</span></div>' +
+      '<h1 class="page__title" style="--bi:1">' + esc(meta.title) + '</h1>' +
+      '<p class="page__lede" style="--bi:2">' + esc(meta.lede) + '</p>' +
+      '<ol class="page__modules" style="--bi:3">' + mods + '</ol>' +
+      '<div class="page__actions" style="--bi:4">' +
+        '<a class="btn" href="#/"><svg><use href="#i-back"/></svg>Home</a>' +
+        '<span class="page__note">' + (tl ? 'Kategori: ' + esc(tl) : 'Modul halaman ini dibangun pada tahap berikutnya.') + '</span>' +
+      '</div>';
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Sidebar                                                                */
+  /* ---------------------------------------------------------------------- */
+  function setSidebarActive(route) {
+    $$('.sidebar__item', sidebar).forEach(function (li) {
+      var on = li.dataset.route === route;
+      li.classList.toggle('is-active', on);
+      var a = $('a', li);
+      if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+  }
+
+  function bindSidebar() {
+    var t = 0;
+    sidebar.addEventListener('pointerenter', function (e) {
+      if (e.pointerType !== 'mouse' || G.mobile) return;
+      clearTimeout(t);
+      t = setTimeout(function () { sidebar.classList.add('is-open'); }, 70);
+    });
+    sidebar.addEventListener('pointerleave', function () {
+      if (G.mobile) return;
+      clearTimeout(t);
+      t = setTimeout(function () { sidebar.classList.remove('is-open'); }, 260);
+      sbHover.classList.remove('is-on');
+    });
+    sidebar.addEventListener('focusin', function () { if (!G.mobile) sidebar.classList.add('is-open'); });
+    sidebar.addEventListener('focusout', function (e) {
+      if (!sidebar.contains(e.relatedTarget)) sidebar.classList.remove('is-open');
+    });
+    $$('.sidebar__item', sidebar).forEach(function (li) {
+      li.addEventListener('pointerenter', function () {
+        var top = li.offsetTop + li.parentElement.offsetTop;
+        sbHover.style.transform = 'translateY(' + top + 'px)';
+        sbHover.style.height = li.offsetHeight + 'px';
+        sbHover.classList.add('is-on');
+      });
+      $('a', li).addEventListener('click', function () {
+        Track.event('nav_click', { target: li.dataset.route, source: 'sidebar' });
+        if (G.mobile) closeDrawer();
+        if (li.dataset.route === S.route && S.route !== 'home' && S.tab) location.hash = '#/' + S.route;
+      });
+    });
+    menuBtn.addEventListener('click', function () {
+      var open = !app.classList.contains('is-drawer');
+      app.classList.toggle('is-drawer', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+    });
+    drawerScrim.addEventListener('click', closeDrawer);
+  }
+  function closeDrawer() {
+    app.classList.remove('is-drawer');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Buka menu');
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Intro                                                                  */
+  /* ---------------------------------------------------------------------- */
+  var introTimers = [];
+  function later(ms, fn) { introTimers.push(setTimeout(fn, ms)); }
+
+  function runIntro(fast) {
+    introTimers.forEach(clearTimeout); introTimers = [];
+    S.introRunning = true; S.ready = false; S.active = -1;
+    app.classList.add('no-anim');
+    app.dataset.intro = '0';
+    setState('boot');
+    clearTimeout(pageT);
+    app.classList.remove('is-page');
+    setSidebarActive('home');
+    track.classList.remove('is-hidden');
+    page.classList.remove('is-visible', 'is-neutral');
+    setTargets([2, 2, 2, 2], MOTION.hover);
+    clearTimeout(zoomT);
+    panels.forEach(function (p) { p.w.snap(); setRate(p, 0); p._k = ''; setZoom(p, 1); });
+    stackPos.snap(STACK_START); expand.snap(0);
+    applyClasses();
+    layout();
+    railX.snap(0); railW.snap(G.tw);
+    drawRail();
+    void app.offsetWidth;
+    app.classList.remove('no-anim');
+
+    var T = fast ? { a: 40, b: 220, c: 420, d: 1300 } : { a: 140, b: 920, c: 1420, d: 2800 };
+    later(T.a, function () { app.dataset.intro = '1'; });
+    later(T.b, function () { app.dataset.intro = '2'; });
+    later(T.c, function () { S.ready = true; afterIntro(); });
+    later(T.d, function () { app.dataset.intro = 'done'; S.introRunning = false; });
+  }
+
+  function afterIntro() {
+    var r = parse();
+    S.route = 'home'; S.tab = null;
+    if (G.mode === 'stack') S.active = STACK_START;
+    if (r.route === 'home') {
+      setSidebarActive('home');
+      idle(MOTION.enter);
+    } else {
+      go(r, true);
+    }
+  }
+
+  function skipIntro() {
+    if (!S.introRunning) return;
+    introTimers.forEach(clearTimeout); introTimers = [];
+    app.classList.add('no-anim');
+    app.dataset.intro = 'done';
+    S.introRunning = false;
+    if (!S.ready) { S.ready = true; afterIntro(); }
+    void app.offsetWidth;
+    requestAnimationFrame(function () { app.classList.remove('no-anim'); });
+  }
+
+  function replayIntro() {
+    if (S.route !== 'home') history.replaceState(null, '', '#/');
+    S.route = null;
+    runIntro(false);
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Keyboard                                                               */
+  /* ---------------------------------------------------------------------- */
+  function bindKeys() {
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Tab') S.pointer = 'keyboard';
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.target && e.target.matches && e.target.matches('input, textarea, select, [contenteditable]')) return;
+      if (S.introRunning) skipIntro();
+      var k = e.key;
+      if (k === 'Escape' && app.classList.contains('is-drawer')) { closeDrawer(); menuBtn.focus(); return; }
+      if (S.route === 'home' && S.ready) {
+        if (k === 'ArrowRight' || k === 'ArrowLeft') {
+          e.preventDefault();
+          var dir = k === 'ArrowRight' ? 1 : -1;
+          var n = S.active < 0 ? (dir > 0 ? 0 : N - 1) : clamp(S.active + dir, 0, N - 1);
+          S.pointer = 'keyboard';
+          activate(n);
+          panels[n].play.focus({ preventScroll: true });
+          return;
+        }
+        if (/^[1-4]$/.test(k)) {
+          var j = +k - 1;
+          S.pointer = 'keyboard';
+          activate(j);
+          panels[j].play.focus({ preventScroll: true });
+          return;
+        }
+        if (k === 'Escape' && G.mode === 'x') {
+          if (document.activeElement && track.contains(document.activeElement)) document.activeElement.blur();
+          idle();
+          return;
+        }
+      } else if (k === 'Escape' && S.route && S.route !== 'home') {
+        location.hash = '#/';
+        return;
+      }
+      if (CFG.dev) {
+        if (k === 'g' || k === 'G') toggleGrid();
+        else if (k === 'l' || k === 'L') window.open('ledger.html', '_blank', 'noopener');
+        else if (k === 'r' || k === 'R') replayIntro();
+      }
+    });
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Dev tools                                                              */
+  /* ---------------------------------------------------------------------- */
+  function buildGrid() {
+    var html = '';
+    for (var i = 0; i < 8; i++) html += '<span style="left:' + (i * G.u + 4) + 'px;top:-13px">' + (i + 1) + '</span>';
+    for (var j = 0; j < 4; j++) html += '<span style="left:-12px;top:' + (j * G.u + 4) + 'px">' + (j + 1) + '</span>';
+    grid.innerHTML = html;
+  }
+  function toggleGrid() {
+    S.devGrid = !S.devGrid;
+    app.classList.toggle('dev-grid', S.devGrid);
+    $('#devGrid').classList.toggle('is-on', S.devGrid);
+    if (S.devGrid) { buildGrid(); drawHud(); }
+  }
+  function drawHud() {
+    var utm = Track.utm();
+    var w = G.mode === 'x'
+      ? panels.map(function (p) { return p.key.toUpperCase() + ' ' + p.w.x.toFixed(2); }).join('  ')
+      : 'kartu ' + stackPos.x.toFixed(2) + ' / ' + (N - 1);
+    hud.textContent =
+      'MODE    ' + (G.mode === 'x' ? 'accordion 8 × 4' : 'kartu (mobile)') + '\n' +
+      'BLOCK   1u = ' + G.u + 'px   (guideline 120px @1920)\n' +
+      (G.mode === 'x' ? 'FRAME   ' + G.tw + ' × ' + G.th + 'px\n' : 'KARTU   ' + Math.round(G.cw) + ' × ' + Math.round(G.ch) + 'px\n') +
+      'ORB     Ø ' + Math.round(G.u) + 'px · play Ø ' + G.pd + 'px\n' +
+      'STATE   ' + S.state + (S.active >= 0 ? ' · ' + panels[S.active].key.toUpperCase() : '') + '\n' +
+      'WEIGHT  ' + w + '\n' +
+      'UTM     ' + (utm.utm_source ? utm.utm_source + ' / ' + (utm.utm_medium || '-') + ' / ' + (utm.utm_campaign || '-') : '—');
+    panels.forEach(function (p) {
+      p.devtag.textContent = p.key.toUpperCase() + (G.mode === 'x' ? ' ' + p.w.x.toFixed(2) : '') + '\n' + p.mediaKind;
+    });
+  }
+  function bindDev() {
+    if (!CFG.dev) return;
+    $('#devdock').hidden = false;
+    $('#devGrid').addEventListener('click', toggleGrid);
+    $('#devIntro').addEventListener('click', replayIntro);
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Init                                                                   */
+  /* ---------------------------------------------------------------------- */
+  function init() {
+    splitTitles();
+    splitBrand();
+    measure();
+    resizeScenes();
+    bindPanels();
+    bindSidebar();
+    bindKeys();
+    bindDev();
+    window.addEventListener('hashchange', onHash);
+
+    var rzT = 0;
+    window.addEventListener('resize', function () {
+      var modeChanged = measure();
+      if (modeChanged && S.ready && S.route === 'home') {
+        if (G.mode === 'stack') { S.active = clamp(S.active < 0 ? STACK_START : S.active, 0, N - 1); stackPos.snap(S.active); }
+        idle();
+      }
+      layout();
+      drawRail();
+      kick();
+      clearTimeout(rzT);
+      rzT = setTimeout(resizeScenes, modeChanged ? 0 : 140);
+    });
+    document.addEventListener('visibilitychange', function () {
+      panels.forEach(function (p) { if (p.video && document.hidden) p.video.pause(); });
+      if (!document.hidden) kick();
+    });
+
+    var fast = REDUCED || !(CFG.intro && CFG.intro.enabled) || !!store('session', 'xc_intro');
+    store('session', 'xc_intro', '1');
+    var start = function () { runIntro(fast); };
+    var fontsReady = document.fonts && document.fonts.ready
+      ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 900); })])
+      : Promise.resolve();
+    fontsReady.then(start);
+
+    loadAssets();
+  }
+
+  init();
+})();
+
+</script>
+</body>
+</html>

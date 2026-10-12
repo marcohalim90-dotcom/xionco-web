@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="id" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>XIONCO // NEON — Quality shouldn't be a luxury</title>
+  <meta name="description" content="XIONCO — furniture manufacturer Indonesia. Jelajahi koleksi, rakit sofa modular dalam 3D, lihat peta pabrik, dan konsultasi gratis. Versi interaktif bergaya game neon.">
+  <meta name="theme-color" content="#07060c">
+  <meta property="og:title" content="XIONCO // NEON">
+  <meta property="og:description" content="Furnitur minimalis, pengerjaan tanpa kompromi. Empat pabrik di Jawa.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.xionco.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Tilt+Neon&display=swap">
+  <link rel="stylesheet" href="css/v3.css">
+  <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+</head>
+<body>
+
+<!-- ===================== Ikon & filter ===================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- latar putih foto produk → transparan -->
+    <filter id="knock" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -2.1 -2.1 -2.1 0 6.25"/>
+    </filter>
+  </defs>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4.5 19.5l1.1-3.6A8 8 0 1 1 8.4 18.6z"/><path d="M9 8.6c.2-.5.6-.6.9-.6h.4c.2 0 .4.1.5.4l.6 1.5c.1.3 0 .5-.1.7l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.2.5-.2.7-.1l1.5.6c.3.1.4.3.4.5v.4c0 .3-.1.7-.6.9-.6.3-1.6.4-3.1-.3a8.3 8.3 0 0 1-3.6-3.6c-.7-1.5-.6-2.5-.3-3.1z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.8" cy="7.2" r=".6"/></symbol>
+  <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="w1" d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path class="w2" d="M18 7a7 7 0 0 1 0 10"/></symbol>
+  <symbol id="i-term" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="1"/><path d="M7 10l3 2.5L7 15M12 15.5h5"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4.5h8v4a4 4 0 0 1-8 0z"/><path d="M8 6H5v1.5A3.5 3.5 0 0 0 8.4 11M16 6h3v1.5a3.5 3.5 0 0 1-3.4 3.5M12 12.5V16M8.5 19.5h7M10 16h4v3.5h-4z"/></symbol>
+  <symbol id="i-hub" viewBox="0 0 24 24"><path d="M12 3.5l7.5 4.3v8.4L12 20.5l-7.5-4.3V7.8z"/><path d="M12 8.5l3.5 2v3.8L12 16.3l-3.5-2v-3.8z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/><rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/></symbol>
+  <symbol id="i-craft" viewBox="0 0 24 24"><path d="M3.5 14h17v4h-17zM5.5 14v-3.5h13V14M7.5 10.5V7h9v3.5"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M4 6.5l5-2 6 2 5-2v13l-5 2-6-2-5 2z"/><path d="M9 4.5v13M15 6.5v13"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="18" cy="12" r="1.3"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M4 7h3.5c4 0 5 10 9 10H20M4 17h3.5c1.6 0 2.7-1.6 3.6-3.6M13 9.6c.8-1.5 1.9-2.6 3.5-2.6H20M17.5 4.5 20 7l-2.5 2.5M17.5 14.5 20 17l-2.5 2.5"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M5 12a7 7 0 1 0 2.1-5"/><path d="M5 4v4h4"/></symbol>
+</svg>
+
+<!-- ===================== Dunia 3D & efek layar ===================== -->
+<canvas class="world" id="world" aria-hidden="true"></canvas>
+<div class="world-fallback" aria-hidden="true"><i></i></div>
+<div class="fx" aria-hidden="true"><div class="fx__scan"></div><div class="fx__vig"></div><div class="fx__noise"></div></div>
+<div class="glitch" id="glitch" aria-hidden="true"></div>
+<div class="reticle" id="reticle" aria-hidden="true"><i class="rc rc--tl"></i><i class="rc rc--tr"></i><i class="rc rc--bl"></i><i class="rc rc--br"></i><span class="rdot"></span><span class="rlabel" id="rlabel"></span></div>
+
+<!-- ===================== BOOT ===================== -->
+<div class="boot" id="boot" role="status" aria-live="polite">
+  <div class="boot__inner">
+    <svg class="boot__logo" viewBox="0 0 206 28" aria-hidden="true"><path class="logo-path"/></svg>
+    <div class="boot__log" id="bootLog"></div>
+    <div class="boot__bar"><i id="bootBar"></i></div>
+    <div class="boot__meta"><span id="bootPct">000%</span><span class="boot__skip">Klik / tekan tombol apa saja untuk lewati</span></div>
+  </div>
+</div>
+
+<!-- ===================== HUD ===================== -->
+<header class="hud-top" id="hudTop">
+  <a class="brand" href="#/hub" data-go="hub" data-lock aria-label="XIONCO — menu utama"><svg viewBox="0 0 206 28" aria-hidden="true"><path class="logo-path"/></svg></a>
+  <p class="crumb"><span>//</span> <b id="crumb">TITLE</b><i class="caret"></i></p>
+  <nav class="pips" id="pips" aria-label="Layar"></nav>
+  <div class="hud-actions">
+    <button class="xp" id="xpBtn" type="button" data-lock aria-label="Pencapaian">
+      <span class="xp__lv">LV<b id="lv">01</b></span>
+      <span class="xp__track"><span class="xp__bar"><i id="xpFill"></i></span><span class="xp__val" id="xpVal">0 / 300 XP</span></span>
+      <svg><use href="#i-trophy"/></svg>
+    </button>
+    <button class="hbtn" id="invBtn" type="button" data-lock aria-label="Inventori (keranjang)"><svg><use href="#i-bag"/></svg><span class="hbtn__count" id="invCount">0</span></button>
+    <button class="hbtn" id="sfxBtn" type="button" data-lock aria-label="Suara"><svg><use href="#i-sound"/></svg></button>
+    <button class="hbtn" id="consoleBtn" type="button" data-lock aria-label="Konsol pencarian"><svg><use href="#i-term"/></svg></button>
+  </div>
+</header>
+<footer class="hud-bot" id="hudBot">
+  <span class="sys"><i></i>SYS ONLINE</span>
+  <span class="hints" id="hints"></span>
+  <span class="clock" id="clock">JKT 6.29°S 106.77°E</span>
+</footer>
+
+<nav class="dock" id="dock" aria-label="Navigasi">
+  <button type="button" data-go="hub"><svg><use href="#i-hub"/></svg><span>Hub</span></button>
+  <button type="button" data-go="koleksi"><svg><use href="#i-grid"/></svg><span>Koleksi</span></button>
+  <button type="button" data-go="craft"><svg><use href="#i-craft"/></svg><span>Craft</span></button>
+  <button type="button" data-go="peta"><svg><use href="#i-map"/></svg><span>Peta</span></button>
+  <button type="button" id="dockMore"><svg><use href="#i-more"/></svg><span>Lainnya</span></button>
+</nav>
+<div class="sheet" id="moreSheet" aria-hidden="true">
+  <div class="sheet__panel frame">
+    <p class="label">// Menu lain</p>
+    <button type="button" data-go="guild">04 · Guild — For Business</button>
+    <button type="button" data-go="galeri">05 · Galeri proyek</button>
+    <button type="button" data-go="kontak">06 · Kontak</button>
+    <button type="button" data-open="ach">Pencapaian</button>
+  </div>
+</div>
+
+<main class="screens" id="screens">
+
+  <!-- ===================== TITLE ===================== -->
+  <section class="screen screen--title" data-screen="title" aria-label="Layar judul">
+    <div class="title">
+      <p class="title__eyebrow" data-a><span class="dot"></span>XIONCO//OS v3.0 · Furniture manufacturer · Indonesia</p>
+      <h1 class="title__logo" aria-label="XIONCO"><svg viewBox="-6 -6 218 40" aria-hidden="true"><path class="logo-path"/></svg></h1>
+      <p class="title__tag neon" data-a>Quality shouldn't be a luxury.</p>
+      <p class="title__sub" data-a>Furnitur minimalis, pengerjaan tanpa kompromi — diproduksi sendiri di empat pabrik kami di Jawa.</p>
+    </div>
+    <div class="title__bottom">
+      <button class="press" id="pressStart" type="button" data-lock data-cursor="Mulai" data-a>
+        <span class="press__k key">Enter</span><span class="press__t" id="pressText">Tekan untuk mulai</span>
+      </button>
+      <nav class="title__quick" data-a><a href="#/koleksi" data-go="koleksi" data-lock>Koleksi</a><i>/</i><a href="#/craft" data-go="craft" data-lock>Craft 3D</a><i>/</i><a href="#/kontak" data-go="kontak" data-lock>Kontak</a></nav>
+      <p class="title__legal" data-a>© 2026 PT Halim Inti Gahara · xionco.com</p>
+    </div>
+  </section>
+
+  <!-- ===================== HUB ===================== -->
+  <section class="screen screen--hub" data-screen="hub" aria-label="Menu utama">
+    <div class="hub">
+      <div class="hub__menu">
+        <p class="label" data-a>// Menu utama</p>
+        <ol class="menu" id="hubMenu"></ol>
+        <p class="hub__drag" data-a>Seret sofa untuk memutar</p>
+      </div>
+      <div class="hub__side">
+        <article class="brief frame" data-a>
+          <p class="label">// Briefing <span id="briefN">01</span></p>
+          <h2 class="brief__title" id="briefTitle">Koleksi</h2>
+          <p class="brief__text" id="briefText"></p>
+          <dl class="brief__stats" id="briefStats"></dl>
+          <div class="brief__foot">
+            <span class="brief__reward">Reward <b id="briefReward">+100 XP</b></span>
+            <button class="nbtn" id="briefGo" type="button" data-lock>Masuk<span class="key">Enter</span></button>
+          </div>
+        </article>
+        <article class="quests frame" data-a>
+          <p class="label">// Misi aktif <span id="questCount">0/6</span></p>
+          <ul id="questList"></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== KOLEKSI ===================== -->
+  <section class="screen screen--koleksi" data-screen="koleksi" aria-label="Koleksi">
+    <div class="kol">
+      <header class="scr-head" data-a>
+        <div>
+          <p class="label">// 01 · Inventori koleksi</p>
+          <h2 class="scr-title" data-scramble>Koleksi</h2>
+        </div>
+        <div class="kol__tools">
+          <div class="tabs" id="kTabs" role="tablist"></div>
+          <label class="search"><span>&gt;</span><input id="kSearch" type="search" placeholder="Cari item…" autocomplete="off" aria-label="Cari di koleksi"></label>
+        </div>
+      </header>
+      <div class="kol__body">
+        <div class="kol__gridwrap" data-a>
+          <div class="kol__grid" id="kGrid" role="listbox" aria-label="Daftar produk"></div>
+          <p class="kol__empty" id="kEmpty">Item tidak ditemukan. Coba kata lain.</p>
+        </div>
+        <aside class="kol__detail frame" id="kDetail" data-a aria-live="polite"></aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CRAFT ===================== -->
+  <section class="screen screen--craft" data-screen="craft" aria-label="Craft — rakit sofa modular">
+    <header class="scr-head scr-head--float" data-a>
+      <p class="label">// 02 · Craft studio</p>
+      <h2 class="scr-title" data-scramble>CUBIX Modular</h2>
+    </header>
+    <aside class="craft__panel frame" id="craftPanel" data-a>
+      <div class="cgroup">
+        <p class="cgroup__h"><span>01</span>Modul dudukan</p>
+        <div class="seg" id="cSeats" role="radiogroup" aria-label="Jumlah dudukan">
+          <button type="button" data-seats="1" data-lock>1</button><button type="button" data-seats="2" data-lock>2</button><button type="button" data-seats="3" data-lock>3</button><button type="button" data-seats="4" data-lock>4</button>
+        </div>
+        <div class="toggles">
+          <button class="tog" type="button" id="cArms" aria-pressed="true" data-lock><i></i>Lengan</button>
+          <button class="tog" type="button" id="cOtt" aria-pressed="false" data-lock><i></i>Ottoman</button>
+        </div>
+      </div>
+      <div class="cgroup">
+        <p class="cgroup__h"><span>02</span>Material</p>
+        <div class="swatches" id="cFabrics"></div>
+        <p class="cgroup__note" id="cFabricName"></p>
+      </div>
+      <div class="cgroup">
+        <p class="cgroup__h"><span>03</span>Base</p>
+        <div class="chips" id="cBases"></div>
+      </div>
+      <div class="cgroup">
+        <p class="cgroup__h"><span>04</span>Neon ruangan</p>
+        <div class="chips chips--neon" id="cNeon"></div>
+      </div>
+    </aside>
+    <aside class="craft__sum frame" data-a>
+      <p class="label">// Ringkasan build</p>
+      <h3 class="craft__name" id="cName">3 Seater</h3>
+      <p class="craft__dims" id="cDims"></p>
+      <p class="craft__est">Estimasi</p>
+      <p class="craft__price" id="cPrice">IDR 0</p>
+      <p class="craft__note">Angka contoh untuk demo — harga final lewat penawaran resmi.</p>
+      <a class="nbtn nbtn--full" id="cQuote" href="#" target="_blank" rel="noopener" data-lock><svg><use href="#i-wa"/></svg>Minta penawaran</a>
+      <div class="craft__row">
+        <button class="nbtn nbtn--ghost" id="cRandom" type="button" data-lock><svg><use href="#i-shuffle"/></svg>Acak</button>
+        <button class="nbtn nbtn--ghost" id="cReset" type="button" data-lock><svg><use href="#i-reset"/></svg>Reset</button>
+      </div>
+    </aside>
+    <div class="dimline" id="dimline" aria-hidden="true"><i></i><span id="dimText">248 cm</span></div>
+    <p class="craft__hint" data-a>Seret untuk memutar · scroll untuk zoom</p>
+  </section>
+
+  <!-- ===================== PETA ===================== -->
+  <section class="screen screen--peta" data-screen="peta" aria-label="Peta pabrik">
+    <aside class="peta__panel frame" data-a>
+      <p class="label">// 03 · Peta dunia</p>
+      <h2 class="scr-title scr-title--sm" data-scramble>Rute produksi</h2>
+      <p class="peta__lede">Empat pabrik di Jawa. Dari kayu mentah hingga kemasan, setiap tahap dikerjakan sendiri.</p>
+      <ol class="stages" id="stages"></ol>
+      <div class="peta__nav">
+        <button class="nbtn nbtn--ghost" type="button" id="stagePrev" data-lock aria-label="Tahap sebelumnya"><svg><use href="#i-left"/></svg></button>
+        <button class="nbtn nbtn--ghost" type="button" id="stageAll" data-lock>Lihat semua</button>
+        <button class="nbtn nbtn--ghost" type="button" id="stageNext" data-lock aria-label="Tahap berikutnya"><svg><use href="#i-right"/></svg></button>
+      </div>
+    </aside>
+    <div class="maplabels" id="mapLabels" aria-hidden="true"></div>
+    <div class="wstats" id="wstats" data-a>
+      <div><b data-count="4">0</b><span>Pabrik di Jawa</span></div>
+      <div><b data-count="30" data-suffix="+">0</b><span>Sofa per hari</span></div>
+      <div><b data-count="100" data-suffix="+">0</b><span>Item kecil per hari</span></div>
+      <div><b data-count="80" data-suffix="+">0</b><span>Pekerja &amp; kreatif</span></div>
+      <div><b data-count="3" data-prefix="1–">0</b><span>Hari kerja kirim</span></div>
+      <div><b data-count="3">0</b><span>Tahun garansi</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== GUILD ===================== -->
+  <section class="screen screen--guild" data-screen="guild" aria-label="XIONCO for Business">
+    <div class="scroll guild">
+      <header class="scr-head" data-a>
+        <div>
+          <p class="label">// 04 · Guild</p>
+          <h2 class="scr-title" data-scramble>XIONCO for Business</h2>
+        </div>
+        <p class="scr-lede">Butuh produk custom, saran desain interior, kolaborasi, atau proyek B2B? Pilih quest — penawaran dalam 1 jam.</p>
+      </header>
+      <div class="quests-grid" id="questsGrid"></div>
+      <div class="buffs" data-a>
+        <div class="buff"><b>1 jam</b><span>Penawaran harga</span></div>
+        <div class="buff"><b>0%</b><span>Cicilan</span></div>
+        <div class="buff"><b>3 tahun</b><span>Garansi kualitas</span></div>
+        <div class="buff"><b>1–3 hari</b><span>Pengiriman</span></div>
+      </div>
+      <div class="guild__row">
+        <form class="party frame" id="party" novalidate data-a>
+          <p class="label">// Bentuk party</p>
+          <h3>Dapatkan penawaran</h3>
+          <div class="field"><input id="fName" required placeholder=" " autocomplete="name"><label for="fName">Nama</label></div>
+          <div class="field"><input id="fPhone" required placeholder=" " inputmode="tel" autocomplete="tel"><label for="fPhone">WhatsApp</label></div>
+          <div class="field field--sel"><select id="fType"><option>Kantor</option><option>Hotel &amp; hospitality</option><option>Retail</option><option>Residensial</option><option>Lainnya</option></select><label for="fType">Jenis proyek</label></div>
+          <div class="field field--sel"><select id="fValue"><option>&lt; IDR 50 juta</option><option>IDR 50–250 juta</option><option>IDR 250 juta – 1 M</option><option>&gt; IDR 1 M</option></select><label for="fValue">Nilai proyek</label></div>
+          <div class="field field--full"><textarea id="fNeed" rows="3" placeholder=" "></textarea><label for="fNeed">Kebutuhan (opsional)</label></div>
+          <button class="nbtn nbtn--full" type="submit" data-lock><svg><use href="#i-wa"/></svg>Kirim via WhatsApp</button>
+          <p class="party__note" id="partyNote">Pesan dikirim melalui WhatsApp resmi XIONCO.</p>
+        </form>
+        <div class="alliance frame" data-a>
+          <p class="label">// Aliansi — dipercaya oleh</p>
+          <ul id="alliance"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GALERI ===================== -->
+  <section class="screen screen--galeri" data-screen="galeri" aria-label="Galeri proyek">
+    <header class="scr-head scr-head--center" data-a>
+      <p class="label">// 05 · Galeri</p>
+      <h2 class="scr-title" data-scramble>Proyek &amp; inspirasi</h2>
+    </header>
+    <div class="ring" id="ring" data-a><div class="ring__track" id="ringTrack"></div></div>
+    <div class="ring__ui" data-a>
+      <button class="nbtn nbtn--ghost" type="button" id="ringPrev" data-lock aria-label="Sebelumnya"><svg><use href="#i-left"/></svg></button>
+      <p class="ring__cap"><b id="ringN">01 / 09</b><span id="ringTitle"></span><em id="ringNote"></em></p>
+      <button class="nbtn nbtn--ghost" type="button" id="ringNext" data-lock aria-label="Berikutnya"><svg><use href="#i-right"/></svg></button>
+    </div>
+  </section>
+
+  <!-- ===================== KONTAK ===================== -->
+  <section class="screen screen--kontak" data-screen="kontak" aria-label="Kontak">
+    <div class="cont">
+      <p class="cont__q neon neon--cyan" data-a>Continue?</p>
+      <p class="cont__count" id="contCount" aria-hidden="true">9</p>
+      <p class="cont__sub" data-a>Punya ruang untuk diwujudkan? Tim kami siap membantu — konsultasi gratis, tanpa game over.</p>
+      <a class="nbtn nbtn--big" data-wa="Halo XIONCO, saya ingin konsultasi gratis." href="#" target="_blank" rel="noopener" data-lock data-a><svg><use href="#i-wa"/></svg>Konsultasi gratis</a>
+      <div class="cont__grid" data-a>
+        <a class="frame" data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener" data-lock><span class="label">WhatsApp</span><b>+62 822-4040-8055</b></a>
+        <a class="frame" href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener" data-lock><span class="label">Instagram</span><b>@xionco.official</b></a>
+        <a class="frame" href="https://xionco.shop/" target="_blank" rel="noopener" data-lock><span class="label">Toko online</span><b>xionco.shop</b></a>
+        <div class="frame"><span class="label">Showroom</span><b>Jl. Ciputat Raya No. 8, Jakarta Selatan 12310</b></div>
+      </div>
+      <nav class="cont__links" data-a>
+        <a href="https://www.xionco.com/about/" target="_blank" rel="noopener">Tentang</a>
+        <a href="https://www.xionco.com/warranty-policy/" target="_blank" rel="noopener">Garansi</a>
+        <a href="https://www.xionco.com/refund_returns/" target="_blank" rel="noopener">Pengembalian</a>
+        <a href="https://www.xionco.com/privacy-policy/" target="_blank" rel="noopener">Privasi</a>
+        <a href="https://www.xionco.com/terms-and-condition/" target="_blank" rel="noopener">Syarat &amp; ketentuan</a>
+      </nav>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== Overlay ===================== -->
+<aside class="inv" id="inv" aria-hidden="true" aria-label="Inventori">
+  <div class="inv__panel frame">
+    <header class="inv__head">
+      <div><p class="label">// Inventori</p><h3>Keranjang <span id="invItems">0 item</span></h3></div>
+      <button class="hbtn" type="button" data-close data-lock aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+    </header>
+    <ul class="inv__list" id="invList"></ul>
+    <p class="inv__empty" id="invEmpty">Inventori kosong. Ambil item di <a href="#/koleksi" data-go="koleksi" data-close>Koleksi</a>.</p>
+    <footer class="inv__foot">
+      <div class="inv__total"><span>Subtotal</span><b id="invTotal">IDR 0</b></div>
+      <a class="nbtn nbtn--full" id="invCheckout" href="#" target="_blank" rel="noopener" data-lock><svg><use href="#i-wa"/></svg>Checkout via WhatsApp</a>
+      <a class="inv__shop" href="https://xionco.shop/" target="_blank" rel="noopener">atau belanja di xionco.shop →</a>
+    </footer>
+  </div>
+</aside>
+
+<div class="console" id="console" aria-hidden="true" role="dialog" aria-label="Konsol">
+  <div class="console__panel frame">
+    <label class="console__line"><span>XIONCO://&gt;</span><input id="cInput" type="text" autocomplete="off" spellcheck="false" placeholder="ketik produk atau perintah… (coba: sofa, meja, craft)"></label>
+    <ul class="console__res" id="cRes"></ul>
+    <p class="console__hint">↑↓ pilih · Enter jalankan · Esc tutup</p>
+  </div>
+</div>
+
+<div class="ach" id="ach" aria-hidden="true" role="dialog" aria-label="Pencapaian">
+  <div class="ach__panel frame">
+    <header class="inv__head">
+      <div><p class="label">// Pencapaian</p><h3>Level <span id="achLv">1</span> · <span id="achXp">0 XP</span></h3></div>
+      <button class="hbtn" type="button" data-close data-lock aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+    </header>
+    <ul class="ach__list" id="achList"></ul>
+    <button class="ach__reset" type="button" id="achReset">Reset progres</button>
+  </div>
+</div>
+
+<div class="lb" id="lb" aria-hidden="true" role="dialog" aria-label="Lihat gambar">
+  <figure class="lb__fig frame"><img id="lbImg" alt=""><figcaption><b id="lbTitle"></b><span id="lbNote"></span></figcaption></figure>
+  <button class="hbtn lb__close" type="button" data-close data-lock aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/Pass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/MaskPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script>
+  /* cadangan CDN: bila jsDelivr gagal, ambil paket yang sama dari unpkg */
+  (function (w, d) {
+    var u = 'https://unpkg.com/', t = 'three@0.147.0/';
+    if (!w.THREE) {
+      ['build/three.min.js', 'examples/js/postprocessing/Pass.js', 'examples/js/shaders/CopyShader.js', 'examples/js/shaders/LuminosityHighPassShader.js',
+       'examples/js/postprocessing/EffectComposer.js', 'examples/js/postprocessing/RenderPass.js', 'examples/js/postprocessing/ShaderPass.js',
+       'examples/js/postprocessing/MaskPass.js', 'examples/js/postprocessing/UnrealBloomPass.js', 'examples/js/geometries/RoundedBoxGeometry.js',
+       'examples/js/controls/OrbitControls.js'].forEach(function (f) { d.write('<script src="' + u + t + f + '"><\/script>'); });
+    }
+    if (!w.gsap) d.write('<script src="' + u + 'gsap@3.13.0/dist/gsap.min.js"><\/script>');
+  })(window, document);
+</script>
+<script src="js/data.js"></script>
+<script src="js/sfx.js"></script>
+<script src="js/world.js"></script>
+<script src="js/app.js"></script>
+<script src="../shared/devkit/devkit.js"></script>
+</body>
+</html>

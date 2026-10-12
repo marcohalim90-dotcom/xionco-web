@@ -1,0 +1,2727 @@
+<!doctype html>
+<html lang="id" class="no-js">
+<head>
+  <!-- XIONCO v2 — preview build 2026-10-12 12:41 (dibuat oleh tools/build-preview-v2.js) -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>XIONCO — Quality shouldn't be a luxury</title>
+  <meta name="description" content="XIONCO — furnitur minimalis dengan pengerjaan tanpa kompromi. Dirancang dan diproduksi sendiri di empat pabrik di Jawa. Koleksi, custom studio, dan solusi bisnis.">
+  <meta name="theme-color" content="#0d0c0b">
+  <meta property="og:title" content="XIONCO — Quality shouldn't be a luxury">
+  <meta property="og:description" content="Furnitur minimalis, pengerjaan tanpa kompromi. Empat pabrik di Jawa.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.xionco.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Inter+Tight:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+/* ==========================================================================
+   XIONCO v2 — "The Monochrome Ethos"
+   Hitam hangat · bone · brass. Tidak ada putih murni.
+   Display: Inter Tight · Aksen: Instrument Serif italic · Label: JetBrains Mono · Body: Inter
+   ========================================================================== */
+:root {
+  --ink: #0d0c0b;
+  --ink-2: #141311;
+  --ink-3: #1b1917;
+  --ink-4: #26231f;
+  --bone: #ebe6de;
+  --bone-2: #e3ddd3;
+  --bone-3: #d7cfc3;
+  --card: #ece7df;
+
+  --t-d: #e9e3d9;      /* teks di gelap */
+  --t-d2: #a49d92;
+  --t-d3: #6e685f;
+  --t-l: #181715;      /* teks di terang */
+  --t-l2: #5f5a53;
+  --t-l3: #8f897f;
+  --line-d: rgba(233, 227, 217, .12);
+  --line-l: rgba(24, 23, 21, .14);
+
+  --brass: #b8924f;
+  --brass-hi: #d4b37c;
+  --brass-lo: #8c6c37;
+
+  --f: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --f-d: 'Inter Tight', 'Inter', 'Segoe UI', sans-serif;
+  --f-s: 'Instrument Serif', 'Times New Roman', serif;
+  --f-m: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+
+  --ease: cubic-bezier(.16, 1, .3, 1);
+  --ease-io: cubic-bezier(.76, 0, .24, 1);
+  --gut: clamp(20px, 4vw, 64px);
+  --nav-h: 72px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+body {
+  margin: 0; background: var(--ink); color: var(--t-d);
+  font: 400 15px/1.6 var(--f);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv11', 'ss01';
+  overflow-x: hidden;
+}
+body.is-loading { overflow: hidden; }
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
+h1, h2, h3, h4, p, figure { margin: 0; }
+svg { flex: none; }
+::selection { background: var(--brass); color: var(--ink); }
+:focus-visible { outline: 1px solid var(--brass); outline-offset: 3px; }
+.wrap { width: 100%; max-width: 1560px; margin: 0 auto; padding: 0 var(--gut); }
+.mono { font-family: var(--f-m); font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; line-height: 1.5; }
+.h2 {
+  font: 300 clamp(42px, 6.2vw, 108px)/.94 var(--f-d);
+  letter-spacing: -.04em;
+}
+em, .h2 em { font-family: var(--f-s); font-style: italic; font-weight: 400; letter-spacing: -.01em; }
+.lede { font-size: clamp(16px, 1.25vw, 19px); line-height: 1.55; max-width: 38ch; color: var(--t-d2); }
+[data-theme="light"] .lede { color: var(--t-l2); }
+.sec-head {
+  display: flex; justify-content: space-between; gap: 20px;
+  padding-top: 14px; margin-bottom: clamp(36px, 5vw, 64px);
+  border-top: 1px solid var(--line-d); color: var(--t-d3);
+}
+[data-theme="light"] .sec-head { border-color: var(--line-l); color: var(--t-l3); }
+
+/* ---------------- Buttons ---------------- */
+.btn {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  height: 50px; padding: 0 26px; border-radius: 999px;
+  font: 500 14px/1 var(--f); letter-spacing: -.01em; white-space: nowrap;
+  transition: color .5s var(--ease), box-shadow .5s var(--ease);
+}
+.btn::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  transform: translateY(101%); transition: transform .6s var(--ease);
+}
+.btn:hover::before { transform: none; }
+.btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform .6s var(--ease); }
+.btn:hover svg { transform: translateX(3px); }
+.btn--sm { height: 40px; padding: 0 18px; font-size: 13px; }
+.btn--bone { background: var(--bone); color: var(--ink); }
+.btn--bone::before { background: var(--brass-hi); }
+.btn--brass { background: var(--brass); color: var(--ink); }
+.btn--brass::before { background: var(--brass-hi); }
+.btn--line { color: var(--t-d); box-shadow: inset 0 0 0 1px rgba(233, 227, 217, .3); }
+.btn--line::before { background: var(--t-d); }
+.btn--line:hover { color: var(--ink); }
+.btn--dark { background: var(--ink); color: var(--bone); }
+.btn--dark::before { background: var(--brass); }
+.btn--dark:hover { color: var(--ink); }
+.btn--line-dark { color: var(--t-l); box-shadow: inset 0 0 0 1px var(--line-l); }
+.btn--line-dark::before { background: var(--ink); }
+.btn--line-dark:hover { color: var(--bone); }
+.btn--line-dark svg, .btn--brass svg:first-child:not(:last-child) { transform: none; }
+
+.icon-btn { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; position: relative; transition: background .3s; }
+.icon-btn:hover { background: rgba(233, 227, 217, .08); }
+.icon-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.count {
+  position: absolute; top: 3px; right: 1px; min-width: 16px; height: 16px; padding: 0 4px;
+  border-radius: 999px; background: var(--brass); color: var(--ink);
+  font: 600 9px/16px var(--f-m); text-align: center; font-style: normal;
+  transform: scale(0); transition: transform .5s var(--ease);
+}
+.count.is-on { transform: scale(1); }
+
+.link-arrow { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; position: relative; }
+.link-arrow::after { content: ''; position: absolute; left: 0; right: 24px; bottom: -3px; height: 1px; background: currentColor; transform: scaleX(.25); transform-origin: 0 50%; transition: transform .6s var(--ease); opacity: .6; }
+.link-arrow:hover::after { transform: scaleX(1); }
+.link-arrow svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform .6s var(--ease); }
+.link-arrow:hover svg { transform: translateX(4px); }
+
+/* ---------------- Cursor ---------------- */
+.cursor { position: fixed; left: 0; top: 0; z-index: 1000; pointer-events: none; display: none; }
+html.has-cursor .cursor { display: block; }
+html.has-cursor body, html.has-cursor a, html.has-cursor button, html.has-cursor label { cursor: none; }
+.cursor__dot { position: absolute; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--t-d); mix-blend-mode: difference; }
+.cursor__ring {
+  position: absolute; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%;
+  border: 1px solid rgba(233, 227, 217, .55); mix-blend-mode: difference;
+  display: grid; place-items: center;
+  transition: width .45s var(--ease), height .45s var(--ease), margin .45s var(--ease), background .35s, border-color .35s;
+}
+.cursor__label { font: 500 10px/1 var(--f-m); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); opacity: 0; transition: opacity .25s; white-space: nowrap; }
+.cursor.is-hover .cursor__ring { width: 56px; height: 56px; margin: -28px 0 0 -28px; border-color: rgba(233, 227, 217, .9); }
+.cursor.is-label .cursor__ring { width: 84px; height: 84px; margin: -42px 0 0 -42px; background: var(--brass-hi); border-color: transparent; mix-blend-mode: normal; }
+.cursor.is-label .cursor__label { opacity: 1; }
+.cursor.is-label .cursor__dot { opacity: 0; }
+.cursor.is-down .cursor__ring { transform: scale(.85); }
+
+/* ---------------- Progress, grain, HUD ---------------- */
+.progress { position: fixed; left: 0; right: 0; top: 0; height: 2px; z-index: 120; pointer-events: none; }
+.progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--brass-lo), var(--brass-hi)); transform-origin: 0 50%; transform: scaleX(0); }
+.grain {
+  position: fixed; inset: -100%; z-index: 900; pointer-events: none; opacity: .055;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1s steps(4) infinite;
+}
+@keyframes grain { 0% { transform: translate(0, 0); } 25% { transform: translate(-3%, 2%); } 50% { transform: translate(2%, -3%); } 75% { transform: translate(-2%, -1%); } }
+/* HUD vertikal di gutter kiri — tidak pernah menimpa konten */
+.hud {
+  position: fixed; left: calc(var(--gut) / 2 - 6px); top: 50%; z-index: 110; pointer-events: none;
+  writing-mode: vertical-rl; transform: translateY(-50%) rotate(180deg);
+  display: flex; align-items: center; gap: 8px; color: var(--t-d); mix-blend-mode: difference;
+  transition: opacity .6s;
+}
+.hud.is-hidden { opacity: 0; }
+.hud b { font-weight: 500; }
+.hud__line { display: block; width: 1px; height: 34px; background: currentColor; opacity: .4; margin: 4px 0; }
+.hud em { font-family: var(--f-m); font-style: normal; }
+
+/* ---------------- Loader ---------------- */
+.loader {
+  position: fixed; inset: 0; z-index: 2000; background: var(--ink);
+  display: grid; place-items: center; align-content: center; gap: 28px;
+}
+.loader__mark { width: 92px; height: 92px; fill: none; stroke: var(--t-d); stroke-width: 1.2; stroke-linecap: round; }
+.loader__ring { stroke-dasharray: 277; stroke-dashoffset: 277; transform: rotate(-90deg); transform-origin: 50% 50%; }
+.loader__x1, .loader__x2 { stroke-dasharray: 43; stroke-dashoffset: 43; }
+.loader__meta { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--t-d3); }
+.loader__meta span:first-child { color: var(--t-d); font-size: 13px; letter-spacing: .2em; font-variant-numeric: tabular-nums; }
+html.no-js .loader, html.is-ready .loader { display: none; }
+/* failsafe: bila skrip gagal dimuat (jaringan), loader tidak boleh mengunci halaman */
+html:not(.anim) .loader { animation: loaderFailsafe .6s 4s forwards; }
+@keyframes loaderFailsafe { to { opacity: 0; visibility: hidden; } }
+
+/* ---------------- Nav ---------------- */
+.nav {
+  position: fixed; left: 0; right: 0; top: 0; z-index: 100;
+  height: var(--nav-h); padding: 0 var(--gut);
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  color: var(--t-d);
+  transition: transform .7s var(--ease), background .5s, color .5s, box-shadow .5s;
+}
+.nav.is-scrolled { background: rgba(13, 12, 11, .62); -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); box-shadow: 0 1px 0 var(--line-d); }
+.nav.is-light { color: var(--t-l); }
+.nav.is-light.is-scrolled { background: rgba(235, 230, 222, .72); box-shadow: 0 1px 0 var(--line-l); }
+.nav.is-hidden { transform: translateY(-100%); }
+.nav__logo { justify-self: start; display: block; width: 118px; }
+.nav__logo svg { display: block; width: 100%; height: auto; fill: currentColor; }
+.nav__links { display: flex; gap: 34px; }
+.nav__links a { position: relative; font-size: 14px; padding: 6px 0; }
+.nav__links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 100% 50%; transition: transform .6s var(--ease); }
+.nav__links a:hover::after, .nav__links a.is-on::after { transform: scaleX(1); transform-origin: 0 50%; }
+.nav__actions { justify-self: end; display: flex; align-items: center; gap: 8px; }
+.nav__cta { margin-left: 8px; }
+.nav__burger { display: none; width: 40px; height: 40px; flex-direction: column; justify-content: center; align-items: flex-end; gap: 6px; }
+.nav__burger i { display: block; height: 1.2px; background: currentColor; transition: transform .6s var(--ease), width .6s var(--ease); }
+.nav__burger i:first-child { width: 22px; }
+.nav__burger i:last-child { width: 14px; }
+.menu-open .nav__burger i:first-child { transform: translateY(3.6px) rotate(45deg); }
+.menu-open .nav__burger i:last-child { width: 22px; transform: translateY(-3.6px) rotate(-45deg); }
+
+.menu {
+  position: fixed; inset: 0; z-index: 90; background: var(--ink);
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: calc(var(--nav-h) + 30px) var(--gut) 120px;
+  clip-path: inset(0 0 100% 0); transition: clip-path .9s var(--ease-io);
+}
+.menu-open .menu { clip-path: inset(0 0 0 0); }
+.menu__links { display: flex; flex-direction: column; }
+.menu__links a { display: flex; align-items: baseline; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line-d); font: 300 clamp(34px, 9vw, 60px)/1.05 var(--f-d); letter-spacing: -.04em; transform: translateY(30px); opacity: 0; transition: transform .8s var(--ease), opacity .6s; }
+.menu__links a .mono { color: var(--brass); }
+.menu-open .menu__links a { transform: none; opacity: 1; }
+.menu-open .menu__links a:nth-child(2) { transition-delay: .06s; } .menu-open .menu__links a:nth-child(3) { transition-delay: .12s; }
+.menu-open .menu__links a:nth-child(4) { transition-delay: .18s; } .menu-open .menu__links a:nth-child(5) { transition-delay: .24s; }
+.menu__foot { display: flex; gap: 22px; color: var(--t-d2); }
+
+.dock {
+  position: fixed; left: 50%; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 105;
+  display: none; transform: translateX(-50%);
+  width: min(420px, calc(100vw - 24px)); padding: 6px;
+  border-radius: 22px; background: rgba(20, 19, 17, .78); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  box-shadow: inset 0 0 0 1px var(--line-d), 0 18px 40px rgba(0, 0, 0, .45);
+  grid-template-columns: repeat(5, 1fr);
+}
+.dock a, .dock button { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 0 6px; color: var(--t-d2); font-size: 10px; transition: color .4s; }
+.dock svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.dock .is-on { color: var(--t-d); }
+.dock .count { top: 2px; right: calc(50% - 20px); }
+.dock__ind { position: absolute; z-index: 0; top: 6px; bottom: 6px; left: 6px; width: calc((100% - 12px) / 5); border-radius: 16px; background: rgba(233, 227, 217, .08); transition: transform .6s var(--ease); }
+
+/* ==========================================================================
+   HERO — "Aperture": wordmark XIONCO sebagai jendela ke ruang pamer.
+   Fase 1: ruang terlihat lewat huruf (clip-path dari path logo).
+   Fase 2: kamera masuk lewat huruf I → komposisi editorial full-bleed.
+   ========================================================================== */
+.hero { position: relative; background: #090908; color: var(--t-d); }
+.hero__pin { position: relative; height: 100svh; min-height: 560px; overflow: hidden; }
+.hero__scene { position: absolute; inset: 0; }
+.hero__glow {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at var(--gx, 50%) var(--gy, 52%), rgba(201, 156, 96, .5), rgba(140, 100, 56, .18) 26%, rgba(9, 9, 8, 0) 58%),
+    linear-gradient(180deg, #17130f 0%, #0d0b0a 60%, #090908 100%);
+}
+.hero__media {
+  --mw: max(100vw, 152vh);
+  position: absolute; left: 50%; top: 55%;
+  width: var(--mw); height: var(--mw);
+  margin: calc(var(--mw) * -.58) 0 0 calc(var(--mw) * -.5);
+  transform-origin: 50% 58%;
+  -webkit-mask-image: radial-gradient(closest-side at 50% 58%, #000 76%, transparent 100%);
+  mask-image: radial-gradient(closest-side at 50% 58%, #000 76%, transparent 100%);
+}
+.hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.hero__img--base { filter: brightness(.46) contrast(1.08) saturate(.85); }
+.hero__img--lit {
+  filter: brightness(1.14) contrast(1.06) sepia(.12);
+  -webkit-mask-image: radial-gradient(circle var(--lr, 20%) at var(--lx, 54%) var(--ly, 56%), #000 0%, rgba(0, 0, 0, .55) 45%, transparent 75%);
+  mask-image: radial-gradient(circle var(--lr, 20%) at var(--lx, 54%) var(--ly, 56%), #000 0%, rgba(0, 0, 0, .55) 45%, transparent 75%);
+}
+.hero__beam {
+  position: absolute; top: 0; left: 0; width: 46vw; height: 100%; pointer-events: none;
+  transform: translateX(var(--bx, 50vw)) translateX(-50%);
+  background: radial-gradient(ellipse 40% 85% at 50% 0%, rgba(214, 190, 150, .14), rgba(214, 190, 150, 0) 72%);
+  mix-blend-mode: screen;
+}
+.hero__shade {
+  position: absolute; inset: 0; opacity: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(9, 9, 8, .62) 0%, rgba(9, 9, 8, 0) 34%, rgba(9, 9, 8, 0) 66%, rgba(9, 9, 8, .72) 100%);
+}
+.hero__outline { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; overflow: visible; }
+.hero__outline path { fill: none; stroke: rgba(212, 179, 124, .62); stroke-width: 1; }
+
+/* Fase 1 — bingkai */
+.hero__frame { position: absolute; inset: 0; z-index: 3; pointer-events: none; color: var(--t-d2); }
+.hf { position: absolute; margin: 0; }
+.hf--tl { left: var(--gut); top: calc(var(--nav-h) + 30px); display: flex; align-items: center; gap: 10px; }
+.hf--tr { right: var(--gut); top: calc(var(--nav-h) + 30px); }
+.hf--tr span { color: var(--brass); padding: 0 6px; }
+.hf--bl { left: var(--gut); bottom: 36px; font: 400 clamp(22px, 2.1vw, 34px)/1.1 var(--f-d); letter-spacing: -.03em; color: var(--t-d); }
+.hf--bl em { color: var(--brass-hi); }
+.hf--bc { left: 50%; bottom: 44px; transform: translateX(-50%); pointer-events: auto; color: var(--t-d2); transition: color .4s; }
+.hf--bc:hover { color: var(--t-d); }
+.hf--br { right: var(--gut); bottom: 44px; }
+.hf--br b { color: var(--t-d); font-weight: 400; }
+.live { width: 7px; height: 7px; border-radius: 50%; background: var(--brass); box-shadow: 0 0 0 0 rgba(184, 146, 79, .6); animation: live 2.2s var(--ease) infinite; }
+@keyframes live { 70% { box-shadow: 0 0 0 9px rgba(184, 146, 79, 0); } 100% { box-shadow: 0 0 0 0 rgba(184, 146, 79, 0); } }
+.scrollcue { display: inline-flex; align-items: center; gap: 12px; }
+.scrollcue i { position: relative; width: 48px; height: 1px; background: rgba(233, 227, 217, .16); overflow: hidden; }
+.scrollcue i::after { content: ''; position: absolute; inset: 0; background: var(--t-d); animation: cue 2.4s var(--ease-io) infinite; }
+@keyframes cue { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(100%); } }
+
+/* Fase 2 — komposisi editorial */
+/* tanpa z-index: judul mix-blend harus bercampur langsung dengan ruang di belakangnya */
+.hero__inner { position: absolute; inset: 0; pointer-events: none; }
+.hero__inner a { pointer-events: auto; }
+.hero__title {
+  position: absolute; inset: 0; color: #e9e3d9; mix-blend-mode: difference;
+  font: 300 clamp(64px, 11.4vw, 218px)/.84 var(--f-d); letter-spacing: -.055em;
+}
+.ln { position: absolute; display: block; overflow: hidden; padding: 0 .04em .09em 0; }
+.ln__in { display: inline-block; will-change: transform; }
+.ln--1 { left: var(--gut); top: calc(var(--nav-h) + 3vh); }
+.ln--2 { right: var(--gut); top: 57%; font-size: .86em; }
+.ln--2 em { letter-spacing: -.02em; padding-right: .05em; }
+.ln--3 { left: 13vw; bottom: 6vh; }
+.hero__aside { position: absolute; right: var(--gut); top: calc(var(--nav-h) + 4.4vh); width: min(30ch, 30vw); display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.hero__lede { color: var(--t-d2); font-size: clamp(15px, 1.1vw, 17px); line-height: 1.55; }
+.hero__link { color: var(--t-d); }
+.badge-cta { position: absolute; right: var(--gut); bottom: 5vh; width: 132px; height: 132px; display: grid; place-items: center; color: var(--t-d); }
+.badge-cta__ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.badge-cta__ring text { font: 500 8.6px var(--f-m); letter-spacing: .12em; text-transform: uppercase; fill: currentColor; }
+.badge-cta__core { position: relative; width: 62px; height: 62px; border-radius: 50%; background: var(--brass); color: var(--ink); display: grid; place-items: center; transition: transform .7s var(--ease), background .4s; }
+.badge-cta__core svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: transform .7s var(--ease); }
+.badge-cta:hover .badge-cta__core { transform: scale(1.14); background: var(--brass-hi); }
+.badge-cta:hover .badge-cta__core svg { transform: translateY(3px); }
+
+/* hotspot (callout ala Meraki) */
+.hotspot {
+  position: absolute; z-index: 4; left: 0; top: 0;
+  display: flex; align-items: center; gap: 0; text-align: left;
+  transform: translate(-7px, -7px); opacity: 0; visibility: hidden;
+}
+.hotspot__dot { position: relative; width: 14px; height: 14px; border-radius: 50%; background: var(--t-d); box-shadow: 0 0 0 4px rgba(233, 227, 217, .16); }
+.hotspot__dot::after { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 1px solid rgba(233, 227, 217, .45); animation: ping 2.6s var(--ease) infinite; }
+@keyframes ping { 0% { transform: scale(.6); opacity: 1; } 100% { transform: scale(1.8); opacity: 0; } }
+.hotspot--up { flex-direction: column-reverse; align-items: flex-start; }
+.hotspot--up .hotspot__line { width: 1px; height: 56px; margin-left: 6.5px; background: linear-gradient(0deg, rgba(233, 227, 217, .7), rgba(233, 227, 217, .25)); transform-origin: 50% 100%; }
+.hotspot__line { width: 64px; height: 1px; background: linear-gradient(90deg, rgba(233, 227, 217, .7), rgba(233, 227, 217, .25)); transform-origin: 0 50%; }
+.hotspot__card {
+  display: flex; flex-direction: column; gap: 3px; padding: 12px 16px; border-radius: 4px;
+  background: rgba(16, 15, 13, .6); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 0 1px var(--line-d);
+  font-size: 13px; color: var(--t-d2); white-space: nowrap;
+  transition: box-shadow .4s, translate .6s var(--ease), opacity .5s var(--ease), clip-path .6s var(--ease);
+}
+.hotspot__card .mono { color: var(--t-d); }
+.hotspot__card b { color: var(--brass-hi); font-weight: 500; font-variant-numeric: tabular-nums; }
+.hotspot:hover .hotspot__card { box-shadow: inset 0 0 0 1px rgba(212, 179, 124, .55); translate: 4px 0; }
+/* hotspot kecil: kartu baru muncul saat disentuh */
+.hotspot--mini .hotspot__dot { width: 10px; height: 10px; margin-left: 2px; }
+.hotspot--mini .hotspot__line { height: 34px; }
+.hotspot--mini .hotspot__card { opacity: 0; clip-path: inset(100% 0 0 0); }
+.hotspot--mini:hover .hotspot__card, .hotspot--mini:focus-visible .hotspot__card { opacity: 1; clip-path: inset(0); }
+
+/* tanpa animasi (reduced motion / GSAP gagal): langsung komposisi fase 2 */
+html:not(.anim) .hero__frame, html:not(.anim) .hero__outline { display: none; }
+html:not(.anim) .hero__shade { opacity: 1; }
+html:not(.anim) .hotspot { opacity: 1; visibility: visible; }
+
+@media (max-width: 1180px) and (min-width: 761px) {
+  .hero__aside { width: min(34ch, 40vw); }
+  .ln--2 { top: 60%; }
+}
+@media (max-width: 1180px) and (min-width: 761px) and (orientation: portrait) {
+  .hero__media { --mw: 150vw; top: 56%; }
+  .hero__title { font-size: 15vw; }
+  .ln--2 { top: auto; bottom: 21vh; }
+  .ln--3 { left: var(--gut); bottom: 8vh; }
+  .hero__aside { top: calc(var(--nav-h) + 3vh + 14vw); left: var(--gut); right: auto; width: min(46ch, 70vw); }
+}
+@media (max-width: 760px) {
+  .hero__pin { min-height: 600px; }
+  .hero__media { --mw: 148vw; top: 52%; }
+  .hf--tl { top: calc(var(--nav-h) + 18px); }
+  .hf--tr { top: calc(var(--nav-h) + 40px); left: var(--gut); right: auto; }
+  .hf--bl { bottom: 128px; font-size: 26px; max-width: 12ch; }
+  .hf--bc { left: var(--gut); bottom: 104px; transform: none; }
+  .hf--br { display: none; }
+  .hero__title { font-size: 19vw; }
+  .ln--1 { top: calc(var(--nav-h) + 2vh); }
+  .ln--2 { top: calc(var(--nav-h) + 2vh + 16vw); right: var(--gut); }
+  .ln--3 { top: calc(var(--nav-h) + 2vh + 31vw); bottom: auto; left: var(--gut); }
+  .hero__aside { top: auto; bottom: 106px; left: var(--gut); right: 128px; width: auto; gap: 12px; }
+  .hero__lede { font-size: 14px; }
+  .badge-cta { width: 104px; height: 104px; bottom: 102px; }
+  .badge-cta__core { width: 50px; height: 50px; }
+  .badge-cta__ring text { font-size: 9.6px; }
+  .hotspot--mini { display: none; }
+}
+
+/* ==========================================================================
+   TRUST marquee
+   ========================================================================== */
+.trust { background: var(--ink); padding: clamp(70px, 9vw, 120px) 0 clamp(80px, 10vw, 130px); border-top: 1px solid var(--line-d); overflow: hidden; }
+.trust__label { color: var(--t-d3); margin-bottom: 30px; }
+.marquee { overflow: hidden; white-space: nowrap; }
+.marquee__track { display: inline-flex; align-items: center; will-change: transform; font: 300 clamp(46px, 7.6vw, 132px)/1.08 var(--f-d); letter-spacing: -.045em; color: var(--t-d); }
+.marquee__track span { padding: 0 .28em; }
+.marquee__track svg { width: .42em; height: .42em; fill: none; stroke: var(--brass); stroke-width: 3; opacity: .9; }
+.marquee--alt .marquee__track { color: transparent; -webkit-text-stroke: 1px rgba(233, 227, 217, .32); }
+.marquee--alt .marquee__track svg { stroke: rgba(233, 227, 217, .3); }
+
+/* ==========================================================================
+   MANIFESTO (terang)
+   ========================================================================== */
+.manifesto { position: relative; background: var(--bone); color: var(--t-l); padding: clamp(100px, 12vw, 160px) 0 0; }
+.manifesto__text { font: 300 clamp(30px, 4.35vw, 76px)/1.08 var(--f-d); letter-spacing: -.035em; max-width: 21em; }
+.manifesto__text em { color: var(--brass-lo); }
+.w { display: inline-block; opacity: .13; transition: opacity .2s linear; }
+.no-js .w, .reduced .w { opacity: 1; }
+.pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 3vw, 48px); margin-top: clamp(70px, 9vw, 120px); }
+.pillar { position: relative; padding-top: 22px; }
+.pillar::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--t-l); transform-origin: 0 50%; }
+.pillar .mono { color: var(--brass-lo); }
+.pillar h3 { margin: 26px 0 12px; font: 400 clamp(22px, 1.9vw, 30px)/1.1 var(--f-d); letter-spacing: -.025em; }
+.pillar p { color: var(--t-l2); max-width: 32ch; }
+.manifesto__band { position: relative; display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; padding: clamp(90px, 12vw, 170px) var(--gut) clamp(110px, 14vw, 200px); max-width: 1560px; margin: 0 auto; }
+.band__fig { position: relative; overflow: hidden; border-radius: 4px; background: #0b0b0a; }
+.band__fig img { width: 100%; height: 118%; object-fit: cover; will-change: transform; }
+.band__fig figcaption { position: absolute; left: 16px; bottom: 14px; color: var(--t-d); mix-blend-mode: difference; }
+.band__fig--a { grid-column: 1 / span 6; aspect-ratio: 4 / 5; }
+.band__fig--b { grid-column: 8 / span 5; aspect-ratio: 1; margin-top: 22vh; }
+.band__quote { grid-column: 7 / span 6; align-self: end; margin-top: 60px; font: 400 clamp(28px, 3.2vw, 52px)/1.1 var(--f-s); font-style: italic; letter-spacing: -.01em; color: var(--t-l); }
+.band__quote em { color: var(--brass-lo); }
+
+/* ==========================================================================
+   KOLEKSI (terang, horizontal)
+   ========================================================================== */
+.collection { background: var(--bone-2); color: var(--t-l); }
+.collection__pin { height: 100svh; min-height: 640px; display: flex; flex-direction: column; padding: calc(var(--nav-h) + 26px) 0 28px; }
+.collection__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
+.collection__head .sec-head { margin-bottom: 22px; }
+.collection__head .h2 { font-size: clamp(40px, 5vw, 86px); }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; max-width: 620px; }
+.tab { font: 400 11px/1 var(--f-m); letter-spacing: .06em; text-transform: uppercase; padding: 10px 14px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line-l); color: var(--t-l2); transition: background .4s, color .4s, box-shadow .4s; }
+.tab:hover { color: var(--t-l); box-shadow: inset 0 0 0 1px rgba(24, 23, 21, .4); }
+.tab.is-on { background: var(--ink); color: var(--bone); box-shadow: none; }
+.tab sup { font-size: 9px; margin-left: 4px; opacity: .6; }
+.collection__viewport { position: relative; flex: 1; min-height: 0; margin-top: 30px; overflow: hidden; }
+.collection__track { display: flex; gap: 18px; height: 100%; padding: 0 var(--gut); will-change: transform; }
+.group { flex: none; width: clamp(240px, 22vw, 360px); height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 6px 30px 6px 0; border-right: 1px solid var(--line-l); margin-right: 8px; }
+.group__n { color: var(--brass-lo); }
+.group__title { font: 300 clamp(44px, 4.6vw, 84px)/.92 var(--f-d); letter-spacing: -.045em; }
+.group__note { color: var(--t-l2); margin-top: 14px; }
+.card { position: relative; flex: none; width: clamp(250px, 23vw, 380px); height: 100%; display: flex; flex-direction: column; }
+.card__media { position: relative; flex: 1; min-height: 0; border-radius: 4px; overflow: hidden; background: var(--card); display: grid; place-items: center; }
+.card__media img { width: 88%; height: 82%; object-fit: contain; mix-blend-mode: multiply; transition: scale 1.1s var(--ease), translate 1.1s var(--ease); will-change: transform; }
+.card--dark .card__media { background: #0a0a09; }
+.card--dark .card__media img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: normal; }
+.card:hover .card__media img { scale: 1.06; translate: 0 -1.5%; }
+.card__badge { position: absolute; left: 12px; top: 12px; z-index: 2; padding: 5px 8px; border-radius: 999px; background: var(--brass); color: var(--ink); font: 500 10px/1 var(--f-m); letter-spacing: .04em; }
+.card__studio { position: absolute; left: 12px; top: 12px; z-index: 2; padding: 5px 8px; border-radius: 999px; background: var(--ink); color: var(--bone); font: 500 10px/1 var(--f-m); letter-spacing: .04em; }
+.card__add {
+  position: absolute; right: 12px; bottom: 12px; z-index: 2; width: 42px; height: 42px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--ink); color: var(--bone);
+  transform: scale(.6); opacity: 0; transition: transform .6s var(--ease), opacity .4s, background .3s;
+}
+.card__add svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.card:hover .card__add, .card__add:focus-visible { transform: none; opacity: 1; }
+.card__add:hover { background: var(--brass); color: var(--ink); }
+.card__open { position: absolute; inset: 0; z-index: 1; }
+.card__info { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 14px 2px 0; }
+.card__name { font: 400 clamp(17px, 1.3vw, 21px)/1.2 var(--f-d); letter-spacing: -.02em; }
+.card__type { grid-column: 1; color: var(--t-l2); font-size: 13px; }
+.card__price { grid-column: 2; grid-row: 1 / span 2; align-self: start; text-align: right; font: 400 12px/1.5 var(--f-m); font-variant-numeric: tabular-nums; }
+.card__price s { display: block; color: var(--t-l3); }
+.collection__foot { display: flex; align-items: center; gap: 30px; margin-top: 22px; }
+.bar { flex: 1; height: 1px; background: var(--line-l); position: relative; }
+.bar i { position: absolute; inset: 0; background: var(--t-l); transform-origin: 0 50%; transform: scaleX(0); }
+
+/* ==========================================================================
+   CUSTOM STUDIO (gelap)
+   ========================================================================== */
+.studio { background: #100f0e; padding: clamp(100px, 12vw, 160px) 0; }
+.studio__intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: clamp(40px, 5vw, 64px); }
+.studio__grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(330px, 1fr); gap: 18px; align-items: stretch; }
+.stage { position: relative; min-height: 520px; border-radius: 6px; overflow: hidden; background: #1b1917; isolation: isolate; }
+.stage__wall { position: absolute; inset: 0; transition: background .2s linear; }
+.stage__floor { position: absolute; left: 0; right: 0; bottom: 0; height: 26%; background: linear-gradient(180deg, rgba(0, 0, 0, .18), rgba(0, 0, 0, .42)); box-shadow: 0 -1px 0 rgba(255, 245, 230, .06); }
+.stage__svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.stage__tag { position: absolute; left: 22px; top: 20px; display: flex; gap: 12px; color: var(--t-d2); mix-blend-mode: difference; }
+.stage__tag b { font-weight: 500; color: var(--t-d); }
+.stage__dims { position: absolute; left: 22px; bottom: 18px; color: var(--t-d2); mix-blend-mode: difference; font-variant-numeric: tabular-nums; }
+.panel { display: flex; flex-direction: column; gap: 26px; padding: 28px; border-radius: 6px; background: #171614; box-shadow: inset 0 0 0 1px var(--line-d); }
+.panel__step h3 { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; font: 400 19px/1.2 var(--f-d); letter-spacing: -.02em; }
+.panel__step h3 .mono { color: var(--brass); }
+.panel__note { color: var(--t-d2); margin-top: 12px; }
+.seg { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); padding: 4px; border-radius: 999px; background: #0f0e0d; box-shadow: inset 0 0 0 1px var(--line-d); }
+.seg button { position: relative; z-index: 1; height: 38px; border-radius: 999px; font: 500 13px/1 var(--f-m); color: var(--t-d2); transition: color .4s; }
+.seg button.is-on { color: var(--ink); }
+.seg__ind { position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 4); border-radius: 999px; background: var(--bone); transition: transform .6s var(--ease); }
+.toggles { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 16px; }
+.toggle { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: var(--t-d2); cursor: pointer; }
+.toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.toggle span { position: relative; width: 34px; height: 20px; border-radius: 999px; background: #2a2724; transition: background .4s; }
+.toggle span::after { content: ''; position: absolute; left: 3px; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--t-d2); transition: transform .5s var(--ease), background .4s; }
+.toggle input:checked + span { background: var(--brass); }
+.toggle input:checked + span::after { transform: translateX(14px); background: var(--ink); }
+.toggle input:focus-visible + span { outline: 1px solid var(--brass); outline-offset: 2px; }
+.swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+.swatch { position: relative; width: 36px; height: 36px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(255, 245, 230, .12); transition: transform .5s var(--ease); }
+.swatch::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .05) 0 1px, transparent 1px 3px), repeating-linear-gradient(-45deg, rgba(0, 0, 0, .12) 0 1px, transparent 1px 3px); }
+.swatch[data-type="leather"]::before { background: radial-gradient(circle at 35% 30%, rgba(255, 245, 230, .28), transparent 55%); }
+.swatch::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; box-shadow: 0 0 0 1px var(--brass); opacity: 0; transform: scale(.85); transition: opacity .4s, transform .5s var(--ease); }
+.swatch:hover { transform: scale(1.08); }
+.swatch.is-on::after { opacity: 1; transform: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px 0 8px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line-d); font-size: 13px; color: var(--t-d2); transition: box-shadow .4s, color .4s, background .4s; }
+.chip i { width: 20px; height: 20px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(255, 245, 230, .15); }
+.chip:hover { color: var(--t-d); }
+.chip.is-on { color: var(--t-d); background: rgba(233, 227, 217, .06); box-shadow: inset 0 0 0 1px var(--brass); }
+.range { -webkit-appearance: none; appearance: none; width: 100%; height: 26px; background: transparent; cursor: pointer; }
+.range::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: linear-gradient(90deg, #d9cdb8, #8a6a4c 50%, #18171f); }
+.range::-moz-range-track { height: 4px; border-radius: 4px; background: linear-gradient(90deg, #d9cdb8, #8a6a4c 50%, #18171f); }
+.range::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -8px; border-radius: 50%; background: var(--bone); box-shadow: 0 0 0 4px rgba(184, 146, 79, .35), 0 4px 10px rgba(0, 0, 0, .4); }
+.range::-moz-range-thumb { width: 20px; height: 20px; border: 0; border-radius: 50%; background: var(--bone); box-shadow: 0 0 0 4px rgba(184, 146, 79, .35); }
+.range__labels { display: flex; justify-content: space-between; color: var(--t-d3); margin-top: 4px; }
+.panel__total { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding-top: 22px; border-top: 1px solid var(--line-d); }
+.panel__total .mono { color: var(--t-d3); }
+.panel__total strong { display: block; margin: 4px 0; font: 300 clamp(28px, 2.4vw, 38px)/1.1 var(--f-d); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.panel__total small { display: block; max-width: 22ch; color: var(--t-d3); font-size: 11.5px; line-height: 1.4; }
+
+/* ==========================================================================
+   PABRIK (gelap)
+   ========================================================================== */
+.factory { background: var(--ink); padding-bottom: clamp(70px, 8vw, 110px); }
+.factory__pin { min-height: 100svh; display: flex; align-items: center; padding: calc(var(--nav-h) + 10px) 0 30px; }
+.factory__grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.35fr); gap: clamp(30px, 5vw, 80px); align-items: center; }
+.factory .h2 { font-size: clamp(44px, min(5.6vw, 9vh), 100px); }
+.factory__left .lede { margin: 18px 0 26px; max-width: 44ch; }
+.steps li { display: grid; grid-template-columns: 46px 1fr; gap: 0 10px; padding: 12px 0; border-top: 1px solid var(--line-d); opacity: .35; transition: opacity .6s var(--ease); }
+.steps li:last-child { border-bottom: 1px solid var(--line-d); }
+.steps li.is-on { opacity: 1; }
+.steps .n { color: var(--brass); padding-top: 5px; }
+.steps .place { font: 400 clamp(20px, 1.7vw, 26px)/1.2 var(--f-d); letter-spacing: -.02em; }
+.steps .role { display: block; color: var(--brass-hi); margin-top: 2px; }
+.steps .text { grid-column: 2; max-height: 0; overflow: hidden; color: var(--t-d2); font-size: 14px; transition: max-height .7s var(--ease), margin .7s var(--ease); }
+.steps li.is-on .text { max-height: 80px; margin-top: 8px; }
+.factory__map { position: relative; }
+.factory__map svg { width: 100%; height: auto; overflow: visible; }
+.map-dot { fill: rgba(233, 227, 217, .2); }
+.map-dot.is-near { fill: rgba(212, 179, 124, .55); }
+.map-route { fill: none; stroke: var(--brass); stroke-width: 1.6; stroke-linecap: round; }
+.map-route-bg { fill: none; stroke: rgba(184, 146, 79, .18); stroke-width: 1.6; stroke-dasharray: 2 6; }
+.map-pin circle.core { fill: var(--brass-hi); }
+.map-pin circle.halo { fill: none; stroke: var(--brass); stroke-width: 1; opacity: .7; }
+.map-pin text { font: 400 13px var(--f-m); letter-spacing: .06em; fill: var(--t-d2); text-transform: uppercase; }
+.map-pin.is-on text { fill: var(--t-d); }
+.map-label { font: 400 11px var(--f-m); fill: var(--t-d3); letter-spacing: .08em; }
+.map__legend { display: flex; gap: 22px; margin-top: 14px; color: var(--t-d3); }
+.lg { display: inline-block; vertical-align: middle; margin-right: 8px; }
+.lg--dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brass-hi); }
+.lg--route { width: 22px; height: 1px; background: var(--brass); }
+@media (min-width: 961px) and (max-height: 800px) {
+  .factory__left .sec-head { display: none; }
+  .factory__left .lede { margin: 12px 0 18px; font-size: 15px; }
+  .steps li { padding: 9px 0; }
+  .steps .place { font-size: 20px; }
+}
+.stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; padding-top: 34px; border-top: 1px solid var(--line-d); }
+.stat b { display: block; font: 300 clamp(40px, 4.6vw, 76px)/1 var(--f-d); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.stat span { display: block; margin-top: 10px; color: var(--t-d2); font-size: 13px; }
+
+/* ==========================================================================
+   MUSEBOARD (gelap)
+   ========================================================================== */
+.muse { background: var(--ink); padding: clamp(60px, 8vw, 100px) 0 clamp(120px, 14vw, 200px); overflow: hidden; }
+.muse__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: clamp(50px, 6vw, 80px); align-items: start; }
+.muse__col { display: flex; flex-direction: column; gap: 18px; will-change: transform; }
+.muse__col[data-col="1"] { margin-top: clamp(60px, 9vw, 140px); }
+.muse__item { position: relative; overflow: hidden; border-radius: 4px; background: #121110; aspect-ratio: 1; }
+.muse__item img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.01); transition: transform 1.4s var(--ease), filter 1s; filter: saturate(.85); }
+.muse__item:hover img { transform: scale(1.1); filter: saturate(1); }
+.muse__item figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 18px 16px; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; background: linear-gradient(0deg, rgba(10, 9, 8, .75), rgba(10, 9, 8, 0)); transform: translateY(30%); opacity: 0; transition: transform .7s var(--ease), opacity .5s; }
+.muse__item:hover figcaption { transform: none; opacity: 1; }
+.muse__item figcaption b { font: 400 20px/1.1 var(--f-d); letter-spacing: -.02em; color: var(--t-d); }
+.muse__item figcaption .mono { color: var(--t-d2); }
+
+/* ==========================================================================
+   FOR BUSINESS (terang)
+   ========================================================================== */
+.business { background: var(--bone); color: var(--t-l); padding: clamp(100px, 12vw, 160px) 0 clamp(90px, 10vw, 130px); }
+.business__intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
+.brass { color: var(--brass-lo); }
+.services { margin-top: clamp(60px, 7vw, 90px); border-top: 1px solid var(--line-l); }
+.service { position: relative; isolation: isolate; display: grid; grid-template-columns: 70px minmax(0, 1fr) minmax(0, 1fr) 40px; align-items: center; gap: 20px; padding: clamp(22px, 2.6vw, 34px) 0; border-bottom: 1px solid var(--line-l); transition: color .5s var(--ease); }
+.service::before { content: ''; position: absolute; inset: 0 calc(var(--gut) * -1); z-index: -1; background: var(--ink); transform: scaleY(0); transform-origin: 50% 100%; transition: transform .6s var(--ease); }
+.service:hover { color: var(--bone); }
+.service:hover::before { transform: scaleY(1); }
+.service .mono { color: var(--brass-lo); }
+.service:hover .mono { color: var(--brass-hi); }
+.service h3 { font: 300 clamp(34px, 4.4vw, 70px)/1 var(--f-d); letter-spacing: -.045em; transition: transform .7s var(--ease); }
+.service:hover h3 { transform: translateX(14px); }
+.service p { color: var(--t-l2); transition: color .5s; }
+.service:hover p { color: var(--t-d2); }
+.service svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; transform: rotate(-45deg); transition: transform .7s var(--ease); }
+.service:hover svg { transform: rotate(0); }
+.benefits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: clamp(60px, 7vw, 90px); }
+.benefit { padding-top: 18px; border-top: 1px solid var(--line-l); }
+.benefit b { display: block; font: 300 clamp(36px, 3.6vw, 58px)/1 var(--f-d); letter-spacing: -.04em; }
+.benefit span { display: block; margin-top: 10px; color: var(--t-l2); }
+.business__bottom { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(30px, 5vw, 80px); margin-top: clamp(70px, 8vw, 110px); }
+.bform { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 24px; padding: clamp(24px, 3vw, 40px); border-radius: 6px; background: var(--bone-2); box-shadow: inset 0 0 0 1px var(--line-l); }
+.bform h3 { grid-column: 1 / -1; font: 400 26px/1.1 var(--f-d); letter-spacing: -.025em; }
+.field { position: relative; }
+.field--full { grid-column: 1 / -1; }
+.field input, .field textarea, .field select { width: 100%; padding: 22px 0 10px; border: 0; border-bottom: 1px solid rgba(24, 23, 21, .25); background: transparent; font-size: 16px; color: var(--t-l); border-radius: 0; outline: none; resize: vertical; transition: border-color .4s; -webkit-appearance: none; appearance: none; }
+.field select { cursor: pointer; }
+.field--select::after { content: ''; position: absolute; right: 4px; bottom: 16px; width: 7px; height: 7px; border-right: 1px solid var(--t-l2); border-bottom: 1px solid var(--t-l2); transform: rotate(45deg); pointer-events: none; }
+.field label { position: absolute; left: 0; top: 22px; color: var(--t-l2); font-size: 16px; pointer-events: none; transform-origin: 0 0; transition: transform .45s var(--ease), color .3s; }
+.field input:focus, .field textarea:focus, .field select:focus { border-color: var(--brass-lo); }
+.field input:focus + label, .field input:not(:placeholder-shown) + label,
+.field textarea:focus + label, .field textarea:not(:placeholder-shown) + label,
+.field--select label { transform: translateY(-20px) scale(.78); color: var(--brass-lo); }
+.field.is-error input { border-color: #a5513a; }
+.bform .btn { justify-self: start; }
+.bform__note { grid-column: 1 / -1; color: var(--t-l3); }
+.clients .mono { color: var(--t-l3); margin-bottom: 14px; }
+.clients li { padding: 12px 0; border-bottom: 1px solid var(--line-l); font: 300 clamp(24px, 2.4vw, 38px)/1.1 var(--f-d); letter-spacing: -.035em; transition: color .4s, padding .6s var(--ease); }
+.clients li:hover { color: var(--brass-lo); padding-left: 10px; }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer { position: relative; background: var(--ink); color: var(--t-d); padding-top: clamp(100px, 11vw, 150px); overflow: hidden; }
+.footer__top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: clamp(40px, 6vw, 100px); }
+.footer__cta .mono { color: var(--brass); }
+.footer__cta h3 { margin: 18px 0 30px; font: 300 clamp(40px, 5vw, 84px)/.98 var(--f-d); letter-spacing: -.045em; }
+.footer__cta .btn svg { transform: none; }
+.footer__cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.footer__cols p { color: var(--t-d3); margin-bottom: 14px; }
+.footer__cols a, .footer__cols span { display: block; width: fit-content; padding: 4px 0; color: var(--t-d2); font-size: 14px; position: relative; transition: color .3s; }
+.footer__cols a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 2px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 100% 50%; transition: transform .6s var(--ease); }
+.footer__cols a:hover { color: var(--t-d); }
+.footer__cols a:hover::after { transform: scaleX(1); transform-origin: 0 50%; }
+.footer__logo { position: relative; padding: clamp(70px, 9vw, 130px) var(--gut) clamp(16px, 2vw, 28px); max-width: 1560px; margin: 0 auto; }
+.footer__logo svg { display: block; width: 100%; height: auto; fill: rgba(233, 227, 217, .07); }
+.footer__logo .footer__logo-lit { position: absolute; left: var(--gut); right: var(--gut); bottom: clamp(16px, 2vw, 28px); width: calc(100% - var(--gut) * 2); fill: var(--t-d);
+  -webkit-mask-image: radial-gradient(circle var(--fr, 14vw) at var(--fx, 50%) var(--fy, 50%), #000 0%, rgba(0, 0, 0, .35) 45%, transparent 75%);
+  mask-image: radial-gradient(circle var(--fr, 14vw) at var(--fx, 50%) var(--fy, 50%), #000 0%, rgba(0, 0, 0, .35) 45%, transparent 75%); }
+.footer__bottom { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-top: 22px; padding-bottom: 34px; border-top: 1px solid var(--line-d); color: var(--t-d3); }
+.footer__social { display: flex; gap: 6px; }
+.footer__social a { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; box-shadow: inset 0 0 0 1px var(--line-d); color: var(--t-d2); transition: color .3s, box-shadow .3s; }
+.footer__social a:hover { color: var(--brass-hi); box-shadow: inset 0 0 0 1px var(--brass); }
+.footer__social svg, .totop svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.totop { display: inline-flex; align-items: center; gap: 8px; color: var(--t-d2); transition: color .3s; }
+.totop:hover { color: var(--t-d); }
+
+/* ==========================================================================
+   Overlays — quick view, cart, search, preview, toast
+   ========================================================================== */
+.qv { position: fixed; inset: 0; z-index: 300; pointer-events: none; }
+.qv.is-open { pointer-events: auto; }
+.qv__backdrop { position: absolute; inset: 0; background: rgba(9, 8, 7, .62); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); opacity: 0; }
+.qv__panel { position: absolute; inset: 0; margin: auto; width: min(1100px, 92vw); height: fit-content; max-height: 88vh; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); background: var(--bone); color: var(--t-l); border-radius: 6px; overflow: hidden; opacity: 0; visibility: hidden; }
+.qv.is-open .qv__panel { visibility: visible; }
+.qv__media { position: relative; background: var(--card); display: grid; place-items: center; min-height: 420px; }
+.qv__media img { width: 86%; height: 86%; max-height: 70vh; object-fit: contain; mix-blend-mode: multiply; }
+.qv__media.is-dark { background: #0a0a09; }
+.qv__media.is-dark img { width: 100%; height: 100%; max-height: none; object-fit: cover; mix-blend-mode: normal; }
+.qv__info { display: flex; flex-direction: column; gap: 12px; padding: clamp(28px, 3.5vw, 52px); overflow-y: auto; }
+.qv__info > * { opacity: 0; transform: translateY(14px); }
+.qv__info .mono { color: var(--brass-lo); }
+.qv__info h3 { font: 300 clamp(40px, 4vw, 64px)/.95 var(--f-d); letter-spacing: -.045em; }
+.qv__type { color: var(--t-l2); }
+.qv__price { font: 400 15px/1.5 var(--f-m); margin-top: 8px; font-variant-numeric: tabular-nums; }
+.qv__price s { color: var(--t-l3); margin-right: 10px; }
+.qv__desc { color: var(--t-l2); max-width: 40ch; }
+.qty { display: inline-flex; align-items: center; gap: 4px; width: fit-content; margin-top: 10px; padding: 4px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line-l); }
+.qty button { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; transition: background .3s; }
+.qty button:hover { background: rgba(24, 23, 21, .08); }
+.qty svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.qty span { min-width: 28px; text-align: center; font: 500 14px var(--f-m); }
+.qv__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.qv__info .link-arrow { margin-top: auto; padding-top: 12px; width: fit-content; }
+.qv__close { position: absolute; right: 14px; top: 14px; z-index: 2; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: rgba(235, 230, 222, .8); color: var(--t-l); transition: transform .6s var(--ease), background .3s; }
+.qv__close:hover { transform: rotate(90deg); background: var(--bone); }
+.qv__close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+.fly { position: fixed; z-index: 400; pointer-events: none; border-radius: 50%; overflow: hidden; background: var(--card); box-shadow: 0 10px 30px rgba(0, 0, 0, .35); }
+.fly img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+
+.cart { position: fixed; inset: 0; z-index: 310; pointer-events: none; }
+.cart.is-open { pointer-events: auto; }
+.cart__backdrop { position: absolute; inset: 0; background: rgba(9, 8, 7, .5); opacity: 0; transition: opacity .6s var(--ease); }
+.cart.is-open .cart__backdrop { opacity: 1; }
+.cart__panel { position: absolute; right: 0; top: 0; bottom: 0; width: min(440px, 100vw); display: flex; flex-direction: column; background: var(--bone); color: var(--t-l); transform: translateX(100%); transition: transform .8s var(--ease); }
+.cart.is-open .cart__panel { transform: none; }
+.cart__head { display: flex; align-items: center; gap: 14px; padding: 22px 22px 18px; border-bottom: 1px solid var(--line-l); }
+.cart__head h3 { font: 400 24px/1 var(--f-d); letter-spacing: -.03em; }
+.cart__head .mono { color: var(--t-l3); flex: 1; }
+.cart__head .icon-btn:hover { background: rgba(24, 23, 21, .06); }
+.cart__list { flex: 1; overflow-y: auto; padding: 8px 22px; }
+.cart__item { display: grid; grid-template-columns: 76px 1fr auto; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line-l); }
+.cart__item .thumb { width: 76px; height: 76px; border-radius: 4px; background: var(--card); display: grid; place-items: center; overflow: hidden; }
+.cart__item .thumb img { width: 88%; height: 88%; object-fit: contain; mix-blend-mode: multiply; }
+.cart__item .thumb.is-dark { background: #0a0a09; }
+.cart__item .thumb.is-dark img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: normal; }
+.cart__item h4 { font: 400 16px/1.2 var(--f-d); letter-spacing: -.02em; }
+.cart__item p { font: 400 12px var(--f-m); color: var(--t-l2); margin-top: 4px; }
+.cart__item .qty { margin-top: 8px; }
+.cart__item .qty button { width: 26px; height: 26px; }
+.cart__item .rm { align-self: start; color: var(--t-l3); font: 400 11px var(--f-m); text-transform: uppercase; letter-spacing: .06em; }
+.cart__item .rm:hover { color: var(--t-l); }
+.cart__empty { display: none; flex: 1; flex-direction: column; align-items: flex-start; gap: 14px; padding: 30px 22px; color: var(--t-l2); }
+.cart.is-empty .cart__empty { display: flex; }
+.cart.is-empty .cart__list, .cart.is-empty .cart__foot { display: none; }
+.cart__foot { padding: 20px 22px 26px; border-top: 1px solid var(--line-l); display: flex; flex-direction: column; gap: 14px; }
+.cart__sum { display: flex; justify-content: space-between; align-items: baseline; }
+.cart__sum b { font: 300 28px var(--f-d); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.cart__foot .btn { width: 100%; }
+
+.search { position: fixed; inset: 0; z-index: 320; background: rgba(11, 10, 9, .94); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); opacity: 0; visibility: hidden; transition: opacity .5s var(--ease), visibility .5s; overflow-y: auto; }
+.search.is-open { opacity: 1; visibility: visible; }
+.search__inner { padding-top: calc(var(--nav-h) + 40px); padding-bottom: 80px; }
+.search__bar { display: flex; align-items: center; gap: 18px; padding-bottom: 14px; border-bottom: 1px solid rgba(233, 227, 217, .3); }
+.search__bar > svg { width: 28px; height: 28px; fill: none; stroke: var(--t-d2); stroke-width: 1.3; stroke-linecap: round; }
+.search__bar input { flex: 1; min-width: 0; background: transparent; border: 0; outline: none; color: var(--t-d); font: 300 clamp(30px, 4.6vw, 70px)/1.1 var(--f-d); letter-spacing: -.04em; }
+.search__bar input::placeholder { color: var(--t-d3); }
+.search__bar input::-webkit-search-cancel-button, .search__bar input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
+.search__hint { color: var(--t-d3); margin-top: 14px; }
+.search__results { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-top: 34px; }
+.search__results li { opacity: 0; transform: translateY(16px); }
+.search__results button { width: 100%; text-align: left; }
+.search__results .thumb { aspect-ratio: 1; border-radius: 4px; background: var(--card); display: grid; place-items: center; overflow: hidden; }
+.search__results .thumb img { width: 86%; height: 86%; object-fit: contain; mix-blend-mode: multiply; transition: transform .8s var(--ease); }
+.search__results .thumb.is-dark { background: #0a0a09; }
+.search__results .thumb.is-dark img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: normal; }
+.search__results button:hover img { transform: scale(1.06); }
+.search__results b { display: block; margin-top: 10px; font: 400 17px/1.2 var(--f-d); letter-spacing: -.02em; }
+.search__results span { display: block; color: var(--t-d2); font-size: 12px; }
+.search__empty { grid-column: 1 / -1; color: var(--t-d2); }
+
+.preview { position: fixed; left: 0; top: 0; z-index: 60; width: clamp(240px, 22vw, 360px); aspect-ratio: 4 / 3; border-radius: 4px; overflow: hidden; pointer-events: none; opacity: 0; transform: scale(.6); box-shadow: 0 30px 60px rgba(0, 0, 0, .35); }
+.preview img { width: 100%; height: 100%; object-fit: cover; }
+.toast { position: fixed; left: 50%; bottom: 30px; z-index: 500; transform: translate(-50%, calc(100% + 60px)); opacity: 0; padding: 12px 18px; border-radius: 999px; background: var(--ink); color: var(--t-d); box-shadow: 0 0 0 1px var(--line-d), 0 18px 40px rgba(0, 0, 0, .4); font-size: 13px; display: flex; align-items: center; gap: 10px; transition: transform .7s var(--ease), opacity .5s; white-space: nowrap; }
+.toast.is-on { transform: translate(-50%, 0); opacity: 1; }
+.toast i { width: 8px; height: 8px; border-radius: 50%; background: var(--brass); }
+
+/* ==========================================================================
+   Animasi awal (hanya jika JS + GSAP aktif)
+   ========================================================================== */
+.anim [data-reveal] { opacity: 0; transform: translateY(30px); }
+.anim .pillar::before { display: none; }
+.pillar__line { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--t-l); transform-origin: 0 50%; }
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+/* tablet tegak */
+@media (max-width: 1180px) and (min-width: 761px) and (orientation: portrait) {
+  .collection__pin { justify-content: center; }
+  .collection__viewport { flex: none; height: min(48vh, 540px); }
+  .card { width: 36vw; }
+}
+@media (max-width: 1180px) {
+  .studio__grid { grid-template-columns: 1fr; }
+  .stage { min-height: 0; aspect-ratio: 16 / 10; }
+  .stats { grid-template-columns: repeat(3, 1fr); row-gap: 34px; }
+  .footer__top { grid-template-columns: 1fr; }
+}
+@media (max-width: 960px) {
+  .nav { grid-template-columns: 1fr auto; }
+  .nav__links { display: none; }
+  .nav__burger { display: flex; }
+  .factory__grid { grid-template-columns: 1fr; }
+  .factory__pin { min-height: 0; }
+  .steps li { opacity: 1; }
+  .steps .text { max-height: none; margin-top: 8px; }
+  .collection__head { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .tabs { justify-content: flex-start; }
+  .business__bottom { grid-template-columns: 1fr; }
+  .service { grid-template-columns: 50px minmax(0, 1fr) 30px; }
+  .service p { grid-column: 2; }
+  .service svg { grid-column: 3; grid-row: 1; }
+  .benefits { grid-template-columns: repeat(2, 1fr); row-gap: 34px; }
+}
+@media (max-width: 760px) {
+  :root { --nav-h: 62px; }
+  .nav { grid-template-columns: 1fr auto; }
+  .nav__logo { width: 104px; }
+  .nav__cta, .nav__actions [data-open="cart"] { display: none; }
+  .nav__burger { display: flex; }
+  .dock { display: grid; }
+  .hud { display: none; }
+  body { padding-bottom: 0; }
+
+  .hotspot__card { padding: 9px 12px; font-size: 12px; }
+
+  .pillars { grid-template-columns: 1fr; gap: 34px; }
+  .manifesto__band { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .band__fig--a { grid-column: 1 / -1; }
+  .band__fig--b { grid-column: 2; margin-top: -30%; }
+  .band__quote { grid-column: 1 / -1; margin-top: 30px; }
+
+  .collection__pin { height: auto; min-height: 0; padding: 90px 0 40px; }
+  .collection__viewport { overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; height: 420px; flex: none; scroll-padding-left: var(--gut); }
+  .collection__viewport::-webkit-scrollbar { display: none; }
+  .collection__track { width: max-content; }
+  .card { width: 70vw; scroll-snap-align: start; }
+  /* label kategori jadi kolom vertikal ramping agar kartu pertama terlihat utuh */
+  .group { width: 58px; padding: 4px 12px 4px 0; margin-right: 10px; scroll-snap-align: start; }
+  .group__n { font-size: 10px; writing-mode: vertical-rl; transform: rotate(180deg); }
+  .group__title { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 40px; line-height: 1; white-space: nowrap; }
+  .group__title br { display: none; }
+  .group__note { display: none; }
+  .map-pin text { font-size: 17px; }
+  .map-label { font-size: 13px; }
+  .card__add { transform: none; opacity: 1; }
+  .tabs { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; scrollbar-width: none; padding-bottom: 2px; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { white-space: nowrap; }
+
+  .studio__intro, .business__intro { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .stage { aspect-ratio: 4 / 3.6; }
+  .panel { padding: 22px; }
+  .panel__total { flex-direction: column; align-items: stretch; }
+  .panel__total .btn { width: 100%; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .muse__grid { grid-template-columns: 1fr 1fr; }
+  .muse__col:nth-child(3) { display: none; }
+  .muse__item figcaption { opacity: 1; transform: none; padding: 30px 12px 10px; }
+  .muse__item figcaption b { font-size: 15px; }
+  .muse__item figcaption .mono { display: none; }
+  .bform { grid-template-columns: 1fr; }
+  .footer__cols { grid-template-columns: 1fr 1fr; row-gap: 30px; }
+  .footer__bottom { flex-wrap: wrap; padding-bottom: 110px; }
+  .qv__panel { grid-template-columns: 1fr; width: 100vw; max-height: 92svh; inset: auto 0 0 0; margin: 0; border-radius: 14px 14px 0 0; overflow-y: auto; }
+  .qv__media { min-height: 0; aspect-ratio: 1; }
+  .toast { bottom: 96px; }
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .grain, .scrollcue i::after, .live, .hotspot__dot::after { animation: none !important; }
+}
+
+</style>
+  <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+</head>
+<body>
+
+<!-- ===================== Icons ===================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 20 20"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 20V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 4v15M6 13l6 6 6-6"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4.5 19.5l1.1-3.6A8 8 0 1 1 8.4 18.6z"/><path d="M9 8.6c.2-.5.6-.6.9-.6h.4c.2 0 .4.1.5.4l.6 1.5c.1.3 0 .5-.1.7l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.2.5-.2.7-.1l1.5.6c.3.1.4.3.4.5v.4c0 .3-.1.7-.6.9-.6.3-1.6.4-3.1-.3a8.3 8.3 0 0 1-3.6-3.6c-.7-1.5-.6-2.5-.3-3.1z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.8" cy="7.2" r=".6"/></symbol>
+  <symbol id="i-fb" viewBox="0 0 24 24"><path d="M14 8.5h2V5.2h-2.4C11.2 5.2 10 6.7 10 9v2H8v3.2h2V20h3.2v-5.8h2.3l.5-3.2h-2.8V9.4c0-.6.3-.9.8-.9z"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1"/><circle cx="16.75" cy="16.75" r="3.25"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h7M15 7h5M4 17h3M11 17h9"/><circle cx="13" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+  <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="1.5"/><path d="M9 7.5V5.5h6v2M3.5 12.5h17"/></symbol>
+  <symbol id="i-mark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/><path d="M35 35 65 65M65 35 35 65"/></symbol>
+</svg>
+
+<!-- ===================== Preloader ===================== -->
+<div class="loader" id="loader" aria-hidden="true">
+  <svg class="loader__mark" viewBox="0 0 100 100"><circle class="loader__ring" cx="50" cy="50" r="44"/><path class="loader__x1" d="M35 35 65 65"/><path class="loader__x2" d="M65 35 35 65"/></svg>
+  <div class="loader__meta mono"><span id="loaderCount">000</span><span>Building the perfection</span></div>
+</div>
+
+<!-- ===================== Global UI ===================== -->
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__ring"><span class="cursor__label" id="cursorLabel"></span></span><span class="cursor__dot"></span></div>
+<div class="progress" aria-hidden="true"><i id="progress"></i></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__logo" href="#top" aria-label="XIONCO — ke atas"><svg viewBox="0 0 206 28" aria-hidden="true"><path class="logo-path"/></svg></a>
+  <nav class="nav__links" aria-label="Utama">
+    <a href="#koleksi" data-link>Koleksi</a>
+    <a href="#studio" data-link>Custom Studio</a>
+    <a href="#pabrik" data-link>Pabrik</a>
+    <a href="#bisnis" data-link>For Business</a>
+  </nav>
+  <div class="nav__actions">
+    <button class="icon-btn" type="button" data-open="search" aria-label="Cari produk" data-cursor="Cari"><svg><use href="#i-search"/></svg></button>
+    <button class="icon-btn nav__cart" type="button" data-open="cart" aria-label="Keranjang" data-cursor="Keranjang"><svg><use href="#i-bag"/></svg><span class="count" id="cartCount">0</span></button>
+    <a class="btn btn--brass btn--sm magnetic nav__cta" data-wa="Halo XIONCO, saya ingin konsultasi gratis." href="#" target="_blank" rel="noopener">Konsultasi gratis</a>
+    <button class="nav__burger" type="button" id="burger" aria-label="Buka menu" aria-expanded="false"><i></i><i></i></button>
+  </div>
+</header>
+
+<!-- Mobile: dock bawah (terinspirasi xionco.shop) -->
+<nav class="dock" id="dock" aria-label="Navigasi cepat">
+  <a href="#top" data-dock="top"><svg><use href="#i-home"/></svg><span>Home</span></a>
+  <a href="#koleksi" data-dock="koleksi"><svg><use href="#i-grid"/></svg><span>Koleksi</span></a>
+  <a href="#studio" data-dock="studio"><svg><use href="#i-sliders"/></svg><span>Studio</span></a>
+  <a href="#bisnis" data-dock="bisnis"><svg><use href="#i-brief"/></svg><span>Bisnis</span></a>
+  <button type="button" data-open="cart"><svg><use href="#i-bag"/></svg><span>Keranjang</span><i class="count" id="dockCount">0</i></button>
+  <span class="dock__ind" id="dockInd" aria-hidden="true"></span>
+</nav>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <nav class="menu__links">
+    <a href="#koleksi" data-link><span class="mono">01</span>Koleksi</a>
+    <a href="#studio" data-link><span class="mono">02</span>Custom Studio</a>
+    <a href="#pabrik" data-link><span class="mono">03</span>Pabrik</a>
+    <a href="#museboard" data-link><span class="mono">04</span>Museboard</a>
+    <a href="#bisnis" data-link><span class="mono">05</span>For Business</a>
+  </nav>
+  <div class="menu__foot mono"><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener">Instagram</a><a href="https://xionco.shop/" target="_blank" rel="noopener">xionco.shop</a></div>
+</div>
+
+<main id="main">
+
+  <!-- ===================== 01 HERO ===================== -->
+  <section class="hero" id="top" data-theme="dark" data-index="01" data-name="Intro">
+    <div class="hero__pin" id="heroPin">
+      <!-- Scene: dilihat lewat huruf XIONCO (clip-path), lalu kamera "masuk" lewat huruf I -->
+      <div class="hero__scene" id="heroScene">
+        <div class="hero__glow" id="heroGlow"></div>
+        <div class="hero__media" id="heroMedia">
+          <img class="hero__img hero__img--base" src="https://www.xionco.com/wp-content/uploads/2024/09/Sofa-Sectional_Main-View_Open.png" alt="EORDE Sectional, sofa 5 seater XIONCO di atas panggung gelap" fetchpriority="high">
+          <img class="hero__img hero__img--lit" src="https://www.xionco.com/wp-content/uploads/2024/09/Sofa-Sectional_Main-View_Open.png" alt="" aria-hidden="true">
+        </div>
+        <div class="hero__beam" aria-hidden="true"></div>
+        <div class="hero__shade" id="heroShade" aria-hidden="true"></div>
+      </div>
+      <svg class="hero__outline" id="heroOutline" aria-hidden="true"><path id="heroOutlinePath"/></svg>
+
+      <!-- Fase 1: bingkai di sekitar wordmark -->
+      <div class="hero__frame" id="heroFrame">
+        <p class="hf hf--tl mono"><i class="live"></i>Furniture manufacturer · Jakarta, Indonesia</p>
+        <p class="hf hf--tr mono">4 pabrik di Jawa <span>·</span> 34 produk</p>
+        <p class="hf hf--bl">Quality <em>shouldn't be</em> a luxury.</p>
+        <button class="hf hf--bc mono scrollcue" type="button" id="heroEnter" data-cursor="Masuk">Scroll untuk masuk<i></i></button>
+        <p class="hf hf--br mono">Gerakkan kursor — <b>cahaya mengikuti anda</b></p>
+      </div>
+
+      <!-- Fase 2: komposisi editorial di dalam ruang -->
+      <div class="hero__inner" id="heroInner">
+        <h1 class="hero__title" aria-label="Quality shouldn't be a luxury.">
+          <span class="ln ln--1" aria-hidden="true"><span class="ln__in">Quality</span></span>
+          <span class="ln ln--2" aria-hidden="true"><span class="ln__in"><em>shouldn't be</em></span></span>
+          <span class="ln ln--3" aria-hidden="true"><span class="ln__in">a luxury.</span></span>
+        </h1>
+        <div class="hero__aside">
+          <p class="hero__lede">Furnitur minimalis dengan pengerjaan tanpa kompromi — dirancang dan diproduksi sendiri di empat pabrik kami di Jawa.</p>
+          <a class="link-arrow hero__link" href="#studio" data-link>Rancang milikmu<svg><use href="#i-arrow"/></svg></a>
+        </div>
+        <a class="badge-cta" id="badgeCta" href="#koleksi" data-link data-cursor="Masuk" aria-label="Jelajahi koleksi">
+          <svg class="badge-cta__ring" viewBox="0 0 120 120" aria-hidden="true">
+            <defs><path id="badgeCircle" d="M60 60m-47 0a47 47 0 1 1 94 0a47 47 0 1 1-94 0"/></defs>
+            <text textLength="292" lengthAdjust="spacing"><textPath href="#badgeCircle" textLength="292" lengthAdjust="spacing">Jelajahi koleksi · 34 produk · </textPath></text>
+          </svg>
+          <span class="badge-cta__core"><svg><use href="#i-arrow-down"/></svg></span>
+        </a>
+      </div>
+
+      <button class="hotspot hotspot--up hotspot--main" type="button" data-x=".62" data-y=".53" data-quick="eorde" data-cursor="Lihat" aria-label="Lihat EORDE Sectional">
+        <span class="hotspot__dot"></span><span class="hotspot__line"></span>
+        <span class="hotspot__card"><span class="mono">EORDE Sectional</span><span>5 seater · 2 electrical</span><b>IDR 24.800.000</b></span>
+      </button>
+      <button class="hotspot hotspot--up hotspot--mini" type="button" data-x=".355" data-y=".628" data-quick="eorde" data-cursor="Lihat" aria-label="Recliner EORDE">
+        <span class="hotspot__dot"></span><span class="hotspot__line"></span>
+        <span class="hotspot__card"><span class="mono">Recliner</span><span>2 modul electrical</span></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===================== TRUST ===================== -->
+  <section class="trust" data-theme="dark" aria-label="Dipercaya oleh">
+    <p class="trust__label mono wrap">Dipercaya oleh</p>
+    <div class="marquee" data-marquee="1"><div class="marquee__track"></div></div>
+    <div class="marquee marquee--alt" data-marquee="-1"><div class="marquee__track"></div></div>
+  </section>
+
+  <!-- ===================== 02 MANIFESTO ===================== -->
+  <section class="manifesto" id="tentang" data-theme="light" data-index="02" data-name="Origin">
+    <div class="wrap">
+      <div class="sec-head mono"><span>(02) Origin</span><span>Redefining quality, rebuilding culture</span></div>
+      <p class="manifesto__text" data-words>XIONCO lahir dari satu pertanyaan sederhana yang keras kepala: <em>mengapa kualitas harus menjadi kemewahan?</em> Di pasar yang penuh kompromi, kami membangun standar baru — desain minimalis bertemu pengerjaan tanpa kompromi, tanpa mengorbankan daya tahan.</p>
+
+      <div class="pillars">
+        <article class="pillar">
+          <span class="mono">01</span>
+          <h3>Architectural clarity</h3>
+          <p>Setiap garis, proporsi, dan sambungan dihitung — bukan untuk memukau, tapi untuk bertahan.</p>
+        </article>
+        <article class="pillar">
+          <span class="mono">02</span>
+          <h3>Visual silence</h3>
+          <p>Disiplin mengurangi. Tidak berteriak, tapi berbisik dengan presisi.</p>
+        </article>
+        <article class="pillar">
+          <span class="mono">03</span>
+          <h3>Material honesty</h3>
+          <p>Kayu, baja, dan kain apa adanya — dikerjakan tangan-tangan yang terampil selama puluhan tahun.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="manifesto__band">
+      <figure class="band__fig band__fig--a" data-parallax="-8">
+        <img src="https://www.xionco.com/wp-content/uploads/2025/05/ChatGPT-Image-May-16-2025-06_29_52-AM.png" alt="Detail kisi kayu solid" loading="lazy">
+        <figcaption class="mono">Kayu · Jepara</figcaption>
+      </figure>
+      <figure class="band__fig band__fig--b" data-parallax="10">
+        <img src="https://www.xionco.com/wp-content/uploads/2025/05/XIONCO-HERO-PRODUCT-II-1.png" alt="Detail jahitan kulit sofa" loading="lazy">
+        <figcaption class="mono">Upholstery · Pondok Pinang</figcaption>
+      </figure>
+      <p class="band__quote">“Only release what is <em>better</em> than what exists.”</p>
+    </div>
+  </section>
+
+  <!-- ===================== 03 KOLEKSI ===================== -->
+  <section class="collection" id="koleksi" data-theme="light" data-index="03" data-name="Koleksi">
+    <div class="collection__pin" id="collectionPin">
+      <div class="collection__head wrap">
+        <div>
+          <div class="sec-head mono"><span>(03) Koleksi</span><span id="prodCount">— produk</span></div>
+          <h2 class="h2">Dirancang <em>untuk bertahan.</em></h2>
+        </div>
+        <div class="tabs" id="tabs" role="tablist" aria-label="Kategori"></div>
+      </div>
+      <div class="collection__viewport" id="collectionViewport" data-cursor="Seret">
+        <div class="collection__track" id="track"></div>
+      </div>
+      <div class="collection__foot wrap">
+        <div class="bar"><i id="trackBar"></i></div>
+        <a class="link-arrow" href="https://xionco.shop/" target="_blank" rel="noopener">Belanja di xionco.shop<svg><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 04 CUSTOM STUDIO ===================== -->
+  <section class="studio" id="studio" data-theme="dark" data-index="04" data-name="Custom Studio">
+    <div class="wrap">
+      <div class="sec-head mono"><span>(04) Custom Studio</span><span>CUBIX Modular Series</span></div>
+      <div class="studio__intro">
+        <h2 class="h2">Rancang milikmu, <em>modul demi modul.</em></h2>
+        <p class="lede">Pilih jumlah dudukan, material, dan base — lihat hasilnya langsung, lalu kirim konfigurasi ke tim kami untuk penawaran.</p>
+      </div>
+
+      <div class="studio__grid">
+        <div class="stage" id="stage" data-cursor="Studio">
+          <div class="stage__wall" id="stageWall"></div>
+          <div class="stage__floor"></div>
+          <svg class="stage__svg" id="sofaSvg" viewBox="0 0 900 520" role="img" aria-label="Pratinjau sofa CUBIX"></svg>
+          <div class="stage__tag mono"><span>CUBIX MODULAR</span><b id="cfgName">3 Seater</b></div>
+          <div class="stage__dims mono" id="cfgDims">W 248 · D 86 · H 74 cm</div>
+        </div>
+
+        <aside class="panel" aria-label="Konfigurasi">
+          <div class="panel__step">
+            <h3><span class="mono">01</span>Dudukan</h3>
+            <div class="seg" id="segSeats" role="radiogroup" aria-label="Jumlah dudukan">
+              <button type="button" data-seats="1">1</button><button type="button" data-seats="2">2</button><button type="button" data-seats="3" class="is-on">3</button><button type="button" data-seats="4">4</button>
+              <i class="seg__ind"></i>
+            </div>
+            <div class="toggles">
+              <label class="toggle"><input type="checkbox" id="optArms" checked><span></span>Lengan (armchair)</label>
+              <label class="toggle"><input type="checkbox" id="optOttoman"><span></span>Ottoman</label>
+            </div>
+          </div>
+          <div class="panel__step">
+            <h3><span class="mono">02</span>Material</h3>
+            <div class="swatches" id="swatches"></div>
+            <p class="mono panel__note" id="swatchName">FB 01 — Graphite</p>
+          </div>
+          <div class="panel__step">
+            <h3><span class="mono">03</span>Base</h3>
+            <div class="chips" id="bases"></div>
+          </div>
+          <div class="panel__step">
+            <h3><span class="mono">04</span>Cahaya</h3>
+            <input class="range" type="range" id="light" min="0" max="100" value="18" aria-label="Pencahayaan siang ke malam">
+            <div class="range__labels mono"><span>Siang</span><span>Senja</span><span>Malam</span></div>
+          </div>
+          <div class="panel__total">
+            <div>
+              <span class="mono">Estimasi harga</span>
+              <strong id="cfgPrice">IDR 0</strong>
+              <small>Angka contoh untuk demo. Harga final melalui penawaran.</small>
+            </div>
+            <a class="btn btn--brass magnetic" id="studioCta" href="#" target="_blank" rel="noopener">Minta penawaran<svg><use href="#i-arrow"/></svg></a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 05 PABRIK ===================== -->
+  <section class="factory" id="pabrik" data-theme="dark" data-index="05" data-name="Pabrik">
+    <div class="factory__pin" id="factoryPin">
+      <div class="wrap factory__grid">
+        <div class="factory__left">
+          <div class="sec-head mono"><span>(05) Manufacturing</span></div>
+          <h2 class="h2">Dibangun<br> <em>dari nol.</em></h2>
+          <p class="lede">Empat pabrik di Jawa. Dari kayu mentah hingga kemasan, setiap tahap kami kerjakan sendiri — tidak ada detail yang lolos.</p>
+          <ol class="steps" id="steps"></ol>
+        </div>
+        <div class="factory__map">
+          <svg id="map" viewBox="0 0 1000 400" role="img" aria-label="Peta pabrik XIONCO di Pulau Jawa"></svg>
+          <div class="map__legend mono"><span><i class="lg lg--dot"></i>Pabrik</span><span><i class="lg lg--route"></i>Alur produksi</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="stats wrap" id="stats">
+      <div class="stat"><b data-count="4">0</b><span>Pabrik di Jawa</span></div>
+      <div class="stat"><b data-count="30" data-suffix="+">0</b><span>Sofa per hari</span></div>
+      <div class="stat"><b data-count="100" data-suffix="+">0</b><span>Item kecil per hari</span></div>
+      <div class="stat"><b data-count="80" data-suffix="+">0</b><span>Pekerja &amp; kreatif</span></div>
+      <div class="stat"><b data-count="3" data-prefix="1–">0</b><span>Hari kerja pengiriman</span></div>
+      <div class="stat"><b data-count="3">0</b><span>Tahun garansi</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== 06 MUSEBOARD ===================== -->
+  <section class="muse" id="museboard" data-theme="dark" data-index="06" data-name="Museboard">
+    <div class="wrap">
+      <div class="sec-head mono"><span>(06) Museboard</span><span>Proyek &amp; inspirasi</span></div>
+      <h2 class="h2">Ignite sparks <em>for creative journey.</em></h2>
+    </div>
+    <div class="muse__grid wrap" id="muse"></div>
+  </section>
+
+  <!-- ===================== 07 FOR BUSINESS ===================== -->
+  <section class="business" id="bisnis" data-theme="light" data-index="07" data-name="For Business">
+    <div class="wrap">
+      <div class="sec-head mono"><span>(07) For Business</span><span>B2B · Proyek · Kolaborasi</span></div>
+      <div class="business__intro">
+        <h2 class="h2">XIONCO <em class="brass">for Business</em></h2>
+        <p class="lede">Butuh produk custom, saran desain interior, kolaborasi, atau proyek B2B? Ceritakan kebutuhan anda — penawaran dalam 1 jam.</p>
+      </div>
+      <ul class="services" id="services"></ul>
+
+      <div class="benefits">
+        <div class="benefit"><b>1 jam</b><span>Penawaran harga</span></div>
+        <div class="benefit"><b>0%</b><span>Cicilan</span></div>
+        <div class="benefit"><b>3 tahun</b><span>Garansi kualitas</span></div>
+        <div class="benefit"><b>1–3 hari</b><span>Pengiriman</span></div>
+      </div>
+
+      <div class="business__bottom">
+        <form class="bform" id="bform" novalidate>
+          <h3>Dapatkan penawaran</h3>
+          <div class="field"><input id="fName" name="name" required placeholder=" " autocomplete="name"><label for="fName">Nama</label></div>
+          <div class="field"><input id="fPhone" name="phone" required placeholder=" " inputmode="tel" autocomplete="tel"><label for="fPhone">WhatsApp</label></div>
+          <div class="field field--select">
+            <select id="fType" name="type"><option>Kantor</option><option>Hotel &amp; hospitality</option><option>Retail</option><option>Residensial</option><option>Lainnya</option></select>
+            <label for="fType">Jenis proyek</label>
+          </div>
+          <div class="field field--select">
+            <select id="fValue" name="value"><option>&lt; IDR 50 juta</option><option>IDR 50–250 juta</option><option>IDR 250 juta – 1 M</option><option>&gt; IDR 1 M</option></select>
+            <label for="fValue">Nilai proyek</label>
+          </div>
+          <div class="field field--full"><textarea id="fNeed" name="need" rows="3" placeholder=" "></textarea><label for="fNeed">Kebutuhan (opsional)</label></div>
+          <button class="btn btn--dark magnetic" type="submit">Kirim via WhatsApp<svg><use href="#i-arrow"/></svg></button>
+          <p class="bform__note mono" id="formNote">Pesan dikirim melalui WhatsApp resmi XIONCO.</p>
+        </form>
+        <div class="clients">
+          <p class="mono">Dipercaya oleh</p>
+          <ul id="clients"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer" data-theme="dark" data-index="08" data-name="Kontak">
+  <div class="wrap footer__top">
+    <div class="footer__cta">
+      <p class="mono">Building the perfection</p>
+      <h3>Punya ruang untuk <em>diwujudkan?</em></h3>
+      <a class="btn btn--brass magnetic" data-wa="Halo XIONCO, saya ingin konsultasi gratis." href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Konsultasi gratis</a>
+    </div>
+    <div class="footer__cols">
+      <div><p class="mono">Koleksi</p><a href="https://www.xionco.com/product-category/seats/" target="_blank" rel="noopener">Seats</a><a href="https://www.xionco.com/product-category/tables/" target="_blank" rel="noopener">Tables</a><a href="https://www.xionco.com/product-category/bedframe/" target="_blank" rel="noopener">Bedframe</a><a href="https://www.xionco.com/product-category/cabinet/" target="_blank" rel="noopener">Cabinet</a><a href="https://www.xionco.com/product-category/decor/" target="_blank" rel="noopener">Decor</a></div>
+      <div><p class="mono">Perusahaan</p><a href="https://www.xionco.com/about/" target="_blank" rel="noopener">Tentang</a><a href="#pabrik" data-link>Pabrik</a><a href="https://www.xionco.com/for-business/" target="_blank" rel="noopener">For Business</a><a href="https://www.xionco.com/blog/" target="_blank" rel="noopener">Blog</a></div>
+      <div><p class="mono">Bantuan</p><a href="https://www.xionco.com/warranty-policy/" target="_blank" rel="noopener">Garansi</a><a href="https://www.xionco.com/refund_returns/" target="_blank" rel="noopener">Pengembalian</a><a href="https://www.xionco.com/privacy-policy/" target="_blank" rel="noopener">Privasi</a><a href="https://www.xionco.com/terms-and-condition/" target="_blank" rel="noopener">Syarat &amp; ketentuan</a></div>
+      <div><p class="mono">Kontak</p><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener">+62 822-4040-8055</a><a href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener">@xionco.official</a><span>Jl. Ciputat Raya No. 8<br>Jakarta Selatan 12310</span></div>
+    </div>
+  </div>
+  <div class="footer__logo" id="footLogo" aria-hidden="true">
+    <svg viewBox="0 0 206 28"><path class="logo-path"/></svg>
+    <svg class="footer__logo-lit" viewBox="0 0 206 28"><path class="logo-path"/></svg>
+  </div>
+  <div class="wrap footer__bottom mono">
+    <span>© 2026 PT Halim Inti Gahara</span>
+    <span class="footer__social"><a href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener" aria-label="Instagram"><svg><use href="#i-ig"/></svg></a><a href="https://facebook.com/xionco.official" target="_blank" rel="noopener" aria-label="Facebook"><svg><use href="#i-fb"/></svg></a><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener" aria-label="WhatsApp"><svg><use href="#i-wa"/></svg></a></span>
+    <a href="#top" data-link class="totop">Kembali ke atas<svg><use href="#i-arrow-up"/></svg></a>
+  </div>
+</footer>
+
+<!-- ===================== Overlays ===================== -->
+<div class="qv" id="qv" aria-hidden="true">
+  <div class="qv__backdrop" data-close></div>
+  <div class="qv__panel" role="dialog" aria-modal="true" aria-labelledby="qvName">
+    <div class="qv__media"><img id="qvImg" alt=""></div>
+    <div class="qv__info">
+      <span class="mono" id="qvCat"></span>
+      <h3 id="qvName"></h3>
+      <p class="qv__type" id="qvType"></p>
+      <p class="qv__price" id="qvPrice"></p>
+      <p class="qv__desc" id="qvDesc"></p>
+      <div class="qty"><button type="button" id="qvMinus" aria-label="Kurangi"><svg><use href="#i-minus"/></svg></button><span id="qvQty">1</span><button type="button" id="qvPlus" aria-label="Tambah"><svg><use href="#i-plus"/></svg></button></div>
+      <div class="qv__actions">
+        <button class="btn btn--dark" type="button" id="qvAdd">Tambah ke keranjang</button>
+        <a class="btn btn--line-dark" id="qvWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Tanya</a>
+      </div>
+      <a class="link-arrow" id="qvLink" href="#" target="_blank" rel="noopener">Detail di xionco.com<svg><use href="#i-arrow"/></svg></a>
+    </div>
+    <button class="qv__close" type="button" data-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+  </div>
+</div>
+
+<aside class="cart" id="cart" aria-hidden="true" aria-label="Keranjang">
+  <div class="cart__backdrop" data-close></div>
+  <div class="cart__panel">
+    <header class="cart__head"><h3>Keranjang</h3><span class="mono" id="cartItems">0 item</span><button class="icon-btn" type="button" data-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button></header>
+    <ul class="cart__list" id="cartList"></ul>
+    <div class="cart__empty" id="cartEmpty"><p>Keranjang masih kosong.</p><a class="link-arrow" href="#koleksi" data-link data-close>Lihat koleksi<svg><use href="#i-arrow"/></svg></a></div>
+    <footer class="cart__foot">
+      <div class="cart__sum"><span class="mono">Subtotal</span><b id="cartTotal">IDR 0</b></div>
+      <a class="btn btn--brass" id="cartCheckout" href="#" target="_blank" rel="noopener">Checkout via WhatsApp<svg><use href="#i-arrow"/></svg></a>
+      <a class="link-arrow" href="https://xionco.shop/" target="_blank" rel="noopener">atau belanja di xionco.shop<svg><use href="#i-arrow"/></svg></a>
+    </footer>
+  </div>
+</aside>
+
+<div class="search" id="search" aria-hidden="true">
+  <div class="search__inner wrap">
+    <div class="search__bar"><svg><use href="#i-search"/></svg><input id="searchInput" type="search" placeholder="Cari sofa, meja, lampu…" autocomplete="off" aria-label="Cari produk"><button class="icon-btn" type="button" data-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button></div>
+    <p class="mono search__hint" id="searchHint">Tekan / untuk mencari · Esc untuk menutup</p>
+    <ul class="search__results" id="searchResults"></ul>
+  </div>
+</div>
+
+<div class="preview" id="preview" aria-hidden="true"><img id="previewImg" alt=""></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="hud mono" id="hud" aria-hidden="true"><b id="hudIndex">01</b><span id="hudTotal">/ 08</span><i class="hud__line"></i><em id="hudName">Intro</em></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+<script>
+  /* cadangan CDN: bila jsDelivr gagal, ambil paket yang sama dari unpkg */
+  (function (w, d) {
+    var u = 'https://unpkg.com/';
+    if (!w.gsap) d.write('<script src="' + u + 'gsap@3.13.0/dist/gsap.min.js"><\/script>');
+    if (!w.ScrollTrigger) d.write('<script src="' + u + 'gsap@3.13.0/dist/ScrollTrigger.min.js"><\/script>');
+    if (!w.Lenis) d.write('<script src="' + u + 'lenis@1.3.4/dist/lenis.min.js"><\/script>');
+  })(window, document);
+</script>
+<script>
+/* ==========================================================================
+   XIONCO v2 — Data (produk, harga, gambar, konten)
+   Sumber: xionco.com (gambar & nama produk) dan xionco.shop (harga, Okt 2026).
+   Gambar dipanggil langsung dari xionco.com (website milik XIONCO sendiri).
+   ========================================================================== */
+window.XV = window.XV || {};
+
+XV.WA = '6282240408055';                       // WhatsApp resmi (xionco.com)
+XV.SHOP = 'https://xionco.shop/';
+XV.IMG = 'https://www.xionco.com/wp-content/uploads/';
+
+/* Logo XIONCO (path asli dari xionco.com/logo.svg, viewBox 0 0 206 28) */
+XV.LOGO = 'M0.584 0.971998H5.012L21.968 27H17.504L0.584 0.971998ZM0.224 27L9.26 12.852L10.952 16.236L4.544 27H0.224ZM11.06 11.592L17.396 0.971998H21.608L12.932 14.508L11.06 11.592ZM38.3221 0.971998H41.8141V27H38.3221V0.971998ZM59.0615 14.004C59.0615 12.204 59.3975 10.512 60.0695 8.928C60.7655 7.32 61.7255 5.904 62.9495 4.68C64.1735 3.432 65.5775 2.46 67.1615 1.764C68.7695 1.044 70.4975 0.684 72.3455 0.684C74.1695 0.684 75.8735 1.044 77.4575 1.764C79.0655 2.46 80.4815 3.432 81.7055 4.68C82.9535 5.904 83.9255 7.32 84.6215 8.928C85.3175 10.512 85.6655 12.204 85.6655 14.004C85.6655 15.852 85.3175 17.58 84.6215 19.188C83.9255 20.796 82.9535 22.212 81.7055 23.436C80.4815 24.636 79.0655 25.584 77.4575 26.28C75.8735 26.952 74.1695 27.288 72.3455 27.288C70.4975 27.288 68.7695 26.952 67.1615 26.28C65.5775 25.608 64.1735 24.672 62.9495 23.472C61.7255 22.272 60.7655 20.868 60.0695 19.26C59.3975 17.652 59.0615 15.9 59.0615 14.004ZM62.6615 14.04C62.6615 15.408 62.9135 16.692 63.4175 17.892C63.9215 19.068 64.6175 20.112 65.5055 21.024C66.3935 21.936 67.4255 22.656 68.6015 23.184C69.7775 23.688 71.0495 23.94 72.4175 23.94C73.7615 23.94 75.0215 23.688 76.1975 23.184C77.3735 22.656 78.3935 21.936 79.2575 21.024C80.1215 20.112 80.8055 19.068 81.3095 17.892C81.8135 16.692 82.0655 15.396 82.0655 14.004C82.0655 12.636 81.8135 11.352 81.3095 10.152C80.8055 8.928 80.1095 7.86 79.2215 6.948C78.3335 6.036 77.3015 5.328 76.1255 4.824C74.9495 4.296 73.6895 4.032 72.3455 4.032C70.9775 4.032 69.7055 4.296 68.5295 4.824C67.3535 5.352 66.3215 6.072 65.4335 6.984C64.5455 7.896 63.8615 8.964 63.3815 10.188C62.9015 11.388 62.6615 12.672 62.6615 14.04ZM125.475 27.828L105.351 7.416L106.359 7.668L106.431 27H102.939V0.179998H103.119L123.027 20.664L122.199 20.484L122.127 0.971998H125.583V27.828H125.475ZM163.575 25.056C163.143 25.344 162.555 25.668 161.811 26.028C161.067 26.388 160.191 26.688 159.183 26.928C158.199 27.168 157.119 27.288 155.943 27.288C153.927 27.264 152.103 26.904 150.471 26.208C148.863 25.512 147.495 24.564 146.367 23.364C145.239 22.164 144.363 20.784 143.739 19.224C143.139 17.64 142.839 15.96 142.839 14.184C142.839 12.24 143.151 10.452 143.775 8.82C144.423 7.164 145.323 5.736 146.475 4.536C147.627 3.312 148.983 2.364 150.543 1.692C152.127 1.02 153.855 0.684 155.727 0.684C157.287 0.684 158.703 0.899999 159.975 1.332C161.247 1.74 162.339 2.232 163.251 2.808L161.847 6.048C161.127 5.568 160.251 5.112 159.219 4.68C158.211 4.248 157.083 4.032 155.835 4.032C154.563 4.032 153.363 4.284 152.235 4.788C151.107 5.292 150.111 6 149.247 6.912C148.383 7.824 147.699 8.892 147.195 10.116C146.715 11.316 146.475 12.612 146.475 14.004C146.475 15.42 146.691 16.74 147.123 17.964C147.579 19.164 148.215 20.208 149.031 21.096C149.871 21.984 150.879 22.68 152.055 23.184C153.231 23.688 154.551 23.94 156.015 23.94C157.335 23.94 158.511 23.736 159.543 23.328C160.575 22.92 161.427 22.464 162.099 21.96L163.575 25.056ZM179.226 14.004C179.226 12.204 179.562 10.512 180.234 8.928C180.93 7.32 181.89 5.904 183.114 4.68C184.338 3.432 185.742 2.46 187.326 1.764C188.934 1.044 190.662 0.684 192.51 0.684C194.334 0.684 196.038 1.044 197.622 1.764C199.23 2.46 200.646 3.432 201.87 4.68C203.118 5.904 204.09 7.32 204.786 8.928C205.482 10.512 205.83 12.204 205.83 14.004C205.83 15.852 205.482 17.58 204.786 19.188C204.09 20.796 203.118 22.212 201.87 23.436C200.646 24.636 199.23 25.584 197.622 26.28C196.038 26.952 194.334 27.288 192.51 27.288C190.662 27.288 188.934 26.952 187.326 26.28C185.742 25.608 184.338 24.672 183.114 23.472C181.89 22.272 180.93 20.868 180.234 19.26C179.562 17.652 179.226 15.9 179.226 14.004ZM182.826 14.04C182.826 15.408 183.078 16.692 183.582 17.892C184.086 19.068 184.782 20.112 185.67 21.024C186.558 21.936 187.59 22.656 188.766 23.184C189.942 23.688 191.214 23.94 192.582 23.94C193.926 23.94 195.186 23.688 196.362 23.184C197.538 22.656 198.558 21.936 199.422 21.024C200.286 20.112 200.97 19.068 201.474 17.892C201.978 16.692 202.23 15.396 202.23 14.004C202.23 12.636 201.978 11.352 201.474 10.152C200.97 8.928 200.274 7.86 199.386 6.948C198.498 6.036 197.466 5.328 196.29 4.824C195.114 4.296 193.854 4.032 192.51 4.032C191.142 4.032 189.87 4.296 188.694 4.824C187.518 5.352 186.486 6.072 185.598 6.984C184.71 7.896 184.026 8.964 183.546 10.188C183.066 11.388 182.826 12.672 182.826 14.04Z';
+
+/* Kategori koleksi (urutan = urutan di galeri horizontal) */
+XV.CATEGORIES = [
+  { id: 'seats',    label: 'Seats',    note: 'Sofa & kursi' },
+  { id: 'tables',   label: 'Tables',   note: 'Meja makan, kopi & kerja' },
+  { id: 'bedframe', label: 'Bedframe', note: 'Tempat tidur' },
+  { id: 'cabinet',  label: 'Cabinet',  note: 'Penyimpanan' },
+  { id: 'decor',    label: 'Decor & Light', note: 'Lampu & aksesori' },
+  { id: 'smart',    label: 'Smart',    note: 'Kelistrikan VAZRA' }
+];
+
+/* Produk — price null = "Tanya harga" (belum ada di xionco.shop)
+   bg: 'white' → gambar berlatar putih (di-blend multiply di kartu terang)
+       'dark'  → foto berlatar hitam (tampil sebagai kartu gelap)            */
+XV.PRODUCTS = [
+  // Seats
+  { id: 'kyrios', cat: 'seats', name: 'KYRIOS', type: 'Sofa · 3 seater', price: 3978000, was: 7625000, img: '2024/07/XC.com-Thumbnail-4-1.png', bg: 'white',
+    desc: 'Velvet tufted dengan base berlapis kuningan. Seri GUISE KYRIOS: tegas, dalam, dan hangat.', url: 'https://www.xionco.com/product/guise-kyrios-three-seat/' },
+  { id: 'capra', cat: 'seats', name: 'CAPRA Deluxe', type: 'Sofa · faux leather premium', price: 2808000, was: 5382000, img: '2025/02/CAPRA_DELUXE_disp_1-removebg-preview.png',
+    desc: 'Sofa kulit minimalis dengan rangka kayu solid. Tersedia 1, 2 dan 3 seater.', url: 'https://www.xionco.com/product/capra-deluxe-series/' },
+  { id: 'guise', cat: 'seats', name: 'GUISE Signature', type: 'Sofa · 3 seater', price: 4068000, img: '2024/07/XC.com-Thumbnail-4.png', bg: 'white',
+    desc: 'Proporsi rendah, jahitan tufting presisi, kaki kayu tapered.', url: 'https://www.xionco.com/product/guise-3-seater-2/' },
+  { id: 'cameo', cat: 'seats', name: 'CAMEO', type: 'Sofa · 3 seater', price: 4592000, img: '2023/06/CAMEO.png',
+    desc: 'Garis bersih, dudukan dalam, kaki baja ramping. Diam, tapi tidak membosankan.', url: 'https://www.xionco.com/product/cameo/' },
+  { id: 'astral', cat: 'seats', name: 'ASTRAL Signature', type: 'Sofa · 1–3 seater', price: 2200000, from: true, img: '2023/06/XC.com-Thumbnail-7.png', bg: 'white',
+    desc: 'Silhouette hitam dengan piping kontras. Salah satu seri terlaris XIONCO.', url: 'https://www.xionco.com/product/cubix-group-child-2-3/' },
+  { id: 'orycto', cat: 'seats', name: 'ORYCTO', type: 'Sofa · 3 seater', price: 3481000, img: '2023/11/XC.com-Thumbnail-5.png', bg: 'white',
+    desc: 'Lengan kulit, bantalan lebar, nyaman untuk ruang keluarga.', url: 'https://www.xionco.com/product/orycto-leather-arm-couch-three-seat-sofa-kulit-minimalis-xionco/' },
+  { id: 'canis', cat: 'seats', name: 'CANIS', type: 'Grand Zen Luxury Sofa', price: null, img: '2022/09/XC.com-Thumbnail-8.png', bg: 'white',
+    desc: 'Panel kayu di sandaran berfungsi sebagai meja kerja, rak display, dan penyimpanan.', url: 'https://www.xionco.com/product/canis/' },
+  { id: 'cubix', cat: 'seats', name: 'CUBIX Modular', type: 'Armchair · Armless · Ottoman', price: null, img: '2022/09/XC.com-Thumbnail-5.png', bg: 'white',
+    desc: 'Modul bebas susun. Konfigurasikan sendiri di Custom Studio.', url: 'https://www.xionco.com/product/cubix-series/', studio: true },
+  { id: 'eorde', cat: 'seats', name: 'EORDE Sectional', type: 'Sofa · 5 seater · 2 electrical', price: 24800000, img: '2024/09/Sofa-Sectional_Main-View_Open.png', bg: 'dark',
+    desc: 'Sectional dengan dua dudukan elektrik dan meja tersembunyi. Flagship XIONCO.', url: 'https://www.xionco.com/product/eorde-sofa-sectional-5-seater-2-electrical/' },
+  { id: 'nora', cat: 'seats', name: 'NORA', type: 'Dining chair', price: null, img: '2023/06/NORA-DC.png',
+    desc: 'Rangka baja hitam dengan dudukan empuk. Pasangan meja GEOM.', url: 'https://www.xionco.com/product/nora-chair/' },
+
+  // Tables
+  { id: 'geom', cat: 'tables', name: 'GEOM', type: 'Dining table', price: 1850000, img: '2023/06/GEOM.png',
+    desc: 'Kaki geometris dari baja; daun meja HPL putih tulang.', url: 'https://www.xionco.com/product/geom-meja-makan/' },
+  { id: 'verk', cat: 'tables', name: 'VERK', type: 'Integrated desk', price: 2574000, img: '2024/07/XC.com-Thumbnail-24.png', bg: 'white',
+    desc: 'Meja kerja dengan rak terintegrasi. Satu bidang, semua kebutuhan.', url: 'https://www.xionco.com/product/verk-2/' },
+  { id: 'hout', cat: 'tables', name: 'HOUT', type: 'Scandustrial coffee table', price: 1420000, img: '2022/09/XC.com-Thumbnail-25.png', bg: 'white',
+    desc: 'Kayu hangat di atas rangka baja tipis.', url: 'https://www.xionco.com/product/hout/' },
+  { id: 'trapezo', cat: 'tables', name: 'TRAPEZO', type: 'Collaborative desk', price: 1230000, img: '2023/06/XC.com-Thumbnail-19.png', bg: 'white',
+    desc: 'Bentuk trapesium untuk ruang kerja kolaboratif.', url: 'https://www.xionco.com/product/trapezo/' },
+  { id: 'rouled', cat: 'tables', name: 'ROULED', type: 'Nesting coffee table', price: 1075000, img: '2022/09/XC.com-Thumbnail-20.png', bg: 'white',
+    desc: 'Dua meja bulat yang saling bersarang.', url: 'https://www.xionco.com/product/rouled-2/' },
+  { id: 'cubixct', cat: 'tables', name: 'CUBIX CT', type: 'Coffee table · glass', price: 1120000, img: '2024/07/XC.com-Thumbnail-16.png', bg: 'white',
+    desc: 'Rangka kayu terbuka dengan kaca bening.', url: 'https://www.xionco.com/product/cubix-meja-tamu-coffee-table/' },
+  { id: 'arze', cat: 'tables', name: 'ARZE', type: 'Personal workstation', price: 1269000, img: '2022/09/XC.com-Thumbnail-27.png', bg: 'white',
+    desc: 'Meja kerja ringkas dengan rak atas.', url: 'https://www.xionco.com/product/arze/' },
+  { id: 'l7', cat: 'tables', name: 'L7', type: 'Personal workstation', price: 1110000, img: '2024/12/XC.com-Thumbnail-18.png', bg: 'white',
+    desc: 'Siluet miring yang ringan, untuk sudut kerja di rumah.', url: 'https://www.xionco.com/product/l7-meja-kantor/' },
+  { id: 'recta', cat: 'tables', name: 'RECTA', type: 'Coffee table', price: 915000, img: '2022/09/RECTA.png',
+    desc: 'Kaca dan baja hitam. Hampir tidak terlihat.', url: 'https://www.xionco.com/product/recta/' },
+  { id: 'pluq', cat: 'tables', name: 'PLUQ', type: 'Coffee table', price: 820000, img: '2023/06/PLUQ.png',
+    desc: 'Daun meja organik di atas kaki kayu gelap.', url: 'https://www.xionco.com/product/belt/' },
+  { id: 'hexter', cat: 'tables', name: 'HEXTER', type: 'Modular side table', price: 635000, img: '2022/09/XC.com-Thumbnail-21.png', bg: 'white',
+    desc: 'Heksagonal, bisa disusun berdampingan.', url: 'https://www.xionco.com/product/hexter/' },
+
+  // Bedframe
+  { id: 'somno', cat: 'bedframe', name: 'SOMNO', type: 'Platform bed', price: 2040000, img: '2023/06/WhatsApp-Image-2024-08-03-at-16.14.45.jpeg', bg: 'white',
+    desc: 'Headboard berlapis kain, platform rendah.', url: 'https://www.xionco.com/product/somno/' },
+  { id: 'poel', cat: 'bedframe', name: 'POEL', type: 'Platform bed · divan', price: 1800000, img: '2024/12/POEL-308x322-1.png',
+    desc: 'Rangka baja dengan headboard kayu.', url: 'https://www.xionco.com/product/poel-platform-bed-tempat-tidur-divan-minimalis/' },
+  { id: 'ashara', cat: 'bedframe', name: 'ASHARA 34', type: 'Adjustable bed · electrical', price: null, img: '2024/09/Dipan_Nakes_Main.png', bg: 'dark',
+    desc: 'Sandaran elektrik yang bisa diatur. Tidur, membaca, bekerja.', url: 'https://www.xionco.com/product/ashara-34-adjustable-bed-electrical/' },
+
+  // Cabinet
+  { id: 'syme', cat: 'cabinet', name: 'SYME', type: 'Wardrobe', price: 9922500, img: '2023/06/345173b5-6001-4c72-bfbf-d0856762145a-removebg-preview.png',
+    desc: 'Pintu geser gelap dengan aksen kuningan.', url: 'https://www.xionco.com/product/syme/' },
+  { id: 'qaztac', cat: 'cabinet', name: 'QAZTAC', type: 'Industrial nightstand', price: 1250000, img: '2024/07/QAZTAC-Thumbnail-3-e1734703263864.png',
+    desc: 'Laci kayu dalam rangka baja hitam.', url: 'https://www.xionco.com/product/qaztac-meja-tempat-tidur-nakas/' },
+  { id: 'lucid', cat: 'cabinet', name: 'LUCID', type: 'Open shelf', price: 1150000, img: '2023/06/LUCID.png',
+    desc: 'Rangka terbuka, ringan secara visual.', url: 'https://www.xionco.com/product/nora-stool/' },
+  { id: 'regale', cat: 'cabinet', name: 'REGALE', type: 'Kitchenette', price: null, img: '2024/09/REGALE-Thumbnail-6.png',
+    desc: 'Kitchen set ringkas untuk apartemen dan pantry kantor.', url: 'https://www.xionco.com/product/regale-kitchenette-kitchen-set-concepted-dapur-minimalis-xionco/' },
+
+  // Decor & light
+  { id: 'aether', cat: 'decor', name: 'AETHER Cloud K100', type: 'Wall light', price: 354000, from: true, img: '2023/06/AETHER-K100.png',
+    desc: 'Garis cahaya vertikal. Seri AETHER: Cloud, Hill, Sky, Terra.', url: 'https://www.xionco.com/product/aether-series/' },
+  { id: 'aetherk80', cat: 'decor', name: 'AETHER K80', type: 'Floor light', price: null, img: '2023/06/AETHER-K80.png',
+    desc: 'Lampu lantai ramping dengan diffuser bulat.', url: 'https://www.xionco.com/product/aether-series/' },
+  { id: 'uruz', cat: 'decor', name: 'URUZ II', type: 'Steel towel rack', price: 550000, img: '2023/06/URUZ.png',
+    desc: 'Baja hitam, garis minimal.', url: 'https://www.xionco.com/product/uruz/' },
+  { id: 'kyoukai', cat: 'decor', name: 'KYOUKAI', type: 'Wall slat panel', price: null, img: '2023/06/KYOUKAI.png',
+    desc: 'Panel kisi kayu untuk dinding dan partisi.', url: 'https://www.xionco.com/product/kyoukai/' },
+
+  // Smart
+  { id: 'vazra', cat: 'smart', name: 'VAZRA', type: 'Power switch & outlet', price: 132000, img: '2024/07/ad7dd3e0-5728-45d8-98cb-29ca095aff47-removebg-preview.png',
+    desc: 'Saklar dan stop kontak modular berdesain monolitik.', url: 'https://www.xionco.com/product/vazra-power-switch-and-outlet/' },
+  { id: 'vazratrack', cat: 'smart', name: 'VAZRA Power Track', type: 'Socket track', price: null, img: '2024/12/Vazra_power_track_disp_1-removebg-preview.png',
+    desc: 'Rel listrik untuk meja meeting: geser, pasang, selesai.', url: 'https://www.xionco.com/product/vazra-series-power-track-socket-stop-kontak/' }
+];
+
+/* Museboard (foto proyek dari xionco.com) */
+XV.MUSE = [
+  { img: '2025/08/2-4.png', title: 'Electrical solution', note: 'Meeting room · VAZRA' },
+  { img: '2025/08/3-4.png', title: 'Idea comes true', note: 'Dari sketsa ke produksi' },
+  { img: '2025/08/4-4.png', title: 'Let there be light', note: 'Commercial lighting' },
+  { img: '2025/08/5-2.png', title: 'Custom ceiling', note: 'Ruang rapat' },
+  { img: '2025/08/6-2.png', title: 'Lighting design', note: 'Koridor hotel' },
+  { img: '2025/08/7-1.png', title: 'Luxurious', note: 'Living room' },
+  { img: '2025/05/XIONCO-HERO-PRODUCT-II-1.png', title: 'Leather detail', note: 'Material honesty' },
+  { img: '2025/05/ChatGPT-Image-May-16-2025-06_29_52-AM.png', title: 'Solid wood', note: 'Jepara · Mantingan' },
+  { img: '2023/06/HERO-PHOTO-PRODUCT-XIONCO-2023-4.png', title: 'Living with light', note: 'AETHER series' }
+];
+
+/* For Business — layanan */
+XV.SERVICES = [
+  { n: '01', title: 'Space Plan', note: 'Tata ruang & alur kerja kantor, retail, hospitality', img: '2025/08/Solusi-Design-untuk-Project-Anda.jpg' },
+  { n: '02', title: 'Product', note: 'Furnitur standar & custom dalam jumlah besar', img: '2025/08/1-3.png' },
+  { n: '03', title: 'Interior', note: 'Desain & visualisasi interior lengkap', img: '2025/08/9.png' },
+  { n: '04', title: 'Built-in', note: 'Kabinet, panel dinding, plafon & kelistrikan custom', img: '2025/08/8.png' }
+];
+
+XV.CLIENTS = ['SOGO', 'H&M', 'BRI', 'BCA', 'TRANS7', 'NEO SOHO', 'FORBES INDONESIA'];
+
+/* Pabrik (dari halaman About xionco.com) */
+XV.FACTORIES = [
+  { n: '01', place: 'Jepara · Mantingan', role: 'Pengolahan kayu', text: 'Curing bahan baku dan pembuatan komponen kayu.', lon: 110.67, lat: -6.59 },
+  { n: '02', place: 'Cirendeu', role: 'Finishing & metal', text: 'Finishing, pengelasan, lini multiboard / HPL.', lon: 106.76, lat: -6.31 },
+  { n: '03', place: 'Pondok Pinang I', role: 'Upholstery', text: 'Jahit, busa, dan pelapisan kain / kulit.', lon: 106.78, lat: -6.27 },
+  { n: '04', place: 'Pondok Pinang II', role: 'Final & packaging', text: 'Quality control, pengemasan, dan pengiriman.', lon: 106.79, lat: -6.28 }
+];
+
+/* Custom Studio — CUBIX Modular (harga = ESTIMASI DEMO, bukan harga resmi) */
+XV.STUDIO = {
+  seatPrice: 1250000,
+  armPrice: 450000,
+  ottomanPrice: 890000,
+  seatW: 72, armW: 16, depth: 86, height: 74,
+  fabrics: [
+    { id: 'fb01', code: 'FB 01', name: 'Graphite', color: '#4a4846', type: 'fabric' },
+    { id: 'fb02', code: 'FB 02', name: 'Ash', color: '#8d8a86', type: 'fabric' },
+    { id: 'fb03', code: 'FB 03', name: 'Oat', color: '#c7bba7', type: 'fabric' },
+    { id: 'fb04', code: 'FB 04', name: 'Sand', color: '#b39b78', type: 'fabric' },
+    { id: 'fb05', code: 'FB 05', name: 'Moss', color: '#5f6450', type: 'fabric' },
+    { id: 'fb06', code: 'FB 06', name: 'Clay', color: '#8e5d45', type: 'fabric' },
+    { id: 'fl01', code: 'FL 01', name: 'Ink Leather', color: '#262423', type: 'leather' },
+    { id: 'fl02', code: 'FL 02', name: 'Cognac Leather', color: '#7b4a2c', type: 'leather' }
+  ],
+  leatherFactor: 1.2,
+  bases: [
+    { id: 'oak', name: 'Oak', color: '#c8a678', add: 0 },
+    { id: 'walnut', name: 'Walnut', color: '#5a3d2b', add: 250000 },
+    { id: 'steel', name: 'Black steel', color: '#1d1c1b', add: 150000 },
+    { id: 'brass', name: 'Brass', color: '#b8924f', add: 450000 }
+  ]
+};
+
+/* Ukuran thumbnail WordPress yang tersedia di xionco.com (sudah dicek satu per satu).
+   Kartu, museboard, keranjang & pencarian memakai versi kecil; hero & quick view memakai file asli. */
+XV.SIZES = {
+  '2025/08/2-4.png': [1024, 768], '2025/08/3-4.png': [1024, 768], '2025/08/4-4.png': [1024, 768],
+  '2025/08/5-2.png': [1024, 768], '2025/08/6-2.png': [1024, 768], '2025/08/7-1.png': [1024, 768],
+  '2025/05/XIONCO-HERO-PRODUCT-II-1.png': [1024, 768],
+  '2025/05/ChatGPT-Image-May-16-2025-06_29_52-AM.png': [768],
+  '2023/06/HERO-PHOTO-PRODUCT-XIONCO-2023-4.png': [768],
+  '2024/07/XC.com-Thumbnail-4-1.png': [1024, 768], '2024/07/XC.com-Thumbnail-4.png': [768],
+  '2023/06/CAMEO.png': [768], '2023/06/XC.com-Thumbnail-7.png': [1024, 768],
+  '2023/11/XC.com-Thumbnail-5.png': [1024, 768], '2022/09/XC.com-Thumbnail-8.png': [1024, 768],
+  '2024/09/Sofa-Sectional_Main-View_Open.png': [1024, 768], '2023/06/NORA-DC.png': [1024, 768],
+  '2023/06/GEOM.png': [768], '2024/07/XC.com-Thumbnail-24.png': [1024, 768],
+  '2022/09/XC.com-Thumbnail-25.png': [1024, 768], '2023/06/XC.com-Thumbnail-19.png': [1024, 768],
+  '2022/09/XC.com-Thumbnail-20.png': [1024, 768], '2024/07/XC.com-Thumbnail-16.png': [1024, 768],
+  '2022/09/XC.com-Thumbnail-27.png': [1024, 768], '2024/12/XC.com-Thumbnail-18.png': [1024, 768],
+  '2022/09/RECTA.png': [768], '2023/06/PLUQ.png': [768], '2022/09/XC.com-Thumbnail-21.png': [1024, 768],
+  '2023/06/WhatsApp-Image-2024-08-03-at-16.14.45.jpeg': [768], '2024/09/Dipan_Nakes_Main.png': [1024, 768],
+  '2023/06/LUCID.png': [768], '2024/09/REGALE-Thumbnail-6.png': [768], '2023/06/AETHER-K100.png': [768],
+  '2023/06/AETHER-K80.png': [768], '2023/06/URUZ.png': [768], '2023/06/KYOUKAI.png': [768]
+};
+
+</script>
+<script>
+/* ==========================================================================
+   XIONCO v2 — Interaction engine
+   GSAP + ScrollTrigger + Lenis (CDN). Tanpa library pun konten tetap tampil.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var XV = window.XV;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var html = document.documentElement;
+  var REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var G = window.gsap, ST = window.ScrollTrigger;
+  var HAS_GSAP = !!(G && ST);
+  var ANIM = HAS_GSAP && !REDUCED;
+  var rupiah = function (n) { return 'IDR ' + Math.round(n).toLocaleString('id-ID'); };
+  // src(path, w): pakai thumbnail WordPress terkecil yang >= w bila tersedia, selain itu file asli
+  var src = function (p, w) {
+    var s = w && XV.SIZES && XV.SIZES[p];
+    var ok = s ? s.filter(function (v) { return v >= w; }) : [];
+    if (!ok.length) return XV.IMG + p;
+    var v = Math.min.apply(null, ok);
+    return XV.IMG + p.replace(/\.(png|jpe?g|webp)$/i, '-' + v + 'x' + v + '.$1');
+  };
+  var wa = function (text) { return 'https://wa.me/' + XV.WA + '?text=' + encodeURIComponent(text); };
+  var byId = {};
+  XV.PRODUCTS.forEach(function (p) { byId[p.id] = p; });
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+
+  if (HAS_GSAP) G.registerPlugin(ST);
+  if (ANIM) html.classList.add('anim');
+  if (REDUCED) html.classList.add('reduced');
+
+  /* ======================================================================
+     Static content
+     ====================================================================== */
+  $$('.logo-path').forEach(function (p) { p.setAttribute('d', XV.LOGO); });
+  $$('[data-wa]').forEach(function (a) { a.href = wa(a.dataset.wa); });
+
+  // marquee klien
+  $$('[data-marquee] .marquee__track').forEach(function (t) {
+    var unit = XV.CLIENTS.map(function (c) { return '<span>' + c + '</span><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44"/><path d="M35 35 65 65M65 35 35 65"/></svg>'; }).join('');
+    t.innerHTML = unit + unit + unit + unit;
+  });
+
+  // koleksi
+  var track = $('#track'), tabsEl = $('#tabs');
+  function priceHTML(p) {
+    if (!p.price) return 'Tanya harga';
+    return (p.was ? '<s>' + rupiah(p.was) + '</s>' : '') + (p.from ? 'mulai ' : '') + rupiah(p.price);
+  }
+  function cardHTML(p, eager) {
+    var badge = p.was ? '<span class="card__badge">−' + Math.round((1 - p.price / p.was) * 100) + '%</span>' : (p.studio ? '<span class="card__studio">Custom Studio</span>' : '');
+    var addBtn = p.price
+      ? '<button class="card__add" type="button" data-add="' + p.id + '" aria-label="Tambah ' + p.name + ' ke keranjang" data-cursor="Tambah"><svg><use href="#i-plus"/></svg></button>'
+      : '<a class="card__add" href="' + wa('Halo XIONCO, saya ingin tahu harga ' + p.name + ' (' + p.type + ').') + '" target="_blank" rel="noopener" aria-label="Tanya harga ' + p.name + '" data-cursor="Tanya"><svg><use href="#i-wa"/></svg></a>';
+    return '<article class="card' + (p.bg === 'dark' ? ' card--dark' : '') + '" data-id="' + p.id + '" data-cat="' + p.cat + '">' +
+      '<div class="card__media">' + badge +
+        '<img src="' + src(p.img, 768) + '" alt="' + p.name + ' — ' + p.type + '"' + (eager ? '' : ' loading="lazy"') + ' decoding="async">' +
+        '<button class="card__open" type="button" data-quick="' + p.id + '" data-cursor="Lihat" aria-label="Lihat ' + p.name + '"></button>' + addBtn +
+      '</div>' +
+      '<div class="card__info"><h3 class="card__name">' + p.name + '</h3><p class="card__type">' + p.type + '</p><p class="card__price">' + priceHTML(p) + '</p></div>' +
+    '</article>';
+  }
+  var count = 0;
+  track.innerHTML = XV.CATEGORIES.map(function (c, ci) {
+    var items = XV.PRODUCTS.filter(function (p) { return p.cat === c.id; });
+    var out = '<div class="group" data-group="' + c.id + '"><span class="mono group__n">' + String(ci + 1).padStart(2, '0') + ' / ' + String(XV.CATEGORIES.length).padStart(2, '0') + '</span>' +
+      '<div><h3 class="group__title">' + c.label.replace(' & ', ' &amp; <br>') + '</h3><p class="mono group__note">' + c.note + ' · ' + items.length + '</p></div></div>';
+    out += items.map(function (p) { return cardHTML(p, count++ < 6); }).join('');
+    return out;
+  }).join('');
+  tabsEl.innerHTML = XV.CATEGORIES.map(function (c, i) {
+    var n = XV.PRODUCTS.filter(function (p) { return p.cat === c.id; }).length;
+    return '<button class="tab' + (i === 0 ? ' is-on' : '') + '" type="button" role="tab" data-tab="' + c.id + '">' + c.label + '<sup>' + n + '</sup></button>';
+  }).join('');
+  $('#prodCount').textContent = XV.PRODUCTS.length + ' produk · harga xionco.shop';
+
+  // museboard — artboard proyek berisi teks, jadi tampil utuh (1:1), ritme dari offset kolom
+  var cols = [[], [], []];
+  XV.MUSE.forEach(function (m, i) { cols[i % 3].push({ m: m }); });
+  $('#muse').innerHTML = cols.map(function (col, ci) {
+    return '<div class="muse__col" data-col="' + ci + '">' + col.map(function (o) {
+      return '<figure class="muse__item" data-cursor="Inspirasi"><img src="' + src(o.m.img, 1024) + '" alt="' + o.m.title + '" loading="lazy" decoding="async"><figcaption><b>' + o.m.title + '</b><span class="mono">' + o.m.note + '</span></figcaption></figure>';
+    }).join('') + '</div>';
+  }).join('');
+
+  // layanan & klien
+  $('#services').innerHTML = XV.SERVICES.map(function (s) {
+    return '<li class="service" data-img="' + src(s.img, 768) + '" data-cursor="Konsultasi"><span class="mono">' + s.n + '</span><h3>' + s.title + '</h3><p>' + s.note + '</p><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></li>';
+  }).join('');
+  $('#clients').innerHTML = XV.CLIENTS.map(function (c) { return '<li>' + c + '</li>'; }).join('');
+
+  // langkah pabrik
+  $('#steps').innerHTML = XV.FACTORIES.map(function (f, i) {
+    return '<li data-step="' + i + '"' + (i === 0 ? ' class="is-on"' : '') + '><span class="mono n">' + f.n + '</span><div><span class="place">' + f.place + '</span><span class="mono role">' + f.role + '</span></div><p class="text">' + f.text + '</p></li>';
+  }).join('');
+
+  /* ======================================================================
+     Smooth scroll
+     ====================================================================== */
+  var lenis = null;
+  if (window.Lenis && !REDUCED) {
+    lenis = new window.Lenis({ duration: 1.15, easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); }, smoothWheel: true, touchMultiplier: 1.3 });
+    if (HAS_GSAP) {
+      lenis.on('scroll', ST.update);
+      G.ticker.add(function (t) { lenis.raf(t * 1000); });
+      G.ticker.lagSmoothing(0);
+    } else {
+      (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })(0);
+    }
+  }
+  function scrollToEl(target) {
+    var el = typeof target === 'string' ? $(target) : target;
+    if (!el) return;
+    if (lenis) lenis.scrollTo(el, { duration: 1.6 });
+    else el.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' });
+  }
+  function scrollToY(y) {
+    if (lenis) lenis.scrollTo(y, { duration: 1.4 });
+    else window.scrollTo({ top: y, behavior: REDUCED ? 'auto' : 'smooth' });
+  }
+  function lockScroll(on) {
+    if (lenis) { if (on) lenis.stop(); else lenis.start(); }
+    document.body.style.overflow = on ? 'hidden' : '';
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-link]');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href || href.charAt(0) !== '#') return;
+    e.preventDefault();
+    closeMenu();
+    if (a.hasAttribute('data-close')) closeAll();
+    scrollToEl(href === '#top' ? document.body : href);
+  });
+
+  /* ======================================================================
+     Utilities: split words, toast
+     ====================================================================== */
+  function splitWords(el, cls) {
+    var out = [];
+    (function walk(node, parent) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+        if (n.nodeType === 3) {
+          var parts = n.textContent.split(/(\s+)/);
+          var frag = document.createDocumentFragment();
+          parts.forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+            var s = document.createElement('span');
+            s.className = cls;
+            if (cls === 'wm') { var i = document.createElement('span'); i.className = 'wi'; i.textContent = part; s.appendChild(i); out.push(i); }
+            else { s.textContent = part; out.push(s); }
+            frag.appendChild(s);
+          });
+          node.replaceChild(frag, n);
+        } else if (n.nodeType === 1) {
+          walk(n, n);
+        }
+      });
+    })(el, el);
+    return out;
+  }
+  var toastEl = $('#toast'), toastT = 0;
+  function toast(msg) {
+    toastEl.innerHTML = '<i></i>' + msg;
+    toastEl.classList.add('is-on');
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { toastEl.classList.remove('is-on'); }, 2600);
+  }
+
+  /* ======================================================================
+     Cursor & magnetic
+     ====================================================================== */
+  var cursor = $('#cursor'), cursorLabel = $('#cursorLabel');
+  var mouse = { x: innerWidth / 2, y: innerHeight / 2 };
+  if (FINE && !REDUCED) {
+    html.classList.add('has-cursor');
+    var dot = $('.cursor__dot', cursor), ring = $('.cursor__ring', cursor);
+    var rx = mouse.x, ry = mouse.y;
+    window.addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+    (function loop() {
+      rx = lerp(rx, mouse.x, .18); ry = lerp(ry, mouse.y, .18);
+      dot.style.transform = 'translate3d(' + mouse.x + 'px,' + mouse.y + 'px,0)';
+      ring.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0)';
+      requestAnimationFrame(loop);
+    })();
+    document.addEventListener('pointerover', function (e) {
+      var t = e.target.closest('[data-cursor], a, button, label, select, .swatch');
+      cursor.classList.toggle('is-hover', !!t);
+      var label = t && t.getAttribute('data-cursor');
+      cursor.classList.toggle('is-label', !!label);
+      if (label) cursorLabel.textContent = label;
+    });
+    document.addEventListener('pointerdown', function () { cursor.classList.add('is-down'); });
+    document.addEventListener('pointerup', function () { cursor.classList.remove('is-down'); });
+    document.documentElement.addEventListener('mouseleave', function () { cursor.style.opacity = '0'; });
+    document.documentElement.addEventListener('mouseenter', function () { cursor.style.opacity = '1'; });
+
+    // magnetic
+    if (HAS_GSAP) {
+      $$('.magnetic').forEach(function (el) {
+        var xTo = G.quickTo(el, 'x', { duration: .6, ease: 'power3.out' });
+        var yTo = G.quickTo(el, 'y', { duration: .6, ease: 'power3.out' });
+        el.addEventListener('pointermove', function (e) {
+          var r = el.getBoundingClientRect();
+          xTo((e.clientX - (r.left + r.width / 2)) * .28);
+          yTo((e.clientY - (r.top + r.height / 2)) * .38);
+        });
+        el.addEventListener('pointerleave', function () { xTo(0); yTo(0); });
+      });
+    }
+  }
+
+  /* ======================================================================
+     Nav, menu, dock, HUD, progress
+     ====================================================================== */
+  var nav = $('#nav'), burger = $('#burger'), dockInd = $('#dockInd');
+  var lastY = 0;
+  function onScroll(y) {
+    nav.classList.toggle('is-scrolled', y > 40);
+    if (!html.classList.contains('menu-open')) {
+      if (y > lastY + 4 && y > 320) nav.classList.add('is-hidden');
+      else if (y < lastY - 4) nav.classList.remove('is-hidden');
+    }
+    lastY = y;
+    var max = document.documentElement.scrollHeight - innerHeight;
+    $('#progress').style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')';
+  }
+  if (lenis) lenis.on('scroll', function (l) { onScroll(l.scroll); });
+  else window.addEventListener('scroll', function () { onScroll(window.scrollY); }, { passive: true });
+
+  function closeMenu() {
+    if (!html.classList.contains('menu-open')) return;
+    html.classList.remove('menu-open');
+    burger.setAttribute('aria-expanded', 'false');
+    $('#menu').setAttribute('aria-hidden', 'true');
+    lockScroll(false);
+  }
+  burger.addEventListener('click', function () {
+    var open = !html.classList.contains('menu-open');
+    html.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    $('#menu').setAttribute('aria-hidden', String(!open));
+    nav.classList.remove('is-hidden');
+    lockScroll(open);
+  });
+
+  var sections = $$('[data-theme]');
+  var dockMap = { top: 0, koleksi: 1, studio: 2, bisnis: 3 };
+  $('#hudTotal').textContent = '/ ' + String($$('[data-index]').length).padStart(2, '0');
+  function setSection(sec) {
+    nav.classList.toggle('is-light', sec.dataset.theme === 'light');
+    if (sec.dataset.index) {
+      $('#hudIndex').textContent = sec.dataset.index;
+      $('#hudName').textContent = sec.dataset.name;
+    }
+    $('#hud').classList.toggle('is-hidden', sec.id === 'top');
+    var id = sec.id;
+    $$('.nav__links a').forEach(function (a) { a.classList.toggle('is-on', a.getAttribute('href') === '#' + id); });
+    var di = dockMap[id];
+    if (di != null) {
+      dockInd.style.transform = 'translateX(' + (di * 100) + '%)';
+      $$('#dock [data-dock]').forEach(function (a) { a.classList.toggle('is-on', a.dataset.dock === id); });
+    }
+  }
+  function sectionTriggers() {
+    if (HAS_GSAP) {
+      sections.forEach(function (sec) {
+        ST.create({ trigger: sec, start: 'top top+=40', end: 'bottom top+=40', onToggle: function (s) { if (s.isActive) setSection(sec); } });
+      });
+    } else {
+      var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) setSection(en.target); }); }, { rootMargin: '-40px 0px -90% 0px' });
+      sections.forEach(function (s) { io.observe(s); });
+    }
+  }
+  setSection(sections[0]);
+
+  /* ======================================================================
+     HERO — "Aperture"
+     Ruang pamer dilihat lewat huruf XIONCO (clip-path dari path logo asli).
+     Saat di-scroll, kamera masuk lewat huruf I → komposisi editorial.
+     ====================================================================== */
+  var hero = $('#top'), heroPin = $('#heroPin'), heroScene = $('#heroScene'), heroMedia = $('#heroMedia');
+  var heroLit = $('.hero__img--lit'), heroBeam = $('.hero__beam'), heroGlow = $('#heroGlow'), heroShade = $('#heroShade');
+  var heroFrame = $('#heroFrame'), outlineSvg = $('#heroOutline'), outlinePath = $('#heroOutlinePath');
+  var hotspots = $$('.hotspot', hero), hotspot = $('.hotspot--main', hero);
+  var navLogo = $('.nav__logo');
+
+  // --- cahaya mengikuti kursor (koordinat relatif terhadap gambar) ---
+  var light = { tx: .5, ty: .56, x: .5, y: .56, r: 20, tr: 20, last: -1e9, visible: true, lock: 0 };
+  heroPin.addEventListener('pointermove', function (e) {
+    var r = heroMedia.getBoundingClientRect();
+    light.tx = (e.clientX - r.left) / r.width;
+    light.ty = (e.clientY - r.top) / r.height;
+    light.last = performance.now();
+  });
+  heroPin.addEventListener('pointerdown', function () { light.tr = 32; });
+  heroPin.addEventListener('pointerup', function () { light.tr = 20; });
+  heroPin.addEventListener('pointerleave', function () { light.tr = 20; });
+  new IntersectionObserver(function (es) { light.visible = es[0].isIntersecting; }, { threshold: 0 }).observe(heroPin);
+  (function heroLoop(t) {
+    if (light.visible) {
+      var now = performance.now();
+      if (now > light.lock && (now - light.last > 2600 || !FINE)) {
+        var s = t / 1000;
+        light.tx = .52 + Math.sin(s * .32) * .2;
+        light.ty = .56 + Math.sin(s * .51 + 1) * .035;
+      }
+      light.x = lerp(light.x, light.tx, .07);
+      light.y = lerp(light.y, light.ty, .07);
+      light.r = lerp(light.r, light.tr, .08);
+      heroLit.style.setProperty('--lx', (light.x * 100).toFixed(2) + '%');
+      heroLit.style.setProperty('--ly', (light.y * 100).toFixed(2) + '%');
+      heroLit.style.setProperty('--lr', light.r.toFixed(2) + '%');
+      var mr = heroMedia.getBoundingClientRect(), pr = heroPin.getBoundingClientRect();
+      var gx = mr.left - pr.left + light.x * mr.width, gy = mr.top - pr.top + light.y * mr.height;
+      heroBeam.style.setProperty('--bx', gx.toFixed(1) + 'px');
+      heroGlow.style.setProperty('--gx', gx.toFixed(1) + 'px');
+      heroGlow.style.setProperty('--gy', gy.toFixed(1) + 'px');
+    }
+    requestAnimationFrame(heroLoop);
+  })(0);
+
+  // --- geometri wordmark ---
+  var LOGO_T = XV.LOGO.match(/[A-Za-z]|-?\d*\.?\d+/g);
+  var IC = { x: 40.068, y: 13.986 };          // pusat huruf I (balok solid) dalam satuan logo
+  var KMAX = 78;                               // perbesaran saat huruf I menutup layar
+  // HP: wordmark dipecah dua baris (XIO / NCO) agar jendelanya cukup besar
+  var R1 = { dx: 8.7, dy: 0 }, R2 = { dx: -102.9, dy: 34 };
+  function buildLayout(split) {
+    var out = [], cmd = '', n = 0, row = R1;
+    for (var i = 0; i < LOGO_T.length; i++) {
+      var tk = LOGO_T[i];
+      if (tk.length === 1 && /[A-Za-z]/.test(tk)) { cmd = tk; n = 0; out.push(tk); continue; }
+      var v = +tk, isY = cmd === 'V' || (cmd !== 'H' && n % 2 === 1);
+      if (cmd === 'M' && n === 0) row = split && v > 95 ? R2 : R1;
+      if (split) v += isY ? row.dy : row.dx;
+      out.push({ v: v, y: isY });
+      if (cmd !== 'H' && cmd !== 'V') n++;
+    }
+    return out;
+  }
+  var layout = [];
+  function logoPath(s, tx, ty) {
+    var out = new Array(layout.length);
+    for (var i = 0; i < layout.length; i++) {
+      var o = layout[i];
+      out[i] = typeof o === 'string' ? o : (o.y ? o.v * s + ty : o.v * s + tx).toFixed(1);
+    }
+    return out.join(' ');
+  }
+  var geo = {};
+  function measure() {
+    var vw = heroPin.clientWidth, vh = heroPin.clientHeight, split = vw <= 760;
+    layout = buildLayout(split);
+    var bw = split ? 102.93 : 206, bh = split ? 61.8 : 27.65;
+    var W = Math.min(vw * (split ? .84 : .92), vh * (split ? .46 : .32) * bw / bh);
+    geo = { vw: vw, vh: vh, s0: W / bw, x0: (vw - W) / 2, icx: IC.x + (split ? R1.dx : 0), icy: IC.y };
+    geo.y0 = vh * (split ? .45 : .5) - (split ? 31 : IC.y) * geo.s0;
+    geo.px0 = geo.x0 + geo.icx * geo.s0;
+    geo.py0 = geo.y0 + geo.icy * geo.s0;
+  }
+  var smooth = function (t) { return t * t * (3 - 2 * t); };
+  var apT = -1;
+  function aperture(t) {
+    t = clamp(t, 0, 1);
+    if (t === apT) return;
+    apT = t;
+    if (t >= 1) {
+      heroScene.style.clipPath = 'none';
+      outlineSvg.style.opacity = 0;
+      return;
+    }
+    var e = smooth(t);
+    var k = Math.pow(KMAX, Math.pow(t, 1.35));
+    var s = geo.s0 * k;
+    var px = lerp(geo.px0, geo.vw / 2, e), py = lerp(geo.py0, geo.vh / 2, e);
+    var d = logoPath(s, px - geo.icx * s, py - geo.icy * s);
+    heroScene.style.clipPath = 'path("' + d + '")';
+    outlinePath.setAttribute('d', d);
+    outlineSvg.style.opacity = clamp(1 - (t - .08) / .3, 0, 1);
+  }
+
+  // --- hotspot menempel di sofa ---
+  function placeHotspots() {
+    var pr = heroPin.getBoundingClientRect(), mr = heroMedia.getBoundingClientRect();
+    hotspots.forEach(function (h) {
+      var x = mr.left - pr.left + (+h.dataset.x) * mr.width, y = mr.top - pr.top + (+h.dataset.y) * mr.height;
+      h.style.left = x + 'px';
+      h.style.top = y + 'px';
+      var flip = x + 250 > pr.width;
+      h.style.alignItems = flip ? 'flex-end' : 'flex-start';
+      h.style.transform = flip ? 'translate(calc(-100% + 7px), calc(-100% + 7px))' : 'translate(-7px, calc(-100% + 7px))';
+      $('.hotspot__line', h).style.margin = flip ? '0 6.5px 0 0' : '0 0 0 6.5px';
+    });
+  }
+
+  // --- urutan scroll ---
+  var heroST = null, revealC = null, cOn = false, mediaScale = 1;
+  function setC(on) {
+    if (on === cOn || !revealC) return;
+    cOn = on;
+    if (on) { placeHotspots(); revealC.timeScale(1).play(); }
+    else revealC.timeScale(1.8).reverse();
+  }
+  measure();
+  if (ANIM) {
+    aperture(0);
+    G.set('.hero__title .ln__in', { yPercent: 112 });
+    G.set('.hero__aside > *, #badgeCta', { opacity: 0, y: 26 });
+    G.set(hotspots, { autoAlpha: 0 });
+    G.set(heroMedia, { scale: .86 });
+    revealC = G.timeline({ paused: true })
+      .to('.hero__title .ln__in', { yPercent: 0, duration: 1.3, ease: 'expo.out', stagger: .1 }, 0)
+      .to('.hero__aside > *, #badgeCta', { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: .08 }, .25)
+      .to(navLogo, { opacity: 1, duration: .8, ease: 'power2.out' }, .2)
+      .to(hotspots, { autoAlpha: 1, duration: .5, stagger: .12 }, .5)
+      .from('.hero__inner .hotspot__line, #top .hotspot__line', { scaleY: 0, duration: .8, ease: 'expo.out', stagger: .12 }, .5);
+    G.set(navLogo, { opacity: 0 });
+    heroST = ST.create({
+      trigger: hero, start: 'top top', pin: heroPin, anticipatePin: 1,
+      end: function () { return '+=' + Math.round(innerHeight * (innerWidth <= 760 ? 1.25 : 1.55)); },
+      onRefresh: function () { measure(); apT = -1; },
+      onUpdate: function (self) {
+        var p = self.progress, t = clamp(p / .62, 0, 1);
+        aperture(t);
+        mediaScale = lerp(.86, 1, smooth(t));
+        G.set(heroMedia, { scale: mediaScale });
+        heroFrame.style.opacity = clamp(1 - p / .12, 0, 1);
+        heroFrame.style.visibility = p > .13 ? 'hidden' : '';
+        heroShade.style.opacity = clamp((p - .5) / .16, 0, 1);
+        if (p > .64) setC(true); else if (p < .6) setC(false);
+      }
+    });
+    // keluar: ruang naik perlahan saat section selesai
+    G.to(heroScene, { yPercent: -18, ease: 'none', scrollTrigger: { trigger: hero, start: 'bottom bottom', end: 'bottom top', scrub: true } });
+  } else {
+    heroScene.style.clipPath = 'none';
+    navLogo.style.opacity = 1;
+  }
+  $('#heroEnter').addEventListener('click', function () { if (heroST) scrollToY(heroST.end - innerHeight * .2); });
+  window.addEventListener('resize', function () { measure(); apT = -1; if (heroST) aperture(clamp(heroST.progress / .62, 0, 1)); placeHotspots(); });
+  placeHotspots();
+
+  // badge CTA berputar; lebih cepat saat di-hover
+  if (ANIM) {
+    var spin = G.to('.badge-cta__ring', { rotation: 360, duration: 22, ease: 'none', repeat: -1, transformOrigin: '50% 50%' });
+    $('#badgeCta').addEventListener('pointerenter', function () { G.to(spin, { timeScale: 4, duration: .6 }); });
+    $('#badgeCta').addEventListener('pointerleave', function () { G.to(spin, { timeScale: 1, duration: .9 }); });
+  }
+
+  /* ======================================================================
+     Intro (preloader → wordmark)
+     ====================================================================== */
+  function preload(list, onProgress) {
+    var done = 0;
+    return Promise.all(list.map(function (u) {
+      return new Promise(function (res) {
+        var im = new Image();
+        im.onload = im.onerror = function () { done++; onProgress(done / list.length); res(); };
+        im.src = u;
+      });
+    }));
+  }
+  function startIntro() {
+    if (!HAS_GSAP) { html.classList.add('is-ready'); hotspots.forEach(function (h) { h.style.opacity = 1; h.style.visibility = 'visible'; }); return; }
+    var loader = $('#loader'), countEl = $('#loaderCount');
+    var prog = { v: 0, target: 0 };
+    document.body.classList.add('is-loading');
+    var heroImg = $('.hero__img--base').currentSrc || $('.hero__img--base').src;
+    var list = [heroImg].concat(XV.PRODUCTS.slice(0, 6).map(function (p) { return src(p.img, 768); }));
+    var tl = G.timeline();
+    if (REDUCED) {
+      G.set(loader, { display: 'none' });
+    } else {
+      tl.to('.loader__ring', { strokeDashoffset: 0, duration: 1.3, ease: 'power2.inOut' })
+        .to('.loader__x1', { strokeDashoffset: 0, duration: .5, ease: 'power2.out' }, '-=.35')
+        .to('.loader__x2', { strokeDashoffset: 0, duration: .5, ease: 'power2.out' }, '-=.3');
+    }
+    G.ticker.add(function tick() {
+      prog.v = lerp(prog.v, prog.target, .08);
+      countEl.textContent = String(Math.round(prog.v * 100)).padStart(3, '0');
+      if (prog.v > .995) G.ticker.remove(tick);
+    });
+    var minTime = new Promise(function (r) { setTimeout(r, REDUCED ? 0 : 1700); });
+    var maxTime = new Promise(function (r) { setTimeout(r, 6000); });
+    Promise.race([Promise.all([preload(list, function (p) { prog.target = p; }), minTime]), maxTime]).then(function () {
+      prog.target = 1;
+      G.delayedCall(REDUCED ? 0 : .35, revealSite);
+    });
+  }
+  function revealSite() {
+    var tl = G.timeline({ onComplete: function () { html.classList.add('is-ready'); document.body.classList.remove('is-loading'); ST.refresh(); } });
+    if (!REDUCED) {
+      tl.to('.loader__mark', { scale: .6, opacity: 0, duration: .6, ease: 'power3.in' })
+        .to('.loader__meta', { opacity: 0, y: -10, duration: .4 }, '<')
+        .to('#loader', { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.inOut' }, '-=.15');
+    } else {
+      tl.set('#loader', { display: 'none' });
+    }
+    tl.from('.nav__links a, .nav__actions > *', { opacity: 0, y: -16, duration: 1, ease: 'expo.out', stagger: .04 }, '-=.5');
+    var atTop = !heroST || heroST.progress < .05;
+    if (ANIM && atTop) {
+      // garis wordmark tergambar, lalu ruang menyala dari kiri ke kanan
+      var len = outlinePath.getTotalLength();
+      G.set(outlinePath, { strokeDasharray: len, strokeDashoffset: len });
+      G.set(heroScene, { opacity: 0 });
+      light.lock = performance.now() + 4200;
+      light.x = light.tx = .14; light.y = light.ty = .55;
+      tl.to(outlinePath, { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut' }, '-=.9')
+        .to(heroScene, { opacity: 1, duration: 1.6, ease: 'power2.out' }, '-=1.2')
+        .to(light, { tx: .86, duration: 2.6, ease: 'power1.inOut' }, '<')
+        .from('.hf', { opacity: 0, y: 12, duration: 1, ease: 'expo.out', stagger: .08 }, '-=1.6')
+        .set(outlinePath, { strokeDasharray: 'none' });
+    } else if (cOn && revealC) {
+      revealC.progress(1);
+    }
+  }
+  startIntro();
+
+  /* ======================================================================
+     Scroll animations (dibuat SETELAH section yang di-pin agar posisi benar)
+     ====================================================================== */
+  function scrollAnims() {
+    if (!ANIM) return;
+    // judul section: kata naik dari bawah
+    $$('.h2').forEach(function (h) {
+      var words = splitWords(h, 'wm');
+      G.from(words, { yPercent: 110, duration: 1.2, ease: 'expo.out', stagger: .045, scrollTrigger: { trigger: h, start: 'top 85%' } });
+    });
+
+    // manifesto: kata demi kata
+    $$('[data-words]').forEach(function (p) {
+      var words = splitWords(p, 'w');
+      G.to(words, { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 78%', end: 'bottom 50%', scrub: true } });
+    });
+    $$('.pillar').forEach(function (el, i) {
+      var line = document.createElement('i');
+      line.className = 'pillar__line';
+      el.appendChild(line);
+      G.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', delay: i * .08, scrollTrigger: { trigger: '.pillars', start: 'top 86%' } });
+    });
+    G.fromTo('.pillar__line', { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: 'expo.out', stagger: .12, scrollTrigger: { trigger: '.pillars', start: 'top 86%' } });
+
+    // parallax gambar
+    $$('[data-parallax]').forEach(function (fig) {
+      var amt = parseFloat(fig.dataset.parallax);
+      G.fromTo(fig.querySelector('img'), { yPercent: -amt - 8 }, { yPercent: amt - 8, ease: 'none', scrollTrigger: { trigger: fig, start: 'top bottom', end: 'bottom top', scrub: true } });
+      G.from(fig, { clipPath: 'inset(18% 0 0 0)', duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: fig, start: 'top 85%' } });
+    });
+    var quote = $('.band__quote');
+    if (quote) {
+      var qw = splitWords(quote, 'wm');
+      G.from(qw, { yPercent: 110, duration: 1.2, ease: 'expo.out', stagger: .05, scrollTrigger: { trigger: quote, start: 'top 85%' } });
+    }
+
+    // [data-reveal]
+    $$('[data-reveal]').forEach(function (el) {
+      G.to(el, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
+    });
+
+    // museboard: kolom bergerak beda kecepatan
+    var speeds = [-90, 70, -40];
+    $$('.muse__col').forEach(function (c, i) {
+      G.fromTo(c, { y: -speeds[i] }, { y: speeds[i], ease: 'none', scrollTrigger: { trigger: '#museboard', start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
+    $$('.muse__item').forEach(function (it) {
+      G.from(it, { clipPath: 'inset(100% 0 0 0)', duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: it, start: 'top 92%' } });
+    });
+
+    // benefits, layanan, klien
+    G.from('.service', { opacity: 0, y: 30, duration: 1, ease: 'expo.out', stagger: .08, scrollTrigger: { trigger: '#services', start: 'top 85%' } });
+    G.from('.benefit', { opacity: 0, y: 30, duration: 1, ease: 'expo.out', stagger: .08, scrollTrigger: { trigger: '.benefits', start: 'top 88%' } });
+    G.from('.clients li', { opacity: 0, x: -20, duration: .9, ease: 'expo.out', stagger: .05, scrollTrigger: { trigger: '.clients', start: 'top 85%' } });
+    G.from('.footer__logo svg', { yPercent: 60, opacity: 0, duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: '#footLogo', start: 'top 92%' } });
+  }
+
+  /* ======================================================================
+     Marquee — kecepatan & kemiringan mengikuti scroll
+     ====================================================================== */
+  (function marquees() {
+    var rows = $$('[data-marquee]').map(function (m) {
+      return { el: $('.marquee__track', m), dir: parseFloat(m.dataset.marquee), x: 0, w: 0 };
+    });
+    function measure() { rows.forEach(function (r) { r.w = r.el.scrollWidth / 4; }); }
+    measure();
+    window.addEventListener('resize', measure);
+    var skew = 0, boost = 0, lastScroll = window.scrollY, last = performance.now();
+    (function loop(now) {
+      var dt = Math.min(.05, (now - last) / 1000); last = now;
+      var y = lenis ? lenis.scroll : window.scrollY;
+      var v = lenis ? lenis.velocity : (y - lastScroll) / Math.max(dt, .001) / 60;
+      lastScroll = y;
+      boost = lerp(boost, Math.abs(v) * 14, .08);
+      skew = lerp(skew, clamp(v * .35, -9, 9), .1);
+      rows.forEach(function (r) {
+        if (!r.w) return;
+        r.x -= (REDUCED ? 0 : (38 + boost)) * dt * r.dir;
+        if (r.x <= -r.w) r.x += r.w;
+        if (r.x > 0) r.x -= r.w;
+        r.el.style.transform = 'translate3d(' + r.x.toFixed(2) + 'px,0,0) skewX(' + (-skew * r.dir).toFixed(2) + 'deg)';
+      });
+      requestAnimationFrame(loop);
+    })(last);
+  })();
+
+  /* ======================================================================
+     KOLEKSI — galeri horizontal
+     ====================================================================== */
+  var viewport = $('#collectionViewport');
+  var groups = $$('.group', track), tabs = $$('.tab', tabsEl);
+  var hScroll = null;
+  function setTab(id) { tabs.forEach(function (t) { t.classList.toggle('is-on', t.dataset.tab === id); }); }
+  function activeByX(x) {
+    var cur = groups[0].dataset.group;
+    groups.forEach(function (g) { if (g.offsetLeft - x < viewport.clientWidth * .45) cur = g.dataset.group; });
+    setTab(cur);
+  }
+  if (HAS_GSAP) {
+    var mm = G.matchMedia();
+    mm.add('(min-width: 761px)', function () {
+      if (REDUCED) return;
+      var dist = function () { return Math.max(0, track.scrollWidth - viewport.clientWidth); };
+      var tween = G.to(track, { x: function () { return -dist(); }, ease: 'none' });
+      hScroll = ST.create({
+        trigger: '#koleksi', start: 'top top', end: function () { return '+=' + dist(); },
+        pin: true, scrub: 1, animation: tween, invalidateOnRefresh: true, anticipatePin: 1,
+        onUpdate: function (s) {
+          $('#trackBar').style.transform = 'scaleX(' + s.progress.toFixed(4) + ')';
+          activeByX(s.progress * dist());
+        }
+      });
+      // gambar sedikit bergeser di dalam kartu (parallax horizontal)
+      $$('.card__media img', track).forEach(function (im) {
+        G.fromTo(im, { xPercent: 7 }, { xPercent: -7, ease: 'none', scrollTrigger: { trigger: im.parentNode, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
+      });
+      $$('.card', track).forEach(function (c) {
+        G.from(c.querySelector('.card__info'), { opacity: 0, y: 16, duration: .9, ease: 'expo.out', scrollTrigger: { trigger: c, containerAnimation: tween, start: 'left 92%' } });
+      });
+      return function () { hScroll = null; G.set(track, { x: 0 }); };
+    });
+  }
+  viewport.addEventListener('scroll', function () {
+    if (hScroll) return;
+    var max = viewport.scrollWidth - viewport.clientWidth;
+    $('#trackBar').style.transform = 'scaleX(' + (max > 0 ? viewport.scrollLeft / max : 0) + ')';
+    activeByX(viewport.scrollLeft);
+  }, { passive: true });
+  tabsEl.addEventListener('click', function (e) {
+    var t = e.target.closest('.tab');
+    if (!t) return;
+    var g = $('[data-group="' + t.dataset.tab + '"]', track);
+    setTab(t.dataset.tab);
+    if (hScroll) {
+      var dist = track.scrollWidth - viewport.clientWidth;
+      var p = clamp((g.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft)) / dist, 0, 1);
+      scrollToY(hScroll.start + p * (hScroll.end - hScroll.start));
+    } else {
+      viewport.scrollTo({ left: g.offsetLeft - 20, behavior: 'smooth' });
+    }
+  });
+
+  /* ======================================================================
+     QUICK VIEW (shared element)
+     ====================================================================== */
+  var qv = $('#qv'), qvImg = $('#qvImg'), qvMedia = $('.qv__media', qv), qvPanel = $('.qv__panel', qv);
+  var qvState = { id: null, qty: 1, from: null, lastFocus: null };
+  function openQuick(id, fromEl) {
+    var p = byId[id];
+    if (!p) return;
+    qvState.id = id; qvState.qty = 1; qvState.from = fromEl || null; qvState.lastFocus = document.activeElement;
+    qvImg.src = src(p.img, 1024);
+    qvImg.alt = p.name;
+    qvMedia.classList.toggle('is-dark', p.bg === 'dark');
+    $('#qvCat').textContent = (XV.CATEGORIES.filter(function (c) { return c.id === p.cat; })[0] || {}).label || '';
+    $('#qvName').textContent = p.name;
+    $('#qvType').textContent = p.type;
+    $('#qvPrice').innerHTML = priceHTML(p);
+    $('#qvDesc').textContent = p.desc;
+    $('#qvQty').textContent = '1';
+    $('#qvLink').href = p.url;
+    $('#qvWa').href = wa('Halo XIONCO, saya tertarik dengan ' + p.name + ' (' + p.type + ').');
+    var add = $('#qvAdd');
+    add.textContent = p.price ? 'Tambah ke keranjang' : (p.studio ? 'Rancang di Custom Studio' : 'Tanya harga via WhatsApp');
+    $('.qty', qv).style.display = p.price ? '' : 'none';
+    qv.classList.add('is-open');
+    qv.setAttribute('aria-hidden', 'false');
+    lockScroll(true);
+    var info = $$('.qv__info > *', qv);
+    if (!ANIM) {
+      [qvPanel, $('.qv__backdrop', qv)].concat(info).forEach(function (el) { el.style.opacity = 1; el.style.transform = 'none'; });
+      $('.qv__close', qv).focus();
+      return;
+    }
+    G.killTweensOf([qvPanel, info, '.qv__backdrop']);
+    G.to('.qv__backdrop', { opacity: 1, duration: .6, ease: 'power2.out' });
+    var mobile = innerWidth <= 760;
+    G.set(qvPanel, { opacity: 1, y: 0 });
+    var srcMedia = fromEl && fromEl.closest('.card__media, .search__results .thumb');
+    if (srcMedia && !mobile) {
+      // FLIP: kotak media kartu terbang ke posisi media quick view
+      var a = srcMedia.getBoundingClientRect(), b = qvMedia.getBoundingClientRect();
+      var clone = srcMedia.cloneNode(true);
+      $$('button, a, .card__badge, .card__studio', clone).forEach(function (n) { n.remove(); });
+      clone.style.cssText = 'position:fixed;left:' + a.left + 'px;top:' + a.top + 'px;width:' + a.width + 'px;height:' + a.height + 'px;margin:0;z-index:301;border-radius:4px;pointer-events:none';
+      document.body.appendChild(clone);
+      G.set(qvPanel, { clipPath: 'inset(0 0 0 0)' });
+      G.fromTo(qvPanel, { opacity: 0 }, { opacity: 1, duration: .45, delay: .45, ease: 'power2.out' });
+      G.to(clone, { left: b.left, top: b.top, width: b.width, height: b.height, borderRadius: 0, duration: .9, ease: 'expo.inOut', onComplete: function () { clone.remove(); } });
+    } else {
+      G.fromTo(qvPanel, { opacity: 0, y: mobile ? 80 : 40 }, { opacity: 1, y: 0, duration: .8, ease: 'expo.out' });
+    }
+    G.fromTo(info, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .05, delay: srcMedia && !mobile ? .55 : .15 });
+    setTimeout(function () { $('.qv__close', qv).focus({ preventScroll: true }); }, 50);
+  }
+  function closeQuick() {
+    if (!qv.classList.contains('is-open')) return;
+    var done = function () {
+      qv.classList.remove('is-open');
+      qv.setAttribute('aria-hidden', 'true');
+      if (!$('#cart').classList.contains('is-open') && !$('#search').classList.contains('is-open')) lockScroll(false);
+      if (qvState.lastFocus && qvState.lastFocus.focus) qvState.lastFocus.focus({ preventScroll: true });
+    };
+    if (!ANIM) { qvPanel.style.opacity = 0; $('.qv__backdrop', qv).style.opacity = 0; done(); return; }
+    G.to(qvPanel, { opacity: 0, y: 30, duration: .45, ease: 'power2.in' });
+    G.to('.qv__backdrop', { opacity: 0, duration: .5, delay: .1, onComplete: done });
+  }
+  document.addEventListener('click', function (e) {
+    var q = e.target.closest('[data-quick]');
+    if (q) { e.preventDefault(); openQuick(q.dataset.quick, q); }
+  });
+  $('#qvMinus').addEventListener('click', function () { qvState.qty = Math.max(1, qvState.qty - 1); $('#qvQty').textContent = qvState.qty; });
+  $('#qvPlus').addEventListener('click', function () { qvState.qty = Math.min(20, qvState.qty + 1); $('#qvQty').textContent = qvState.qty; });
+  $('#qvAdd').addEventListener('click', function () {
+    var p = byId[qvState.id];
+    if (!p.price) {
+      if (p.studio) { closeQuick(); setTimeout(function () { scrollToEl('#studio'); }, 350); }
+      else window.open(wa('Halo XIONCO, saya ingin tahu harga ' + p.name + ' (' + p.type + ').'), '_blank', 'noopener');
+      return;
+    }
+    addToCart(p.id, qvState.qty, qvImg);
+    setTimeout(closeQuick, 250);
+  });
+
+  /* ======================================================================
+     KERANJANG
+     ====================================================================== */
+  var cart = store.get('xv_cart', []);
+  var cartEl = $('#cart');
+  function cartCount() { return cart.reduce(function (s, it) { return s + it.qty; }, 0); }
+  function cartTotal() { return cart.reduce(function (s, it) { return s + (byId[it.id] ? byId[it.id].price * it.qty : 0); }, 0); }
+  function renderCart() {
+    cart = cart.filter(function (it) { return byId[it.id] && byId[it.id].price; });
+    store.set('xv_cart', cart);
+    var n = cartCount();
+    ['#cartCount', '#dockCount'].forEach(function (s) { var el = $(s); el.textContent = n; el.classList.toggle('is-on', n > 0); });
+    $('#cartItems').textContent = n + ' item';
+    cartEl.classList.toggle('is-empty', !cart.length);
+    $('#cartList').innerHTML = cart.map(function (it) {
+      var p = byId[it.id];
+      return '<li class="cart__item" data-id="' + p.id + '"><div class="thumb' + (p.bg === 'dark' ? ' is-dark' : '') + '"><img src="' + src(p.img, 768) + '" alt=""></div>' +
+        '<div><h4>' + p.name + '</h4><p>' + rupiah(p.price) + '</p><div class="qty"><button type="button" data-q="-1" aria-label="Kurangi"><svg><use href="#i-minus"/></svg></button><span>' + it.qty + '</span><button type="button" data-q="1" aria-label="Tambah"><svg><use href="#i-plus"/></svg></button></div></div>' +
+        '<button class="rm" type="button" data-rm>Hapus</button></li>';
+    }).join('');
+    $('#cartTotal').textContent = rupiah(cartTotal());
+    var msg = 'Halo XIONCO, saya ingin memesan:\n' + cart.map(function (it) { var p = byId[it.id]; return '• ' + p.name + ' (' + p.type + ') × ' + it.qty + ' — ' + rupiah(p.price * it.qty); }).join('\n') + '\nSubtotal: ' + rupiah(cartTotal());
+    $('#cartCheckout').href = wa(msg);
+  }
+  function bump(el) {
+    if (!ANIM || !el) return;
+    G.fromTo(el, { scale: 1.6 }, { scale: 1, duration: .7, ease: 'elastic.out(1,.4)' });
+  }
+  function addToCart(id, qty, fromEl) {
+    var p = byId[id];
+    if (!p || !p.price) return;
+    var it = cart.filter(function (x) { return x.id === id; })[0];
+    if (it) it.qty += qty; else cart.push({ id: id, qty: qty });
+    var target = innerWidth <= 760 ? $('#dock [data-open="cart"]') : $('#nav .nav__cart');
+    var finish = function () { renderCart(); bump(innerWidth <= 760 ? $('#dockCount') : $('#cartCount')); toast(p.name + ' ditambahkan ke keranjang'); };
+    if (ANIM && fromEl && target) {
+      var a = fromEl.getBoundingClientRect(), b = target.getBoundingClientRect();
+      var size = Math.min(a.width, a.height, 140);
+      var fly = document.createElement('div');
+      fly.className = 'fly';
+      fly.innerHTML = '<img src="' + src(p.img, 768) + '" alt="">';
+      fly.style.cssText = 'left:0;top:0;width:' + size + 'px;height:' + size + 'px';
+      document.body.appendChild(fly);
+      var sx = a.left + a.width / 2 - size / 2, sy = a.top + a.height / 2 - size / 2;
+      var ex = b.left + b.width / 2 - size / 2, ey = b.top + b.height / 2 - size / 2;
+      G.set(fly, { x: sx, y: sy, scale: .9 });
+      G.timeline({ onComplete: function () { fly.remove(); finish(); } })
+        .to(fly, { x: ex, duration: .85, ease: 'power2.inOut' }, 0)
+        .to(fly, { y: Math.min(sy, ey) - 120, duration: .4, ease: 'power2.out' }, 0)
+        .to(fly, { y: ey, duration: .45, ease: 'power2.in' }, .4)
+        .to(fly, { scale: .12, opacity: .6, duration: .85, ease: 'power2.in' }, 0);
+    } else finish();
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-add]');
+    if (a) { e.preventDefault(); addToCart(a.dataset.add, 1, a.closest('.card__media') || a); }
+  });
+  $('#cartList').addEventListener('click', function (e) {
+    var li = e.target.closest('.cart__item');
+    if (!li) return;
+    var it = cart.filter(function (x) { return x.id === li.dataset.id; })[0];
+    var q = e.target.closest('[data-q]');
+    if (q) { it.qty = clamp(it.qty + parseInt(q.dataset.q, 10), 0, 20); if (!it.qty) cart.splice(cart.indexOf(it), 1); renderCart(); }
+    if (e.target.closest('[data-rm]')) { cart.splice(cart.indexOf(it), 1); renderCart(); }
+  });
+  function openCart() {
+    cartEl.classList.add('is-open'); cartEl.setAttribute('aria-hidden', 'false'); lockScroll(true);
+    if (ANIM) G.from('.cart__item', { opacity: 0, x: 30, duration: .7, ease: 'expo.out', stagger: .05, delay: .2 });
+  }
+  function closeCart() {
+    if (!cartEl.classList.contains('is-open')) return;
+    cartEl.classList.remove('is-open'); cartEl.setAttribute('aria-hidden', 'true');
+    if (!qv.classList.contains('is-open')) lockScroll(false);
+  }
+  renderCart();
+
+  /* ======================================================================
+     SEARCH
+     ====================================================================== */
+  var searchEl = $('#search'), searchInput = $('#searchInput'), results = $('#searchResults');
+  // indeks dwibahasa: nama/tipe (Inggris) + kata kunci Indonesia per kategori & tipe
+  var ID_CAT = { seats: 'kursi sofa tempat duduk', tables: 'meja', bedframe: 'ranjang kasur tempat tidur dipan', cabinet: 'lemari kabinet rak penyimpanan', decor: 'lampu dekorasi cahaya', smart: 'listrik stopkontak saklar colokan pintar' };
+  var ID_TYPE = [[/chair/, 'kursi'], [/desk|workstation/, 'meja kerja kantor'], [/coffee table/, 'meja kopi meja tamu'], [/dining/, 'makan'], [/side table|nightstand/, 'meja samping nakas'], [/light/, 'lampu'], [/shelf/, 'rak'], [/wardrobe/, 'lemari pakaian'], [/kitchenette/, 'dapur kitchen set'], [/towel/, 'handuk kamar mandi'], [/slat|panel/, 'panel dinding'], [/bed/, 'ranjang tempat tidur'], [/socket|outlet|switch/, 'stopkontak saklar']];
+  XV.PRODUCTS.forEach(function (p) {
+    var t = p.type.toLowerCase();
+    var cat = XV.CATEGORIES.filter(function (c) { return c.id === p.cat; })[0];
+    p._q = [p.name, t, p.cat, cat ? cat.label : '', ID_CAT[p.cat] || ''].concat(ID_TYPE.filter(function (r) { return r[0].test(t); }).map(function (r) { return r[1]; })).join(' ').toLowerCase();
+  });
+  function renderResults(q) {
+    q = q.trim().toLowerCase();
+    var terms = q.split(/\s+/).filter(Boolean);
+    var list = XV.PRODUCTS.filter(function (p) {
+      return terms.every(function (w) { return p._q.indexOf(w) >= 0; });
+    }).slice(0, 12);
+    results.innerHTML = list.length ? list.map(function (p) {
+      return '<li><button type="button" data-search-open="' + p.id + '"><div class="thumb' + (p.bg === 'dark' ? ' is-dark' : '') + '"><img src="' + src(p.img, 768) + '" alt="" loading="lazy"></div><b>' + p.name + '</b><span>' + p.type + ' · ' + (p.price ? (p.from ? 'mulai ' : '') + rupiah(p.price) : 'Tanya harga') + '</span></button></li>';
+    }).join('') : '<li class="search__empty" style="opacity:1;transform:none">Tidak ditemukan. Coba "sofa", "meja", atau "lampu".</li>';
+    $('#searchHint').textContent = q ? list.length + ' hasil untuk "' + q + '"' : 'Tekan / untuk mencari · Esc untuk menutup';
+    if (ANIM) G.to($$('li', results), { opacity: 1, y: 0, duration: .7, ease: 'expo.out', stagger: .03 });
+    else $$('li', results).forEach(function (li) { li.style.opacity = 1; li.style.transform = 'none'; });
+  }
+  function openSearch() {
+    searchEl.classList.add('is-open'); searchEl.setAttribute('aria-hidden', 'false'); lockScroll(true);
+    renderResults(searchInput.value);
+    setTimeout(function () { searchInput.focus(); }, 60);
+  }
+  function closeSearch() {
+    if (!searchEl.classList.contains('is-open')) return;
+    searchEl.classList.remove('is-open'); searchEl.setAttribute('aria-hidden', 'true');
+    if (!qv.classList.contains('is-open')) lockScroll(false);
+  }
+  var sT = 0;
+  searchInput.addEventListener('input', function () { clearTimeout(sT); sT = setTimeout(function () { renderResults(searchInput.value); }, 90); });
+  results.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-search-open]');
+    if (!b) return;
+    var id = b.dataset.searchOpen;
+    closeSearch();
+    setTimeout(function () { openQuick(id, null); }, 200);
+  });
+
+  /* generic open/close */
+  document.addEventListener('click', function (e) {
+    var o = e.target.closest('[data-open]');
+    if (o) { e.preventDefault(); if (o.dataset.open === 'cart') openCart(); if (o.dataset.open === 'search') openSearch(); return; }
+    var c = e.target.closest('[data-close]');
+    if (c) { closeAll(); }
+  });
+  function closeAll() { closeQuick(); closeCart(); closeSearch(); }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeAll(); closeMenu(); return; }
+    var typing = e.target.matches && e.target.matches('input, textarea, select');
+    if (e.key === '/' && !typing) { e.preventDefault(); openSearch(); }
+  });
+
+  /* ======================================================================
+     CUSTOM STUDIO — CUBIX Modular configurator
+     ====================================================================== */
+  (function studio() {
+    var S = XV.STUDIO, svg = $('#sofaSvg');
+    var K = 1.7, FLOOR = 404;                    // 1 cm = 1.7 unit SVG
+    var SW = S.seatW * K, AW = S.armW * K, GAP = 34;
+    var st = store.get('xv_studio', null) || { seats: 3, arms: true, ottoman: false, fabric: 'fb01', base: 'oak', light: 18 };
+    var NS = 'http://www.w3.org/2000/svg';
+
+    function seatParts() {
+      return '<rect class="p-dark" x="0" y="-126" width="' + SW + '" height="82" rx="6"/>' +
+        '<rect class="p-fab" x="5" y="-122" width="' + (SW - 10) + '" height="56" rx="14"/>' +
+        '<rect class="p-shade" x="5" y="-122" width="' + (SW - 10) + '" height="56" rx="14"/>' +
+        '<rect class="p-tex" x="5" y="-122" width="' + (SW - 10) + '" height="56" rx="14"/>' +
+        '<rect class="p-gloss" x="5" y="-122" width="' + (SW - 10) + '" height="56" rx="14"/>' +
+        '<rect class="p-dark" x="0" y="-52" width="' + SW + '" height="34" rx="3"/>' +
+        '<rect class="p-fab" x="3" y="-71" width="' + (SW - 6) + '" height="26" rx="9"/>' +
+        '<rect class="p-shade" x="3" y="-71" width="' + (SW - 6) + '" height="26" rx="9"/>' +
+        '<rect class="p-tex" x="3" y="-71" width="' + (SW - 6) + '" height="26" rx="9"/>' +
+        '<rect class="p-gloss" x="3" y="-71" width="' + (SW - 6) + '" height="26" rx="9"/>' +
+        '<rect class="p-base" x="0" y="-18" width="' + SW + '" height="6"/>' +
+        '<rect class="p-base" x="8" y="-12" width="5" height="12"/><rect class="p-base" x="' + (SW - 13) + '" y="-12" width="5" height="12"/>';
+    }
+    function armParts() {
+      return '<rect class="p-fab" x="0" y="-106" width="' + AW + '" height="88" rx="10"/>' +
+        '<rect class="p-shadeH" x="0" y="-106" width="' + AW + '" height="88" rx="10"/>' +
+        '<rect class="p-tex" x="0" y="-106" width="' + AW + '" height="88" rx="10"/>' +
+        '<rect class="p-gloss" x="0" y="-106" width="' + AW + '" height="88" rx="10"/>' +
+        '<rect class="p-base" x="0" y="-18" width="' + AW + '" height="6"/><rect class="p-base" x="' + (AW / 2 - 2.5) + '" y="-12" width="5" height="12"/>';
+    }
+    function ottomanParts() {
+      return '<rect class="p-dark" x="0" y="-52" width="' + SW + '" height="34" rx="3"/>' +
+        '<rect class="p-fab" x="3" y="-71" width="' + (SW - 6) + '" height="26" rx="9"/>' +
+        '<rect class="p-shade" x="3" y="-71" width="' + (SW - 6) + '" height="26" rx="9"/>' +
+        '<rect class="p-tex" x="3" y="-71" width="' + (SW - 6) + '" height="26" rx="9"/>' +
+        '<rect class="p-gloss" x="3" y="-71" width="' + (SW - 6) + '" height="26" rx="9"/>' +
+        '<rect class="p-base" x="0" y="-18" width="' + SW + '" height="6"/>' +
+        '<rect class="p-base" x="8" y="-12" width="5" height="12"/><rect class="p-base" x="' + (SW - 13) + '" y="-12" width="5" height="12"/>';
+    }
+    svg.innerHTML =
+      '<defs>' +
+        '<linearGradient id="gV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff5e6" stop-opacity=".18"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>' +
+        '<linearGradient id="gH" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff5e6" stop-opacity=".14"/><stop offset="1" stop-color="#000" stop-opacity=".26"/></linearGradient>' +
+        '<linearGradient id="gGloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff5e6" stop-opacity=".32"/><stop offset=".22" stop-color="#fff5e6" stop-opacity=".06"/><stop offset=".23" stop-color="#fff5e6" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".1"/></linearGradient>' +
+        '<pattern id="pW" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="#000" opacity=".08"/><rect y="2" width="4" height="1" fill="#000" opacity=".08"/><rect width="1" height="4" fill="#fff" opacity=".04"/></pattern>' +
+        '<radialGradient id="gShadow"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>' +
+        '<radialGradient id="gLamp"><stop offset="0" stop-color="#ffd59a" stop-opacity=".95"/><stop offset=".35" stop-color="#e8a85c" stop-opacity=".35"/><stop offset="1" stop-color="#e8a85c" stop-opacity="0"/></radialGradient>' +
+        '<linearGradient id="gWin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff8ec" stop-opacity=".55"/><stop offset="1" stop-color="#fff8ec" stop-opacity="0"/></linearGradient>' +
+      '</defs>' +
+      '<polygon id="sWin" points="70,40 250,40 330,380 150,380" fill="url(#gWin)"/>' +
+      '<circle id="sGlow" cx="830" cy="150" r="230" fill="url(#gLamp)"/>' +
+      '<g id="sLamp"><line x1="830" y1="150" x2="830" y2="404" stroke="#1a1918" stroke-width="3"/><rect x="814" y="400" width="32" height="5" rx="2" fill="#1a1918"/><circle id="sBulb" cx="830" cy="150" r="17" fill="#e9dcc6"/></g>' +
+      '<ellipse id="sShadow" cx="450" cy="' + (FLOOR + 4) + '" rx="300" ry="18" fill="url(#gShadow)"/>' +
+      '<g id="sSofa">' +
+        '<g class="unit" data-u="0">' + seatParts() + '</g><g class="unit" data-u="1">' + seatParts() + '</g><g class="unit" data-u="2">' + seatParts() + '</g><g class="unit" data-u="3">' + seatParts() + '</g>' +
+        '<g class="arm" data-arm="l">' + armParts() + '</g><g class="arm" data-arm="r">' + armParts() + '</g>' +
+        '<g class="otto">' + ottomanParts() + '</g>' +
+      '</g>' +
+      '<g id="sDims" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">' +
+        '<line id="dLine" x1="0" y1="0" x2="0" y2="0" stroke="currentColor" stroke-width="1"/>' +
+        '<line id="dT1" x1="0" y1="-7" x2="0" y2="7" stroke="currentColor"/><line id="dT2" x1="0" y1="-7" x2="0" y2="7" stroke="currentColor"/>' +
+        '<rect id="dBg" x="0" y="-11" width="76" height="22" rx="11"/><text id="dTxt" x="0" y="4.5" text-anchor="middle" fill="currentColor"></text>' +
+      '</g>';
+    var styleEl = document.createElementNS(NS, 'style');
+    styleEl.textContent =
+      '#sSofa{--fab:#4a4846;--base:#c8a678;--gloss:0;--tex:1}' +
+      '.p-fab{fill:var(--fab)}.p-dark{fill:var(--fab);filter:brightness(.7)}' +
+      '.p-shade{fill:url(#gV)}.p-shadeH{fill:url(#gH)}.p-tex{fill:url(#pW);opacity:var(--tex)}.p-gloss{fill:url(#gGloss);opacity:var(--gloss)}' +
+      '.p-base{fill:var(--base)}#sDims{color:#e9e3d9}#dBg{fill:rgba(13,12,11,.7)}';
+    svg.insertBefore(styleEl, svg.firstChild);
+
+    var sofa = $('#sSofa', svg), units = $$('.unit', svg), arms = $$('.arm', svg), otto = $('.otto', svg);
+    var dims = { line: $('#dLine', svg), t1: $('#dT1', svg), t2: $('#dT2', svg), txt: $('#dTxt', svg), bg: $('#dBg', svg), g: $('#sDims', svg) };
+    var priceObj = { v: 0 };
+
+    // UI
+    var sw = $('#swatches');
+    sw.innerHTML = S.fabrics.map(function (f) { return '<button class="swatch" type="button" data-fabric="' + f.id + '" data-type="' + f.type + '" style="--c:' + f.color + '" aria-label="' + f.code + ' ' + f.name + '" title="' + f.code + ' — ' + f.name + '"></button>'; }).join('');
+    $('#bases').innerHTML = S.bases.map(function (b) { return '<button class="chip" type="button" data-base="' + b.id + '" style="--c:' + b.color + '"><i></i>' + b.name + '</button>'; }).join('');
+    var lightInput = $('#light');
+
+    function fabric() { return S.fabrics.filter(function (f) { return f.id === st.fabric; })[0] || S.fabrics[0]; }
+    function base() { return S.bases.filter(function (b) { return b.id === st.base; })[0] || S.bases[0]; }
+    function widthCm() { return st.seats * S.seatW + (st.arms ? 2 * S.armW : 0); }
+    function price() {
+      var p = st.seats * S.seatPrice + (st.arms ? S.armPrice : 0) + (st.ottoman ? S.ottomanPrice : 0);
+      if (fabric().type === 'leather') p *= S.leatherFactor;
+      return p + base().add;
+    }
+
+    function layout(immediate) {
+      var total = st.seats * SW + (st.arms ? 2 * AW : 0);
+      var groupW = total + (st.ottoman ? GAP + SW : 0);
+      var x0 = Math.round((780 - groupW) / 2) + 10;
+      var dur = immediate || !ANIM ? 0 : .9;
+      var set = function (el, vars) {
+        if (dur) G.to(el, Object.assign({ duration: dur, ease: 'expo.out' }, vars));
+        else if (HAS_GSAP) G.set(el, vars);
+        else { el.setAttribute('transform', 'translate(' + vars.x + ',' + (vars.y || FLOOR) + ')'); el.style.opacity = vars.opacity; }
+      };
+      var seatX = x0 + (st.arms ? AW : 0);
+      units.forEach(function (u, i) {
+        var on = i < st.seats;
+        set(u, { x: seatX + Math.min(i, st.seats) * SW + (on ? 0 : 30), y: FLOOR, opacity: on ? 1 : 0 });
+      });
+      set(arms[0], { x: x0, y: FLOOR, opacity: st.arms ? 1 : 0 });
+      set(arms[1], { x: seatX + st.seats * SW, y: FLOOR, opacity: st.arms ? 1 : 0 });
+      set(otto, { x: x0 + total + GAP, y: FLOOR, opacity: st.ottoman ? 1 : 0 });
+      // bayangan & garis dimensi
+      var shadow = $('#sShadow', svg);
+      if (dur) G.to(shadow, { attr: { cx: x0 + groupW / 2, rx: groupW / 2 + 40 }, duration: dur, ease: 'expo.out' });
+      else { shadow.setAttribute('cx', x0 + groupW / 2); shadow.setAttribute('rx', groupW / 2 + 40); }
+      var y = FLOOR - 152, xa = x0, xb = x0 + total, mid = (xa + xb) / 2;
+      var A = { a: xa, b: xb };
+      var apply = function () {
+        dims.line.setAttribute('x1', A.a); dims.line.setAttribute('x2', A.b); dims.line.setAttribute('y1', y); dims.line.setAttribute('y2', y);
+        dims.t1.setAttribute('x1', A.a); dims.t1.setAttribute('x2', A.a); dims.t1.setAttribute('y1', y - 7); dims.t1.setAttribute('y2', y + 7);
+        dims.t2.setAttribute('x1', A.b); dims.t2.setAttribute('x2', A.b); dims.t2.setAttribute('y1', y - 7); dims.t2.setAttribute('y2', y + 7);
+        var m = (A.a + A.b) / 2;
+        dims.txt.setAttribute('x', m); dims.txt.setAttribute('y', y + 4.5);
+        dims.bg.setAttribute('x', m - 38); dims.bg.setAttribute('y', y - 11);
+      };
+      if (!layout.prev) layout.prev = { a: mid, b: mid };
+      if (dur) { A.a = layout.prev.a; A.b = layout.prev.b; G.to(A, { a: xa, b: xb, duration: dur, ease: 'expo.out', onUpdate: apply }); }
+      else apply();
+      layout.prev = { a: xa, b: xb };
+      dims.txt.textContent = widthCm() + ' cm';
+    }
+
+    function applyMaterial(immediate) {
+      var f = fabric(), b = base();
+      var vars = { '--fab': f.color, '--base': b.color, '--gloss': f.type === 'leather' ? 1 : 0, '--tex': f.type === 'leather' ? 0 : 1 };
+      if (ANIM && !immediate) G.to(sofa, Object.assign({ duration: .8, ease: 'power2.out' }, vars));
+      else Object.keys(vars).forEach(function (k) { sofa.style.setProperty(k, vars[k]); });
+      $$('.swatch', sw).forEach(function (s) { s.classList.toggle('is-on', s.dataset.fabric === f.id); });
+      $$('.chip', $('#bases')).forEach(function (c) { c.classList.toggle('is-on', c.dataset.base === b.id); });
+      $('#swatchName').textContent = f.code + ' — ' + f.name + (f.type === 'leather' ? ' · faux leather' : ' · fabric');
+    }
+
+    function applyLight() {
+      var n = st.light / 100;                       // 0 siang → 1 malam
+      var day = [[216, 205, 189], [190, 178, 160]], dusk = [[124, 98, 78], [62, 48, 38]], night = [[27, 25, 23], [12, 11, 10]];
+      function mixc(a, b, t) { return [0, 1, 2].map(function (i) { return Math.round(a[i] + (b[i] - a[i]) * t); }); }
+      var top = n < .5 ? mixc(day[0], dusk[0], n * 2) : mixc(dusk[0], night[0], (n - .5) * 2);
+      var bot = n < .5 ? mixc(day[1], dusk[1], n * 2) : mixc(dusk[1], night[1], (n - .5) * 2);
+      $('#stageWall').style.background =
+        'radial-gradient(circle at 92% 30%, rgba(255,196,120,' + (.38 * n).toFixed(3) + '), rgba(255,196,120,0) 46%),' +
+        'linear-gradient(180deg, rgb(' + top + ') 0%, rgb(' + bot + ') 74%)';
+      sofa.style.filter = 'brightness(' + (1 - .4 * n).toFixed(3) + ') saturate(' + (1 - .15 * n).toFixed(3) + ')';
+      $('#sGlow', svg).style.opacity = (n * .95).toFixed(3);
+      $('#sBulb', svg).style.fill = n > .35 ? '#ffe3b5' : '#e9dcc6';
+      $('#sWin', svg).style.opacity = ((1 - n) * .7).toFixed(3);
+      var sh = $('#sShadow', svg);
+      sh.style.opacity = (.55 + .35 * n).toFixed(3);
+      sh.style.transform = 'translateX(' + (-34 * n).toFixed(1) + 'px)';
+      $('#sDims', svg).style.color = n > .45 ? '#e9e3d9' : '#181715';
+      $('#dBg', svg).style.fill = n > .45 ? 'rgba(13,12,11,.7)' : 'rgba(235,230,222,.75)';
+    }
+
+    function summary(immediate) {
+      $('#cfgName').textContent = st.seats + ' Seater' + (st.arms ? '' : ' Armless') + (st.ottoman ? ' + Ottoman' : '');
+      $('#cfgDims').textContent = 'W ' + widthCm() + ' · D ' + S.depth + ' · H ' + S.height + ' cm' + (st.ottoman ? ' · Ottoman 72 × 72' : '');
+      var target = price();
+      if (ANIM && !immediate) G.to(priceObj, { v: target, duration: .9, ease: 'power3.out', onUpdate: function () { $('#cfgPrice').textContent = rupiah(priceObj.v); } });
+      else { priceObj.v = target; $('#cfgPrice').textContent = rupiah(target); }
+      var f = fabric(), b = base();
+      $('#studioCta').href = wa('Halo XIONCO, saya ingin penawaran CUBIX Modular:\n• Dudukan: ' + st.seats + ' seater' + (st.arms ? ' dengan lengan' : ' tanpa lengan') +
+        '\n• Ottoman: ' + (st.ottoman ? 'ya' : 'tidak') + '\n• Material: ' + f.code + ' ' + f.name + '\n• Base: ' + b.name +
+        '\n• Ukuran: W ' + widthCm() + ' × D ' + S.depth + ' × H ' + S.height + ' cm\n• Estimasi di website: ' + rupiah(target));
+      // tombol jumlah dudukan
+      var segBtns = $$('#segSeats button');
+      segBtns.forEach(function (b2) { b2.classList.toggle('is-on', +b2.dataset.seats === st.seats); });
+      $('#segSeats .seg__ind').style.transform = 'translateX(' + ((st.seats - 1) * 100) + '%)';
+      $('#optArms').checked = st.arms; $('#optOttoman').checked = st.ottoman;
+      store.set('xv_studio', st);
+    }
+
+    function update(immediate) { layout(immediate); applyMaterial(immediate); summary(immediate); }
+
+    $('#segSeats').addEventListener('click', function (e) { var b = e.target.closest('[data-seats]'); if (!b) return; st.seats = +b.dataset.seats; update(); });
+    $('#optArms').addEventListener('change', function (e) { st.arms = e.target.checked; update(); });
+    $('#optOttoman').addEventListener('change', function (e) { st.ottoman = e.target.checked; update(); });
+    sw.addEventListener('click', function (e) { var b = e.target.closest('[data-fabric]'); if (!b) return; st.fabric = b.dataset.fabric; applyMaterial(); summary(); });
+    $('#bases').addEventListener('click', function (e) { var b = e.target.closest('[data-base]'); if (!b) return; st.base = b.dataset.base; applyMaterial(); summary(); });
+    lightInput.value = st.light;
+    lightInput.addEventListener('input', function () { st.light = +lightInput.value; applyLight(); store.set('xv_studio', st); });
+
+    update(true);
+    applyLight();
+    // sedikit "hidup": saat masuk layar, sofa menyusun diri
+    if (ANIM) {
+      ST.create({ trigger: '#stage', start: 'top 75%', once: true, onEnter: function () {
+        G.from(units.concat(arms, [otto]), { y: FLOOR + 40, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: .07 });
+        G.from(dims.g, { opacity: 0, duration: 1, delay: .6 });
+      } });
+      G.from('.panel__step, .panel__total', { opacity: 0, y: 24, duration: 1, ease: 'expo.out', stagger: .07, scrollTrigger: { trigger: '.panel', start: 'top 80%' } });
+    }
+  })();
+
+  /* ======================================================================
+     PABRIK — peta titik Pulau Jawa + alur produksi
+     ====================================================================== */
+  (function factory() {
+    var svg = $('#map');
+    var JAVA = [[105.21, -6.75], [105.46, -6.62], [105.86, -6.02], [106.1, -6], [106.6, -6.03], [106.85, -6.1], [107.1, -5.95], [107.45, -6.1], [107.85, -6.2], [108.2, -6.25], [108.35, -6.4], [108.55, -6.72], [109, -6.85], [109.45, -6.85], [109.7, -6.88], [110.1, -6.88], [110.42, -6.95], [110.6, -6.75], [110.68, -6.5], [110.95, -6.42], [111.1, -6.62], [111.45, -6.68], [111.95, -6.8], [112.35, -6.9], [112.6, -6.92], [112.75, -7.15], [112.85, -7.55], [113.3, -7.7], [113.85, -7.68], [114.15, -7.7], [114.45, -7.8], [114.42, -8.2], [114.6, -8.75], [114.3, -8.62], [113.8, -8.5], [113.3, -8.3], [112.7, -8.35], [112.2, -8.32], [111.6, -8.25], [111.05, -8.2], [110.6, -8.05], [110.2, -7.95], [109.7, -7.78], [109.3, -7.7], [108.9, -7.7], [108.55, -7.72], [108.2, -7.78], [107.75, -7.65], [107.4, -7.5], [106.95, -7.4], [106.45, -7.38], [106.35, -7], [106, -6.86], [105.6, -6.85]];
+    var MADURA = [[112.7, -6.9], [113.3, -6.88], [113.95, -6.9], [114.1, -7.05], [113.7, -7.2], [113.05, -7.22], [112.75, -7.12]];
+    var SC = 95.9, X0 = 105.0, Y0 = -5.85;
+    var px = function (lon) { return 30 + (lon - X0) * SC; };
+    var py = function (lat) { return 40 + (Y0 - lat) * SC; };
+    function inside(pt, poly) {
+      var x = pt[0], y = pt[1], ins = false;
+      for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        var xi = poly[i][0], yi = poly[i][1], xj = poly[j][0], yj = poly[j][1];
+        if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) ins = !ins;
+      }
+      return ins;
+    }
+    svg.setAttribute('viewBox', '0 0 1000 360');
+    var dots = '', step = .105, n = 0;
+    for (var lat = -5.9; lat > -8.9; lat -= step) {
+      for (var lon = 105; lon < 114.9; lon += step) {
+        var off = (Math.round((lat + 5.9) / step) % 2) * step / 2;
+        var p = [lon + off, lat];
+        if (inside(p, JAVA) || inside(p, MADURA)) { dots += '<circle class="map-dot" cx="' + px(p[0]).toFixed(1) + '" cy="' + py(p[1]).toFixed(1) + '" r="2.1"/>'; n++; }
+      }
+    }
+    var jep = XV.FACTORIES[0], jkt = XV.FACTORIES[1];
+    var J = [px(jep.lon), py(jep.lat)], K = [px(jkt.lon), py(jkt.lat)];
+    var route = 'M' + J[0].toFixed(1) + ' ' + J[1].toFixed(1) + ' C' + (J[0] - 90) + ' ' + (J[1] - 95) + ' ' + (K[0] + 150) + ' ' + (K[1] - 95) + ' ' + K[0].toFixed(1) + ' ' + K[1].toFixed(1);
+    svg.innerHTML =
+      '<text class="map-label" x="560" y="22">LAUT JAWA</text><text class="map-label" x="600" y="352">SAMUDRA HINDIA</text>' +
+      '<g id="mapDots">' + dots + '</g>' +
+      '<path class="map-route-bg" d="' + route + '"/>' +
+      '<path class="map-route" id="mapRoute" d="' + route + '"/>' +
+      '<g class="map-pin" id="pinJ" transform="translate(' + J[0].toFixed(1) + ',' + J[1].toFixed(1) + ')"><circle class="halo" r="16"/><circle class="core" r="5"/><text x="16" y="28">Jepara</text></g>' +
+      '<g class="map-pin" id="pinK" transform="translate(' + K[0].toFixed(1) + ',' + K[1].toFixed(1) + ')"><circle class="halo" r="16"/><circle class="core" r="5"/><text x="-14" y="-24" text-anchor="end">Jakarta Selatan · <tspan id="pinKsub">3 pabrik</tspan></text></g>';
+    // mobile: potong peta ke area pabrik (Jakarta–Jepara) supaya label terbaca
+    var mqMap = window.matchMedia('(max-width: 760px)');
+    function fitMap() {
+      var m = mqMap.matches, t = $('#pinK text');
+      svg.setAttribute('viewBox', m ? '120 40 540 300' : '0 0 1000 360');
+      t.setAttribute('x', m ? 14 : -14); t.setAttribute('text-anchor', m ? 'start' : 'end');
+      var lb = $$('.map-label', svg);
+      lb[0].style.display = m ? 'none' : '';
+      lb[1].setAttribute('x', m ? 420 : 600); lb[1].setAttribute('y', m ? 330 : 352);
+    }
+    fitMap();
+    if (mqMap.addEventListener) mqMap.addEventListener('change', fitMap);
+    var routeEl = $('#mapRoute'), len = routeEl.getTotalLength();
+    routeEl.style.strokeDasharray = len;
+    routeEl.style.strokeDashoffset = len;
+    var dotEls = $$('.map-dot', svg);
+    function nearDots(c, r) {
+      dotEls.forEach(function (d) {
+        var dx = d.cx.baseVal.value - c[0], dy = d.cy.baseVal.value - c[1];
+        d.classList.toggle('is-near', dx * dx + dy * dy < r * r);
+      });
+    }
+    var stepsEls = $$('#steps li');
+    var subs = ['3 pabrik', 'Cirendeu', 'Pondok Pinang I', 'Pondok Pinang II'];
+    function setStep(i, p) {
+      stepsEls.forEach(function (li, k) { li.classList.toggle('is-on', k === i); });
+      $('#pinJ').classList.toggle('is-on', i === 0);
+      $('#pinK').classList.toggle('is-on', i > 0);
+      $('#pinKsub').textContent = i > 0 ? subs[i] : subs[0];
+      nearDots(i === 0 ? J : K, i === 0 ? 34 : 30 + i * 6);
+      routeEl.style.strokeDashoffset = (len * (1 - clamp(p, 0, 1))).toFixed(1);
+    }
+    setStep(0, 0);
+    if (ANIM) {
+      // halo berdenyut
+      G.to('.map-pin .halo', { attr: { r: 26 }, opacity: 0, duration: 1.8, ease: 'power2.out', repeat: -1, stagger: .4 });
+      var mm2 = G.matchMedia();
+      mm2.add('(min-width: 961px)', function () {
+        ST.create({
+          trigger: '#pabrik', start: 'top top', end: '+=' + (innerHeight * 2.4), pin: '#factoryPin', scrub: true,
+          onUpdate: function (s) {
+            var i = Math.min(3, Math.floor(s.progress * 4));
+            setStep(i, s.progress * 1.35);
+          }
+        });
+      });
+      mm2.add('(max-width: 960px)', function () {
+        ST.create({ trigger: svg, start: 'top 75%', once: true, onEnter: function () { G.to(routeEl, { strokeDashoffset: 0, duration: 2, ease: 'power2.inOut' }); } });
+        stepsEls.forEach(function (li) { li.classList.add('is-on'); });
+      });
+      // titik peta muncul berurutan (setelah pin dibuat)
+      G.from(dotEls, { opacity: 0, duration: .8, stagger: { each: .0015, from: 'start' }, scrollTrigger: { trigger: '#pabrik', start: 'top 70%' } });
+    } else {
+      routeEl.style.strokeDashoffset = 0;
+      stepsEls.forEach(function (li) { li.classList.add('is-on'); });
+    }
+    // counter
+    $$('#stats [data-count]').forEach(function (b) {
+      var to = +b.dataset.count, pre = b.dataset.prefix || '', suf = b.dataset.suffix || '';
+      if (!ANIM) { b.textContent = pre + to + suf; return; }
+      var o = { v: 0 };
+      ST.create({ trigger: b, start: 'top 90%', once: true, onEnter: function () {
+        G.to(o, { v: to, duration: 1.8, ease: 'power3.out', onUpdate: function () { b.textContent = pre + Math.round(o.v) + suf; } });
+      } });
+    });
+  })();
+
+  /* ======================================================================
+     FOR BUSINESS — preview gambar mengikuti kursor, form → WhatsApp
+     ====================================================================== */
+  (function business() {
+    var prev = $('#preview'), prevImg = $('#previewImg');
+    var pos = { x: 0, y: 0, tx: 0, ty: 0, on: false };
+    if (FINE && ANIM) {
+      $$('.service').forEach(function (row) {
+        row.addEventListener('pointerenter', function () {
+          if (prevImg.getAttribute('src') !== row.dataset.img) {
+            prevImg.src = row.dataset.img;
+            G.fromTo(prevImg, { scale: 1.25 }, { scale: 1, duration: .9, ease: 'expo.out' });
+          }
+          pos.on = true;
+          G.to(prev, { opacity: 1, scale: 1, duration: .6, ease: 'expo.out' });
+        });
+        row.addEventListener('pointerleave', function () { pos.on = false; G.to(prev, { opacity: 0, scale: .6, duration: .45, ease: 'power3.in' }); });
+      });
+      window.addEventListener('pointermove', function (e) { pos.tx = e.clientX; pos.ty = e.clientY; }, { passive: true });
+      (function loop() {
+        pos.x = lerp(pos.x, pos.tx, .14); pos.y = lerp(pos.y, pos.ty, .14);
+        var w = prev.offsetWidth, h = prev.offsetHeight;
+        prev.style.left = (pos.x + 28) + 'px';
+        prev.style.top = (pos.y - h / 2) + 'px';
+        var rot = clamp((pos.tx - pos.x) * .08, -8, 8);
+        prev.style.rotate = rot.toFixed(2) + 'deg';
+        requestAnimationFrame(loop);
+      })();
+    }
+    $$('.service').forEach(function (row) {
+      row.addEventListener('click', function () {
+        window.open(wa('Halo XIONCO, saya tertarik dengan layanan ' + row.querySelector('h3').textContent + ' untuk proyek saya.'), '_blank', 'noopener');
+      });
+    });
+    var form = $('#bform');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = $('#fName'), phone = $('#fPhone'), ok = true;
+      [name, phone].forEach(function (f) { var bad = !f.value.trim(); f.parentNode.classList.toggle('is-error', bad); if (bad) ok = false; });
+      if (!ok) { $('#formNote').textContent = 'Mohon isi nama dan nomor WhatsApp.'; if (ANIM) G.fromTo(form, { x: -8 }, { x: 0, duration: .6, ease: 'elastic.out(1,.3)' }); return; }
+      var msg = 'Halo XIONCO, saya ' + name.value.trim() + ' (' + phone.value.trim() + ').\nJenis proyek: ' + $('#fType').value + '\nNilai proyek: ' + $('#fValue').value + ($('#fNeed').value.trim() ? '\nKebutuhan: ' + $('#fNeed').value.trim() : '') + '\nMohon penawarannya. Terima kasih.';
+      window.open(wa(msg), '_blank', 'noopener');
+      $('#formNote').textContent = 'Membuka WhatsApp… tim kami akan membalas dalam 1 jam kerja.';
+      toast('Permintaan penawaran disiapkan di WhatsApp');
+    });
+  })();
+
+  /* ======================================================================
+     FOOTER — logo besar dengan sorotan cahaya
+     ====================================================================== */
+  (function footer() {
+    var box = $('#footLogo'), lit = $('.footer__logo-lit', box);
+    var f = { x: .5, y: .5, tx: .5, ty: .5, last: -1e9, vis: false };
+    $('.footer').addEventListener('pointermove', function (e) {
+      var r = lit.getBoundingClientRect();
+      f.tx = (e.clientX - r.left) / r.width; f.ty = (e.clientY - r.top) / r.height; f.last = performance.now();
+    });
+    new IntersectionObserver(function (es) { f.vis = es[0].isIntersecting; }).observe(box);
+    (function loop(t) {
+      if (f.vis) {
+        if (performance.now() - f.last > 2200 || !FINE) { f.tx = .5 + Math.sin(t / 1600) * .42; f.ty = .5 + Math.sin(t / 900) * .2; }
+        f.x = lerp(f.x, f.tx, .08); f.y = lerp(f.y, f.ty, .08);
+        lit.style.setProperty('--fx', (f.x * 100).toFixed(2) + '%');
+        lit.style.setProperty('--fy', (f.y * 100).toFixed(2) + '%');
+      }
+      requestAnimationFrame(loop);
+    })(0);
+  })();
+
+  /* animasi umum & penanda section — dibuat terakhir (setelah semua pin) */
+  scrollAnims();
+  sectionTriggers();
+
+  /* refresh setelah gambar & font siap */
+  window.addEventListener('load', function () { if (HAS_GSAP) ST.refresh(); placeHotspots(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (HAS_GSAP) ST.refresh(); });
+})();
+
+</script>
+</body>
+</html>

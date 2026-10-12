@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>XIONCO Business — #1 Furniture Manufacturer in Indonesia</title>
+  <meta name="description" content="XIONCO Business — produsen furnitur nomor 1 di Indonesia. Katalog, furnitur custom, wholesale, dan layanan desain.">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:title" content="XIONCO Business — #1 Furniture Manufacturer in Indonesia">
+  <meta property="og:description" content="Katalog, furnitur custom, wholesale, dan layanan desain.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Inter = semua teks. Jost hanya untuk placeholder wordmark (nanti diganti file logo) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Jost:wght@500&display=swap">
+  <link rel="stylesheet" href="assets/css/xionco.css">
+</head>
+<body>
+
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.6"/><circle cx="8" cy="8" r="5.1"/></symbol>
+  <symbol id="i-catalog" viewBox="0 0 16 16"><path d="M1.6 4.1c2.2-.9 4.3-.6 6.4.9 2.1-1.5 4.2-1.8 6.4-.9v7.6c-2.2-.9-4.3-.6-6.4.9-2.1-1.5-4.2-1.8-6.4-.9z"/><path d="M8 5v7.6"/><path d="M1.6 13.6h4.2M10.2 13.6h4.2"/></symbol>
+  <symbol id="i-custom" viewBox="0 0 16 16"><path d="M1.8 5.2h3.6M8.6 5.2h5.6M1.8 10.8h7.2M12.2 10.8h2"/><circle cx="7" cy="5.2" r="1.6"/><circle cx="10.6" cy="10.8" r="1.6"/></symbol>
+  <symbol id="i-wholesale" viewBox="0 0 16 16"><path d="M8 1.8 14.2 5 8 8.2 1.8 5z"/><path d="M1.8 8l6.2 3.2L14.2 8"/><path d="M1.8 10.9 8 14.1l6.2-3.2"/></symbol>
+  <symbol id="i-design" viewBox="0 0 16 16"><path d="M1.6 12.6C2.9 9.4 3.9 6 4.9 6c.9 0 .2 6.1 1.5 6.1 1.4 0 2.5-7.2 3.9-7.2 1 0 .5 4.3 1.5 4.3.8 0 1.7-1.7 2.6-3.4"/><path d="M12.3 4.1l2.2 1.6-1.6 2.2"/></symbol>
+  <symbol id="i-material" viewBox="0 0 16 16"><path d="M8 5.7 10.3 8 8 10.3 5.7 8z"/><path d="M8 1.5l1.3 1.3L8 4.1 6.7 2.8zM8 11.9l1.3 1.3L8 14.5l-1.3-1.3zM1.5 8l1.3-1.3L4.1 8 2.8 9.3zM11.9 8l1.3-1.3L14.5 8l-1.3 1.3z"/><path d="M4 4l1.3 1.3M12 4l-1.3 1.3M4 12l1.3-1.3M12 12l-1.3-1.3"/></symbol>
+  <symbol id="i-company" viewBox="0 0 16 16"><path d="M1.8 4.3c0-.6.4-1 1-1h3.3l1.5 1.6h5.6c.6 0 1 .4 1 1v6.4c0 .6-.4 1-1 1H2.8c-.6 0-1-.4-1-1z"/><path d="M1.8 6.6h12.4"/></symbol>
+  <symbol id="i-policies" viewBox="0 0 16 16"><circle cx="6.3" cy="9.4" r="4.3"/><circle cx="9.7" cy="6.6" r="4.3"/></symbol>
+  <symbol id="i-back" viewBox="0 0 16 16"><path d="M13.5 8h-11M6.5 4l-4 4 4 4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 12 12"><path d="M3 1.6v8.8c0 .5.5.8.9.5l6.6-4.4c.4-.3.4-.8 0-1L3.9 1.1c-.4-.3-.9 0-.9.5z"/></symbol>
+</svg>
+
+<div class="app" id="app" data-intro="0">
+
+  <!-- Background (format IMAGE — lihat Asset Ledger: home-bg) -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg__image" id="bgImage"></div>
+    <div class="bg__floor"></div>
+    <div class="bg__grain"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="topbar">
+    <a class="brand" id="brand" href="#/" aria-label="XIONCO Business — kembali ke Home">
+      <span class="brand__text" id="brandText">XIONCO BUSINESS</span>
+    </a>
+    <div class="slogan" id="slogan"><b>#1 FURNITURE MANUFACTURER</b> IN INDONESIA</div>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="sidebar"><i></i><i></i></button>
+  </header>
+
+  <!-- Sub navigation (halaman dalam) -->
+  <nav class="subnav" id="subnav" aria-label="Sub navigasi"><div class="subnav__inner" id="subnavInner"></div></nav>
+
+  <!-- Sidebar / Navigator bar -->
+  <nav class="sidebar" id="sidebar" aria-label="Navigasi utama">
+    <div class="sidebar__panel">
+      <span class="sidebar__hover" id="sidebarHover" aria-hidden="true"></span>
+      <ul class="sidebar__group sidebar__group--home">
+        <li class="sidebar__item" data-route="home" style="--i:0"><a class="sidebar__link" href="#/"><svg class="sidebar__icon"><use href="#i-home"/></svg><span class="sidebar__label">Home</span></a></li>
+      </ul>
+      <ul class="sidebar__group">
+        <li class="sidebar__item" data-route="catalog" style="--i:1"><a class="sidebar__link" href="#/catalog"><svg class="sidebar__icon"><use href="#i-catalog"/></svg><span class="sidebar__label">Catalog</span></a></li>
+        <li class="sidebar__item" data-route="custom" style="--i:2"><a class="sidebar__link" href="#/custom"><svg class="sidebar__icon"><use href="#i-custom"/></svg><span class="sidebar__label">Custom Furniture</span></a></li>
+        <li class="sidebar__item" data-route="wholesale" style="--i:3"><a class="sidebar__link" href="#/wholesale"><svg class="sidebar__icon"><use href="#i-wholesale"/></svg><span class="sidebar__label">Wholesale</span></a></li>
+        <li class="sidebar__item" data-route="design-services" style="--i:4"><a class="sidebar__link" href="#/design-services"><svg class="sidebar__icon"><use href="#i-design"/></svg><span class="sidebar__label">Design Services</span></a></li>
+      </ul>
+      <ul class="sidebar__group">
+        <li class="sidebar__item" data-route="material-bank" style="--i:5"><a class="sidebar__link" href="#/material-bank"><svg class="sidebar__icon"><use href="#i-material"/></svg><span class="sidebar__label">Material Bank</span></a></li>
+        <li class="sidebar__item" data-route="company-profile" style="--i:6"><a class="sidebar__link" href="#/company-profile"><svg class="sidebar__icon"><use href="#i-company"/></svg><span class="sidebar__label">Company Profile</span></a></li>
+        <li class="sidebar__item" data-route="policies" style="--i:7"><a class="sidebar__link" href="#/policies"><svg class="sidebar__icon"><use href="#i-policies"/></svg><span class="sidebar__label">Policies</span></a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="drawer-scrim" id="drawerScrim"></div>
+
+  <!-- Breadcrumb (halaman dalam) -->
+  <div class="crumbs" id="crumbs" aria-label="Breadcrumb"></div>
+
+  <!-- ===================== MAIN FRAME ===================== -->
+  <main class="frame" id="frame" data-state="boot" data-mode="x">
+    <div class="frame__shell"></div>
+
+    <div class="frame__track" id="track">
+
+      <!-- A — Catalog -->
+      <article class="panel" data-key="a" data-route="catalog" data-align="top" data-focus="2.5">
+        <div class="panel__stage">
+          <div class="panel__media"><canvas class="panel__canvas" aria-hidden="true"></canvas></div>
+          <i class="panel__orbguide" aria-hidden="true"></i>
+        </div>
+        <div class="panel__dim"></div>
+        <div class="panel__shade"></div>
+        <div class="panel__sheen"></div>
+        <a class="panel__hit" href="#/catalog" tabindex="-1" aria-hidden="true"></a>
+        <div class="panel__content">
+          <h2 class="panel__title" data-split>CATALOG</h2>
+          <p class="panel__sub">Terpercaya dan terbesar di Indonesia</p>
+        </div>
+        <a class="panel__play" href="#/catalog" aria-label="Buka Catalog"><svg><use href="#i-play"/></svg></a>
+        <span class="panel__devtag" aria-hidden="true"></span>
+      </article>
+
+      <!-- B — Customize -->
+      <article class="panel" data-key="b" data-route="custom" data-orb data-focus="4">
+        <div class="panel__stage">
+          <div class="panel__media"><canvas class="panel__canvas" aria-hidden="true"></canvas></div>
+          <i class="panel__orbguide" aria-hidden="true"></i>
+        </div>
+        <div class="panel__dim"></div>
+        <div class="panel__shade"></div>
+        <div class="panel__sheen"></div>
+        <a class="panel__hit" href="#/custom" tabindex="-1" aria-hidden="true"></a>
+        <div class="panel__content">
+          <h2 class="panel__title" data-split>CUSTOMIZE</h2>
+          <p class="panel__sub">Kalkulasi produk custom dalam hitungan menit</p>
+        </div>
+        <a class="panel__play" href="#/custom" aria-label="Buka Customize"><svg><use href="#i-play"/></svg></a>
+        <span class="panel__devtag" aria-hidden="true"></span>
+      </article>
+
+      <!-- C — Wholesale / Bulk -->
+      <article class="panel" data-key="c" data-route="wholesale" data-orb data-focus="4">
+        <div class="panel__stage">
+          <div class="panel__media"><canvas class="panel__canvas" aria-hidden="true"></canvas></div>
+          <i class="panel__orbguide" aria-hidden="true"></i>
+        </div>
+        <div class="panel__dim"></div>
+        <div class="panel__shade"></div>
+        <div class="panel__sheen"></div>
+        <a class="panel__hit" href="#/wholesale" tabindex="-1" aria-hidden="true"></a>
+        <div class="panel__content">
+          <h2 class="panel__title" data-split>WHOLESALE</h2>
+          <p class="panel__sub">Harga khusus untuk partai besar &amp; proyek</p>
+        </div>
+        <a class="panel__play" href="#/wholesale" aria-label="Buka Wholesale"><svg><use href="#i-play"/></svg></a>
+        <span class="panel__devtag" aria-hidden="true"></span>
+      </article>
+
+      <!-- D — Design Services -->
+      <article class="panel" data-key="d" data-route="design-services" data-orb data-focus="4">
+        <div class="panel__stage">
+          <div class="panel__media"><canvas class="panel__canvas" aria-hidden="true"></canvas></div>
+          <i class="panel__orbguide" aria-hidden="true"></i>
+        </div>
+        <div class="panel__dim"></div>
+        <div class="panel__shade"></div>
+        <div class="panel__sheen"></div>
+        <a class="panel__hit" href="#/design-services" tabindex="-1" aria-hidden="true"></a>
+        <div class="panel__content">
+          <h2 class="panel__title" data-split>DESIGN SERVICES</h2>
+          <p class="panel__sub">Dari konsep hingga produksi, bersama tim desain kami</p>
+        </div>
+        <a class="panel__play" href="#/design-services" aria-label="Buka Design Services"><svg><use href="#i-play"/></svg></a>
+        <span class="panel__devtag" aria-hidden="true"></span>
+      </article>
+    </div>
+
+    <!-- Halaman dalam (frame berubah menjadi container halaman) -->
+    <section class="page" id="page" aria-live="polite">
+      <div class="page__backdrop"></div>
+      <svg class="page__glyph" id="pageGlyph" aria-hidden="true"><use href="#i-material"/></svg>
+      <div class="page__scrim"></div>
+      <div class="page__body" id="pageBody"></div>
+    </section>
+
+    <!-- Garis emas: ikut expand dengan frame -->
+    <div class="rail" id="rail" aria-hidden="true">
+      <div class="rail__glow"></div>
+      <div class="rail__beam"><i class="rail__shine"></i></div>
+    </div>
+    <!-- Cahaya di bawah frame (terkunci di dalam lebar frame) -->
+    <div class="underglow" aria-hidden="true"><i class="underglow__light" id="underglow"></i></div>
+
+    <div class="frame__grid" id="frameGrid" aria-hidden="true"></div>
+  </main>
+
+  <!-- Navigasi kartu (mobile) -->
+  <div class="stack-nav" id="stackNav" aria-label="Pilih frame">
+    <button type="button" data-i="0" aria-label="Catalog"></button>
+    <button type="button" data-i="1" aria-label="Customize"></button>
+    <button type="button" data-i="2" aria-label="Wholesale"></button>
+    <button type="button" data-i="3" aria-label="Design Services"></button>
+  </div>
+
+  <div class="hud" id="hud" aria-hidden="true"></div>
+  <div class="devdock" id="devdock" hidden>
+    <button type="button" id="devGrid" title="Tampilkan block grid &amp; guideline orb">Grid <kbd>G</kbd></button>
+    <button type="button" id="devIntro" title="Putar ulang intro">Intro <kbd>R</kbd></button>
+    <a href="ledger.html" id="devLedger" target="_blank" rel="noopener" title="Buka Asset Ledger">Ledger <kbd>L</kbd></a>
+  </div>
+</div>
+
+<noscript><p style="color:#a89d92;font:14px sans-serif;padding:24px">Website ini membutuhkan JavaScript.</p></noscript>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/manifest.js"></script>
+<script src="assets/js/scenes.js"></script>
+<script src="assets/js/xionco.js"></script>
+<script src="../shared/devkit/devkit.js"></script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="id" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>XIONCO — Quality shouldn't be a luxury</title>
+  <meta name="description" content="XIONCO — furnitur minimalis dengan pengerjaan tanpa kompromi. Dirancang dan diproduksi sendiri di empat pabrik di Jawa. Koleksi, custom studio, dan solusi bisnis.">
+  <meta name="theme-color" content="#0d0c0b">
+  <meta property="og:title" content="XIONCO — Quality shouldn't be a luxury">
+  <meta property="og:description" content="Furnitur minimalis, pengerjaan tanpa kompromi. Empat pabrik di Jawa.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.xionco.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Inter+Tight:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="css/v2.css">
+  <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+</head>
+<body>
+
+<!-- ===================== Icons ===================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 20 20"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 20V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 4v15M6 13l6 6 6-6"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4.5 19.5l1.1-3.6A8 8 0 1 1 8.4 18.6z"/><path d="M9 8.6c.2-.5.6-.6.9-.6h.4c.2 0 .4.1.5.4l.6 1.5c.1.3 0 .5-.1.7l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.2.5-.2.7-.1l1.5.6c.3.1.4.3.4.5v.4c0 .3-.1.7-.6.9-.6.3-1.6.4-3.1-.3a8.3 8.3 0 0 1-3.6-3.6c-.7-1.5-.6-2.5-.3-3.1z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.8" cy="7.2" r=".6"/></symbol>
+  <symbol id="i-fb" viewBox="0 0 24 24"><path d="M14 8.5h2V5.2h-2.4C11.2 5.2 10 6.7 10 9v2H8v3.2h2V20h3.2v-5.8h2.3l.5-3.2h-2.8V9.4c0-.6.3-.9.8-.9z"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1"/><circle cx="16.75" cy="16.75" r="3.25"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h7M15 7h5M4 17h3M11 17h9"/><circle cx="13" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+  <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="1.5"/><path d="M9 7.5V5.5h6v2M3.5 12.5h17"/></symbol>
+  <symbol id="i-mark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/><path d="M35 35 65 65M65 35 35 65"/></symbol>
+</svg>
+
+<!-- ===================== Preloader ===================== -->
+<div class="loader" id="loader" aria-hidden="true">
+  <svg class="loader__mark" viewBox="0 0 100 100"><circle class="loader__ring" cx="50" cy="50" r="44"/><path class="loader__x1" d="M35 35 65 65"/><path class="loader__x2" d="M65 35 35 65"/></svg>
+  <div class="loader__meta mono"><span id="loaderCount">000</span><span>Building the perfection</span></div>
+</div>
+
+<!-- ===================== Global UI ===================== -->
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__ring"><span class="cursor__label" id="cursorLabel"></span></span><span class="cursor__dot"></span></div>
+<div class="progress" aria-hidden="true"><i id="progress"></i></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__logo" href="#top" aria-label="XIONCO — ke atas"><svg viewBox="0 0 206 28" aria-hidden="true"><path class="logo-path"/></svg></a>
+  <nav class="nav__links" aria-label="Utama">
+    <a href="#koleksi" data-link>Koleksi</a>
+    <a href="#studio" data-link>Custom Studio</a>
+    <a href="#pabrik" data-link>Pabrik</a>
+    <a href="#bisnis" data-link>For Business</a>
+  </nav>
+  <div class="nav__actions">
+    <button class="icon-btn" type="button" data-open="search" aria-label="Cari produk" data-cursor="Cari"><svg><use href="#i-search"/></svg></button>
+    <button class="icon-btn nav__cart" type="button" data-open="cart" aria-label="Keranjang" data-cursor="Keranjang"><svg><use href="#i-bag"/></svg><span class="count" id="cartCount">0</span></button>
+    <a class="btn btn--brass btn--sm magnetic nav__cta" data-wa="Halo XIONCO, saya ingin konsultasi gratis." href="#" target="_blank" rel="noopener">Konsultasi gratis</a>
+    <button class="nav__burger" type="button" id="burger" aria-label="Buka menu" aria-expanded="false"><i></i><i></i></button>
+  </div>
+</header>
+
+<!-- Mobile: dock bawah (terinspirasi xionco.shop) -->
+<nav class="dock" id="dock" aria-label="Navigasi cepat">
+  <a href="#top" data-dock="top"><svg><use href="#i-home"/></svg><span>Home</span></a>
+  <a href="#koleksi" data-dock="koleksi"><svg><use href="#i-grid"/></svg><span>Koleksi</span></a>
+  <a href="#studio" data-dock="studio"><svg><use href="#i-sliders"/></svg><span>Studio</span></a>
+  <a href="#bisnis" data-dock="bisnis"><svg><use href="#i-brief"/></svg><span>Bisnis</span></a>
+  <button type="button" data-open="cart"><svg><use href="#i-bag"/></svg><span>Keranjang</span><i class="count" id="dockCount">0</i></button>
+  <span class="dock__ind" id="dockInd" aria-hidden="true"></span>
+</nav>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <nav class="menu__links">
+    <a href="#koleksi" data-link><span class="mono">01</span>Koleksi</a>
+    <a href="#studio" data-link><span class="mono">02</span>Custom Studio</a>
+    <a href="#pabrik" data-link><span class="mono">03</span>Pabrik</a>
+    <a href="#museboard" data-link><span class="mono">04</span>Museboard</a>
+    <a href="#bisnis" data-link><span class="mono">05</span>For Business</a>
+  </nav>
+  <div class="menu__foot mono"><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener">Instagram</a><a href="https://xionco.shop/" target="_blank" rel="noopener">xionco.shop</a></div>
+</div>
+
+<main id="main">
+
+  <!-- ===================== 01 HERO ===================== -->
+  <section class="hero" id="top" data-theme="dark" data-index="01" data-name="Intro">
+    <div class="hero__pin" id="heroPin">
+      <!-- Scene: dilihat lewat huruf XIONCO (clip-path), lalu kamera "masuk" lewat huruf I -->
+      <div class="hero__scene" id="heroScene">
+        <div class="hero__glow" id="heroGlow"></div>
+        <div class="hero__media" id="heroMedia">
+          <img class="hero__img hero__img--base" src="https://www.xionco.com/wp-content/uploads/2024/09/Sofa-Sectional_Main-View_Open.png" alt="EORDE Sectional, sofa 5 seater XIONCO di atas panggung gelap" fetchpriority="high">
+          <img class="hero__img hero__img--lit" src="https://www.xionco.com/wp-content/uploads/2024/09/Sofa-Sectional_Main-View_Open.png" alt="" aria-hidden="true">
+        </div>
+        <div class="hero__beam" aria-hidden="true"></div>
+        <div class="hero__shade" id="heroShade" aria-hidden="true"></div>
+      </div>
+      <svg class="hero__outline" id="heroOutline" aria-hidden="true"><path id="heroOutlinePath"/></svg>
+
+      <!-- Fase 1: bingkai di sekitar wordmark -->
+      <div class="hero__frame" id="heroFrame">
+        <p class="hf hf--tl mono"><i class="live"></i>Furniture manufacturer · Jakarta, Indonesia</p>
+        <p class="hf hf--tr mono">4 pabrik di Jawa <span>·</span> 34 produk</p>
+        <p class="hf hf--bl">Quality <em>shouldn't be</em> a luxury.</p>
+        <button class="hf hf--bc mono scrollcue" type="button" id="heroEnter" data-cursor="Masuk">Scroll untuk masuk<i></i></button>
+        <p class="hf hf--br mono">Gerakkan kursor — <b>cahaya mengikuti anda</b></p>
+      </div>
+
+      <!-- Fase 2: komposisi editorial di dalam ruang -->
+      <div class="hero__inner" id="heroInner">
+        <h1 class="hero__title" aria-label="Quality shouldn't be a luxury.">
+          <span class="ln ln--1" aria-hidden="true"><span class="ln__in">Quality</span></span>
+          <span class="ln ln--2" aria-hidden="true"><span class="ln__in"><em>shouldn't be</em></span></span>
+          <span class="ln ln--3" aria-hidden="true"><span class="ln__in">a luxury.</span></span>
+        </h1>
+        <div class="hero__aside">
+          <p class="hero__lede">Furnitur minimalis dengan pengerjaan tanpa kompromi — dirancang dan diproduksi sendiri di empat pabrik kami di Jawa.</p>
+          <a class="link-arrow hero__link" href="#studio" data-link>Rancang milikmu<svg><use href="#i-arrow"/></svg></a>
+        </div>
+        <a class="badge-cta" id="badgeCta" href="#koleksi" data-link data-cursor="Masuk" aria-label="Jelajahi koleksi">
+          <svg class="badge-cta__ring" viewBox="0 0 120 120" aria-hidden="true">
+            <defs><path id="badgeCircle" d="M60 60m-47 0a47 47 0 1 1 94 0a47 47 0 1 1-94 0"/></defs>
+            <text textLength="292" lengthAdjust="spacing"><textPath href="#badgeCircle" textLength="292" lengthAdjust="spacing">Jelajahi koleksi · 34 produk · </textPath></text>
+          </svg>
+          <span class="badge-cta__core"><svg><use href="#i-arrow-down"/></svg></span>
+        </a>
+      </div>
+
+      <button class="hotspot hotspot--up hotspot--main" type="button" data-x=".62" data-y=".53" data-quick="eorde" data-cursor="Lihat" aria-label="Lihat EORDE Sectional">
+        <span class="hotspot__dot"></span><span class="hotspot__line"></span>
+        <span class="hotspot__card"><span class="mono">EORDE Sectional</span><span>5 seater · 2 electrical</span><b>IDR 24.800.000</b></span>
+      </button>
+      <button class="hotspot hotspot--up hotspot--mini" type="button" data-x=".355" data-y=".628" data-quick="eorde" data-cursor="Lihat" aria-label="Recliner EORDE">
+        <span class="hotspot__dot"></span><span class="hotspot__line"></span>
+        <span class="hotspot__card"><span class="mono">Recliner</span><span>2 modul electrical</span></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===================== TRUST ===================== -->
+  <section class="trust" data-theme="dark" aria-label="Dipercaya oleh">
+    <p class="trust__label mono wrap">Dipercaya oleh</p>
+    <div class="marquee" data-marquee="1"><div class="marquee__track"></div></div>
+    <div class="marquee marquee--alt" data-marquee="-1"><div class="marquee__track"></div></div>
+  </section>
+
+  <!-- ===================== 02 MANIFESTO ===================== -->
+  <section class="manifesto" id="tentang" data-theme="light" data-index="02" data-name="Origin">
+    <div class="wrap">
+      <div class="sec-head mono"><span>(02) Origin</span><span>Redefining quality, rebuilding culture</span></div>
+      <p class="manifesto__text" data-words>XIONCO lahir dari satu pertanyaan sederhana yang keras kepala: <em>mengapa kualitas harus menjadi kemewahan?</em> Di pasar yang penuh kompromi, kami membangun standar baru — desain minimalis bertemu pengerjaan tanpa kompromi, tanpa mengorbankan daya tahan.</p>
+
+      <div class="pillars">
+        <article class="pillar">
+          <span class="mono">01</span>
+          <h3>Architectural clarity</h3>
+          <p>Setiap garis, proporsi, dan sambungan dihitung — bukan untuk memukau, tapi untuk bertahan.</p>
+        </article>
+        <article class="pillar">
+          <span class="mono">02</span>
+          <h3>Visual silence</h3>
+          <p>Disiplin mengurangi. Tidak berteriak, tapi berbisik dengan presisi.</p>
+        </article>
+        <article class="pillar">
+          <span class="mono">03</span>
+          <h3>Material honesty</h3>
+          <p>Kayu, baja, dan kain apa adanya — dikerjakan tangan-tangan yang terampil selama puluhan tahun.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="manifesto__band">
+      <figure class="band__fig band__fig--a" data-parallax="-8">
+        <img src="https://www.xionco.com/wp-content/uploads/2025/05/ChatGPT-Image-May-16-2025-06_29_52-AM.png" alt="Detail kisi kayu solid" loading="lazy">
+        <figcaption class="mono">Kayu · Jepara</figcaption>
+      </figure>
+      <figure class="band__fig band__fig--b" data-parallax="10">
+        <img src="https://www.xionco.com/wp-content/uploads/2025/05/XIONCO-HERO-PRODUCT-II-1.png" alt="Detail jahitan kulit sofa" loading="lazy">
+        <figcaption class="mono">Upholstery · Pondok Pinang</figcaption>
+      </figure>
+      <p class="band__quote">“Only release what is <em>better</em> than what exists.”</p>
+    </div>
+  </section>
+
+  <!-- ===================== 03 KOLEKSI ===================== -->
+  <section class="collection" id="koleksi" data-theme="light" data-index="03" data-name="Koleksi">
+    <div class="collection__pin" id="collectionPin">
+      <div class="collection__head wrap">
+        <div>
+          <div class="sec-head mono"><span>(03) Koleksi</span><span id="prodCount">— produk</span></div>
+          <h2 class="h2">Dirancang <em>untuk bertahan.</em></h2>
+        </div>
+        <div class="tabs" id="tabs" role="tablist" aria-label="Kategori"></div>
+      </div>
+      <div class="collection__viewport" id="collectionViewport" data-cursor="Seret">
+        <div class="collection__track" id="track"></div>
+      </div>
+      <div class="collection__foot wrap">
+        <div class="bar"><i id="trackBar"></i></div>
+        <a class="link-arrow" href="https://xionco.shop/" target="_blank" rel="noopener">Belanja di xionco.shop<svg><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 04 CUSTOM STUDIO ===================== -->
+  <section class="studio" id="studio" data-theme="dark" data-index="04" data-name="Custom Studio">
+    <div class="wrap">
+      <div class="sec-head mono"><span>(04) Custom Studio</span><span>CUBIX Modular Series</span></div>
+      <div class="studio__intro">
+        <h2 class="h2">Rancang milikmu, <em>modul demi modul.</em></h2>
+        <p class="lede">Pilih jumlah dudukan, material, dan base — lihat hasilnya langsung, lalu kirim konfigurasi ke tim kami untuk penawaran.</p>
+      </div>
+
+      <div class="studio__grid">
+        <div class="stage" id="stage" data-cursor="Studio">
+          <div class="stage__wall" id="stageWall"></div>
+          <div class="stage__floor"></div>
+          <svg class="stage__svg" id="sofaSvg" viewBox="0 0 900 520" role="img" aria-label="Pratinjau sofa CUBIX"></svg>
+          <div class="stage__tag mono"><span>CUBIX MODULAR</span><b id="cfgName">3 Seater</b></div>
+          <div class="stage__dims mono" id="cfgDims">W 248 · D 86 · H 74 cm</div>
+        </div>
+
+        <aside class="panel" aria-label="Konfigurasi">
+          <div class="panel__step">
+            <h3><span class="mono">01</span>Dudukan</h3>
+            <div class="seg" id="segSeats" role="radiogroup" aria-label="Jumlah dudukan">
+              <button type="button" data-seats="1">1</button><button type="button" data-seats="2">2</button><button type="button" data-seats="3" class="is-on">3</button><button type="button" data-seats="4">4</button>
+              <i class="seg__ind"></i>
+            </div>
+            <div class="toggles">
+              <label class="toggle"><input type="checkbox" id="optArms" checked><span></span>Lengan (armchair)</label>
+              <label class="toggle"><input type="checkbox" id="optOttoman"><span></span>Ottoman</label>
+            </div>
+          </div>
+          <div class="panel__step">
+            <h3><span class="mono">02</span>Material</h3>
+            <div class="swatches" id="swatches"></div>
+            <p class="mono panel__note" id="swatchName">FB 01 — Graphite</p>
+          </div>
+          <div class="panel__step">
+            <h3><span class="mono">03</span>Base</h3>
+            <div class="chips" id="bases"></div>
+          </div>
+          <div class="panel__step">
+            <h3><span class="mono">04</span>Cahaya</h3>
+            <input class="range" type="range" id="light" min="0" max="100" value="18" aria-label="Pencahayaan siang ke malam">
+            <div class="range__labels mono"><span>Siang</span><span>Senja</span><span>Malam</span></div>
+          </div>
+          <div class="panel__total">
+            <div>
+              <span class="mono">Estimasi harga</span>
+              <strong id="cfgPrice">IDR 0</strong>
+              <small>Angka contoh untuk demo. Harga final melalui penawaran.</small>
+            </div>
+            <a class="btn btn--brass magnetic" id="studioCta" href="#" target="_blank" rel="noopener">Minta penawaran<svg><use href="#i-arrow"/></svg></a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 05 PABRIK ===================== -->
+  <section class="factory" id="pabrik" data-theme="dark" data-index="05" data-name="Pabrik">
+    <div class="factory__pin" id="factoryPin">
+      <div class="wrap factory__grid">
+        <div class="factory__left">
+          <div class="sec-head mono"><span>(05) Manufacturing</span></div>
+          <h2 class="h2">Dibangun<br> <em>dari nol.</em></h2>
+          <p class="lede">Empat pabrik di Jawa. Dari kayu mentah hingga kemasan, setiap tahap kami kerjakan sendiri — tidak ada detail yang lolos.</p>
+          <ol class="steps" id="steps"></ol>
+        </div>
+        <div class="factory__map">
+          <svg id="map" viewBox="0 0 1000 400" role="img" aria-label="Peta pabrik XIONCO di Pulau Jawa"></svg>
+          <div class="map__legend mono"><span><i class="lg lg--dot"></i>Pabrik</span><span><i class="lg lg--route"></i>Alur produksi</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="stats wrap" id="stats">
+      <div class="stat"><b data-count="4">0</b><span>Pabrik di Jawa</span></div>
+      <div class="stat"><b data-count="30" data-suffix="+">0</b><span>Sofa per hari</span></div>
+      <div class="stat"><b data-count="100" data-suffix="+">0</b><span>Item kecil per hari</span></div>
+      <div class="stat"><b data-count="80" data-suffix="+">0</b><span>Pekerja &amp; kreatif</span></div>
+      <div class="stat"><b data-count="3" data-prefix="1–">0</b><span>Hari kerja pengiriman</span></div>
+      <div class="stat"><b data-count="3">0</b><span>Tahun garansi</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== 06 MUSEBOARD ===================== -->
+  <section class="muse" id="museboard" data-theme="dark" data-index="06" data-name="Museboard">
+    <div class="wrap">
+      <div class="sec-head mono"><span>(06) Museboard</span><span>Proyek &amp; inspirasi</span></div>
+      <h2 class="h2">Ignite sparks <em>for creative journey.</em></h2>
+    </div>
+    <div class="muse__grid wrap" id="muse"></div>
+  </section>
+
+  <!-- ===================== 07 FOR BUSINESS ===================== -->
+  <section class="business" id="bisnis" data-theme="light" data-index="07" data-name="For Business">
+    <div class="wrap">
+      <div class="sec-head mono"><span>(07) For Business</span><span>B2B · Proyek · Kolaborasi</span></div>
+      <div class="business__intro">
+        <h2 class="h2">XIONCO <em class="brass">for Business</em></h2>
+        <p class="lede">Butuh produk custom, saran desain interior, kolaborasi, atau proyek B2B? Ceritakan kebutuhan anda — penawaran dalam 1 jam.</p>
+      </div>
+      <ul class="services" id="services"></ul>
+
+      <div class="benefits">
+        <div class="benefit"><b>1 jam</b><span>Penawaran harga</span></div>
+        <div class="benefit"><b>0%</b><span>Cicilan</span></div>
+        <div class="benefit"><b>3 tahun</b><span>Garansi kualitas</span></div>
+        <div class="benefit"><b>1–3 hari</b><span>Pengiriman</span></div>
+      </div>
+
+      <div class="business__bottom">
+        <form class="bform" id="bform" novalidate>
+          <h3>Dapatkan penawaran</h3>
+          <div class="field"><input id="fName" name="name" required placeholder=" " autocomplete="name"><label for="fName">Nama</label></div>
+          <div class="field"><input id="fPhone" name="phone" required placeholder=" " inputmode="tel" autocomplete="tel"><label for="fPhone">WhatsApp</label></div>
+          <div class="field field--select">
+            <select id="fType" name="type"><option>Kantor</option><option>Hotel &amp; hospitality</option><option>Retail</option><option>Residensial</option><option>Lainnya</option></select>
+            <label for="fType">Jenis proyek</label>
+          </div>
+          <div class="field field--select">
+            <select id="fValue" name="value"><option>&lt; IDR 50 juta</option><option>IDR 50–250 juta</option><option>IDR 250 juta – 1 M</option><option>&gt; IDR 1 M</option></select>
+            <label for="fValue">Nilai proyek</label>
+          </div>
+          <div class="field field--full"><textarea id="fNeed" name="need" rows="3" placeholder=" "></textarea><label for="fNeed">Kebutuhan (opsional)</label></div>
+          <button class="btn btn--dark magnetic" type="submit">Kirim via WhatsApp<svg><use href="#i-arrow"/></svg></button>
+          <p class="bform__note mono" id="formNote">Pesan dikirim melalui WhatsApp resmi XIONCO.</p>
+        </form>
+        <div class="clients">
+          <p class="mono">Dipercaya oleh</p>
+          <ul id="clients"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer" data-theme="dark" data-index="08" data-name="Kontak">
+  <div class="wrap footer__top">
+    <div class="footer__cta">
+      <p class="mono">Building the perfection</p>
+      <h3>Punya ruang untuk <em>diwujudkan?</em></h3>
+      <a class="btn btn--brass magnetic" data-wa="Halo XIONCO, saya ingin konsultasi gratis." href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Konsultasi gratis</a>
+    </div>
+    <div class="footer__cols">
+      <div><p class="mono">Koleksi</p><a href="https://www.xionco.com/product-category/seats/" target="_blank" rel="noopener">Seats</a><a href="https://www.xionco.com/product-category/tables/" target="_blank" rel="noopener">Tables</a><a href="https://www.xionco.com/product-category/bedframe/" target="_blank" rel="noopener">Bedframe</a><a href="https://www.xionco.com/product-category/cabinet/" target="_blank" rel="noopener">Cabinet</a><a href="https://www.xionco.com/product-category/decor/" target="_blank" rel="noopener">Decor</a></div>
+      <div><p class="mono">Perusahaan</p><a href="https://www.xionco.com/about/" target="_blank" rel="noopener">Tentang</a><a href="#pabrik" data-link>Pabrik</a><a href="https://www.xionco.com/for-business/" target="_blank" rel="noopener">For Business</a><a href="https://www.xionco.com/blog/" target="_blank" rel="noopener">Blog</a></div>
+      <div><p class="mono">Bantuan</p><a href="https://www.xionco.com/warranty-policy/" target="_blank" rel="noopener">Garansi</a><a href="https://www.xionco.com/refund_returns/" target="_blank" rel="noopener">Pengembalian</a><a href="https://www.xionco.com/privacy-policy/" target="_blank" rel="noopener">Privasi</a><a href="https://www.xionco.com/terms-and-condition/" target="_blank" rel="noopener">Syarat &amp; ketentuan</a></div>
+      <div><p class="mono">Kontak</p><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener">+62 822-4040-8055</a><a href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener">@xionco.official</a><span>Jl. Ciputat Raya No. 8<br>Jakarta Selatan 12310</span></div>
+    </div>
+  </div>
+  <div class="footer__logo" id="footLogo" aria-hidden="true">
+    <svg viewBox="0 0 206 28"><path class="logo-path"/></svg>
+    <svg class="footer__logo-lit" viewBox="0 0 206 28"><path class="logo-path"/></svg>
+  </div>
+  <div class="wrap footer__bottom mono">
+    <span>© 2026 PT Halim Inti Gahara</span>
+    <span class="footer__social"><a href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener" aria-label="Instagram"><svg><use href="#i-ig"/></svg></a><a href="https://facebook.com/xionco.official" target="_blank" rel="noopener" aria-label="Facebook"><svg><use href="#i-fb"/></svg></a><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener" aria-label="WhatsApp"><svg><use href="#i-wa"/></svg></a></span>
+    <a href="#top" data-link class="totop">Kembali ke atas<svg><use href="#i-arrow-up"/></svg></a>
+  </div>
+</footer>
+
+<!-- ===================== Overlays ===================== -->
+<div class="qv" id="qv" aria-hidden="true">
+  <div class="qv__backdrop" data-close></div>
+  <div class="qv__panel" role="dialog" aria-modal="true" aria-labelledby="qvName">
+    <div class="qv__media"><img id="qvImg" alt=""></div>
+    <div class="qv__info">
+      <span class="mono" id="qvCat"></span>
+      <h3 id="qvName"></h3>
+      <p class="qv__type" id="qvType"></p>
+      <p class="qv__price" id="qvPrice"></p>
+      <p class="qv__desc" id="qvDesc"></p>
+      <div class="qty"><button type="button" id="qvMinus" aria-label="Kurangi"><svg><use href="#i-minus"/></svg></button><span id="qvQty">1</span><button type="button" id="qvPlus" aria-label="Tambah"><svg><use href="#i-plus"/></svg></button></div>
+      <div class="qv__actions">
+        <button class="btn btn--dark" type="button" id="qvAdd">Tambah ke keranjang</button>
+        <a class="btn btn--line-dark" id="qvWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Tanya</a>
+      </div>
+      <a class="link-arrow" id="qvLink" href="#" target="_blank" rel="noopener">Detail di xionco.com<svg><use href="#i-arrow"/></svg></a>
+    </div>
+    <button class="qv__close" type="button" data-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+  </div>
+</div>
+
+<aside class="cart" id="cart" aria-hidden="true" aria-label="Keranjang">
+  <div class="cart__backdrop" data-close></div>
+  <div class="cart__panel">
+    <header class="cart__head"><h3>Keranjang</h3><span class="mono" id="cartItems">0 item</span><button class="icon-btn" type="button" data-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button></header>
+    <ul class="cart__list" id="cartList"></ul>
+    <div class="cart__empty" id="cartEmpty"><p>Keranjang masih kosong.</p><a class="link-arrow" href="#koleksi" data-link data-close>Lihat koleksi<svg><use href="#i-arrow"/></svg></a></div>
+    <footer class="cart__foot">
+      <div class="cart__sum"><span class="mono">Subtotal</span><b id="cartTotal">IDR 0</b></div>
+      <a class="btn btn--brass" id="cartCheckout" href="#" target="_blank" rel="noopener">Checkout via WhatsApp<svg><use href="#i-arrow"/></svg></a>
+      <a class="link-arrow" href="https://xionco.shop/" target="_blank" rel="noopener">atau belanja di xionco.shop<svg><use href="#i-arrow"/></svg></a>
+    </footer>
+  </div>
+</aside>
+
+<div class="search" id="search" aria-hidden="true">
+  <div class="search__inner wrap">
+    <div class="search__bar"><svg><use href="#i-search"/></svg><input id="searchInput" type="search" placeholder="Cari sofa, meja, lampu…" autocomplete="off" aria-label="Cari produk"><button class="icon-btn" type="button" data-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button></div>
+    <p class="mono search__hint" id="searchHint">Tekan / untuk mencari · Esc untuk menutup</p>
+    <ul class="search__results" id="searchResults"></ul>
+  </div>
+</div>
+
+<div class="preview" id="preview" aria-hidden="true"><img id="previewImg" alt=""></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="hud mono" id="hud" aria-hidden="true"><b id="hudIndex">01</b><span id="hudTotal">/ 08</span><i class="hud__line"></i><em id="hudName">Intro</em></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+<script>
+  /* cadangan CDN: bila jsDelivr gagal, ambil paket yang sama dari unpkg */
+  (function (w, d) {
+    var u = 'https://unpkg.com/';
+    if (!w.gsap) d.write('<script src="' + u + 'gsap@3.13.0/dist/gsap.min.js"><\/script>');
+    if (!w.ScrollTrigger) d.write('<script src="' + u + 'gsap@3.13.0/dist/ScrollTrigger.min.js"><\/script>');
+    if (!w.Lenis) d.write('<script src="' + u + 'lenis@1.3.4/dist/lenis.min.js"><\/script>');
+  })(window, document);
+</script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="../shared/devkit/devkit.js"></script>
+</body>
+</html>

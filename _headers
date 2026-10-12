@@ -1,0 +1,13 @@
+# Header untuk Cloudflare Pages / Netlify (diabaikan oleh server lokal).
+# Situs ini masih prototipe: jangan diindeks Google agar tidak bersaing dengan xionco.com.
+# Hapus baris X-Robots-Tag bila situs ini sudah menjadi website resmi.
+/*
+  X-Robots-Tag: noindex
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Script & style selalu dicek ulang agar setiap update langsung terlihat
+/*.js
+  Cache-Control: public, max-age=0, must-revalidate
+/*.css
+  Cache-Control: public, max-age=0, must-revalidate

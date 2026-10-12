@@ -1,0 +1,2305 @@
+<!doctype html>
+<html lang="id" class="no-js" data-theme="dark">
+<head>
+  <!-- Maison XIONCO v4 — build 2026-10-11 20:02 (tools/build-preview-v4.js) -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Maison XIONCO — Quality shouldn't be a luxury</title>
+  <meta name="description" content="Maison XIONCO — furnitur minimalis dengan pengerjaan tanpa kompromi, diproduksi sendiri di empat pabrik di Jawa. Jelajahi koleksi, rancang sofa modular di atelier 3D, dan konsultasi privat.">
+  <meta name="theme-color" content="#0f0d0b">
+  <meta property="og:title" content="Maison XIONCO">
+  <meta property="og:description" content="Furnitur minimalis, pengerjaan tanpa kompromi. Empat pabrik di Jawa.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.xionco.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@400;500&display=swap">
+  <style>
+/* ==========================================================================
+   Maison XIONCO — v4
+   Showroom privat: espresso, kertas ivory, garis champagne.
+   Tidak ada putih murni. Serif: Cormorant Garamond · Sans: Inter.
+   Satu halaman, "ruang" berganti di tempat (tanpa pindah halaman).
+   ========================================================================== */
+:root {
+  --ink: #0f0d0b;
+  --ink-2: #16130f;
+  --ink-3: #1f1b16;
+  --ivory: #ece5d9;
+  --ivory-2: #e3dacb;
+  --ivory-3: #d8cdbb;
+  --gold: #bfa274;
+  --gold-hi: #dcc59c;
+  --gold-lo: #8c7550;
+  --t-d: #ece5d8;
+  --t-d2: #a59b8c;
+  --t-d3: #6d655a;
+  --t-l: #1b1815;
+  --t-l2: #5c544a;
+  --t-l3: #8d8478;
+  --hair-d: rgba(236, 229, 216, .14);
+  --hair-l: rgba(27, 24, 21, .14);
+  --f-s: 'Cormorant Garamond', 'Times New Roman', serif;
+  --f: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --ease-io: cubic-bezier(.76, 0, .24, 1);
+  --gut: clamp(20px, 4.4vw, 76px);
+  --nav: 84px;
+  --foot: 46px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden; background: var(--ink); color: var(--t-d);
+  font: 400 15px/1.65 var(--f);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
+h1, h2, h3, p, figure, dl, dd { margin: 0; }
+svg { flex: none; }
+::selection { background: var(--gold); color: var(--ink); }
+:focus-visible { outline: 1px solid var(--gold); outline-offset: 4px; }
+
+/* ---------------------------------------------------------------- tipografi */
+.display { font-family: var(--f-s); font-weight: 300; letter-spacing: -.01em; line-height: .95; }
+.display em { font-style: italic; color: var(--gold-hi); }
+[data-theme="light"] .display em { color: var(--gold-lo); }
+.ln { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.ln > span { display: inline-block; will-change: transform; }
+.eyebrow { font: 500 10.5px/1.5 var(--f); letter-spacing: .26em; text-transform: uppercase; color: var(--t-d2); }
+[data-theme="light"] .eyebrow { color: var(--t-l3); }
+.lede { font-size: 15px; line-height: 1.7; color: var(--t-d2); max-width: 36ch; }
+.lede--dark { color: var(--t-l2); }
+
+/* ---------------------------------------------------------------- tombol & tautan */
+.btn {
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  height: 52px; padding: 0 28px; white-space: nowrap; overflow: hidden; isolation: isolate;
+  font: 500 11px/1 var(--f); letter-spacing: .22em; text-transform: uppercase;
+  transition: color .5s var(--ease), border-color .5s var(--ease);
+}
+.btn::before { content: ''; position: absolute; inset: 0; z-index: -1; transform: scaleX(0); transform-origin: 100% 50%; transition: transform .7s var(--ease); }
+.btn:hover::before, .btn:focus-visible::before { transform: scaleX(1); transform-origin: 0 50%; }
+.btn svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+.btn--line { border: 1px solid rgba(191, 162, 116, .55); color: var(--t-d); }
+.btn--line::before { background: var(--gold); }
+.btn--line:hover { color: var(--ink); border-color: var(--gold); }
+.btn--gold { background: var(--gold); color: var(--ink); }
+.btn--gold::before { background: var(--gold-hi); }
+.btn--dark { background: var(--t-l); color: var(--ivory); }
+.btn--dark::before { background: var(--gold-lo); }
+.btn--line-dark { border: 1px solid var(--hair-l); color: var(--t-l); }
+.btn--line-dark::before { background: var(--t-l); }
+.btn--line-dark:hover { color: var(--ivory); }
+.btn--full { width: 100%; }
+.link { position: relative; display: inline-flex; align-items: center; gap: 12px; padding: 6px 0; font: 500 11px/1 var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-d); }
+.link::after { content: ''; position: absolute; left: 0; right: 30px; bottom: 0; height: 1px; background: currentColor; opacity: .5; transform-origin: 0 50%; transition: transform .7s var(--ease), opacity .4s; }
+.link:hover::after { opacity: 1; }
+.link svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .7s var(--ease); }
+.link:hover svg { transform: translateX(5px); }
+.link--muted { color: var(--t-d2); }
+.link--muted:hover { color: var(--t-d); }
+.link--dark { color: var(--t-l); }
+
+/* ---------------------------------------------------------------- lapisan dasar */
+.world { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; touch-action: none; }
+.world-fallback { position: fixed; inset: 0; z-index: 0; display: none; background: radial-gradient(ellipse 50% 45% at 62% 62%, rgba(191, 162, 116, .2), transparent 70%), radial-gradient(ellipse 80% 60% at 50% 100%, #221c16, transparent 70%), var(--ink); }
+html.no-webgl .world { display: none; }
+html.no-webgl .world-fallback { display: block; }
+.vignette { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse 80% 75% at 55% 55%, transparent 52%, rgba(8, 7, 6, .62) 100%), linear-gradient(90deg, rgba(10, 9, 7, .55), transparent 42%); transition: opacity 1.2s var(--ease); }
+html[data-room="atelier"] .vignette, html[data-room="galeri"] .vignette { opacity: .55; }
+.paper {
+  position: fixed; inset: 0; z-index: 2; pointer-events: none; background: var(--ivory);
+  clip-path: inset(100% 0 0 0);
+}
+.paper::after { content: ''; position: absolute; inset: 0; opacity: .5; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .32  0 0 0 0 .28  0 0 0 0 .22  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+.sweep { position: fixed; left: 0; right: 0; top: 0; height: 1px; z-index: 60; pointer-events: none; background: linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold-hi) 50%, var(--gold) 70%, transparent); transform: scaleX(0); opacity: 0; }
+
+/* ---------------------------------------------------------------- kursor */
+.cursor { position: fixed; left: 0; top: 0; z-index: 900; pointer-events: none; display: none; }
+html.has-cursor .cursor { display: block; }
+html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor label, html.has-cursor .ring { cursor: none; }
+.cursor__dot { position: absolute; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%; background: var(--gold-hi); will-change: transform; }
+.cursor__ring { position: absolute; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; border: 1px solid rgba(191, 162, 116, .45); display: grid; place-items: center; will-change: transform; transition: width .5s var(--ease), height .5s var(--ease), margin .5s var(--ease), background .4s, border-color .4s; }
+.cursor__label { font: 500 9px/1 var(--f); letter-spacing: .2em; text-transform: uppercase; color: var(--ink); opacity: 0; transition: opacity .3s; white-space: nowrap; }
+.cursor.is-hover .cursor__ring { width: 54px; height: 54px; margin: -27px 0 0 -27px; border-color: var(--gold); }
+.cursor.is-label .cursor__ring { width: 78px; height: 78px; margin: -39px 0 0 -39px; background: rgba(220, 197, 156, .92); border-color: transparent; }
+.cursor.is-label .cursor__label { opacity: 1; }
+.cursor.is-label .cursor__dot { opacity: 0; }
+html[data-theme="light"] .cursor__dot { background: var(--t-l); }
+html[data-theme="light"] .cursor__ring { border-color: rgba(27, 24, 21, .35); }
+
+/* ---------------------------------------------------------------- tirai pembuka */
+.veil { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; }
+.veil__half { position: absolute; left: 0; right: 0; height: 50.5%; background: var(--ink); }
+.veil__half--t { top: 0; }
+.veil__half--b { bottom: 0; }
+.veil__inner { position: relative; text-align: center; width: min(420px, 80vw); }
+.veil__logo { width: min(300px, 70vw); overflow: visible; display: block; margin: 0 auto; }
+.veil__stroke { fill: none; stroke: var(--gold); stroke-width: .35; }
+.veil__fill { fill: var(--t-d); opacity: 0; }
+.veil__name { margin-top: 26px; font: 500 10.5px var(--f); letter-spacing: .4em; text-transform: uppercase; color: var(--t-d2); }
+.veil__line { height: 1px; margin: 22px auto 0; width: 140px; background: rgba(236, 229, 216, .12); }
+.veil__line i { display: block; height: 100%; width: 0; background: var(--gold); }
+.veil__pct { margin-top: 12px; font: italic 300 20px var(--f-s); color: var(--gold-hi); font-variant-numeric: tabular-nums; }
+html.no-js .veil, html.is-ready .veil { display: none; }
+html:not(.anim) .veil { animation: veilOut .6s 5s forwards; }
+@keyframes veilOut { to { opacity: 0; visibility: hidden; } }
+
+/* ---------------------------------------------------------------- navigasi */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--nav); z-index: 50;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 var(--gut);
+  color: var(--t-d); transition: color .8s var(--ease);
+}
+html[data-theme="light"] .nav { color: var(--t-l); }
+.nav__logo { justify-self: start; display: block; width: 118px; }
+.nav__logo svg { display: block; width: 100%; height: auto; fill: currentColor; }
+.nav__links { display: flex; gap: clamp(18px, 2.4vw, 40px); }
+.nav__links a { position: relative; padding: 8px 0; font: 500 10.5px var(--f); letter-spacing: .22em; text-transform: uppercase; opacity: .7; transition: opacity .4s; }
+.nav__links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 2px; height: 1px; background: var(--gold); transform: scaleX(0); transition: transform .7s var(--ease); }
+.nav__links a:hover { opacity: 1; }
+.nav__links a.is-on { opacity: 1; }
+.nav__links a.is-on::after { transform: scaleX(1); }
+.nav__actions { justify-self: end; display: flex; align-items: center; gap: 22px; }
+.nav__bag, .nav__menu { font: 500 10.5px var(--f); letter-spacing: .22em; text-transform: uppercase; padding: 8px 0; }
+.nav__bag span { color: var(--gold); transition: color .3s; }
+.nav__bag.is-bump span { animation: bump .7s var(--ease); }
+@keyframes bump { 30% { color: var(--gold-hi); transform: translateY(-2px); } }
+.nav__cta { height: 40px; padding: 0 18px; font-size: 10px; }
+html[data-theme="light"] .nav__cta { color: var(--t-l); border-color: rgba(27, 24, 21, .3); }
+html[data-theme="light"] .nav__cta:hover { color: var(--ivory); }
+html[data-theme="light"] .nav__cta::before { background: var(--t-l); }
+.nav__menu { display: none; }
+.menu { position: fixed; inset: 0; z-index: 45; display: none; flex-direction: column; justify-content: center; gap: 40px; padding: var(--nav) var(--gut) 40px; background: var(--ink-2); }
+.menu.is-open { display: flex; }
+.menu__list { display: flex; flex-direction: column; }
+.menu__list a { display: flex; align-items: baseline; gap: 18px; padding: 8px 0; font: 300 clamp(36px, 9vw, 64px)/1.05 var(--f-s); color: var(--t-d); border-bottom: 1px solid var(--hair-d); }
+.menu__list a span { font: 500 10px var(--f); letter-spacing: .2em; color: var(--gold); }
+.menu__foot { display: flex; gap: 22px; font: 500 10.5px var(--f); letter-spacing: .2em; text-transform: uppercase; color: var(--t-d2); }
+.foot {
+  position: fixed; left: 0; right: 0; bottom: 0; height: var(--foot); z-index: 40;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 var(--gut);
+  font: 500 9.5px var(--f); letter-spacing: .24em; text-transform: uppercase; color: var(--t-d3);
+  pointer-events: none; transition: color .8s var(--ease);
+}
+html[data-theme="light"] .foot { color: var(--t-l3); background: linear-gradient(0deg, var(--ivory) 45%, rgba(236, 229, 217, 0)); height: calc(var(--foot) + 30px); padding-top: 22px; }
+.foot__count b { font-weight: 500; color: var(--gold); }
+html[data-theme="light"] .foot__count b { color: var(--gold-lo); }
+.foot__count i { font-style: normal; margin-left: 10px; }
+
+/* ---------------------------------------------------------------- ruang */
+.rooms { position: fixed; inset: 0; z-index: 10; pointer-events: none; }
+.room { position: absolute; inset: 0; display: none; }
+.room.is-active { display: block; }
+.room a, .room button, .room input, .room select, .room textarea, .room label, .room .scroll, .room .pe, .room .ring { pointer-events: auto; }
+.room--light { color: var(--t-l); }
+.scroll { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(140, 117, 80, .45) transparent; }
+.scroll::-webkit-scrollbar { width: 3px; }
+.scroll::-webkit-scrollbar-thumb { background: rgba(140, 117, 80, .45); }
+
+/* ---------------------------------------------------------------- BERANDA */
+.home { position: absolute; left: var(--gut); top: 50%; transform: translateY(-56%); width: min(640px, 46vw); }
+.home__title { margin: 22px 0 26px; font-size: clamp(54px, 6.8vw, 124px); }
+.home__title .ln:nth-child(2) > span { padding-left: .55em; }
+.home__lede { max-width: 36ch; }
+.home__ctas { display: flex; flex-wrap: wrap; gap: 34px; margin-top: 34px; }
+.index { position: absolute; left: var(--gut); right: var(--gut); bottom: calc(var(--foot) + 8px); display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid var(--hair-d); }
+.index li { border-left: 1px solid var(--hair-d); }
+.index li:first-child { border-left: 0; }
+.index a { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 18px 18px 14px; color: var(--t-d2); transition: color .5s var(--ease); }
+.index a::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: 0 50%; transition: transform .8s var(--ease); }
+.index li:first-child a { padding-left: 0; }
+.index a:hover { color: var(--t-d); }
+.index a:hover::before { transform: scaleX(1); }
+.index__n { font: italic 300 15px var(--f-s); color: var(--gold); }
+.index__t { font: 300 26px/1.05 var(--f-s); color: var(--t-d); }
+.index__s { font-size: 12px; line-height: 1.45; }
+.tag { position: absolute; left: 0; top: 0; z-index: 3; display: flex; align-items: center; gap: 14px; opacity: 0; transition: opacity .6s var(--ease); text-align: left; }
+.tag.is-on { opacity: 1; }
+.tag__dot { position: relative; width: 11px; height: 11px; border-radius: 50%; background: var(--t-d); box-shadow: 0 0 0 4px rgba(236, 229, 216, .14); }
+.tag__dot::after { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 1px solid rgba(236, 229, 216, .4); animation: ping 2.8s var(--ease) infinite; }
+@keyframes ping { 0% { transform: scale(.6); opacity: 1; } 100% { transform: scale(1.9); opacity: 0; } }
+.tag__text { display: flex; flex-direction: column; padding: 10px 14px; border-left: 1px solid var(--gold); background: linear-gradient(90deg, rgba(15, 13, 11, .7), rgba(15, 13, 11, 0)); font-size: 12px; color: var(--t-d2); white-space: nowrap; }
+.tag__text b { font: 400 19px/1.1 var(--f-s); color: var(--t-d); }
+
+/* ---------------------------------------------------------------- lembar ivory (koleksi, bisnis) */
+.sheet { position: absolute; inset: var(--nav) 0 0 0; padding: 18px var(--gut) 90px; }
+.sheet__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; padding-bottom: 26px; border-bottom: 1px solid var(--hair-l); }
+.sheet__title { font-size: clamp(64px, 8vw, 140px); margin-top: 12px; color: var(--t-l); }
+.field-line { display: block; position: relative; }
+.search { width: min(340px, 34vw); }
+.search input { width: 100%; height: 44px; background: none; border: 0; border-bottom: 1px solid rgba(27, 24, 21, .3); outline: none; font: 300 20px var(--f-s); color: var(--t-l); transition: border-color .4s; }
+.search input::placeholder { color: var(--t-l3); font-style: italic; }
+.search input:focus { border-color: var(--t-l); }
+.search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.cats { display: flex; flex-wrap: wrap; gap: 6px 30px; padding: 22px 0 34px; }
+.cats button { position: relative; padding: 6px 0; font: 500 10.5px var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-l3); transition: color .4s; }
+.cats button sup { margin-left: 5px; font: italic 300 13px var(--f-s); letter-spacing: 0; color: var(--gold-lo); vertical-align: 2px; }
+.cats button::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--t-l); transform: scaleX(0); transform-origin: 0 50%; transition: transform .7s var(--ease); }
+.cats button:hover { color: var(--t-l); }
+.cats button.is-on { color: var(--t-l); }
+.cats button.is-on::after { transform: scaleX(1); }
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 54px 26px; }
+.card { display: flex; flex-direction: column; text-align: left; color: var(--t-l); }
+.card__img { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--ivory-2); display: grid; place-items: center; }
+.card__img img { width: 86%; height: 86%; object-fit: contain; mix-blend-mode: multiply; transition: transform 1.2s var(--ease); }
+.card__img img.is-photo { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: normal; }
+.card:hover .card__img img { transform: scale(1.045); }
+.card__disc { position: absolute; top: 14px; left: 14px; font: italic 300 15px var(--f-s); color: var(--gold-lo); }
+.card__info { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 2px 14px; padding-top: 16px; }
+.card__name { font: 400 25px/1.1 var(--f-s); }
+.card__price { font-size: 13px; color: var(--t-l); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.card__type { grid-column: 1 / -1; font-size: 12.5px; color: var(--t-l3); }
+.card__line { grid-column: 1 / -1; height: 1px; margin-top: 12px; background: var(--hair-l); position: relative; overflow: hidden; }
+.card__line::after { content: ''; position: absolute; inset: 0; background: var(--t-l); transform: scaleX(0); transform-origin: 0 50%; transition: transform .9s var(--ease); }
+.card:hover .card__line::after { transform: scaleX(1); }
+.grid__empty { display: none; padding: 60px 0; text-align: center; font: italic 300 24px var(--f-s); color: var(--t-l3); }
+.grid__empty.is-on { display: block; }
+.sheet__note { margin-top: 70px; padding-top: 22px; border-top: 1px solid var(--hair-l); font-size: 12.5px; color: var(--t-l3); }
+
+/* detail produk */
+.pd { position: absolute; inset: var(--nav) 0 0 0; z-index: 4; display: grid; grid-template-columns: 1.1fr 1fr; background: var(--ivory); visibility: hidden; pointer-events: none; }
+.pd.is-open { visibility: visible; pointer-events: auto; }
+.pd__media { position: relative; margin: 10px 0 var(--gut) var(--gut); background: var(--ivory-2); display: grid; place-items: center; overflow: hidden; }
+.pd__media img { width: 80%; height: 80%; object-fit: contain; mix-blend-mode: multiply; }
+.pd__media img.is-photo { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: normal; }
+.pd__info { padding: 30px var(--gut) 120px clamp(30px, 4vw, 70px); color: var(--t-l); }
+.pd__name { font-size: clamp(52px, 5.6vw, 96px); margin: 14px 0 8px; }
+.pd__type { color: var(--t-l2); }
+.pd__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; margin: 28px 0 0; padding: 22px 0; border-top: 1px solid var(--hair-l); border-bottom: 1px solid var(--hair-l); }
+.pd__price b { font: 400 34px var(--f-s); font-variant-numeric: tabular-nums; }
+.pd__price s { font-size: 13px; color: var(--t-l3); }
+.pd__price em { font: italic 300 18px var(--f-s); color: var(--gold-lo); }
+.pd__desc { margin: 24px 0; color: var(--t-l2); max-width: 46ch; line-height: 1.75; }
+.pd__spec { display: grid; grid-template-columns: auto 1fr; gap: 10px 30px; margin-bottom: 30px; font-size: 13px; }
+.pd__spec dt { font: 500 10px/1.9 var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-l3); }
+.pd__spec dd { color: var(--t-l); }
+.pd__buy { display: flex; gap: 12px; margin-bottom: 12px; }
+.pd__buy .btn { flex: 1; }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--hair-l); height: 52px; }
+.qty button { width: 42px; height: 100%; display: grid; place-items: center; color: var(--t-l2); transition: color .3s; }
+.qty button:hover { color: var(--t-l); }
+.qty svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.3; }
+.qty span { min-width: 26px; text-align: center; font: 500 14px var(--f); font-variant-numeric: tabular-nums; }
+.pd__more { margin-top: 22px; }
+.pd__nav { position: absolute; left: var(--gut); bottom: calc(var(--gut) + 18px); display: flex; align-items: center; gap: 18px; padding: 10px 16px; background: rgba(236, 229, 217, .86); color: var(--t-l); font: italic 300 17px var(--f-s); }
+.pd__nav button { width: 30px; height: 30px; display: grid; place-items: center; color: var(--t-l2); transition: color .3s; }
+.pd__nav button:hover { color: var(--t-l); }
+.pd__nav svg, .pd__close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.pd__close { position: absolute; right: var(--gut); top: 18px; width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid var(--hair-l); color: var(--t-l); transition: background .4s, color .4s; }
+.pd__close:hover { background: var(--t-l); color: var(--ivory); }
+
+/* ---------------------------------------------------------------- ATELIER */
+.at__head { position: absolute; left: var(--gut); top: calc(var(--nav) + 6px); }
+.at__title { font-size: clamp(48px, 5vw, 86px); margin-top: 12px; }
+.at__panel {
+  position: absolute; right: var(--gut); top: calc(var(--nav) + 6px); bottom: calc(var(--foot) + 12px); width: min(360px, 28vw);
+  padding: 26px 28px; overflow-y: auto; scrollbar-width: none;
+  background: linear-gradient(180deg, rgba(22, 19, 15, .9), rgba(15, 13, 11, .88));
+  border: 1px solid var(--hair-d); pointer-events: auto;
+}
+.at__panel::-webkit-scrollbar { display: none; }
+.opt { padding: 18px 0; border-top: 1px solid var(--hair-d); }
+.opt:first-child { border-top: 0; padding-top: 4px; }
+.opt__h { font: 500 10px var(--f); letter-spacing: .24em; text-transform: uppercase; color: var(--t-d2); margin-bottom: 14px; }
+.opt__h span { color: var(--t-d3); }
+.opt--row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.opt__note { margin-top: 12px; font: italic 300 17px var(--f-s); color: var(--t-d); }
+.opt__note b { font: 500 10px var(--f); letter-spacing: .2em; color: var(--gold); margin-right: 6px; font-style: normal; }
+.nums { display: grid; grid-template-columns: repeat(4, 1fr); }
+.nums button { position: relative; height: 54px; font: 300 32px var(--f-s); color: var(--t-d3); transition: color .4s; }
+.nums button::after { content: ''; position: absolute; left: 25%; right: 25%; bottom: 6px; height: 1px; background: var(--gold); transform: scaleX(0); transition: transform .6s var(--ease); }
+.nums button:hover { color: var(--t-d2); }
+.nums button.is-on { color: var(--t-d); }
+.nums button.is-on::after { transform: scaleX(1); }
+.sw { display: inline-flex; border: 1px solid var(--hair-d); font: 500 9.5px var(--f); letter-spacing: .18em; text-transform: uppercase; }
+.sw span { padding: 10px 12px; color: var(--t-d3); transition: background .4s, color .4s; }
+.sw[aria-pressed="true"] span:first-child, .sw[aria-pressed="false"] span:last-child { background: rgba(191, 162, 116, .16); color: var(--t-d); }
+.swatches { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+.swatch { position: relative; aspect-ratio: 1; border-radius: 50%; background: var(--c); transition: transform .5s var(--ease); }
+.swatch::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: repeating-linear-gradient(45deg, rgba(255, 244, 228, .06) 0 1px, transparent 1px 3px), repeating-linear-gradient(-45deg, rgba(10, 8, 6, .1) 0 1px, transparent 1px 3px); }
+.swatch[data-type="leather"]::before { background: radial-gradient(circle at 32% 28%, rgba(255, 240, 220, .3), transparent 48%); }
+.swatch::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid var(--gold); transform: scale(.8); opacity: 0; transition: transform .5s var(--ease), opacity .4s; }
+.swatch:hover { transform: translateY(-2px); }
+.swatch.is-on::after { transform: none; opacity: 1; }
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.choices--3 { grid-template-columns: repeat(3, 1fr); }
+.choices button { display: flex; align-items: center; gap: 10px; height: 42px; padding: 0 12px; border: 1px solid var(--hair-d); font-size: 12.5px; color: var(--t-d2); transition: border-color .4s, color .4s, background .4s; }
+.choices--3 button { justify-content: center; }
+.choices button i { width: 12px; height: 12px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(236, 229, 216, .2); }
+.choices button:hover { color: var(--t-d); }
+.choices button.is-on { border-color: var(--gold); color: var(--t-d); background: rgba(191, 162, 116, .08); }
+.at__sum { position: absolute; left: var(--gut); bottom: calc(var(--foot) + 12px); width: min(380px, 30vw); }
+.at__name { font: 300 36px/1 var(--f-s); }
+.at__dims { margin-top: 8px; font: 500 10px var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-d2); }
+.at__est { margin-top: 22px; font: 500 10px var(--f); letter-spacing: .24em; text-transform: uppercase; color: var(--t-d3); }
+.at__price { font: 300 44px/1.05 var(--f-s); color: var(--gold-hi); font-variant-numeric: tabular-nums; }
+.at__note { margin: 6px 0 20px; font-size: 12px; color: var(--t-d3); }
+.at__tools { display: flex; gap: 22px; margin-top: 16px; }
+.at__tools button { font: 500 10px var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-d2); border-bottom: 1px solid var(--hair-d); padding-bottom: 4px; transition: color .3s, border-color .3s; }
+.at__tools button:hover { color: var(--t-d); border-color: var(--gold); }
+.dim { position: fixed; left: 0; top: 0; z-index: 11; height: 0; pointer-events: none; opacity: 0; transition: opacity .5s; transform-origin: 0 0; }
+.dim.is-on { opacity: 1; }
+.dim i { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: rgba(191, 162, 116, .7); }
+.dim i::before, .dim i::after { content: ''; position: absolute; top: -5px; width: 1px; height: 11px; background: var(--gold); }
+.dim i::before { left: 0; } .dim i::after { right: 0; }
+.dim span { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); font: italic 300 17px var(--f-s); color: var(--gold-hi); white-space: nowrap; }
+
+/* ---------------------------------------------------------------- MANUFAKTUR */
+.mfg { position: absolute; left: var(--gut); top: calc(var(--nav) + 6px); bottom: calc(var(--foot) + 12px); width: min(400px, 30vw); display: flex; flex-direction: column; }
+.mfg__title { font-size: clamp(44px, 4.4vw, 78px); margin: 14px 0 18px; }
+.mfg__lede { margin-bottom: 18px; }
+.stages { flex: 0 1 auto; overflow-y: auto; scrollbar-width: none; pointer-events: auto; }
+.stages button { width: 100%; display: grid; grid-template-columns: 40px 1fr; gap: 0 14px; padding: 14px 0; text-align: left; border-top: 1px solid var(--hair-d); color: var(--t-d2); }
+.stages li:last-child button { border-bottom: 1px solid var(--hair-d); }
+.st__n { font: italic 300 20px/1.2 var(--f-s); color: var(--gold); }
+.st__p { font: 300 25px/1.15 var(--f-s); color: var(--t-d); transition: color .4s; }
+.st__r { grid-column: 2; font: 500 9.5px var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-d3); margin-top: 4px; }
+.st__t { grid-column: 2; font-size: 13px; color: var(--t-d2); max-height: 0; overflow: hidden; transition: max-height .6s var(--ease), margin .6s var(--ease); }
+.stages .is-on .st__p { color: var(--gold-hi); }
+.stages .is-on .st__t { max-height: 80px; margin-top: 8px; }
+.mfg__all { margin-top: 18px; align-self: flex-start; }
+.mlabels { position: fixed; inset: 0; pointer-events: none; }
+.mlabel { position: absolute; left: 0; top: 0; padding: 0 0 0 12px; border-left: 1px solid var(--gold); white-space: nowrap; transition: opacity .5s; will-change: transform; }
+.mlabel b { display: block; font: 400 18px/1.1 var(--f-s); color: var(--t-d); }
+.mlabel span { font: 500 8.5px var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-d2); }
+.mlabel.is-on b { color: var(--gold-hi); }
+.mlabel.is-dim { opacity: .35; }
+.figures { position: absolute; right: var(--gut); bottom: calc(var(--foot) + 12px); left: calc(var(--gut) + min(400px, 30vw) + 50px); display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid var(--hair-d); }
+.figures div { padding: 16px 14px 0 0; }
+.figures b { display: block; font: 300 46px/1 var(--f-s); color: var(--t-d); font-variant-numeric: tabular-nums; }
+.figures span { display: block; margin-top: 8px; font: 500 9px/1.4 var(--f); letter-spacing: .2em; text-transform: uppercase; color: var(--t-d3); }
+
+/* ---------------------------------------------------------------- BISNIS */
+.sheet__head--biz { align-items: flex-end; }
+.sheet__head--biz .lede { max-width: 40ch; }
+.services { margin-top: 10px; }
+.service { display: grid; grid-template-columns: 70px minmax(0, 1.1fr) minmax(0, 1fr) 40px; align-items: center; gap: 24px; padding: 30px 0; border-bottom: 1px solid var(--hair-l); color: var(--t-l); transition: padding .7s var(--ease); }
+.service:hover { padding-left: 16px; }
+.service__n { font: italic 300 20px var(--f-s); color: var(--gold-lo); }
+.service__t { font: 300 clamp(36px, 3.6vw, 60px)/1 var(--f-s); }
+.service__d { color: var(--t-l2); font-size: 14px; }
+.service svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1; transition: transform .7s var(--ease); }
+.service:hover svg { transform: translateX(6px); }
+.benefits { display: grid; grid-template-columns: repeat(4, 1fr); margin: 70px 0; border-top: 1px solid var(--hair-l); }
+.benefits div { padding: 24px 20px 0 0; }
+.benefits b { display: block; font: 300 54px/1 var(--f-s); color: var(--t-l); }
+.benefits span { display: block; margin-top: 10px; font: 500 10px var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-l3); }
+.biz__row { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(40px, 6vw, 110px); }
+.bform { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 30px; }
+.bform__title, .f--full, .bform .btn, .bform__note { grid-column: 1 / -1; }
+.bform__title { font-size: clamp(38px, 3.4vw, 56px); color: var(--t-l); margin-bottom: 4px; }
+.bform .btn { justify-self: start; }
+.f { position: relative; }
+.f input, .f select, .f textarea { width: 100%; height: 50px; padding: 18px 0 4px; background: none; border: 0; border-bottom: 1px solid rgba(27, 24, 21, .25); border-radius: 0; outline: none; font: 400 15px var(--f); color: var(--t-l); -webkit-appearance: none; appearance: none; transition: border-color .4s; }
+.f textarea { height: auto; min-height: 90px; resize: vertical; padding-top: 26px; }
+.f label { position: absolute; left: 0; top: 18px; font: 500 10px var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-l3); pointer-events: none; transition: all .4s var(--ease); }
+.f input:focus + label, .f input:not(:placeholder-shown) + label, .f textarea:focus + label, .f textarea:not(:placeholder-shown) + label, .f--sel label { top: 0; font-size: 9px; color: var(--gold-lo); }
+.f input:focus, .f select:focus, .f textarea:focus { border-color: var(--t-l); }
+.f--sel::after { content: ''; position: absolute; right: 4px; top: 26px; width: 7px; height: 7px; border-right: 1px solid var(--t-l2); border-bottom: 1px solid var(--t-l2); transform: rotate(45deg); pointer-events: none; }
+.f select option { background: var(--ivory); color: var(--t-l); }
+.f.is-err input { border-color: #a5523e; }
+.bform__note { font-size: 12px; color: var(--t-l3); }
+.bform__note.is-err { color: #a5523e; }
+.clients ul { margin-top: 18px; }
+.clients li { padding: 12px 0; border-top: 1px solid var(--hair-l); font: 300 clamp(26px, 2.4vw, 38px)/1.1 var(--f-s); color: var(--t-l); transition: padding .7s var(--ease), color .4s; }
+.clients li:hover { padding-left: 14px; color: var(--gold-lo); }
+.peek { position: fixed; left: 0; top: 0; z-index: 20; width: 320px; aspect-ratio: 4 / 3; overflow: hidden; pointer-events: none; opacity: 0; transform: scale(.85); transition: opacity .5s var(--ease), transform .7s var(--ease); }
+.peek.is-on { opacity: 1; transform: none; }
+.peek img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------------------------------------------------------------- GALERI */
+.gal__head { position: absolute; left: 0; right: 0; top: calc(var(--nav) + 4px); text-align: center; }
+.gal__title { font-size: clamp(42px, 4.6vw, 80px); margin-top: 12px; }
+.ring { position: absolute; left: 0; right: 0; top: calc(var(--nav) + 130px); bottom: 130px; display: grid; place-items: center; perspective: 1800px; touch-action: pan-y; }
+.ring__track { --cw: clamp(200px, 19vw, 320px); position: relative; width: var(--cw); height: calc(var(--cw) * 1.2); transform-style: preserve-3d; }
+.rcard { position: absolute; inset: 0; transform-style: preserve-3d; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.rcard figure { height: 100%; padding: 10px 10px 0; background: rgba(22, 19, 15, .9); border: 1px solid var(--hair-d); display: flex; flex-direction: column; transition: border-color .6s; }
+.rcard img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.rcard figcaption { padding: 12px 2px; font: 300 20px/1.1 var(--f-s); color: var(--t-d); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rcard.is-front figure { border-color: rgba(191, 162, 116, .6); }
+.ring__ui { position: absolute; left: 50%; bottom: calc(var(--foot) + 18px); transform: translateX(-50%); display: flex; align-items: center; gap: 30px; }
+.ring__ui button { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid var(--hair-d); border-radius: 50%; color: var(--t-d2); transition: border-color .4s, color .4s; }
+.ring__ui button:hover { border-color: var(--gold); color: var(--t-d); }
+.ring__ui svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+.ring__cap { min-width: min(380px, 56vw); text-align: center; }
+.ring__cap span { display: block; font: 500 9.5px var(--f); letter-spacing: .26em; color: var(--gold); }
+.ring__cap b { display: block; margin: 6px 0 2px; font: 300 30px/1.05 var(--f-s); color: var(--t-d); }
+.ring__cap em { font-style: normal; font-size: 13px; color: var(--t-d2); }
+
+/* ---------------------------------------------------------------- KONTAK */
+.ct { position: absolute; left: var(--gut); top: 50%; transform: translateY(-50%); width: min(620px, 48vw); }
+.ct__title { font-size: clamp(54px, 6vw, 108px); margin: 18px 0 24px; }
+.ct .lede { margin-bottom: 30px; }
+.ct__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 40px; margin-top: 46px; padding-top: 26px; border-top: 1px solid var(--hair-d); }
+.ct__grid dt { font: 500 9.5px var(--f); letter-spacing: .24em; text-transform: uppercase; color: var(--t-d3); }
+.ct__grid dd { margin-top: 6px; font: 300 22px/1.25 var(--f-s); color: var(--t-d); }
+.ct__grid a { transition: color .4s; }
+.ct__grid a:hover { color: var(--gold-hi); }
+.ct__links { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 34px; font: 500 9.5px var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-d3); }
+.ct__links a:hover { color: var(--t-d); }
+.ct__legal { margin-top: 18px; font-size: 11.5px; color: var(--t-d3); }
+
+/* ---------------------------------------------------------------- tas belanja, lightbox, notifikasi */
+.bag { position: fixed; inset: 0; z-index: 70; pointer-events: none; transition: background .6s var(--ease); }
+.bag.is-open { pointer-events: auto; background: rgba(10, 9, 7, .45); }
+.bag__panel { position: absolute; top: 0; right: 0; bottom: 0; width: min(460px, 100vw); display: flex; flex-direction: column; padding: 30px 34px; background: var(--ivory); color: var(--t-l); transform: translateX(100%); transition: transform .9s var(--ease); }
+.bag.is-open .bag__panel { transform: none; }
+.bag__head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--hair-l); }
+.bag__head h3 { font-size: 46px; }
+.bag__close { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--hair-l); transition: background .4s, color .4s; }
+.bag__close:hover { background: var(--t-l); color: var(--ivory); }
+.bag__close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+.bag__list { flex: 1; overflow-y: auto; }
+.bag__list li { display: grid; grid-template-columns: 84px 1fr auto; gap: 16px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--hair-l); }
+.bag__th { aspect-ratio: 1; background: var(--ivory-2); display: grid; place-items: center; }
+.bag__th img { width: 86%; height: 86%; object-fit: contain; mix-blend-mode: multiply; }
+.bag__th img.is-photo { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: normal; }
+.bag__n { font: 400 22px/1.1 var(--f-s); }
+.bag__p { font-size: 12.5px; color: var(--t-l2); margin-top: 2px; }
+.bag__q { display: inline-flex; align-items: center; margin-top: 8px; border: 1px solid var(--hair-l); }
+.bag__q button { width: 30px; height: 30px; display: grid; place-items: center; color: var(--t-l2); }
+.bag__q svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.3; }
+.bag__q span { min-width: 22px; text-align: center; font: 500 13px var(--f); }
+.bag__rm { align-self: start; font: 500 9.5px var(--f); letter-spacing: .2em; text-transform: uppercase; color: var(--t-l3); }
+.bag__rm:hover { color: var(--t-l); }
+.bag__empty { display: none; padding: 50px 0; font: italic 300 24px/1.3 var(--f-s); color: var(--t-l2); }
+.bag__empty a { border-bottom: 1px solid currentColor; }
+.bag.is-empty .bag__empty { display: block; }
+.bag.is-empty .bag__list, .bag.is-empty .bag__foot { display: none; }
+.bag__foot { padding-top: 22px; }
+.bag__total { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; font: 500 10px var(--f); letter-spacing: .24em; text-transform: uppercase; color: var(--t-l3); }
+.bag__total b { font: 400 32px var(--f-s); letter-spacing: 0; color: var(--t-l); text-transform: none; }
+.bag__shop { margin-top: 18px; }
+.lb { position: fixed; inset: 0; z-index: 80; display: none; place-items: center; background: rgba(12, 10, 8, .93); }
+.lb.is-open { display: grid; }
+.lb__fig { width: min(74vh, 90vw); }
+.lb__fig img { width: 100%; aspect-ratio: 1; object-fit: contain; }
+.lb__fig figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding-top: 14px; border-top: 1px solid var(--hair-d); margin-top: 14px; }
+.lb__fig b { font: 300 28px var(--f-s); color: var(--t-d); }
+.lb__fig span { font: 500 9.5px var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--t-d2); }
+.lb__close { position: absolute; top: 24px; right: var(--gut); width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid var(--hair-d); color: var(--t-d); }
+.lb__close svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+.notice { position: fixed; left: 50%; bottom: calc(var(--foot) + 18px); z-index: 75; transform: translate(-50%, 16px); opacity: 0; pointer-events: none; padding: 14px 22px; background: var(--ink-2); border: 1px solid rgba(191, 162, 116, .4); font: 400 13px var(--f); color: var(--t-d); white-space: nowrap; transition: opacity .5s var(--ease), transform .7s var(--ease); }
+.notice b { font: italic 400 17px var(--f-s); color: var(--gold-hi); margin-right: 6px; }
+.notice.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------------------------------------------------------------- responsif */
+@media (max-width: 1280px) {
+  .nav__links { gap: 18px; }
+  .nav__cta { display: none; }
+  .grid { grid-template-columns: repeat(3, 1fr); }
+  .figures { grid-template-columns: repeat(3, 1fr); row-gap: 16px; }
+  .figures b { font-size: 38px; }
+  .index__s { display: none; }
+}
+@media (max-width: 1024px) {
+  .nav { grid-template-columns: 1fr auto; }
+  .nav__links { display: none; }
+  .nav__menu { display: block; }
+  .home { width: min(560px, 70vw); }
+  .index { grid-template-columns: repeat(3, 1fr); }
+  .index li:nth-child(4) { border-left: 0; }
+  .index li:nth-child(4) a { padding-left: 0; }
+  .at__panel { width: 320px; }
+  .at__sum { width: 300px; }
+  .mfg { width: 340px; }
+  .figures { left: calc(var(--gut) + 380px); }
+  .biz__row { grid-template-columns: 1fr; }
+  .pd { grid-template-columns: 1fr 1fr; }
+  .ct { width: min(620px, 80vw); }
+}
+@media (max-width: 760px) {
+  :root { --nav: 64px; --foot: 0px; --gut: 18px; }
+  .foot { display: none; }
+  .nav__logo { width: 96px; }
+  .nav__actions { gap: 18px; }
+  .vignette { background: radial-gradient(ellipse 90% 70% at 50% 45%, transparent 45%, rgba(8, 7, 6, .7) 100%), linear-gradient(0deg, rgba(10, 9, 7, .75), transparent 46%); }
+
+  .home { top: calc(var(--nav) + 14px); transform: none; width: auto; right: var(--gut); }
+  .home__title { font-size: 15vw; margin: 14px 0 0; }
+  .home__lede, .home__ctas { display: none; }
+  .index { grid-template-columns: 1fr 1fr; bottom: 14px; }
+  .index li:nth-child(odd) { border-left: 0; }
+  .index li:nth-child(odd) a { padding-left: 0; }
+  .index li:nth-child(4) { border-left: 1px solid var(--hair-d); }
+  .index li:nth-child(4) a { padding-left: 14px; }
+  .index li { border-top: 1px solid var(--hair-d); }
+  .index a { padding: 10px 14px; flex-direction: row; align-items: baseline; gap: 10px; }
+  .index__t { font-size: 21px; }
+
+  .sheet { padding: 12px var(--gut) 60px; }
+  .sheet__head { flex-direction: column; align-items: stretch; gap: 16px; }
+  .sheet__title { font-size: 19vw; }
+  .search { width: 100%; }
+  .cats { gap: 4px 18px; padding: 14px 0 22px; }
+  .grid { grid-template-columns: 1fr 1fr; gap: 30px 12px; }
+  .card__info { grid-template-columns: 1fr; }
+  .card__name { font-size: 20px; }
+  .card__price { font-size: 12px; }
+  .pd { grid-template-columns: 1fr; grid-template-rows: 42% 58%; }
+  .pd__media { margin: 0; }
+  .pd__info { padding: 22px var(--gut) 90px; }
+  .pd__name { font-size: 46px; }
+  .pd__nav { left: auto; right: var(--gut); bottom: auto; top: calc(42% - 60px); padding: 6px 10px; }
+  .pd__close { top: 12px; width: 40px; height: 40px; }
+
+  .at__head { top: calc(var(--nav) + 2px); }
+  .at__title { font-size: 34px; margin-top: 6px; }
+  .at__title .ln { display: inline-block; margin-right: .25em; }
+  .at__panel { left: var(--gut); right: var(--gut); top: auto; bottom: 12px; width: auto; max-height: 40%; padding: 14px 18px; }
+  .at__sum { left: var(--gut); right: var(--gut); bottom: auto; top: calc(var(--nav) + 64px); width: auto; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 0 12px; }
+  .at__name { font-size: 22px; }
+  .at__dims { font-size: 9px; letter-spacing: .14em; margin-top: 4px; }
+  .at__est, .at__note, .at__tools { display: none; }
+  .at__price { grid-column: 2; grid-row: 1 / span 2; font-size: 26px; text-align: right; }
+  .at__sum .btn { grid-column: 1 / -1; height: 40px; padding: 0 14px; font-size: 9.5px; margin-top: 12px; }
+
+  .mfg { left: var(--gut); right: var(--gut); top: auto; bottom: 12px; width: auto; max-height: 46%; padding: 16px 18px; background: rgba(15, 13, 11, .9); border: 1px solid var(--hair-d); pointer-events: auto; overflow-y: auto; }
+  .mfg__title { font-size: 34px; margin: 8px 0 10px; }
+  .mfg__lede { display: none; }
+  .figures { left: var(--gut); right: var(--gut); top: calc(var(--nav) + 2px); bottom: auto; grid-template-columns: repeat(3, 1fr); border: 0; }
+  .figures div { padding: 6px 8px 0 0; }
+  .figures b { font-size: 26px; }
+  .figures span { font-size: 7.5px; letter-spacing: .14em; }
+  .mlabel b { font-size: 15px; }
+  .mlabel span { font-size: 7.5px; }
+  .mlabel[data-ml="2"]:not(.is-on), .mlabel[data-ml="3"]:not(.is-on) { display: none; }
+
+  .service { grid-template-columns: 36px 1fr 24px; gap: 12px; padding: 22px 0; }
+  .service__d { grid-column: 2; }
+  .service svg { grid-column: 3; grid-row: 1; width: 20px; }
+  .service__t { font-size: 34px; }
+  .benefits { grid-template-columns: 1fr 1fr; margin: 44px 0; }
+  .benefits b { font-size: 40px; }
+  .bform { grid-template-columns: 1fr; }
+  .peek { display: none; }
+
+  .gal__title { font-size: 34px; }
+  .ring { top: calc(var(--nav) + 90px); bottom: 150px; }
+  .ring__track { --cw: 56vw; }
+  .ring__ui { bottom: 22px; gap: 14px; }
+  .ring__cap b { font-size: 22px; }
+
+  .ct { top: calc(var(--nav) + 10px); transform: none; width: auto; right: var(--gut); bottom: 16px; overflow-y: auto; pointer-events: auto; }
+  .ct__title { font-size: 13vw; }
+  .ct__grid { grid-template-columns: 1fr; gap: 16px; margin-top: 30px; }
+  .ct__grid dd { font-size: 19px; }
+  .bag__panel { padding: 22px 20px; }
+  .notice { white-space: normal; width: calc(100vw - 36px); text-align: center; bottom: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+
+</style>
+  <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M3 12h17M14 6l6 6-6 6"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4.5 19.5l1.1-3.6A8 8 0 1 1 8.4 18.6z"/><path d="M9 8.6c.2-.5.6-.6.9-.6h.4c.2 0 .4.1.5.4l.6 1.5c.1.3 0 .5-.1.7l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.2.5-.2.7-.1l1.5.6c.3.1.4.3.4.5v.4c0 .3-.1.7-.6.9-.6.3-1.6.4-3.1-.3a8.3 8.3 0 0 1-3.6-3.6c-.7-1.5-.6-2.5-.3-3.1z"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 8.5h13l-1 11h-11z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/></symbol>
+</svg>
+
+<!-- ===================== Showroom 3D & lapisan ===================== -->
+<canvas class="world" id="world" aria-hidden="true"></canvas>
+<div class="world-fallback" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="paper" id="paper" aria-hidden="true"></div>
+<div class="sweep" id="sweep" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__ring"><span class="cursor__label" id="cursorLabel"></span></span><span class="cursor__dot"></span></div>
+
+<!-- ===================== Tirai pembuka ===================== -->
+<div class="veil" id="veil" role="status" aria-live="polite">
+  <div class="veil__half veil__half--t"></div>
+  <div class="veil__half veil__half--b"></div>
+  <div class="veil__inner">
+    <svg class="veil__logo" viewBox="-1 -1 208 30" aria-hidden="true"><path class="logo-path veil__stroke"/><path class="logo-path veil__fill"/></svg>
+    <p class="veil__name">Maison XIONCO</p>
+    <div class="veil__line"><i id="veilLine"></i></div>
+    <p class="veil__pct" id="veilPct">0</p>
+  </div>
+</div>
+
+<!-- ===================== Navigasi ===================== -->
+<header class="nav" id="nav">
+  <a class="nav__logo" href="#/" data-go="home" aria-label="Maison XIONCO — beranda"><svg viewBox="0 0 206 28" aria-hidden="true"><path class="logo-path"/></svg></a>
+  <nav class="nav__links" id="navLinks" aria-label="Utama">
+    <a href="#/koleksi" data-go="koleksi">Koleksi</a>
+    <a href="#/atelier" data-go="atelier">Atelier</a>
+    <a href="#/manufaktur" data-go="manufaktur">Manufaktur</a>
+    <a href="#/bisnis" data-go="bisnis">Bisnis</a>
+    <a href="#/galeri" data-go="galeri">Galeri</a>
+    <a href="#/kontak" data-go="kontak">Kontak</a>
+  </nav>
+  <div class="nav__actions">
+    <button class="nav__bag" id="bagBtn" type="button" aria-label="Tas belanja">Tas <span id="bagCount">(0)</span></button>
+    <a class="btn btn--line nav__cta" data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener">Konsultasi privat</a>
+    <button class="nav__menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <nav class="menu__list">
+    <a href="#/" data-go="home"><span>00</span>Beranda</a>
+    <a href="#/koleksi" data-go="koleksi"><span>01</span>Koleksi</a>
+    <a href="#/atelier" data-go="atelier"><span>02</span>Atelier</a>
+    <a href="#/manufaktur" data-go="manufaktur"><span>03</span>Manufaktur</a>
+    <a href="#/bisnis" data-go="bisnis"><span>04</span>Bisnis</a>
+    <a href="#/galeri" data-go="galeri"><span>05</span>Galeri</a>
+    <a href="#/kontak" data-go="kontak"><span>06</span>Kontak</a>
+  </nav>
+  <p class="menu__foot"><a data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener">Instagram</a><a href="https://xionco.shop/" target="_blank" rel="noopener">xionco.shop</a></p>
+</div>
+
+<footer class="foot" id="foot">
+  <span>Maison XIONCO — Jakarta Selatan</span>
+  <span class="foot__count"><b id="footN">00</b> / 06 <i id="footName">Beranda</i></span>
+  <span id="footHint">Seret sofa untuk memutar</span>
+</footer>
+
+<main class="rooms" id="rooms">
+
+  <!-- ===================== BERANDA ===================== -->
+  <section class="room room--home" data-room="home" aria-label="Beranda">
+    <div class="home">
+      <p class="eyebrow" data-r>Furniture manufacturer · Jakarta, Indonesia</p>
+      <h1 class="display home__title" aria-label="Quality shouldn't be a luxury.">
+        <span class="ln"><span>Quality</span></span>
+        <span class="ln"><span>shouldn't be</span></span>
+        <span class="ln"><span><em>a luxury.</em></span></span>
+      </h1>
+      <p class="lede home__lede" data-r>Furnitur minimalis dengan pengerjaan tanpa kompromi — dirancang dan diproduksi sendiri di empat pabrik kami di Jawa.</p>
+      <div class="home__ctas" data-r>
+        <a class="link" href="#/koleksi" data-go="koleksi" data-cursor="Masuk">Jelajahi koleksi<svg><use href="#i-arrow"/></svg></a>
+        <a class="link link--muted" href="#/atelier" data-go="atelier" data-cursor="Masuk">Rancang di atelier<svg><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+    <ol class="index" id="index" data-r></ol>
+    <button class="tag" id="homeTag" type="button" data-go="atelier" data-cursor="Rancang" aria-label="Rancang CUBIX Modular di atelier"><span class="tag__dot"></span><span class="tag__text"><b>CUBIX Modular</b><span id="homeTagSub">3 seater · rancang di atelier</span></span></button>
+  </section>
+
+  <!-- ===================== KOLEKSI ===================== -->
+  <section class="room room--light room--koleksi" data-room="koleksi" aria-label="Koleksi">
+    <div class="sheet scroll" id="kolScroll">
+      <header class="sheet__head">
+        <div>
+          <p class="eyebrow" data-r>Koleksi · <span id="kCount">34</span> karya</p>
+          <h2 class="display sheet__title"><span class="ln"><span>Koleksi</span></span></h2>
+        </div>
+        <label class="field-line search" data-r><input id="kSearch" type="search" placeholder="Cari sofa, meja, lampu…" autocomplete="off" aria-label="Cari di koleksi"></label>
+      </header>
+      <nav class="cats" id="kCats" data-r aria-label="Kategori"></nav>
+      <div class="grid" id="kGrid"></div>
+      <p class="grid__empty" id="kEmpty">Tidak ada karya yang cocok. Coba kata lain.</p>
+      <p class="sheet__note" data-r>Harga mengikuti xionco.shop. Karya tanpa harga tersedia melalui penawaran.</p>
+    </div>
+    <article class="pd" id="pd" aria-hidden="true" aria-label="Detail produk">
+      <div class="pd__media" id="pdMedia"><img id="pdImg" alt=""></div>
+      <div class="pd__info scroll">
+        <p class="eyebrow" id="pdCat"></p>
+        <h3 class="display pd__name" id="pdName"></h3>
+        <p class="pd__type" id="pdType"></p>
+        <div class="pd__price" id="pdPrice"></div>
+        <p class="pd__desc" id="pdDesc"></p>
+        <dl class="pd__spec" id="pdSpec"></dl>
+        <div class="pd__buy" id="pdBuy">
+          <div class="qty"><button type="button" id="pdMinus" aria-label="Kurangi"><svg><use href="#i-minus"/></svg></button><span id="pdQty">1</span><button type="button" id="pdPlus" aria-label="Tambah"><svg><use href="#i-plus"/></svg></button></div>
+          <button class="btn btn--dark" type="button" id="pdAdd">Tambahkan ke tas</button>
+        </div>
+        <a class="btn btn--line-dark btn--full" id="pdWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span id="pdWaText">Tanya via WhatsApp</span></a>
+        <a class="link link--dark pd__more" id="pdLink" href="#" target="_blank" rel="noopener">Detail di xionco.com<svg><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="pd__nav">
+        <button type="button" id="pdPrev" aria-label="Karya sebelumnya"><svg><use href="#i-left"/></svg></button>
+        <span id="pdN">01 / 34</span>
+        <button type="button" id="pdNext" aria-label="Karya berikutnya"><svg><use href="#i-right"/></svg></button>
+      </div>
+      <button class="pd__close" type="button" id="pdClose" aria-label="Tutup detail"><svg><use href="#i-close"/></svg></button>
+    </article>
+  </section>
+
+  <!-- ===================== ATELIER ===================== -->
+  <section class="room room--atelier" data-room="atelier" aria-label="Atelier — rancang sofa modular">
+    <div class="at__head">
+      <p class="eyebrow" data-r>Atelier · rancang dalam 3D</p>
+      <h2 class="display at__title"><span class="ln"><span>CUBIX</span></span><span class="ln"><span><em>Modular</em></span></span></h2>
+    </div>
+    <aside class="at__panel" id="atPanel" data-r>
+      <div class="opt">
+        <p class="opt__h">Komposisi <span>dudukan</span></p>
+        <div class="nums" id="aSeats"><button type="button" data-seats="1">1</button><button type="button" data-seats="2">2</button><button type="button" data-seats="3">3</button><button type="button" data-seats="4">4</button></div>
+      </div>
+      <div class="opt opt--row">
+        <div><p class="opt__h">Lengan</p><button class="sw" type="button" id="aArms" aria-pressed="true"><span>Dengan</span><span>Tanpa</span></button></div>
+        <div><p class="opt__h">Ottoman</p><button class="sw" type="button" id="aOtt" aria-pressed="false"><span>Dengan</span><span>Tanpa</span></button></div>
+      </div>
+      <div class="opt">
+        <p class="opt__h">Material</p>
+        <div class="swatches" id="aFabrics"></div>
+        <p class="opt__note" id="aFabricName"></p>
+      </div>
+      <div class="opt">
+        <p class="opt__h">Base</p>
+        <div class="choices" id="aBases"></div>
+      </div>
+      <div class="opt">
+        <p class="opt__h">Suasana</p>
+        <div class="choices choices--3" id="aMood"><button type="button" data-mood="siang">Siang</button><button type="button" data-mood="senja">Senja</button><button type="button" data-mood="malam">Malam</button></div>
+      </div>
+    </aside>
+    <div class="at__sum" data-r>
+      <p class="at__name" id="aName">3 Seater</p>
+      <p class="at__dims" id="aDims"></p>
+      <p class="at__est">Estimasi</p>
+      <p class="at__price" id="aPrice">IDR 0</p>
+      <p class="at__note">Angka contoh untuk demo — harga final melalui penawaran resmi.</p>
+      <a class="btn btn--gold" id="aQuote" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Minta penawaran privat</a>
+      <p class="at__tools"><button type="button" id="aRandom">Acak komposisi</button><button type="button" id="aReset">Reset</button></p>
+    </div>
+    <div class="dim" id="dim" aria-hidden="true"><i></i><span id="dimText">248 cm</span></div>
+  </section>
+
+  <!-- ===================== MANUFAKTUR ===================== -->
+  <section class="room room--mfg" data-room="manufaktur" aria-label="Manufaktur">
+    <aside class="mfg">
+      <p class="eyebrow" data-r>Manufaktur · Pulau Jawa</p>
+      <h2 class="display mfg__title"><span class="ln"><span>Empat pabrik,</span></span><span class="ln"><span><em>satu standar.</em></span></span></h2>
+      <p class="lede mfg__lede" data-r>Dari kayu mentah hingga kemasan, setiap tahap dikerjakan sendiri — tidak ada detail yang lolos.</p>
+      <ol class="stages" id="stages" data-r></ol>
+      <button class="link link--muted mfg__all" id="stageAll" type="button" data-r>Lihat seluruh rute<svg><use href="#i-arrow"/></svg></button>
+    </aside>
+    <div class="mlabels" id="mLabels" aria-hidden="true"></div>
+    <div class="figures" id="figures" data-r>
+      <div><b data-count="4">0</b><span>Pabrik di Jawa</span></div>
+      <div><b data-count="30" data-suffix="+">0</b><span>Sofa per hari</span></div>
+      <div><b data-count="100" data-suffix="+">0</b><span>Item kecil per hari</span></div>
+      <div><b data-count="80" data-suffix="+">0</b><span>Pekerja &amp; kreatif</span></div>
+      <div><b data-count="3" data-prefix="1–">0</b><span>Hari kerja kirim</span></div>
+      <div><b data-count="3">0</b><span>Tahun garansi</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== BISNIS ===================== -->
+  <section class="room room--light room--bisnis" data-room="bisnis" aria-label="XIONCO for Business">
+    <div class="sheet scroll" id="bizScroll">
+      <header class="sheet__head sheet__head--biz">
+        <div>
+          <p class="eyebrow" data-r>Bisnis · proyek &amp; kolaborasi</p>
+          <h2 class="display sheet__title"><span class="ln"><span>XIONCO</span></span><span class="ln"><span><em>for Business</em></span></span></h2>
+        </div>
+        <p class="lede lede--dark" data-r>Butuh produk custom, saran desain interior, kolaborasi, atau proyek B2B? Ceritakan kebutuhan Anda — penawaran dalam 1 jam.</p>
+      </header>
+      <ul class="services" id="services"></ul>
+      <div class="benefits" data-r>
+        <div><b>1 jam</b><span>Penawaran harga</span></div>
+        <div><b>0%</b><span>Cicilan</span></div>
+        <div><b>3 tahun</b><span>Garansi kualitas</span></div>
+        <div><b>1–3 hari</b><span>Pengiriman</span></div>
+      </div>
+      <div class="biz__row">
+        <form class="bform" id="bform" novalidate data-r>
+          <h3 class="display bform__title">Permintaan <em>penawaran</em></h3>
+          <div class="f"><input id="fName" required placeholder=" " autocomplete="name"><label for="fName">Nama</label></div>
+          <div class="f"><input id="fPhone" required placeholder=" " inputmode="tel" autocomplete="tel"><label for="fPhone">WhatsApp</label></div>
+          <div class="f f--sel"><select id="fType"><option>Kantor</option><option>Hotel &amp; hospitality</option><option>Retail</option><option>Residensial</option><option>Lainnya</option></select><label for="fType">Jenis proyek</label></div>
+          <div class="f f--sel"><select id="fValue"><option>&lt; IDR 50 juta</option><option>IDR 50–250 juta</option><option>IDR 250 juta – 1 M</option><option>&gt; IDR 1 M</option></select><label for="fValue">Nilai proyek</label></div>
+          <div class="f f--full"><textarea id="fNeed" rows="3" placeholder=" "></textarea><label for="fNeed">Kebutuhan (opsional)</label></div>
+          <button class="btn btn--dark" type="submit"><svg><use href="#i-wa"/></svg>Kirim via WhatsApp</button>
+          <p class="bform__note" id="bNote">Pesan dikirim melalui WhatsApp resmi XIONCO.</p>
+        </form>
+        <div class="clients" data-r>
+          <p class="eyebrow">Dipercaya oleh</p>
+          <ul id="clients"></ul>
+        </div>
+      </div>
+    </div>
+    <div class="peek" id="peek" aria-hidden="true"><img id="peekImg" alt=""></div>
+  </section>
+
+  <!-- ===================== GALERI ===================== -->
+  <section class="room room--galeri" data-room="galeri" aria-label="Galeri proyek">
+    <header class="gal__head">
+      <p class="eyebrow" data-r>Galeri · proyek &amp; inspirasi</p>
+      <h2 class="display gal__title"><span class="ln"><span>Ruang yang <em>diwujudkan</em></span></span></h2>
+    </header>
+    <div class="ring" id="ring" data-r data-cursor="Seret"><div class="ring__track" id="ringTrack"></div></div>
+    <div class="ring__ui" data-r>
+      <button type="button" id="ringPrev" aria-label="Sebelumnya"><svg><use href="#i-left"/></svg></button>
+      <p class="ring__cap"><span id="ringN">01 / 09</span><b id="ringTitle"></b><em id="ringNote"></em></p>
+      <button type="button" id="ringNext" aria-label="Berikutnya"><svg><use href="#i-right"/></svg></button>
+    </div>
+  </section>
+
+  <!-- ===================== KONTAK ===================== -->
+  <section class="room room--kontak" data-room="kontak" aria-label="Kontak">
+    <div class="ct">
+      <p class="eyebrow" data-r>Kontak · showroom &amp; konsultasi</p>
+      <h2 class="display ct__title"><span class="ln"><span>Mari wujudkan</span></span><span class="ln"><span><em>ruang Anda.</em></span></span></h2>
+      <p class="lede" data-r>Tim kami siap membantu memilih, merancang, hingga mengirim — konsultasi privat tanpa biaya.</p>
+      <a class="btn btn--gold" data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener" data-r><svg><use href="#i-wa"/></svg>Konsultasi privat via WhatsApp</a>
+      <dl class="ct__grid" data-r>
+        <div><dt>Showroom</dt><dd>Jl. Ciputat Raya No. 8<br>Jakarta Selatan 12310</dd></div>
+        <div><dt>WhatsApp</dt><dd><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener">+62 822-4040-8055</a></dd></div>
+        <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener">@xionco.official</a></dd></div>
+        <div><dt>Toko online</dt><dd><a href="https://xionco.shop/" target="_blank" rel="noopener">xionco.shop</a></dd></div>
+      </dl>
+      <nav class="ct__links" data-r>
+        <a href="https://www.xionco.com/about/" target="_blank" rel="noopener">Tentang</a>
+        <a href="https://www.xionco.com/warranty-policy/" target="_blank" rel="noopener">Garansi</a>
+        <a href="https://www.xionco.com/refund_returns/" target="_blank" rel="noopener">Pengembalian</a>
+        <a href="https://www.xionco.com/privacy-policy/" target="_blank" rel="noopener">Privasi</a>
+        <a href="https://www.xionco.com/terms-and-condition/" target="_blank" rel="noopener">Syarat &amp; ketentuan</a>
+      </nav>
+      <p class="ct__legal" data-r>© 2026 PT Halim Inti Gahara</p>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== Tas belanja ===================== -->
+<aside class="bag" id="bag" aria-hidden="true" aria-label="Tas belanja">
+  <div class="bag__panel">
+    <header class="bag__head">
+      <h3 class="display">Tas <em>Anda</em></h3>
+      <button class="bag__close" type="button" data-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+    </header>
+    <ul class="bag__list" id="bagList"></ul>
+    <p class="bag__empty">Tas masih kosong. <a href="#/koleksi" data-go="koleksi">Jelajahi koleksi</a></p>
+    <footer class="bag__foot">
+      <p class="bag__total"><span>Subtotal</span><b id="bagTotal">IDR 0</b></p>
+      <a class="btn btn--dark btn--full" id="bagCheckout" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Checkout via WhatsApp</a>
+      <a class="link link--dark bag__shop" href="https://xionco.shop/" target="_blank" rel="noopener">atau belanja di xionco.shop<svg><use href="#i-arrow"/></svg></a>
+    </footer>
+  </div>
+</aside>
+
+<div class="lb" id="lb" aria-hidden="true" role="dialog" aria-label="Lihat gambar">
+  <figure class="lb__fig"><img id="lbImg" alt=""><figcaption><b id="lbTitle"></b><span id="lbNote"></span></figcaption></figure>
+  <button class="lb__close" type="button" data-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+</div>
+
+<p class="notice" id="notice" role="status" aria-live="polite"></p>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script>
+  /* cadangan CDN: bila jsDelivr gagal, ambil paket yang sama dari unpkg */
+  (function (w, d) {
+    var u = 'https://unpkg.com/', t = 'three@0.147.0/';
+    if (!w.THREE) ['build/three.min.js', 'examples/js/geometries/RoundedBoxGeometry.js', 'examples/js/environments/RoomEnvironment.js', 'examples/js/controls/OrbitControls.js']
+      .forEach(function (f) { d.write('<script src="' + u + t + f + '"><\/script>'); });
+    if (!w.gsap) d.write('<script src="' + u + 'gsap@3.13.0/dist/gsap.min.js"><\/script>');
+  })(window, document);
+</script>
+<script>
+/* ==========================================================================
+   XIONCO v4 — Data (sama dengan v3: produk, harga, gambar, konten)
+   Sumber: xionco.com (gambar & nama produk) dan xionco.shop (harga, Okt 2026).
+   Gambar dipanggil langsung dari xionco.com (website milik XIONCO sendiri).
+   ========================================================================== */
+window.XV = window.XV || {};
+
+XV.WA = '6282240408055';                       // WhatsApp resmi (xionco.com)
+XV.SHOP = 'https://xionco.shop/';
+XV.IMG = 'https://www.xionco.com/wp-content/uploads/';
+
+/* Logo XIONCO (path asli dari xionco.com/logo.svg, viewBox 0 0 206 28) */
+XV.LOGO = 'M0.584 0.971998H5.012L21.968 27H17.504L0.584 0.971998ZM0.224 27L9.26 12.852L10.952 16.236L4.544 27H0.224ZM11.06 11.592L17.396 0.971998H21.608L12.932 14.508L11.06 11.592ZM38.3221 0.971998H41.8141V27H38.3221V0.971998ZM59.0615 14.004C59.0615 12.204 59.3975 10.512 60.0695 8.928C60.7655 7.32 61.7255 5.904 62.9495 4.68C64.1735 3.432 65.5775 2.46 67.1615 1.764C68.7695 1.044 70.4975 0.684 72.3455 0.684C74.1695 0.684 75.8735 1.044 77.4575 1.764C79.0655 2.46 80.4815 3.432 81.7055 4.68C82.9535 5.904 83.9255 7.32 84.6215 8.928C85.3175 10.512 85.6655 12.204 85.6655 14.004C85.6655 15.852 85.3175 17.58 84.6215 19.188C83.9255 20.796 82.9535 22.212 81.7055 23.436C80.4815 24.636 79.0655 25.584 77.4575 26.28C75.8735 26.952 74.1695 27.288 72.3455 27.288C70.4975 27.288 68.7695 26.952 67.1615 26.28C65.5775 25.608 64.1735 24.672 62.9495 23.472C61.7255 22.272 60.7655 20.868 60.0695 19.26C59.3975 17.652 59.0615 15.9 59.0615 14.004ZM62.6615 14.04C62.6615 15.408 62.9135 16.692 63.4175 17.892C63.9215 19.068 64.6175 20.112 65.5055 21.024C66.3935 21.936 67.4255 22.656 68.6015 23.184C69.7775 23.688 71.0495 23.94 72.4175 23.94C73.7615 23.94 75.0215 23.688 76.1975 23.184C77.3735 22.656 78.3935 21.936 79.2575 21.024C80.1215 20.112 80.8055 19.068 81.3095 17.892C81.8135 16.692 82.0655 15.396 82.0655 14.004C82.0655 12.636 81.8135 11.352 81.3095 10.152C80.8055 8.928 80.1095 7.86 79.2215 6.948C78.3335 6.036 77.3015 5.328 76.1255 4.824C74.9495 4.296 73.6895 4.032 72.3455 4.032C70.9775 4.032 69.7055 4.296 68.5295 4.824C67.3535 5.352 66.3215 6.072 65.4335 6.984C64.5455 7.896 63.8615 8.964 63.3815 10.188C62.9015 11.388 62.6615 12.672 62.6615 14.04ZM125.475 27.828L105.351 7.416L106.359 7.668L106.431 27H102.939V0.179998H103.119L123.027 20.664L122.199 20.484L122.127 0.971998H125.583V27.828H125.475ZM163.575 25.056C163.143 25.344 162.555 25.668 161.811 26.028C161.067 26.388 160.191 26.688 159.183 26.928C158.199 27.168 157.119 27.288 155.943 27.288C153.927 27.264 152.103 26.904 150.471 26.208C148.863 25.512 147.495 24.564 146.367 23.364C145.239 22.164 144.363 20.784 143.739 19.224C143.139 17.64 142.839 15.96 142.839 14.184C142.839 12.24 143.151 10.452 143.775 8.82C144.423 7.164 145.323 5.736 146.475 4.536C147.627 3.312 148.983 2.364 150.543 1.692C152.127 1.02 153.855 0.684 155.727 0.684C157.287 0.684 158.703 0.899999 159.975 1.332C161.247 1.74 162.339 2.232 163.251 2.808L161.847 6.048C161.127 5.568 160.251 5.112 159.219 4.68C158.211 4.248 157.083 4.032 155.835 4.032C154.563 4.032 153.363 4.284 152.235 4.788C151.107 5.292 150.111 6 149.247 6.912C148.383 7.824 147.699 8.892 147.195 10.116C146.715 11.316 146.475 12.612 146.475 14.004C146.475 15.42 146.691 16.74 147.123 17.964C147.579 19.164 148.215 20.208 149.031 21.096C149.871 21.984 150.879 22.68 152.055 23.184C153.231 23.688 154.551 23.94 156.015 23.94C157.335 23.94 158.511 23.736 159.543 23.328C160.575 22.92 161.427 22.464 162.099 21.96L163.575 25.056ZM179.226 14.004C179.226 12.204 179.562 10.512 180.234 8.928C180.93 7.32 181.89 5.904 183.114 4.68C184.338 3.432 185.742 2.46 187.326 1.764C188.934 1.044 190.662 0.684 192.51 0.684C194.334 0.684 196.038 1.044 197.622 1.764C199.23 2.46 200.646 3.432 201.87 4.68C203.118 5.904 204.09 7.32 204.786 8.928C205.482 10.512 205.83 12.204 205.83 14.004C205.83 15.852 205.482 17.58 204.786 19.188C204.09 20.796 203.118 22.212 201.87 23.436C200.646 24.636 199.23 25.584 197.622 26.28C196.038 26.952 194.334 27.288 192.51 27.288C190.662 27.288 188.934 26.952 187.326 26.28C185.742 25.608 184.338 24.672 183.114 23.472C181.89 22.272 180.93 20.868 180.234 19.26C179.562 17.652 179.226 15.9 179.226 14.004ZM182.826 14.04C182.826 15.408 183.078 16.692 183.582 17.892C184.086 19.068 184.782 20.112 185.67 21.024C186.558 21.936 187.59 22.656 188.766 23.184C189.942 23.688 191.214 23.94 192.582 23.94C193.926 23.94 195.186 23.688 196.362 23.184C197.538 22.656 198.558 21.936 199.422 21.024C200.286 20.112 200.97 19.068 201.474 17.892C201.978 16.692 202.23 15.396 202.23 14.004C202.23 12.636 201.978 11.352 201.474 10.152C200.97 8.928 200.274 7.86 199.386 6.948C198.498 6.036 197.466 5.328 196.29 4.824C195.114 4.296 193.854 4.032 192.51 4.032C191.142 4.032 189.87 4.296 188.694 4.824C187.518 5.352 186.486 6.072 185.598 6.984C184.71 7.896 184.026 8.964 183.546 10.188C183.066 11.388 182.826 12.672 182.826 14.04Z';
+
+/* Kategori koleksi (urutan = urutan di galeri horizontal) */
+XV.CATEGORIES = [
+  { id: 'seats',    label: 'Seats',    note: 'Sofa & kursi' },
+  { id: 'tables',   label: 'Tables',   note: 'Meja makan, kopi & kerja' },
+  { id: 'bedframe', label: 'Bedframe', note: 'Tempat tidur' },
+  { id: 'cabinet',  label: 'Cabinet',  note: 'Penyimpanan' },
+  { id: 'decor',    label: 'Decor & Light', note: 'Lampu & aksesori' },
+  { id: 'smart',    label: 'Smart',    note: 'Kelistrikan VAZRA' }
+];
+
+/* Produk — price null = "Tanya harga" (belum ada di xionco.shop)
+   bg: 'white' → gambar berlatar putih (di-blend multiply di kartu terang)
+       'dark'  → foto berlatar hitam (tampil sebagai kartu gelap)            */
+XV.PRODUCTS = [
+  // Seats
+  { id: 'kyrios', cat: 'seats', name: 'KYRIOS', type: 'Sofa · 3 seater', price: 3978000, was: 7625000, img: '2024/07/XC.com-Thumbnail-4-1.png', bg: 'white',
+    desc: 'Velvet tufted dengan base berlapis kuningan. Seri GUISE KYRIOS: tegas, dalam, dan hangat.', url: 'https://www.xionco.com/product/guise-kyrios-three-seat/' },
+  { id: 'capra', cat: 'seats', name: 'CAPRA Deluxe', type: 'Sofa · faux leather premium', price: 2808000, was: 5382000, img: '2025/02/CAPRA_DELUXE_disp_1-removebg-preview.png',
+    desc: 'Sofa kulit minimalis dengan rangka kayu solid. Tersedia 1, 2 dan 3 seater.', url: 'https://www.xionco.com/product/capra-deluxe-series/' },
+  { id: 'guise', cat: 'seats', name: 'GUISE Signature', type: 'Sofa · 3 seater', price: 4068000, img: '2024/07/XC.com-Thumbnail-4.png', bg: 'white',
+    desc: 'Proporsi rendah, jahitan tufting presisi, kaki kayu tapered.', url: 'https://www.xionco.com/product/guise-3-seater-2/' },
+  { id: 'cameo', cat: 'seats', name: 'CAMEO', type: 'Sofa · 3 seater', price: 4592000, img: '2023/06/CAMEO.png',
+    desc: 'Garis bersih, dudukan dalam, kaki baja ramping. Diam, tapi tidak membosankan.', url: 'https://www.xionco.com/product/cameo/' },
+  { id: 'astral', cat: 'seats', name: 'ASTRAL Signature', type: 'Sofa · 1–3 seater', price: 2200000, from: true, img: '2023/06/XC.com-Thumbnail-7.png', bg: 'white',
+    desc: 'Silhouette hitam dengan piping kontras. Salah satu seri terlaris XIONCO.', url: 'https://www.xionco.com/product/cubix-group-child-2-3/' },
+  { id: 'orycto', cat: 'seats', name: 'ORYCTO', type: 'Sofa · 3 seater', price: 3481000, img: '2023/11/XC.com-Thumbnail-5.png', bg: 'white',
+    desc: 'Lengan kulit, bantalan lebar, nyaman untuk ruang keluarga.', url: 'https://www.xionco.com/product/orycto-leather-arm-couch-three-seat-sofa-kulit-minimalis-xionco/' },
+  { id: 'canis', cat: 'seats', name: 'CANIS', type: 'Grand Zen Luxury Sofa', price: null, img: '2022/09/XC.com-Thumbnail-8.png', bg: 'white',
+    desc: 'Panel kayu di sandaran berfungsi sebagai meja kerja, rak display, dan penyimpanan.', url: 'https://www.xionco.com/product/canis/' },
+  { id: 'cubix', cat: 'seats', name: 'CUBIX Modular', type: 'Armchair · Armless · Ottoman', price: null, img: '2022/09/XC.com-Thumbnail-5.png', bg: 'white',
+    desc: 'Modul bebas susun. Konfigurasikan sendiri di Custom Studio.', url: 'https://www.xionco.com/product/cubix-series/', studio: true },
+  { id: 'eorde', cat: 'seats', name: 'EORDE Sectional', type: 'Sofa · 5 seater · 2 electrical', price: 24800000, img: '2024/09/Sofa-Sectional_Main-View_Open.png', bg: 'dark',
+    desc: 'Sectional dengan dua dudukan elektrik dan meja tersembunyi. Flagship XIONCO.', url: 'https://www.xionco.com/product/eorde-sofa-sectional-5-seater-2-electrical/' },
+  { id: 'nora', cat: 'seats', name: 'NORA', type: 'Dining chair', price: null, img: '2023/06/NORA-DC.png',
+    desc: 'Rangka baja hitam dengan dudukan empuk. Pasangan meja GEOM.', url: 'https://www.xionco.com/product/nora-chair/' },
+
+  // Tables
+  { id: 'geom', cat: 'tables', name: 'GEOM', type: 'Dining table', price: 1850000, img: '2023/06/GEOM.png',
+    desc: 'Kaki geometris dari baja; daun meja HPL putih tulang.', url: 'https://www.xionco.com/product/geom-meja-makan/' },
+  { id: 'verk', cat: 'tables', name: 'VERK', type: 'Integrated desk', price: 2574000, img: '2024/07/XC.com-Thumbnail-24.png', bg: 'white',
+    desc: 'Meja kerja dengan rak terintegrasi. Satu bidang, semua kebutuhan.', url: 'https://www.xionco.com/product/verk-2/' },
+  { id: 'hout', cat: 'tables', name: 'HOUT', type: 'Scandustrial coffee table', price: 1420000, img: '2022/09/XC.com-Thumbnail-25.png', bg: 'white',
+    desc: 'Kayu hangat di atas rangka baja tipis.', url: 'https://www.xionco.com/product/hout/' },
+  { id: 'trapezo', cat: 'tables', name: 'TRAPEZO', type: 'Collaborative desk', price: 1230000, img: '2023/06/XC.com-Thumbnail-19.png', bg: 'white',
+    desc: 'Bentuk trapesium untuk ruang kerja kolaboratif.', url: 'https://www.xionco.com/product/trapezo/' },
+  { id: 'rouled', cat: 'tables', name: 'ROULED', type: 'Nesting coffee table', price: 1075000, img: '2022/09/XC.com-Thumbnail-20.png', bg: 'white',
+    desc: 'Dua meja bulat yang saling bersarang.', url: 'https://www.xionco.com/product/rouled-2/' },
+  { id: 'cubixct', cat: 'tables', name: 'CUBIX CT', type: 'Coffee table · glass', price: 1120000, img: '2024/07/XC.com-Thumbnail-16.png', bg: 'white',
+    desc: 'Rangka kayu terbuka dengan kaca bening.', url: 'https://www.xionco.com/product/cubix-meja-tamu-coffee-table/' },
+  { id: 'arze', cat: 'tables', name: 'ARZE', type: 'Personal workstation', price: 1269000, img: '2022/09/XC.com-Thumbnail-27.png', bg: 'white',
+    desc: 'Meja kerja ringkas dengan rak atas.', url: 'https://www.xionco.com/product/arze/' },
+  { id: 'l7', cat: 'tables', name: 'L7', type: 'Personal workstation', price: 1110000, img: '2024/12/XC.com-Thumbnail-18.png', bg: 'white',
+    desc: 'Siluet miring yang ringan, untuk sudut kerja di rumah.', url: 'https://www.xionco.com/product/l7-meja-kantor/' },
+  { id: 'recta', cat: 'tables', name: 'RECTA', type: 'Coffee table', price: 915000, img: '2022/09/RECTA.png',
+    desc: 'Kaca dan baja hitam. Hampir tidak terlihat.', url: 'https://www.xionco.com/product/recta/' },
+  { id: 'pluq', cat: 'tables', name: 'PLUQ', type: 'Coffee table', price: 820000, img: '2023/06/PLUQ.png',
+    desc: 'Daun meja organik di atas kaki kayu gelap.', url: 'https://www.xionco.com/product/belt/' },
+  { id: 'hexter', cat: 'tables', name: 'HEXTER', type: 'Modular side table', price: 635000, img: '2022/09/XC.com-Thumbnail-21.png', bg: 'white',
+    desc: 'Heksagonal, bisa disusun berdampingan.', url: 'https://www.xionco.com/product/hexter/' },
+
+  // Bedframe
+  { id: 'somno', cat: 'bedframe', name: 'SOMNO', type: 'Platform bed', price: 2040000, img: '2023/06/WhatsApp-Image-2024-08-03-at-16.14.45.jpeg', bg: 'white',
+    desc: 'Headboard berlapis kain, platform rendah.', url: 'https://www.xionco.com/product/somno/' },
+  { id: 'poel', cat: 'bedframe', name: 'POEL', type: 'Platform bed · divan', price: 1800000, img: '2024/12/POEL-308x322-1.png',
+    desc: 'Rangka baja dengan headboard kayu.', url: 'https://www.xionco.com/product/poel-platform-bed-tempat-tidur-divan-minimalis/' },
+  { id: 'ashara', cat: 'bedframe', name: 'ASHARA 34', type: 'Adjustable bed · electrical', price: null, img: '2024/09/Dipan_Nakes_Main.png', bg: 'dark',
+    desc: 'Sandaran elektrik yang bisa diatur. Tidur, membaca, bekerja.', url: 'https://www.xionco.com/product/ashara-34-adjustable-bed-electrical/' },
+
+  // Cabinet
+  { id: 'syme', cat: 'cabinet', name: 'SYME', type: 'Wardrobe', price: 9922500, img: '2023/06/345173b5-6001-4c72-bfbf-d0856762145a-removebg-preview.png',
+    desc: 'Pintu geser gelap dengan aksen kuningan.', url: 'https://www.xionco.com/product/syme/' },
+  { id: 'qaztac', cat: 'cabinet', name: 'QAZTAC', type: 'Industrial nightstand', price: 1250000, img: '2024/07/QAZTAC-Thumbnail-3-e1734703263864.png',
+    desc: 'Laci kayu dalam rangka baja hitam.', url: 'https://www.xionco.com/product/qaztac-meja-tempat-tidur-nakas/' },
+  { id: 'lucid', cat: 'cabinet', name: 'LUCID', type: 'Open shelf', price: 1150000, img: '2023/06/LUCID.png',
+    desc: 'Rangka terbuka, ringan secara visual.', url: 'https://www.xionco.com/product/nora-stool/' },
+  { id: 'regale', cat: 'cabinet', name: 'REGALE', type: 'Kitchenette', price: null, img: '2024/09/REGALE-Thumbnail-6.png',
+    desc: 'Kitchen set ringkas untuk apartemen dan pantry kantor.', url: 'https://www.xionco.com/product/regale-kitchenette-kitchen-set-concepted-dapur-minimalis-xionco/' },
+
+  // Decor & light
+  { id: 'aether', cat: 'decor', name: 'AETHER Cloud K100', type: 'Wall light', price: 354000, from: true, img: '2023/06/AETHER-K100.png',
+    desc: 'Garis cahaya vertikal. Seri AETHER: Cloud, Hill, Sky, Terra.', url: 'https://www.xionco.com/product/aether-series/' },
+  { id: 'aetherk80', cat: 'decor', name: 'AETHER K80', type: 'Floor light', price: null, img: '2023/06/AETHER-K80.png',
+    desc: 'Lampu lantai ramping dengan diffuser bulat.', url: 'https://www.xionco.com/product/aether-series/' },
+  { id: 'uruz', cat: 'decor', name: 'URUZ II', type: 'Steel towel rack', price: 550000, img: '2023/06/URUZ.png',
+    desc: 'Baja hitam, garis minimal.', url: 'https://www.xionco.com/product/uruz/' },
+  { id: 'kyoukai', cat: 'decor', name: 'KYOUKAI', type: 'Wall slat panel', price: null, img: '2023/06/KYOUKAI.png',
+    desc: 'Panel kisi kayu untuk dinding dan partisi.', url: 'https://www.xionco.com/product/kyoukai/' },
+
+  // Smart
+  { id: 'vazra', cat: 'smart', name: 'VAZRA', type: 'Power switch & outlet', price: 132000, img: '2024/07/ad7dd3e0-5728-45d8-98cb-29ca095aff47-removebg-preview.png',
+    desc: 'Saklar dan stop kontak modular berdesain monolitik.', url: 'https://www.xionco.com/product/vazra-power-switch-and-outlet/' },
+  { id: 'vazratrack', cat: 'smart', name: 'VAZRA Power Track', type: 'Socket track', price: null, img: '2024/12/Vazra_power_track_disp_1-removebg-preview.png',
+    desc: 'Rel listrik untuk meja meeting: geser, pasang, selesai.', url: 'https://www.xionco.com/product/vazra-series-power-track-socket-stop-kontak/' }
+];
+
+/* Museboard (foto proyek dari xionco.com) */
+XV.MUSE = [
+  { img: '2025/08/2-4.png', title: 'Electrical solution', note: 'Meeting room · VAZRA' },
+  { img: '2025/08/3-4.png', title: 'Idea comes true', note: 'Dari sketsa ke produksi' },
+  { img: '2025/08/4-4.png', title: 'Let there be light', note: 'Commercial lighting' },
+  { img: '2025/08/5-2.png', title: 'Custom ceiling', note: 'Ruang rapat' },
+  { img: '2025/08/6-2.png', title: 'Lighting design', note: 'Koridor hotel' },
+  { img: '2025/08/7-1.png', title: 'Luxurious', note: 'Living room' },
+  { img: '2025/05/XIONCO-HERO-PRODUCT-II-1.png', title: 'Leather detail', note: 'Material honesty' },
+  { img: '2025/05/ChatGPT-Image-May-16-2025-06_29_52-AM.png', title: 'Solid wood', note: 'Jepara · Mantingan' },
+  { img: '2023/06/HERO-PHOTO-PRODUCT-XIONCO-2023-4.png', title: 'Living with light', note: 'AETHER series' }
+];
+
+/* For Business — layanan */
+XV.SERVICES = [
+  { n: '01', title: 'Space Plan', note: 'Tata ruang & alur kerja kantor, retail, hospitality', img: '2025/08/Solusi-Design-untuk-Project-Anda.jpg' },
+  { n: '02', title: 'Product', note: 'Furnitur standar & custom dalam jumlah besar', img: '2025/08/1-3.png' },
+  { n: '03', title: 'Interior', note: 'Desain & visualisasi interior lengkap', img: '2025/08/9.png' },
+  { n: '04', title: 'Built-in', note: 'Kabinet, panel dinding, plafon & kelistrikan custom', img: '2025/08/8.png' }
+];
+
+XV.CLIENTS = ['SOGO', 'H&M', 'BRI', 'BCA', 'TRANS7', 'NEO SOHO', 'FORBES INDONESIA'];
+
+/* Pabrik (dari halaman About xionco.com) */
+XV.FACTORIES = [
+  { n: '01', place: 'Jepara · Mantingan', role: 'Pengolahan kayu', text: 'Curing bahan baku dan pembuatan komponen kayu.', lon: 110.67, lat: -6.59 },
+  { n: '02', place: 'Cirendeu', role: 'Finishing & metal', text: 'Finishing, pengelasan, lini multiboard / HPL.', lon: 106.76, lat: -6.31 },
+  { n: '03', place: 'Pondok Pinang I', role: 'Upholstery', text: 'Jahit, busa, dan pelapisan kain / kulit.', lon: 106.78, lat: -6.27 },
+  { n: '04', place: 'Pondok Pinang II', role: 'Final & packaging', text: 'Quality control, pengemasan, dan pengiriman.', lon: 106.79, lat: -6.28 }
+];
+
+/* Custom Studio — CUBIX Modular (harga = ESTIMASI DEMO, bukan harga resmi) */
+XV.STUDIO = {
+  seatPrice: 1250000,
+  armPrice: 450000,
+  ottomanPrice: 890000,
+  seatW: 72, armW: 16, depth: 86, height: 74,
+  fabrics: [
+    { id: 'fb01', code: 'FB 01', name: 'Graphite', color: '#4a4846', type: 'fabric' },
+    { id: 'fb02', code: 'FB 02', name: 'Ash', color: '#8d8a86', type: 'fabric' },
+    { id: 'fb03', code: 'FB 03', name: 'Oat', color: '#c7bba7', type: 'fabric' },
+    { id: 'fb04', code: 'FB 04', name: 'Sand', color: '#b39b78', type: 'fabric' },
+    { id: 'fb05', code: 'FB 05', name: 'Moss', color: '#5f6450', type: 'fabric' },
+    { id: 'fb06', code: 'FB 06', name: 'Clay', color: '#8e5d45', type: 'fabric' },
+    { id: 'fl01', code: 'FL 01', name: 'Ink Leather', color: '#262423', type: 'leather' },
+    { id: 'fl02', code: 'FL 02', name: 'Cognac Leather', color: '#7b4a2c', type: 'leather' }
+  ],
+  leatherFactor: 1.2,
+  bases: [
+    { id: 'oak', name: 'Oak', color: '#c8a678', add: 0 },
+    { id: 'walnut', name: 'Walnut', color: '#5a3d2b', add: 250000 },
+    { id: 'steel', name: 'Black steel', color: '#1d1c1b', add: 150000 },
+    { id: 'brass', name: 'Brass', color: '#b8924f', add: 450000 }
+  ]
+};
+
+/* Ukuran thumbnail WordPress yang tersedia di xionco.com (sudah dicek satu per satu).
+   Kartu, museboard, keranjang & pencarian memakai versi kecil; hero & quick view memakai file asli. */
+XV.SIZES = {
+  '2025/08/2-4.png': [1024, 768], '2025/08/3-4.png': [1024, 768], '2025/08/4-4.png': [1024, 768],
+  '2025/08/5-2.png': [1024, 768], '2025/08/6-2.png': [1024, 768], '2025/08/7-1.png': [1024, 768],
+  '2025/05/XIONCO-HERO-PRODUCT-II-1.png': [1024, 768],
+  '2025/05/ChatGPT-Image-May-16-2025-06_29_52-AM.png': [768],
+  '2023/06/HERO-PHOTO-PRODUCT-XIONCO-2023-4.png': [768],
+  '2024/07/XC.com-Thumbnail-4-1.png': [1024, 768], '2024/07/XC.com-Thumbnail-4.png': [768],
+  '2023/06/CAMEO.png': [768], '2023/06/XC.com-Thumbnail-7.png': [1024, 768],
+  '2023/11/XC.com-Thumbnail-5.png': [1024, 768], '2022/09/XC.com-Thumbnail-8.png': [1024, 768],
+  '2024/09/Sofa-Sectional_Main-View_Open.png': [1024, 768], '2023/06/NORA-DC.png': [1024, 768],
+  '2023/06/GEOM.png': [768], '2024/07/XC.com-Thumbnail-24.png': [1024, 768],
+  '2022/09/XC.com-Thumbnail-25.png': [1024, 768], '2023/06/XC.com-Thumbnail-19.png': [1024, 768],
+  '2022/09/XC.com-Thumbnail-20.png': [1024, 768], '2024/07/XC.com-Thumbnail-16.png': [1024, 768],
+  '2022/09/XC.com-Thumbnail-27.png': [1024, 768], '2024/12/XC.com-Thumbnail-18.png': [1024, 768],
+  '2022/09/RECTA.png': [768], '2023/06/PLUQ.png': [768], '2022/09/XC.com-Thumbnail-21.png': [1024, 768],
+  '2023/06/WhatsApp-Image-2024-08-03-at-16.14.45.jpeg': [768], '2024/09/Dipan_Nakes_Main.png': [1024, 768],
+  '2023/06/LUCID.png': [768], '2024/09/REGALE-Thumbnail-6.png': [768], '2023/06/AETHER-K100.png': [768],
+  '2023/06/AETHER-K80.png': [768], '2023/06/URUZ.png': [768], '2023/06/KYOUKAI.png': [768]
+};
+
+/* ---------------------------------------------------------------------------
+   v3 — cara menampilkan foto produk di UI neon gelap (dicek per gambar):
+   knock = latar putih → dibuat transparan lewat filter SVG
+   glow  = latar hitam → mix-blend screen
+   (lainnya PNG transparan, tampil apa adanya)
+   --------------------------------------------------------------------------- */
+XV.V3_KNOCK = ['kyrios', 'astral', 'orycto', 'canis', 'verk', 'hout', 'trapezo', 'rouled', 'cubixct', 'arze', 'l7', 'hexter', 'somno'];
+XV.V3_DARK = ['eorde', 'ashara'];
+
+/* Outline Pulau Jawa & Madura (lon, lat) untuk peta titik 3D */
+XV.JAVA = [[105.21, -6.75], [105.46, -6.62], [105.86, -6.02], [106.1, -6], [106.6, -6.03], [106.85, -6.1], [107.1, -5.95], [107.45, -6.1], [107.85, -6.2], [108.2, -6.25], [108.35, -6.4], [108.55, -6.72], [109, -6.85], [109.45, -6.85], [109.7, -6.88], [110.1, -6.88], [110.42, -6.95], [110.6, -6.75], [110.68, -6.5], [110.95, -6.42], [111.1, -6.62], [111.45, -6.68], [111.95, -6.8], [112.35, -6.9], [112.6, -6.92], [112.75, -7.15], [112.85, -7.55], [113.3, -7.7], [113.85, -7.68], [114.15, -7.7], [114.45, -7.8], [114.42, -8.2], [114.6, -8.75], [114.3, -8.62], [113.8, -8.5], [113.3, -8.3], [112.7, -8.35], [112.2, -8.32], [111.6, -8.25], [111.05, -8.2], [110.6, -8.05], [110.2, -7.95], [109.7, -7.78], [109.3, -7.7], [108.9, -7.7], [108.55, -7.72], [108.2, -7.78], [107.75, -7.65], [107.4, -7.5], [106.95, -7.4], [106.45, -7.38], [106.35, -7], [106, -6.86], [105.6, -6.85]];
+XV.MADURA = [[112.7, -6.9], [113.3, -6.88], [113.95, -6.9], [114.1, -7.05], [113.7, -7.2], [113.05, -7.22], [112.75, -7.12]];
+
+</script>
+<script>
+/* ==========================================================================
+   Maison XIONCO — Showroom 3D (Three.js r147)
+   Pencahayaan studio realistis: RoomEnvironment (pantulan), spotlight dengan
+   bayangan lembut, lampu lantai kuningan, karpet, meja samping travertine.
+   Sofa modular CUBIX dibuat prosedural (sama dengan konfigurator).
+   Suasana: siang / senja / malam. Peta manufaktur: manik emas Pulau Jawa.
+   API: window.XW
+   ========================================================================== */
+(function () {
+  'use strict';
+  var T = window.THREE, G = window.gsap, XV = window.XV;
+  var XW = window.XW = { ok: false, labels: {} };
+  if (!T) return;
+
+  var col = function (h) { return new T.Color(h).convertSRGBToLinear(); };
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var tw = function (target, vars) {
+    if (G && !XW.reduced && vars.duration !== 0) return G.to(target, vars);
+    Object.keys(vars).forEach(function (k) { if (k in target) target[k] = vars[k]; });
+    if (vars.onUpdate) vars.onUpdate();
+    if (vars.onComplete) vars.onComplete();
+    return null;
+  };
+
+  var canvas, renderer, scene, camera, controls, pmrem;
+  var W = 1, H = 1, MOBILE = false, last = 0, frame = 0, dtAvg = 16, slow = 0, clock = 0;
+  var mats = {}, L = {}, O = {};
+  var st = { room: 'home', set: 1, setT: 1, sofa: 1, sofaT: 1, map: 0, mapT: 0, spin: 0, spinV: 0, drag: false, lastDrag: -1e9, pose: 0 };
+  var rig = { px: -.6, py: 1.45, pz: 5.8, tx: -.85, ty: .62, tz: 0, fov: 30 };
+  var mouse = { x: 0, y: 0, sx: 0, sy: 0 };
+
+  /* ---------------------------------------------------------------- tekstur prosedural */
+  function canvasTex(w, h, draw, repeat) {
+    var c = document.createElement('canvas'); c.width = w; c.height = h;
+    draw(c.getContext('2d'), w, h);
+    var t = new T.CanvasTexture(c);
+    t.encoding = T.sRGBEncoding;
+    t.anisotropy = 8;
+    if (repeat) { t.wrapS = t.wrapT = T.RepeatWrapping; t.repeat.set(repeat[0], repeat[1]); }
+    return t;
+  }
+  var rnd = (function () { var s = 7; return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; })();
+  function weave(g, w, h) {           // tenunan kain, abu terang (dikalikan warna material)
+    g.fillStyle = '#c9c4bd'; g.fillRect(0, 0, w, h);
+    for (var y = 0; y < h; y += 2) { g.fillStyle = 'rgba(70,64,58,' + (0.09 + rnd() * .1) + ')'; g.fillRect(0, y, w, 1); }
+    for (var x = 0; x < w; x += 2) { g.fillStyle = 'rgba(255,248,236,' + (0.03 + rnd() * .05) + ')'; g.fillRect(x, 0, 1, h); }
+    for (var i = 0; i < 2200; i++) { g.fillStyle = 'rgba(60,54,48,' + rnd() * .12 + ')'; g.fillRect(rnd() * w, rnd() * h, 1 + rnd() * 2, 1); }
+  }
+  function woodGrain(base, dark) {
+    return function (g, w, h) {
+      g.fillStyle = base; g.fillRect(0, 0, w, h);
+      for (var i = 0; i < 160; i++) {
+        var y = rnd() * h, a = .03 + rnd() * .09;
+        g.strokeStyle = dark.replace('A', a.toFixed(3)); g.lineWidth = .6 + rnd() * 1.8;
+        g.beginPath(); g.moveTo(0, y);
+        for (var x = 0; x <= w; x += 32) g.lineTo(x, y + Math.sin(x * .012 + i) * (2 + rnd() * 3));
+        g.stroke();
+      }
+    };
+  }
+  function floorPlanks(g, w, h) {
+    var ph = h / 8;
+    for (var r = 0; r < 8; r++) {
+      var off = (r % 2) * w * .37, len = w * .62;
+      for (var x = -off; x < w; x += len) {
+        var v = 22 + Math.round(rnd() * 8);
+        g.fillStyle = 'rgb(' + (v + 12) + ',' + (v + 2) + ',' + (v - 6) + ')';
+        g.fillRect(x, r * ph, len - 2, ph - 2);
+        for (var k = 0; k < 14; k++) {
+          g.strokeStyle = 'rgba(8,6,4,' + (.06 + rnd() * .1) + ')'; g.lineWidth = .7;
+          var yy = r * ph + rnd() * ph; g.beginPath(); g.moveTo(x, yy); g.lineTo(x + len, yy + (rnd() - .5) * 4); g.stroke();
+        }
+      }
+    }
+  }
+  function rugTex(g, w, h) {
+    g.fillStyle = '#3a3430'; g.fillRect(0, 0, w, h);
+    for (var i = 0; i < 26000; i++) { var c = 48 + rnd() * 30; g.fillStyle = 'rgba(' + (c + 8) + ',' + c + ',' + (c - 8) + ',' + (.08 + rnd() * .14) + ')'; g.fillRect(rnd() * w, rnd() * h, 2, 1 + rnd() * 2); }
+    g.strokeStyle = 'rgba(30,26,22,.55)'; g.lineWidth = 6; g.strokeRect(36, 36, w - 72, h - 72);
+    g.strokeStyle = 'rgba(160,140,110,.22)'; g.lineWidth = 2; g.strokeRect(52, 52, w - 104, h - 104);
+  }
+  function travertine(g, w, h) {
+    g.fillStyle = '#a99b85'; g.fillRect(0, 0, w, h);
+    for (var i = 0; i < 90; i++) { g.fillStyle = 'rgba(150,130,104,' + (.05 + rnd() * .08) + ')'; g.fillRect(0, rnd() * h, w, 1 + rnd() * 3); }
+    for (var j = 0; j < 400; j++) { g.fillStyle = 'rgba(120,100,80,' + rnd() * .2 + ')'; g.fillRect(rnd() * w, rnd() * h, 1 + rnd() * 5, 1); }
+  }
+  function fluted(g, w, h) {
+    var n = 48;
+    for (var i = 0; i < n; i++) {
+      var x = i * w / n, gr = g.createLinearGradient(x, 0, x + w / n, 0);
+      gr.addColorStop(0, '#1a1511'); gr.addColorStop(.5, '#2a231c'); gr.addColorStop(1, '#16120e');
+      g.fillStyle = gr; g.fillRect(x, 0, w / n + 1, h);
+    }
+  }
+  function glowTex() {
+    var c = document.createElement('canvas'); c.width = c.height = 128;
+    var g = c.getContext('2d'), gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+    gr.addColorStop(0, 'rgba(255,236,206,1)'); gr.addColorStop(.25, 'rgba(255,214,160,.5)'); gr.addColorStop(1, 'rgba(255,200,140,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+    return new T.CanvasTexture(c);
+  }
+
+  /* ---------------------------------------------------------------- ruang */
+  function shadowed(m) { m.castShadow = true; m.receiveShadow = true; return m; }
+  function buildRoom() {
+    var floorTex = canvasTex(1024, 1024, floorPlanks, [11, 11]);
+    mats.floor = new T.MeshStandardMaterial({ map: floorTex, roughness: .42, metalness: 0, envMapIntensity: .22 });
+    var floor = new T.Mesh(new T.PlaneGeometry(80, 80), mats.floor);
+    floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true;
+    scene.add(floor);
+    var wallTex = canvasTex(1024, 256, fluted, [15, 1]);
+    mats.wall = new T.MeshStandardMaterial({ map: wallTex, roughness: .9, metalness: 0, side: T.BackSide, envMapIntensity: .2 });
+    var wall = new T.Mesh(new T.CylinderGeometry(9.5, 9.5, 8, 128, 1, true), mats.wall);
+    wall.position.set(0, 4, .8); wall.receiveShadow = true;
+    scene.add(wall);
+    O.wall = wall;
+  }
+  function buildSet() {
+    var set = new T.Group(); scene.add(set); O.set = set;
+    // karpet
+    var rug = new T.Mesh(new T.PlaneGeometry(4.8, 3.3), new T.MeshStandardMaterial({ map: canvasTex(1024, 704, rugTex), roughness: 1, envMapIntensity: .2 }));
+    rug.rotation.x = -Math.PI / 2; rug.position.set(0, .006, .45); rug.receiveShadow = true;
+    set.add(rug);
+    // meja samping travertine + kuningan
+    var table = new T.Group();
+    mats.brass = new T.MeshStandardMaterial({ color: col('#b8924f'), metalness: 1, roughness: .28, envMapIntensity: 1 });
+    var top = shadowed(new T.Mesh(new T.CylinderGeometry(.3, .3, .035, 64), new T.MeshStandardMaterial({ map: canvasTex(512, 512, travertine), roughness: .45, envMapIntensity: .6 })));
+    top.position.y = .52; table.add(top);
+    var stem = shadowed(new T.Mesh(new T.CylinderGeometry(.022, .022, .5, 16), mats.brass)); stem.position.y = .26; table.add(stem);
+    var foot = shadowed(new T.Mesh(new T.CylinderGeometry(.17, .19, .02, 48), mats.brass)); foot.position.y = .01; table.add(foot);
+    var vase = shadowed(new T.Mesh(new T.LatheGeometry([[0, 0], [.07, 0], [.095, .06], [.08, .17], [.04, .23], [.045, .27], [0, .27]].map(function (p) { return new T.Vector2(p[0], p[1]); }), 48),
+      new T.MeshStandardMaterial({ color: col('#2a2420'), roughness: .35, metalness: 0, envMapIntensity: .8 })));
+    vase.position.set(.06, .538, -.04); table.add(vase);
+    set.add(table); O.table = table;
+    // lampu lantai kuningan
+    var lamp = new T.Group();
+    var lb = shadowed(new T.Mesh(new T.CylinderGeometry(.16, .18, .025, 48), mats.brass)); lb.position.y = .012; lamp.add(lb);
+    var pole = shadowed(new T.Mesh(new T.CylinderGeometry(.011, .011, 1.36, 12), mats.brass)); pole.position.y = .69; lamp.add(pole);
+    mats.globe = new T.MeshStandardMaterial({ color: col('#8a6f50'), emissive: col('#ff8a36'), emissiveIntensity: .8, roughness: .9, side: T.DoubleSide });
+    var shade = new T.Mesh(new T.CylinderGeometry(.19, .23, .3, 64, 1, true), mats.globe); shade.position.y = 1.5; lamp.add(shade);
+    var inner = new T.Mesh(new T.CircleGeometry(.2, 48), new T.MeshBasicMaterial({ color: col('#ffb874') })); inner.rotation.x = Math.PI / 2; inner.position.y = 1.36; lamp.add(inner);
+    L.lamp = new T.PointLight(col('#ffbe7d'), 1.2, 5, 2); L.lamp.position.y = 1.42; lamp.add(L.lamp);
+    var halo = new T.Sprite(new T.SpriteMaterial({ map: O.glow, color: col('#ffb06a'), transparent: true, opacity: .4, depthWrite: false, blending: T.AdditiveBlending }));
+    halo.scale.set(1.1, 1.1, 1); halo.position.y = 1.5; lamp.add(halo); O.halo = halo;
+    set.add(lamp); O.lamp = lamp;
+  }
+
+  /* ---------------------------------------------------------------- sofa CUBIX */
+  var S = (XV && XV.STUDIO) || { seatW: 72, armW: 16, depth: 86, height: 74, fabrics: [{ id: 'fb01', color: '#4a4846', type: 'fabric' }] };
+  var SW = S.seatW / 100, AW = S.armW / 100, D = S.depth / 100, HH = S.height / 100, PL = .075;
+  var sofa, slots = {}, cfg = { seats: 3, arms: true, ottoman: false, fabric: 'fb01', base: 'oak' };
+  var BASES = {
+    oak: { color: '#9c7650', metal: 0, rough: .55, wood: true }, walnut: { color: '#5b3e2b', metal: 0, rough: .5, wood: true },
+    steel: { color: '#1d1c1b', metal: .9, rough: .32 }, brass: { color: '#b8924f', metal: 1, rough: .26 }
+  };
+  function rbox(w, h, d, r, seg) { return T.RoundedBoxGeometry ? new T.RoundedBoxGeometry(w, h, d, seg || 5, r) : new T.BoxGeometry(w, h, d); }
+  function part(g, geo, mat, x, y, z) { var m = shadowed(new T.Mesh(geo, mat)); m.position.set(x, y, z); g.add(m); return m; }
+  function makeSeat() {
+    var g = new T.Group();
+    part(g, rbox(SW - .02, PL, D - .06, .008, 2), mats.base, 0, PL / 2, 0);
+    part(g, rbox(SW, .2, D, .03, 4), mats.fabric, 0, PL + .1, 0);
+    part(g, rbox(SW - .03, .14, D - .22, .06, 5), mats.fabric, 0, PL + .2 + .07, .09);
+    part(g, rbox(SW, .5, .1, .03, 4), mats.fabric, 0, HH - .25, -D / 2 + .05);
+    var back = part(g, rbox(SW - .035, .34, .19, .07, 5), mats.fabric, 0, HH - .21, -D / 2 + .17);
+    back.rotation.x = -.11;
+    return g;
+  }
+  function makeArm() {
+    var g = new T.Group();
+    part(g, rbox(AW - .02, PL, D - .06, .008, 2), mats.base, 0, PL / 2, 0);
+    part(g, rbox(AW, .58, D, .045, 5), mats.fabric, 0, PL + .29, 0);
+    return g;
+  }
+  function makeOttoman() {
+    var g = new T.Group();
+    part(g, rbox(SW - .02, PL, SW - .02, .008, 2), mats.base, 0, PL / 2, 0);
+    part(g, rbox(SW, .34, SW, .06, 5), mats.fabric, 0, PL + .17, 0);
+    return g;
+  }
+  function targets(c) {
+    var t = {}, total = c.seats * SW + (c.arms ? 2 * AW : 0), x = -total / 2;
+    if (c.arms) { t.armL = { x: x + AW / 2, z: 0 }; x += AW; }
+    for (var i = 0; i < c.seats; i++) { t['seat' + i] = { x: x + SW / 2, z: 0 }; x += SW; }
+    if (c.arms) t.armR = { x: x + AW / 2, z: 0 };
+    if (c.ottoman) t.ottoman = { x: total / 2 - (c.arms ? AW : 0) - SW / 2, z: D / 2 + .34 + SW / 2 };
+    return t;
+  }
+  function layoutProps(total, animate) {
+    var lx = total / 2 + .62, tx = -total / 2 - .5;
+    if (animate) { tw(O.lamp.position, { x: lx, duration: 1.1, ease: 'power3.inOut' }); tw(O.table.position, { x: tx, duration: 1.1, ease: 'power3.inOut' }); }
+    else { O.lamp.position.x = lx; O.table.position.x = tx; }
+    O.lamp.position.z = -.38; O.table.position.z = .05;
+  }
+  function applyCfg(c, animate) {
+    cfg = Object.assign({}, cfg, c);
+    var tg = targets(cfg), d = 0;
+    Object.keys(slots).forEach(function (k) {
+      if (tg[k]) return;
+      var o = slots[k]; delete slots[k];
+      if (animate) tw(o.position, { y: -1, duration: .7, ease: 'power3.in', onComplete: function () { sofa.remove(o); } });
+      else sofa.remove(o);
+    });
+    Object.keys(tg).forEach(function (k) {
+      var o = slots[k], t = tg[k];
+      if (!o) {
+        o = k === 'ottoman' ? makeOttoman() : k.indexOf('arm') === 0 ? makeArm() : makeSeat();
+        slots[k] = o; sofa.add(o);
+        o.position.set(t.x, animate ? -1 : 0, t.z);
+        if (animate) { tw(o.position, { y: 0, duration: 1.1, delay: d, ease: 'power3.out' }); d += .08; }
+      } else if (animate) tw(o.position, { x: t.x, z: t.z, duration: 1, ease: 'power3.inOut' });
+      else { o.position.x = t.x; o.position.z = t.z; }
+    });
+    var f = (S.fabrics || []).filter(function (x) { return x.id === cfg.fabric; })[0] || S.fabrics[0];
+    var b = BASES[cfg.base] || BASES.oak;
+    var leather = f.type === 'leather';
+    var fc = col(f.color).multiplyScalar(leather ? 1 : .82), bc = col(b.color);
+    mats.fabric.map = leather ? null : O.weave;
+    mats.fabric.bumpMap = leather ? null : O.weave;
+    mats.fabric.roughness = leather ? .4 : .92;
+    mats.fabric.sheen = leather ? 0 : .55;
+    mats.fabric.clearcoat = leather ? .3 : 0;
+    mats.fabric.needsUpdate = true;
+    mats.base.map = b.wood ? O.woodTex : null;
+    mats.base.metalness = b.metal; mats.base.roughness = b.rough; mats.base.needsUpdate = true;
+    var bc2 = bc;
+    if (animate) {
+      tw(mats.fabric.color, { r: fc.r, g: fc.g, b: fc.b, duration: 1, ease: 'power2.inOut' });
+      tw(mats.fabric.sheenColor, { r: fc.r * 1.6 + .05, g: fc.g * 1.6 + .05, b: fc.b * 1.6 + .05, duration: 1 });
+      tw(mats.base.color, { r: bc2.r, g: bc2.g, b: bc2.b, duration: 1, ease: 'power2.inOut' });
+    } else {
+      mats.fabric.color.copy(fc); mats.fabric.sheenColor.setRGB(fc.r * 1.6 + .05, fc.g * 1.6 + .05, fc.b * 1.6 + .05);
+      mats.base.color.copy(bc2);
+    }
+    var total = cfg.seats * SW + (cfg.arms ? 2 * AW : 0);
+    layoutProps(total, animate);
+    return { width: Math.round(total * 100) };
+  }
+  function buildSofa() {
+    O.weave = canvasTex(512, 512, weave, [5, 5]);
+    O.woodTex = canvasTex(512, 256, woodGrain('#cdb391', 'rgba(60,38,20,A)'), [1, 1]);
+    mats.fabric = new T.MeshPhysicalMaterial({ color: col('#4a4846'), map: O.weave, bumpMap: O.weave, bumpScale: .0035, roughness: .92, metalness: 0, sheen: .55, sheenRoughness: .7, sheenColor: new T.Color(.2, .2, .2), envMapIntensity: .55 });
+    mats.base = new T.MeshStandardMaterial({ color: col('#c3a073'), roughness: .55, metalness: 0, map: O.woodTex, envMapIntensity: .7 });
+    sofa = new T.Group(); scene.add(sofa);
+    applyCfg(cfg, false);
+  }
+
+  /* ---------------------------------------------------------------- peta manik emas */
+  var MAP = { lon0: 109.8, lat0: -7.25, k: 3.0 };
+  var mapXZ = function (lon, lat) { return [(lon - MAP.lon0) * MAP.k, (lat - MAP.lat0) * -MAP.k]; };
+  function inside(x, y, poly) {
+    var ins = false;
+    for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      var xi = poly[i][0], yi = poly[i][1], xj = poly[j][0], yj = poly[j][1];
+      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) ins = !ins;
+    }
+    return ins;
+  }
+  var beads, beadPos = [], beacons = [], route, routeGeo, routeCount = 0, pulse, curve, dummy;
+  function buildMap() {
+    var g = new T.Group(); g.visible = false; scene.add(g); O.map = g;
+    var step = .105;
+    for (var lat = -5.9; lat > -8.9; lat -= step) {
+      for (var lon = 105; lon < 114.9; lon += step) {
+        var off = (Math.round((lat + 5.9) / step) % 2) * step / 2, x = lon + off;
+        if (inside(x, lat, XV.JAVA || []) || inside(x, lat, XV.MADURA || [])) beadPos.push(mapXZ(x, lat));
+      }
+    }
+    XW.mapDots = beadPos.length;
+    mats.gold = new T.MeshStandardMaterial({ color: col('#c9a86e'), metalness: 1, roughness: .32, envMapIntensity: 1.2 });
+    beads = new T.InstancedMesh(new T.SphereGeometry(.055, 12, 8), mats.gold, beadPos.length);
+    beads.castShadow = true;
+    dummy = new T.Object3D();
+    g.add(beads);
+    var F = XV.FACTORIES || [], center = mapXZ(106.777, -6.287), spread = [[-.62, .34], [.12, -.52], [.62, .22]];
+    mats.beacon = new T.MeshStandardMaterial({ color: col('#e8d2a8'), emissive: col('#ffcf8f'), emissiveIntensity: 1.4, roughness: .4 });
+    F.forEach(function (f, i) {
+      var p = i === 0 ? mapXZ(f.lon, f.lat) : [center[0] + spread[i - 1][0], center[1] + spread[i - 1][1]];
+      var b = new T.Group(); b.position.set(p[0], 0, p[1]);
+      var h = i === 0 ? 2.2 : 1.6;
+      var pil = shadowed(new T.Mesh(new T.CylinderGeometry(.012, .012, h, 8), mats.gold)); pil.position.y = h / 2; b.add(pil);
+      var top = new T.Mesh(new T.SphereGeometry(.06, 24, 16), mats.beacon); top.position.y = h; b.add(top);
+      var gl = new T.Sprite(new T.SpriteMaterial({ map: O.glow, color: col('#ffd49b'), transparent: true, opacity: .7, depthWrite: false, blending: T.AdditiveBlending }));
+      gl.scale.set(.6, .6, 1); gl.position.y = h; b.add(gl);
+      var ring = new T.Mesh(new T.TorusGeometry(.28, .006, 6, 80), mats.gold); ring.rotation.x = Math.PI / 2; ring.position.y = .02; b.add(ring);
+      b.userData = { h: h, ring: ring, glow: gl };
+      g.add(b); beacons.push(b);
+    });
+    var J = beacons[0].position, K = new T.Vector3(center[0], 0, center[1]);
+    curve = new T.CatmullRomCurve3([new T.Vector3(J.x, .1, J.z), new T.Vector3(lerp(J.x, K.x, .3), 1.9, J.z - .8), new T.Vector3(lerp(J.x, K.x, .72), 2, K.z - .8), new T.Vector3(K.x, .1, K.z)]);
+    routeGeo = new T.TubeGeometry(curve, 200, .01, 6, false);
+    routeCount = routeGeo.index.count; routeGeo.setDrawRange(0, 0);
+    route = new T.Mesh(routeGeo, mats.gold); g.add(route);
+    pulse = new T.Sprite(new T.SpriteMaterial({ map: O.glow, color: col('#ffe0b0'), transparent: true, opacity: 0, depthWrite: false, blending: T.AdditiveBlending }));
+    pulse.scale.set(.5, .5, 1); g.add(pulse);
+  }
+  function placeBeads(v) {
+    var x0 = -16, x1 = 15;
+    for (var i = 0; i < beadPos.length; i++) {
+      var p = beadPos[i], local = clamp((v * 1.25 - (x1 - p[0]) / (x1 - x0) * .25), 0, 1);
+      dummy.position.set(p[0], -.2 + .26 * local, p[1]);
+      dummy.scale.setScalar(.001 + local * (W / H < .9 ? 1.45 : 1));
+      dummy.updateMatrix();
+      beads.setMatrixAt(i, dummy.matrix);
+    }
+    beads.instanceMatrix.needsUpdate = true;
+  }
+
+  /* ---------------------------------------------------------------- cahaya & suasana */
+  var MOODS = {
+    siang: { key: 2.4, keyC: '#fff0dc', wash: .65, hemi: .42, fill: .55, lamp: .25, glow: .3, env: .7, exp: 1.0, bg: '#16120e' },
+    senja: { key: 1.45, keyC: '#ffd2a4', wash: 1.0, hemi: .2, fill: .28, lamp: .9, glow: .85, env: .38, exp: .95, bg: '#100d0a' },
+    malam: { key: .7, keyC: '#ffc489', wash: .45, hemi: .08, fill: .15, lamp: 2.4, glow: 1.25, env: .2, exp: .92, bg: '#0a0807' }
+  };
+  var mood = { key: 1.45, wash: 1, hemi: .2, fill: .28, lamp: .9, glow: 1.1, env: .38, exp: .95 }, moodName = 'senja';
+  function buildLights() {
+    L.hemi = new T.HemisphereLight(col('#d8c7ad'), col('#140f0b'), .26); scene.add(L.hemi);
+    L.key = new T.SpotLight(col('#ffcf9e'), 2.3, 0, .52, .9, 1);
+    L.key.position.set(2.9, 6.4, 3.8); L.key.target.position.set(0, .3, 0);
+    L.key.castShadow = true; L.key.shadow.mapSize.set(MOBILE ? 1024 : 2048, MOBILE ? 1024 : 2048);
+    L.key.shadow.bias = -.0004; L.key.shadow.normalBias = .02; L.key.shadow.camera.near = 2; L.key.shadow.camera.far = 16;
+    scene.add(L.key, L.key.target);
+    L.wash = new T.SpotLight(col('#ffcf9a'), 1.25, 0, .7, 1, 1);
+    L.wash.position.set(0, 6, 2.5); L.wash.target.position.set(0, 2.4, -8.6);
+    scene.add(L.wash, L.wash.target);
+    L.rim = new T.DirectionalLight(col('#a7b4c4'), .35); L.rim.position.set(-4, 3.5, -4); scene.add(L.rim);
+    L.fill = new T.SpotLight(col('#e9d8c2'), .35, 0, .8, 1, 1); L.fill.position.set(-3.5, 1.6, 6); L.fill.target.position.set(0, .45, 0); scene.add(L.fill, L.fill.target);
+  }
+  function setMood(name, dur) {
+    var m = MOODS[name] || MOODS.senja; moodName = name;
+    var c = col(m.keyC), bg = col(m.bg);
+    var d = dur == null ? 1.6 : dur;
+    tw(mood, { key: m.key, wash: m.wash, hemi: m.hemi, fill: m.fill, lamp: m.lamp, glow: m.glow, env: m.env, exp: m.exp, duration: d, ease: 'power2.inOut' });
+    tw(L.key.color, { r: c.r, g: c.g, b: c.b, duration: d });
+    tw(scene.background, { r: bg.r, g: bg.g, b: bg.b, duration: d });
+    tw(scene.fog.color, { r: bg.r, g: bg.g, b: bg.b, duration: d });
+  }
+
+  /* ---------------------------------------------------------------- kamera per ruang */
+  var RIGS = {
+    home:       { p: [-1.05, 1.1, 8.3], t: [-1.5, .62, 0], fov: 27 },
+    koleksi:    { p: [3.8, 2.2, 7], t: [0, .7, 0], fov: 30 },
+    atelier:    { p: [.95, 1.62, 6.7], t: [.38, .46, 0], fov: 30 },
+    manufaktur: { p: [-6.2, 16.5, 12.8], t: [-6.6, 0, -1.6], fov: 36 },
+    bisnis:     { p: [-3.6, 2.2, 7], t: [0, .7, 0], fov: 30 },
+    galeri:     { p: [0, 1.9, 6.2], t: [0, 2.2, -8], fov: 34 },
+    kontak:     { p: [3.05, 1.35, 3.5], t: [1.35, .9, -.2], fov: 32 }
+  };
+  var RIGS_P = {
+    home:       { p: [0, 2.1, 8.9], t: [0, .55, 0], fov: 40 },
+    atelier:    { p: [0, 2.3, 8.6], t: [0, .18, .2], fov: 40 },
+    manufaktur: { p: [-4.6, 27, 22], t: [-4.6, 0, 4.2], fov: 44 },
+    galeri:     { p: [0, 1.9, 7], t: [0, 2.2, -8], fov: 44 },
+    kontak:     { p: [2.6, 2.2, 6.4], t: [1.2, 1.25, -.2], fov: 40 }
+  };
+  var STATE = {
+    home: { set: 1, map: 0, mood: 'senja' }, koleksi: { set: 1, map: 0, mood: null }, atelier: { set: 1, map: 0, mood: null },
+    manufaktur: { set: 0, map: 1, mood: 'malam' }, bisnis: { set: 1, map: 0, mood: null }, galeri: { set: 0, map: 0, mood: 'senja' }, kontak: { set: 1, sofa: 0, map: 0, mood: 'malam' }
+  };
+  function rigFor(id) {
+    var portrait = W / H < .9;
+    if (id === 'kontak' && O.lamp) {
+      var lx = O.lamp.position.x;
+      return portrait ? { p: [lx - .2, 1.7, 5.4], t: [lx - .2, 1.15, -.38], fov: 40 } : { p: [lx + .35, 1.28, 3.9], t: [lx - .62, 1.0, -.38], fov: 32 };
+    }
+    return (portrait && RIGS_P[id]) || RIGS[id] || RIGS.home;
+  }
+  var camTw = null;
+  function moveCamera(id, dur) {
+    var r = rigFor(id);
+    if (camTw && camTw.kill) camTw.kill();
+    var to = { px: r.p[0], py: r.p[1], pz: r.p[2], tx: r.t[0], ty: r.t[1], tz: r.t[2], fov: r.fov };
+    if (!G || XW.reduced || dur === 0) { Object.assign(rig, to); return; }
+    to.duration = dur || 2.1; to.ease = 'power3.inOut';
+    camTw = G.to(rig, to);
+  }
+  var orbit = false;
+  function setOrbit(on) {
+    if (!controls || on === orbit) return;
+    orbit = on; controls.enabled = on;
+    if (on) { controls.target.set(rig.tx, rig.ty, rig.tz); controls.update(); }
+    else { rig.px = camera.position.x; rig.py = camera.position.y; rig.pz = camera.position.z; rig.tx = controls.target.x; rig.ty = controls.target.y; rig.tz = controls.target.z; }
+  }
+
+  /* ---------------------------------------------------------------- loop */
+  var v3 = new T.Vector3();
+  function project(v) { v3.copy(v).project(camera); return { x: (v3.x * .5 + .5) * W, y: (-v3.y * .5 + .5) * H, v: v3.z > -1 && v3.z < 1 }; }
+  function loop(now) {
+    requestAnimationFrame(loop);
+    if (document.hidden || XW.paused) { last = now; return; }
+    var dt = Math.min(.05, (now - (last || now)) / 1000); last = now; frame++; clock += dt;
+    dtAvg = lerp(dtAvg, dt * 1000, .05);
+    if (frame > 150 && dtAvg > 32 && XW.quality > 0) { slow += dt; if (slow > 2.5) { setQuality(XW.quality - 1); slow = 0; } } else slow = 0;
+    var k = 1 - Math.pow(.001, dt);
+    mouse.sx = lerp(mouse.sx, mouse.x, k * .6); mouse.sy = lerp(mouse.sy, mouse.y, k * .6);
+    // suasana
+    L.key.intensity = mood.key; L.wash.intensity = mood.wash; L.hemi.intensity = mood.hemi; L.fill.intensity = mood.fill;
+    L.lamp.intensity = mood.lamp; mats.globe.emissiveIntensity = mood.glow; O.halo.material.opacity = clamp(mood.glow * .22, 0, .6);
+    renderer.toneMappingExposure = mood.exp;
+    mats.fabric.envMapIntensity = .55 * mood.env / .45;
+    // set ruang naik/turun dari lantai
+    st.set = lerp(st.set, st.setT, k * .9);
+    st.sofa = lerp(st.sofa, st.sofaT, k * .9);
+    var drop = (1 - st.set) * 1.6, sdrop = (1 - st.sofa) * 1.6;
+    O.set.position.y = -drop; sofa.position.y = -drop - sdrop; O.table.position.y = -sdrop;
+    O.set.visible = st.set > .02; sofa.visible = st.set > .02 && st.sofa > .02;
+    // pose sofa: seret untuk memutar, kembali perlahan
+    if (!st.drag) {
+      st.spinV = lerp(st.spinV, 0, k * .5);
+      st.spin += st.spinV * dt;
+      if (now - st.lastDrag > 2600 && !orbit) st.spin = lerp(st.spin, st.pose, k * .25);
+    }
+    sofa.rotation.y = st.spin;
+    // peta
+    st.map = lerp(st.map, st.mapT, k * .7);
+    O.map.visible = st.map > .01;
+    if (O.map.visible) {
+      if (Math.abs(st.map - (st.beadV || 0)) > .0004) { st.beadV = st.map; placeBeads(st.map); }
+      beacons.forEach(function (b, i) {
+        var u = b.userData, focus = XW.mapFocusI === i;
+        b.scale.y = lerp(b.scale.y, (st.map > .6 ? 1 : .001) * (focus ? 1.25 : 1), k * 1.4);
+        var ph = (clock * .5 + i * .25) % 1;
+        u.ring.scale.setScalar(1 + ph * 1.6); u.glow.material.opacity = .4 + Math.sin(clock * 2.4 + i) * .2;
+      });
+      var rp = st.map > .85 ? 1 : 0;
+      st.route = lerp(st.route || 0, rp, k * .6);
+      routeGeo.setDrawRange(0, Math.floor(routeCount * st.route / 36) * 36);
+      pulse.position.copy(curve.getPointAt((clock * .16) % 1));
+      pulse.material.opacity = st.route * .9;
+    }
+    // kamera
+    if (orbit) controls.update();
+    else {
+      var sway = st.room === 'home' || st.room === 'kontak' ? Math.sin(clock * .12) * .18 : 0;
+      camera.position.set(rig.px + mouse.sx * .22 + sway, rig.py - mouse.sy * .12, rig.pz);
+      camera.lookAt(rig.tx, rig.ty, rig.tz);
+    }
+    if (Math.abs(camera.fov - rig.fov) > .01) { camera.fov = rig.fov; camera.updateProjectionMatrix(); }
+    // label
+    var Lb = XW.labels;
+    Lb.tag = st.room === 'home' && st.set > .9 ? project(sofa.localToWorld(new T.Vector3(-SW * .35, HH + .06, -D / 2 + .1))) : null;
+    if (st.room === 'atelier' && st.set > .9) {
+      var total = cfg.seats * SW + (cfg.arms ? 2 * AW : 0);
+      Lb.dim = { a: project(sofa.localToWorld(new T.Vector3(-total / 2, .01, D / 2 + .1))), b: project(sofa.localToWorld(new T.Vector3(total / 2, .01, D / 2 + .1))), w: Math.round(total * 100) };
+    } else Lb.dim = null;
+    Lb.beacons = st.map > .6 ? beacons.map(function (b) { return project(b.localToWorld(new T.Vector3(0, b.userData.h * b.scale.y + .12, 0))); }) : null;
+    if (XW.onFrame) XW.onFrame(Lb);
+    renderer.render(scene, camera);
+  }
+
+  /* ---------------------------------------------------------------- kualitas */
+  function setQuality(q) {
+    XW.quality = q;
+    var dpr = window.devicePixelRatio || 1;
+    renderer.setPixelRatio(q >= 2 ? Math.min(dpr, MOBILE ? 1.5 : 1.75) : q === 1 ? 1 : .75);
+    renderer.shadowMap.enabled = q > 0;
+    renderer.setSize(W, H, false);
+  }
+  function resize() {
+    W = window.innerWidth; H = window.innerHeight;
+    camera.aspect = W / H; camera.updateProjectionMatrix();
+    setQuality(XW.quality);
+    moveCamera(st.room, 0);
+  }
+
+  /* ---------------------------------------------------------------- init */
+  XW.init = function (cv, opts) {
+    opts = opts || {};
+    canvas = cv; MOBILE = !!opts.mobile; XW.reduced = !!opts.reduced;
+    try { renderer = new T.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false, powerPreference: 'high-performance' }); } catch (e) { return false; }
+    if (!renderer || !renderer.getContext()) return false;
+    renderer.outputEncoding = T.sRGBEncoding;
+    renderer.toneMapping = T.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.02;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = T.PCFSoftShadowMap;
+    scene = new T.Scene();
+    scene.background = col('#110e0b');
+    scene.fog = new T.Fog(col('#110e0b'), 12, 30);
+    camera = new T.PerspectiveCamera(30, 1, .1, 120);
+    if (T.RoomEnvironment) {
+      pmrem = new T.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromScene(new T.RoomEnvironment(), .04).texture;
+    }
+    O.glow = glowTex();
+    buildLights(); buildRoom(); buildSet(); buildSofa(); buildMap();
+    if (T.OrbitControls) {
+      controls = new T.OrbitControls(camera, canvas);
+      controls.enabled = false; controls.enableDamping = true; controls.dampingFactor = .07;
+      controls.enablePan = false; controls.minDistance = 2.8; controls.maxDistance = 8;
+      controls.minPolarAngle = .5; controls.maxPolarAngle = 1.45; controls.rotateSpeed = .6;
+    }
+    XW.quality = 2;
+    resize();
+    window.addEventListener('resize', resize);
+    window.addEventListener('pointermove', function (e) { mouse.x = e.clientX / W * 2 - 1; mouse.y = e.clientY / H * 2 - 1; }, { passive: true });
+    var dx0 = 0;
+    canvas.addEventListener('pointerdown', function (e) { if (orbit || st.room !== 'home' && st.room !== 'kontak') return; st.drag = true; dx0 = e.clientX; st.spinV = 0; });
+    window.addEventListener('pointermove', function (e) {
+      if (!st.drag) return;
+      var dx = e.clientX - dx0; dx0 = e.clientX;
+      st.spin += dx * .006; st.spinV = dx * .35; st.lastDrag = performance.now();
+    });
+    window.addEventListener('pointerup', function () { if (st.drag) { st.drag = false; st.lastDrag = performance.now(); } });
+    canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); XW.ok = false; if (XW.onLost) XW.onLost(); });
+    setMood('senja', 0);
+    requestAnimationFrame(loop);
+    XW.ok = true;
+    return true;
+  };
+
+  /* ---------------------------------------------------------------- API */
+  XW.setRoom = function (id, dur) {
+    if (!XW.ok) return;
+    st.room = id;
+    var s = STATE[id] || STATE.home;
+    st.setT = s.set; st.mapT = s.map; st.sofaT = s.sofa == null ? 1 : s.sofa;
+    // kabut menyesuaikan jarak kamera (peta dilihat dari jauh)
+    var fog = id === 'manufaktur' ? [26, 70] : [12, 30];
+    tw(scene.fog, { near: fog[0], far: fog[1], duration: dur === 0 ? 0 : 1.6, ease: 'power2.inOut' });
+    if (s.mood) setMood(s.mood);
+    if (id !== 'manufaktur') XW.mapFocusI = null;
+    setOrbit(false);
+    moveCamera(id, dur);
+    if (id === 'atelier') {
+      var go = function () { if (st.room === 'atelier') { st.spin = st.pose = 0; setOrbit(true); } };
+      if (G && !XW.reduced && dur !== 0) G.delayedCall(2.15, go); else go();
+    }
+  };
+  XW.setMood = function (name) { setMood(name); };
+  XW.preview = function (id) {
+    if (!XW.ok || st.room !== 'home') return;
+    var moodFor = { koleksi: 'siang', atelier: 'senja', manufaktur: 'malam', bisnis: 'siang', galeri: 'senja', kontak: 'malam' };
+    setMood(id ? moodFor[id] || 'senja' : 'senja', 1.2);
+  };
+  XW.craft = function (c, animate) { return applyCfg(c, animate !== false); };
+  XW.mapFocus = function (i) {
+    XW.mapFocusI = i;
+    if (!XW.ok || st.room !== 'manufaktur') return;
+    var b = beacons[i]; if (!b) return;
+    var portrait = W / H < .9, tx = i === 0 ? b.position.x - 2.4 : b.position.x - 1.6, tz = b.position.z;
+    if (portrait) tx = b.position.x;
+    var to = { px: tx + (portrait ? 0 : .9), py: portrait ? 15 : 7.5, pz: tz + (portrait ? 12 : 7), tx: tx, ty: 0, tz: tz + (portrait ? 3.2 : -.3), fov: rigFor('manufaktur').fov };
+    if (camTw && camTw.kill) camTw.kill();
+    if (G && !XW.reduced) { to.duration = 1.8; to.ease = 'power3.inOut'; camTw = G.to(rig, to); } else Object.assign(rig, to);
+  };
+  XW.mapOverview = function () { XW.mapFocusI = null; if (st.room === 'manufaktur') moveCamera('manufaktur', 1.8); };
+  XW.pause = function (v) { XW.paused = !!v; };
+  XW.state = st;
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   Maison XIONCO — interaksi
+   Satu halaman. Setiap "ruang" berganti di tempat: konten memudar, kertas
+   ivory naik/turun untuk koleksi & bisnis, kamera showroom meluncur.
+   Hash: #/koleksi, #/atelier, #/manufaktur, #/bisnis, #/galeri, #/kontak
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var XV = window.XV, G = window.gsap, XW = window.XW || {};
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var html = document.documentElement;
+  var REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var ANIM = !!G && !REDUCED;
+  var isMobile = function () { return innerWidth <= 760; };
+  var rupiah = function (n) { return 'IDR ' + Math.round(n).toLocaleString('id-ID'); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var src = function (p, w) {
+    var s = w && XV.SIZES && XV.SIZES[p];
+    var ok = s ? s.filter(function (v) { return v >= w; }) : [];
+    if (!ok.length) return XV.IMG + p;
+    var v = Math.min.apply(null, ok);
+    return XV.IMG + p.replace(/\.(png|jpe?g|webp)$/i, '-' + v + 'x' + v + '.$1');
+  };
+  var wa = function (t) { return 'https://wa.me/' + XV.WA + '?text=' + encodeURIComponent(t); };
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  var byId = {};
+  XV.PRODUCTS.forEach(function (p) { byId[p.id] = p; });
+  var photoCls = function (p) { return XV.V3_DARK.indexOf(p.id) >= 0 ? 'is-photo' : ''; };
+  var catLabel = function (id) { var c = XV.CATEGORIES.filter(function (x) { return x.id === id; })[0]; return c ? c.label : id; };
+  if (ANIM) html.classList.add('anim');
+
+  /* ======================================================================
+     Konten statis
+     ====================================================================== */
+  $$('.logo-path').forEach(function (p) { p.setAttribute('d', XV.LOGO); });
+  $$('[data-wa]').forEach(function (a) { a.href = wa(a.dataset.wa); });
+
+  var ROOMS = ['home', 'koleksi', 'atelier', 'manufaktur', 'bisnis', 'galeri', 'kontak'];
+  var LIGHT = { koleksi: 1, bisnis: 1 };
+  var NAMES = { home: 'Beranda', koleksi: 'Koleksi', atelier: 'Atelier', manufaktur: 'Manufaktur', bisnis: 'Bisnis', galeri: 'Galeri', kontak: 'Kontak' };
+  var HINTS = { home: 'Seret sofa untuk memutar', koleksi: 'Pilih karya untuk detail', atelier: 'Seret untuk memutar · scroll untuk zoom', manufaktur: 'Pilih tahap produksi', bisnis: 'Penawaran dalam 1 jam', galeri: 'Seret atau gunakan panah', kontak: 'Konsultasi privat tanpa biaya' };
+  var INDEX = [
+    { id: 'koleksi', t: 'Koleksi', s: XV.PRODUCTS.length + ' karya, harga xionco.shop' },
+    { id: 'atelier', t: 'Atelier', s: 'Rancang sofa modular dalam 3D' },
+    { id: 'manufaktur', t: 'Manufaktur', s: 'Empat pabrik di Jawa' },
+    { id: 'bisnis', t: 'Bisnis', s: 'Proyek, B2B & kolaborasi' },
+    { id: 'galeri', t: 'Galeri', s: 'Ruang yang diwujudkan' },
+    { id: 'kontak', t: 'Kontak', s: 'Showroom & konsultasi' }
+  ];
+
+  /* ======================================================================
+     Kursor
+     ====================================================================== */
+  var cur = $('#cursor'), curLabel = $('#cursorLabel');
+  var mouse = { x: innerWidth / 2, y: innerHeight / 2 };
+  window.addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+  if (FINE) {
+    html.classList.add('has-cursor');
+    var cdot = $('.cursor__dot', cur), cring = $('.cursor__ring', cur), rx = mouse.x, ry = mouse.y;
+    (function loop() {
+      rx = lerp(rx, mouse.x, .16); ry = lerp(ry, mouse.y, .16);
+      cdot.style.transform = 'translate3d(' + mouse.x + 'px,' + mouse.y + 'px,0)';
+      cring.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0)';
+      requestAnimationFrame(loop);
+    })();
+    document.addEventListener('pointerover', function (e) {
+      var t = e.target.closest('[data-cursor], a, button, label, input, select, textarea, .card');
+      cur.classList.toggle('is-hover', !!t);
+      var lab = t && t.getAttribute('data-cursor');
+      if (!lab && e.target.id === 'world' && (current === 'home' || current === 'kontak')) lab = 'Seret';
+      if (!lab && e.target.id === 'world' && current === 'atelier') lab = 'Putar';
+      cur.classList.toggle('is-label', !!lab);
+      if (lab) curLabel.textContent = lab;
+    });
+    document.documentElement.addEventListener('mouseleave', function () { cur.style.opacity = 0; });
+    document.documentElement.addEventListener('mouseenter', function () { cur.style.opacity = 1; });
+  }
+
+  /* ======================================================================
+     Notifikasi kecil
+     ====================================================================== */
+  var noticeEl = $('#notice'), noticeT = 0;
+  function notice(title, text) {
+    noticeEl.innerHTML = '<b>' + esc(title) + '</b>' + esc(text);
+    noticeEl.classList.add('is-on');
+    clearTimeout(noticeT);
+    noticeT = setTimeout(function () { noticeEl.classList.remove('is-on'); }, 2800);
+  }
+
+  /* ======================================================================
+     Pergantian ruang
+     ====================================================================== */
+  var current = null, token = 0, paperOn = false, booted = false;
+  var enter = {}, leave = {}, keys = {};
+  var paper = $('#paper'), sweep = $('#sweep');
+  function parseHash() { var h = location.hash.replace(/^#\/?/, '').split('?')[0]; return ROOMS.indexOf(h) >= 0 ? h : 'home'; }
+  function go(id) {
+    if (ROOMS.indexOf(id) < 0) return;
+    var h = id === 'home' ? '#/' : '#/' + id;
+    if (location.hash !== h && !(id === 'home' && (location.hash === '' || location.hash === '#'))) location.hash = h;
+    else show(id);
+  }
+  window.addEventListener('hashchange', function () { if (booted) show(parseHash()); });
+  function roomEl(id) { return $('.room[data-room="' + id + '"]'); }
+  function setPaper(on, done) {
+    if (on === paperOn) { if (done) done(); return; }
+    paperOn = on;
+    if (!on && XW.ok) XW.pause(false);
+    if (!ANIM) {
+      paper.style.clipPath = on ? 'inset(0 0 0 0)' : 'inset(100% 0 0 0)';
+      if (on && XW.ok) XW.pause(true);
+      if (done) done();
+      return;
+    }
+    G.killTweensOf(paper);
+    G.fromTo(paper, { clipPath: on ? 'inset(100% 0% 0% 0%)' : 'inset(0% 0% 0% 0%)' }, {
+      clipPath: on ? 'inset(0% 0% 0% 0%)' : 'inset(0% 0% 100% 0%)', duration: 1.05, ease: 'expo.inOut',
+      onComplete: function () { if (on && XW.ok) XW.pause(true); if (!on) paper.style.clipPath = 'inset(100% 0 0 0)'; if (done) done(); }
+    });
+  }
+  function revealIn(el, instant) {
+    var lines = $$('.ln > span', el), rs = $$('[data-r]', el);
+    if (!ANIM) return;
+    G.killTweensOf(lines.concat(rs));
+    G.fromTo(lines, { yPercent: 112, opacity: 1 }, { yPercent: 0, duration: 1.25, ease: 'expo.out', stagger: .08, delay: instant ? .1 : 0 });
+    G.fromTo(rs, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', stagger: .07, delay: instant ? .3 : .2, clearProps: 'transform' });
+  }
+  function show(id, instant) {
+    if (id === current) return;
+    var from = current, my = ++token;
+    closeAll(true);
+    current = id;
+    html.setAttribute('data-room', id);
+    document.title = (id === 'home' ? 'Maison XIONCO — Quality shouldn\'t be a luxury' : NAMES[id] + ' — Maison XIONCO');
+    $$('#navLinks a').forEach(function (a) { a.classList.toggle('is-on', a.dataset.go === id); });
+    $('#footN').textContent = String(Math.max(0, ROOMS.indexOf(id))).padStart(2, '0');
+    $('#footName').textContent = NAMES[id];
+    $('#footHint').textContent = HINTS[id];
+    if (from && leave[from]) leave[from]();
+    if (XW.ok) XW.setRoom(id, instant ? 0 : undefined);
+    if (ANIM && !instant) G.fromTo(sweep, { scaleX: 0, opacity: 1, transformOrigin: '0 50%' }, { scaleX: 1, duration: 1.3, ease: 'expo.inOut', onComplete: function () { G.to(sweep, { opacity: 0, duration: .5 }); } });
+    var next = roomEl(id), prev = from && roomEl(from);
+    var light = !!LIGHT[id];
+    var arrive = function () {
+      if (my !== token) return;
+      $$('.room').forEach(function (r) { r.classList.toggle('is-active', r === next); });
+      revealIn(next, instant);
+      if (enter[id]) enter[id](from);
+    };
+    var swap = function () {
+      if (my !== token) return;
+      if (prev) prev.classList.remove('is-active');
+      html.setAttribute('data-theme', light ? 'light' : 'dark');
+      if (light !== paperOn) setPaper(light, arrive); else arrive();
+    };
+    if (ANIM && prev && !instant) {
+      var out = $$('.ln > span', prev).concat($$('[data-r]', prev));
+      G.killTweensOf(out);
+      G.to(out, { opacity: 0, y: -10, duration: .45, ease: 'power2.in', stagger: .02, onComplete: swap });
+    } else swap();
+  }
+  document.addEventListener('click', function (e) {
+    var g = e.target.closest('[data-go]');
+    if (g) { e.preventDefault(); closeMenu(); closeAll(); go(g.dataset.go); return; }
+    var c = e.target.closest('[data-close]');
+    if (c) { e.preventDefault(); closeAll(); }
+  });
+
+  /* ======================================================================
+     Tirai pembuka
+     ====================================================================== */
+  var gl = false;
+  try { gl = XW.init ? XW.init($('#world'), { mobile: isMobile() || !FINE, reduced: REDUCED }) : false; } catch (err) { gl = false; }
+  if (!gl || !XW.ok) html.classList.add('no-webgl');
+  XW.onLost = function () { html.classList.add('no-webgl'); };
+  function preload(list, cb) {
+    var n = 0;
+    return Promise.all(list.map(function (u) { return new Promise(function (res) { var im = new Image(); im.onload = im.onerror = function () { n++; cb(n / list.length); res(); }; im.src = u; }); }));
+  }
+  // panaskan cache gambar galeri & koleksi saat santai, agar ruang berikutnya langsung tampil
+  function warm() { XV.MUSE.map(function (m) { return src(m.img, 768); }).concat(XV.PRODUCTS.slice(8, 20).map(function (p) { return src(p.img, 768); })).forEach(function (u) { var im = new Image(); im.decoding = 'async'; im.src = u; }); }
+  function runVeil() {
+    var start = parseHash();
+    if (!ANIM) { booted = true; show(start, true); html.classList.add('is-ready'); return; }
+    var stroke = $('.veil__stroke'), fill = $('.veil__fill'), len = 0;
+    try { len = stroke.getTotalLength(); } catch (e) { len = 2000; }
+    G.set(stroke, { strokeDasharray: len, strokeDashoffset: len });
+    var prog = { v: 0, t: 0 };
+    G.to(stroke, { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut' });
+    G.from('.veil__name, .veil__line, .veil__pct', { opacity: 0, y: 8, duration: 1, ease: 'expo.out', stagger: .1, delay: .3 });
+    var tick = function () {
+      prog.v = lerp(prog.v, prog.t, .06);
+      $('#veilLine').style.width = (prog.v * 100).toFixed(1) + '%';
+      $('#veilPct').textContent = Math.round(prog.v * 100);
+    };
+    G.ticker.add(tick);
+    var list = XV.PRODUCTS.slice(0, 8).map(function (p) { return src(p.img, 768); });
+    var minT = new Promise(function (r) { setTimeout(r, 2300); }), maxT = new Promise(function (r) { setTimeout(r, 6500); });
+    Promise.race([Promise.all([preload(list, function (p) { prog.t = p * .95; }), minT]), maxT]).then(function () {
+      prog.t = 1;
+      G.timeline({ delay: .35, onComplete: function () { G.ticker.remove(tick); html.classList.add('is-ready'); } })
+        .to(fill, { opacity: 1, duration: .8, ease: 'power2.out' })
+        .to('.veil__inner', { opacity: 0, y: -14, duration: .7, ease: 'power2.in' }, '+=.2')
+        .add(function () { booted = true; show(start, true); }, '-=.15')
+        .add(function () { setTimeout(warm, 2500); })
+        .to('.veil__half--t', { yPercent: -100, duration: 1.4, ease: 'expo.inOut' }, '<')
+        .to('.veil__half--b', { yPercent: 100, duration: 1.4, ease: 'expo.inOut' }, '<');
+    });
+  }
+
+  /* ======================================================================
+     BERANDA
+     ====================================================================== */
+  $('#index').innerHTML = INDEX.map(function (x, i) {
+    return '<li><a href="#/' + x.id + '" data-go="' + x.id + '" data-i="' + i + '"><span class="index__n">' + ['I', 'II', 'III', 'IV', 'V', 'VI'][i] + '</span><span class="index__t">' + x.t + '</span><span class="index__s">' + esc(x.s) + '</span></a></li>';
+  }).join('');
+  $$('#index a').forEach(function (a) {
+    a.addEventListener('pointerenter', function () { if (XW.ok) XW.preview(a.dataset.go); });
+    a.addEventListener('pointerleave', function () { if (XW.ok && current === 'home') XW.preview(null); });
+  });
+  var tagEl = $('#homeTag'), tagSince = 0;
+  enter.home = function () { tagSince = performance.now(); };
+  leave.home = function () { tagEl.classList.remove('is-on'); };
+
+  /* ======================================================================
+     KOLEKSI
+     ====================================================================== */
+  var ID_CAT = { seats: 'kursi sofa tempat duduk', tables: 'meja', bedframe: 'ranjang kasur tempat tidur dipan', cabinet: 'lemari kabinet rak penyimpanan', decor: 'lampu dekorasi cahaya', smart: 'listrik stopkontak saklar colokan pintar' };
+  var ID_TYPE = [[/chair/, 'kursi'], [/desk|workstation/, 'meja kerja kantor'], [/coffee table/, 'meja kopi meja tamu'], [/dining/, 'makan'], [/side table|nightstand/, 'meja samping nakas'], [/light/, 'lampu'], [/shelf/, 'rak'], [/wardrobe/, 'lemari pakaian'], [/kitchenette/, 'dapur kitchen set'], [/towel/, 'handuk kamar mandi'], [/slat|panel/, 'panel dinding'], [/bed/, 'ranjang tempat tidur'], [/socket|outlet|switch/, 'stopkontak saklar']];
+  XV.PRODUCTS.forEach(function (p) {
+    var t = p.type.toLowerCase();
+    p._q = [p.name, t, p.cat, catLabel(p.cat), ID_CAT[p.cat] || ''].concat(ID_TYPE.filter(function (r) { return r[0].test(t); }).map(function (r) { return r[1]; })).join(' ').toLowerCase();
+  });
+  var kCat = 'all', kList = [], pdI = 0, pdQty = 1, kReady = false;
+  var grid = $('#kGrid'), kSearch = $('#kSearch'), pd = $('#pd');
+  var CATS = [{ id: 'all', label: 'Semua' }].concat(XV.CATEGORIES.map(function (c) { return { id: c.id, label: c.label }; }));
+  $('#kCats').innerHTML = CATS.map(function (c) {
+    var n = c.id === 'all' ? XV.PRODUCTS.length : XV.PRODUCTS.filter(function (p) { return p.cat === c.id; }).length;
+    return '<button type="button" data-cat="' + c.id + '">' + c.label + '<sup>' + n + '</sup></button>';
+  }).join('');
+  function priceText(p) { return p.price ? (p.from ? 'mulai ' : '') + rupiah(p.price) : 'Melalui penawaran'; }
+  function cardHTML(p, i) {
+    var disc = p.was ? Math.round((1 - p.price / p.was) * 100) : 0;
+    return '<button class="card" type="button" data-i="' + i + '" data-cursor="Lihat">' +
+      '<span class="card__img"><img class="' + photoCls(p) + '" src="' + src(p.img, 768) + '" alt="' + esc(p.name + ' — ' + p.type) + '" loading="lazy" decoding="async">' + (disc ? '<span class="card__disc">−' + disc + '%</span>' : '') + '</span>' +
+      '<span class="card__info"><span class="card__name">' + esc(p.name) + '</span><span class="card__price">' + priceText(p) + '</span><span class="card__type">' + esc(p.type) + '</span><span class="card__line"></span></span></button>';
+  }
+  function search(q) {
+    var terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    return XV.PRODUCTS.filter(function (p) { return terms.every(function (w) { return p._q.indexOf(w) >= 0; }); });
+  }
+  function renderGrid() {
+    var base = kSearch.value.trim() ? search(kSearch.value) : XV.PRODUCTS;
+    kList = base.filter(function (p) { return kCat === 'all' || p.cat === kCat; });
+    grid.innerHTML = kList.map(cardHTML).join('');
+    $('#kEmpty').classList.toggle('is-on', !kList.length);
+    $('#kCount').textContent = kList.length;
+    $$('#kCats button').forEach(function (b) { b.classList.toggle('is-on', b.dataset.cat === kCat); });
+    if (ANIM) G.fromTo($$('.card', grid).slice(0, 12), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: .05, clearProps: 'transform' });
+  }
+  $('#kCats').addEventListener('click', function (e) { var b = e.target.closest('[data-cat]'); if (!b || b.dataset.cat === kCat) return; kCat = b.dataset.cat; renderGrid(); });
+  var sT = 0;
+  kSearch.addEventListener('input', function () { clearTimeout(sT); sT = setTimeout(renderGrid, 120); });
+  grid.addEventListener('click', function (e) { var c = e.target.closest('.card'); if (c) openPd(+c.dataset.i, c.querySelector('img')); });
+  function fillPd(p) {
+    var disc = p.was ? Math.round((1 - p.price / p.was) * 100) : 0;
+    var img = $('#pdImg');
+    img.className = photoCls(p);
+    img.src = src(p.img, 1024); img.alt = p.name + ' — ' + p.type;
+    $('#pdCat').textContent = 'Koleksi — ' + catLabel(p.cat);
+    $('#pdName').textContent = p.name;
+    $('#pdType').textContent = p.type;
+    $('#pdPrice').innerHTML = p.price ? '<b>' + priceText(p) + '</b>' + (p.was ? '<s>' + rupiah(p.was) + '</s><em>hemat ' + disc + '%</em>' : '') : '<b>Harga melalui penawaran</b>';
+    $('#pdDesc').textContent = p.desc || '';
+    $('#pdSpec').innerHTML = '<dt>Kategori</dt><dd>' + esc(catLabel(p.cat)) + '</dd><dt>Garansi</dt><dd>3 tahun</dd><dt>Pengiriman</dt><dd>1–3 hari kerja</dd><dt>Harga</dt><dd>' + (p.price ? 'Resmi xionco.shop' : 'Melalui penawaran') + '</dd>';
+    $('#pdBuy').style.display = p.price ? '' : 'none';
+    pdQty = 1; $('#pdQty').textContent = 1;
+    $('#pdWa').href = wa('Halo XIONCO, saya ingin tahu ' + (p.price ? 'lebih lanjut tentang ' : 'harga ') + p.name + ' (' + p.type + ').');
+    $('#pdWaText').textContent = p.price ? 'Tanya via WhatsApp' : 'Tanya harga via WhatsApp';
+    $('#pdLink').href = p.url;
+    $('#pdN').textContent = String(pdI + 1).padStart(2, '0') + ' / ' + String(kList.length).padStart(2, '0');
+  }
+  function openPd(i, fromImg) {
+    pdI = i; var p = kList[i]; if (!p) return;
+    fillPd(p);
+    pd.classList.add('is-open'); pd.setAttribute('aria-hidden', 'false');
+    if (!ANIM) return;
+    G.fromTo(pd, { opacity: 0 }, { opacity: 1, duration: .5, ease: 'power2.out' });
+    G.fromTo($$('.pd__info > *', pd), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: .05, delay: .2, clearProps: 'transform' });
+    var to = $('#pdImg');
+    if (fromImg) {
+      var a = fromImg.getBoundingClientRect(), b = to.getBoundingClientRect();
+      if (a.width && b.width) {
+        G.fromTo(to, { x: a.left + a.width / 2 - (b.left + b.width / 2), y: a.top + a.height / 2 - (b.top + b.height / 2), scale: a.width / b.width }, { x: 0, y: 0, scale: 1, duration: 1.2, ease: 'expo.inOut' });
+        return;
+      }
+    }
+    G.fromTo(to, { opacity: 0, scale: .94 }, { opacity: 1, scale: 1, duration: 1, ease: 'expo.out' });
+  }
+  function stepPd(d) {
+    if (!kList.length) return;
+    pdI = (pdI + d + kList.length) % kList.length;
+    var p = kList[pdI];
+    if (!ANIM) return fillPd(p);
+    G.to(['#pdImg', '.pd__info'], { opacity: 0, x: -20 * d, duration: .35, ease: 'power2.in', onComplete: function () {
+      fillPd(p); $('.pd__info').scrollTop = 0;
+      G.fromTo(['#pdImg', '.pd__info'], { opacity: 0, x: 26 * d }, { opacity: 1, x: 0, duration: .9, ease: 'expo.out' });
+    } });
+  }
+  function closePd() {
+    if (!pd.classList.contains('is-open')) return;
+    var done = function () { pd.classList.remove('is-open'); pd.setAttribute('aria-hidden', 'true'); pd.style.opacity = ''; };
+    if (ANIM) G.to(pd, { opacity: 0, duration: .45, ease: 'power2.in', onComplete: done }); else done();
+  }
+  $('#pdPrev').addEventListener('click', function () { stepPd(-1); });
+  $('#pdNext').addEventListener('click', function () { stepPd(1); });
+  $('#pdClose').addEventListener('click', closePd);
+  $('#pdMinus').addEventListener('click', function () { pdQty = Math.max(1, pdQty - 1); $('#pdQty').textContent = pdQty; });
+  $('#pdPlus').addEventListener('click', function () { pdQty = Math.min(20, pdQty + 1); $('#pdQty').textContent = pdQty; });
+  $('#pdAdd').addEventListener('click', function () { addToBag(kList[pdI], pdQty); });
+  enter.koleksi = function () { if (!kReady) { kReady = true; renderGrid(); } };
+  leave.koleksi = function () { closePd(); };
+  keys.koleksi = function (e) {
+    if (!pd.classList.contains('is-open')) return;
+    if (e.key === 'ArrowRight') { stepPd(1); return true; }
+    if (e.key === 'ArrowLeft') { stepPd(-1); return true; }
+  };
+
+  /* ======================================================================
+     TAS BELANJA
+     ====================================================================== */
+  var bag = store.get('xv4_bag', {});
+  Object.keys(bag).forEach(function (id) { if (!byId[id] || !byId[id].price) delete bag[id]; });
+  var bagEl = $('#bag');
+  function bagCount() { return Object.keys(bag).reduce(function (n, id) { return n + bag[id]; }, 0); }
+  function bagTotal() { return Object.keys(bag).reduce(function (n, id) { return n + byId[id].price * bag[id]; }, 0); }
+  function renderBag() {
+    var ids = Object.keys(bag);
+    $('#bagCount').textContent = '(' + bagCount() + ')';
+    bagEl.classList.toggle('is-empty', !ids.length);
+    $('#bagList').innerHTML = ids.map(function (id) {
+      var p = byId[id];
+      return '<li data-id="' + id + '"><div class="bag__th"><img class="' + photoCls(p) + '" src="' + src(p.img, 768) + '" alt=""></div><div><p class="bag__n">' + esc(p.name) + '</p><p class="bag__p">' + rupiah(p.price) + '</p>' +
+        '<div class="bag__q"><button type="button" data-d="-1" aria-label="Kurangi"><svg><use href="#i-minus"/></svg></button><span>' + bag[id] + '</span><button type="button" data-d="1" aria-label="Tambah"><svg><use href="#i-plus"/></svg></button></div></div>' +
+        '<button class="bag__rm" type="button" data-rm>Hapus</button></li>';
+    }).join('');
+    $('#bagTotal').textContent = rupiah(bagTotal());
+    var lines = ids.map(function (id) { var p = byId[id]; return '• ' + p.name + ' (' + p.type + ') × ' + bag[id] + ' — ' + rupiah(p.price * bag[id]); });
+    $('#bagCheckout').href = wa('Halo XIONCO, saya ingin memesan:\n' + lines.join('\n') + '\n\nSubtotal: ' + rupiah(bagTotal()) + '\n(dari Maison XIONCO)');
+    store.set('xv4_bag', bag);
+  }
+  $('#bagList').addEventListener('click', function (e) {
+    var li = e.target.closest('li'); if (!li) return;
+    var id = li.dataset.id, d = e.target.closest('[data-d]');
+    if (d) { bag[id] = clamp(bag[id] + (+d.dataset.d), 0, 99); if (!bag[id]) delete bag[id]; renderBag(); }
+    else if (e.target.closest('[data-rm]')) { delete bag[id]; renderBag(); }
+  });
+  function addToBag(p, q) {
+    if (!p || !p.price) return;
+    bag[p.id] = clamp((bag[p.id] || 0) + (q || 1), 1, 99);
+    renderBag();
+    var b = $('#bagBtn'); b.classList.remove('is-bump'); void b.offsetWidth; b.classList.add('is-bump');
+    notice('Ditambahkan', ' ' + p.name + ' × ' + (q || 1) + ' — ' + rupiah(p.price * (q || 1)));
+  }
+  function openBag() { closeAll(); renderBag(); bagEl.classList.add('is-open'); bagEl.setAttribute('aria-hidden', 'false'); }
+  $('#bagBtn').addEventListener('click', function () { if (bagEl.classList.contains('is-open')) closeAll(); else openBag(); });
+  bagEl.addEventListener('click', function (e) { if (e.target === bagEl) closeAll(); });
+  renderBag();
+
+  /* ======================================================================
+     ATELIER
+     ====================================================================== */
+  var S = XV.STUDIO;
+  var DEF = { seats: 3, arms: true, ottoman: false, fabric: 'fb03', base: 'walnut', mood: 'senja' };
+  var cfg = Object.assign({}, DEF, store.get('xv4_atelier', {}));
+  var priceObj = { v: 0 };
+  $('#aFabrics').innerHTML = S.fabrics.map(function (f) { return '<button class="swatch" type="button" data-fabric="' + f.id + '" data-type="' + f.type + '" style="--c:' + f.color + '" aria-label="' + f.code + ' ' + f.name + '" data-cursor="' + f.name + '"></button>'; }).join('');
+  $('#aBases').innerHTML = S.bases.map(function (b) { return '<button type="button" data-base="' + b.id + '" style="--c:' + b.color + '"><i></i>' + b.name + '</button>'; }).join('');
+  function fabric() { return S.fabrics.filter(function (f) { return f.id === cfg.fabric; })[0] || S.fabrics[0]; }
+  function base() { return S.bases.filter(function (b) { return b.id === cfg.base; })[0] || S.bases[0]; }
+  function widthCm() { return cfg.seats * S.seatW + (cfg.arms ? 2 * S.armW : 0); }
+  function price() {
+    var p = cfg.seats * S.seatPrice + (cfg.arms ? S.armPrice : 0) + (cfg.ottoman ? S.ottomanPrice : 0);
+    if (fabric().type === 'leather') p *= S.leatherFactor;
+    return p + base().add;
+  }
+  function atelierUpdate(animate) {
+    if (XW.ok) XW.craft({ seats: cfg.seats, arms: cfg.arms, ottoman: cfg.ottoman, fabric: cfg.fabric, base: cfg.base }, animate);
+    $$('#aSeats button').forEach(function (b) { b.classList.toggle('is-on', +b.dataset.seats === cfg.seats); });
+    $('#aArms').setAttribute('aria-pressed', String(cfg.arms));
+    $('#aOtt').setAttribute('aria-pressed', String(cfg.ottoman));
+    $$('#aFabrics .swatch').forEach(function (b) { b.classList.toggle('is-on', b.dataset.fabric === cfg.fabric); });
+    $$('#aBases button').forEach(function (b) { b.classList.toggle('is-on', b.dataset.base === cfg.base); });
+    $$('#aMood button').forEach(function (b) { b.classList.toggle('is-on', b.dataset.mood === cfg.mood); });
+    var f = fabric(), b = base();
+    $('#aFabricName').innerHTML = '<b>' + f.code + '</b>' + esc(f.name) + ' · ' + (f.type === 'leather' ? 'faux leather' : 'kain');
+    var name = cfg.seats + ' Seater' + (cfg.arms ? '' : ' Armless') + (cfg.ottoman ? ' + Ottoman' : '');
+    $('#aName').textContent = name;
+    $('#homeTagSub').textContent = name.toLowerCase().replace('seater', 'seater') + ' · rancang di atelier';
+    $('#aDims').textContent = 'W ' + widthCm() + ' · D ' + S.depth + ' · H ' + S.height + ' cm' + (cfg.ottoman ? ' · Ottoman 72 × 72' : '');
+    var target = price();
+    if (ANIM && animate) G.to(priceObj, { v: target, duration: 1, ease: 'power3.out', onUpdate: function () { $('#aPrice').textContent = rupiah(priceObj.v); } });
+    else { priceObj.v = target; $('#aPrice').textContent = rupiah(target); }
+    $('#aQuote').href = wa('Halo XIONCO, saya ingin penawaran CUBIX Modular (dirancang di atelier Maison XIONCO):\n• Komposisi: ' + cfg.seats + ' seater' + (cfg.arms ? ' dengan lengan' : ' tanpa lengan') +
+      '\n• Ottoman: ' + (cfg.ottoman ? 'ya' : 'tidak') + '\n• Material: ' + f.code + ' ' + f.name + '\n• Base: ' + b.name +
+      '\n• Ukuran: W ' + widthCm() + ' × D ' + S.depth + ' × H ' + S.height + ' cm\n• Estimasi di website: ' + rupiah(target));
+    store.set('xv4_atelier', cfg);
+  }
+  function setCfg(patch) {
+    if (!Object.keys(patch).some(function (k) { return cfg[k] !== patch[k]; })) return;
+    Object.assign(cfg, patch);
+    if (patch.mood && XW.ok) XW.setMood(cfg.mood);
+    atelierUpdate(true);
+  }
+  $('#aSeats').addEventListener('click', function (e) { var b = e.target.closest('[data-seats]'); if (b) setCfg({ seats: +b.dataset.seats }); });
+  $('#aArms').addEventListener('click', function () { setCfg({ arms: !cfg.arms }); });
+  $('#aOtt').addEventListener('click', function () { setCfg({ ottoman: !cfg.ottoman }); });
+  $('#aFabrics').addEventListener('click', function (e) { var b = e.target.closest('[data-fabric]'); if (b) setCfg({ fabric: b.dataset.fabric }); });
+  $('#aBases').addEventListener('click', function (e) { var b = e.target.closest('[data-base]'); if (b) setCfg({ base: b.dataset.base }); });
+  $('#aMood').addEventListener('click', function (e) { var b = e.target.closest('[data-mood]'); if (b) setCfg({ mood: b.dataset.mood }); });
+  var pick = function (a) { return a[(Math.random() * a.length) | 0]; };
+  $('#aRandom').addEventListener('click', function () { setCfg({ seats: 1 + ((Math.random() * 4) | 0), arms: Math.random() > .25, ottoman: Math.random() > .5, fabric: pick(S.fabrics).id, base: pick(S.bases).id }); });
+  $('#aReset').addEventListener('click', function () { setCfg(Object.assign({}, DEF)); });
+  var dimEl = $('#dim');
+  enter.atelier = function () { if (XW.ok) XW.setMood(cfg.mood); };
+  leave.atelier = function () { dimEl.classList.remove('is-on'); };
+  keys.atelier = function (e) {
+    var k = e.key.toLowerCase();
+    if (/^[1-4]$/.test(k)) { setCfg({ seats: +k }); return true; }
+  };
+  atelierUpdate(false);
+
+  /* ======================================================================
+     MANUFAKTUR
+     ====================================================================== */
+  var stagesEl = $('#stages'), stageSel = -1, ROMAN = ['I', 'II', 'III', 'IV'];
+  stagesEl.innerHTML = XV.FACTORIES.map(function (f, i) {
+    return '<li><button type="button" data-st="' + i + '"><span class="st__n">' + ROMAN[i] + '</span><span class="st__p">' + esc(f.place) + '</span><span class="st__r">' + esc(f.role) + '</span><span class="st__t">' + esc(f.text) + '</span></button></li>';
+  }).join('');
+  $('#mLabels').innerHTML = XV.FACTORIES.map(function (f, i) { return '<span class="mlabel" data-ml="' + i + '"><b>' + esc(f.place) + '</b><span>' + esc(f.role) + '</span></span>'; }).join('');
+  var mls = $$('.mlabel');
+  function setStage(i) {
+    stageSel = i;
+    $$('li', stagesEl).forEach(function (li, k) { li.classList.toggle('is-on', k === i); });
+    mls.forEach(function (m, k) { m.classList.toggle('is-on', k === i); m.classList.toggle('is-dim', i >= 0 && k !== i); });
+    if (!XW.ok) return;
+    if (i >= 0) XW.mapFocus(i); else XW.mapOverview();
+  }
+  stagesEl.addEventListener('click', function (e) { var b = e.target.closest('[data-st]'); if (b) setStage(+b.dataset.st === stageSel ? -1 : +b.dataset.st); });
+  $('#stageAll').addEventListener('click', function () { setStage(-1); });
+  function countUp() {
+    $$('#figures [data-count]').forEach(function (b) {
+      var to = +b.dataset.count, pre = b.dataset.prefix || '', suf = b.dataset.suffix || '';
+      if (!ANIM) { b.textContent = pre + to + suf; return; }
+      var o = { v: 0 };
+      G.to(o, { v: to, duration: 1.8, delay: .6, ease: 'power3.out', onUpdate: function () { b.textContent = pre + Math.round(o.v) + suf; } });
+    });
+  }
+  enter.manufaktur = function () { setStage(-1); countUp(); };
+  leave.manufaktur = function () { mls.forEach(function (m) { m.style.opacity = 0; }); };
+  keys.manufaktur = function (e) {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { setStage((stageSel + 1) % 4); return true; }
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { setStage(stageSel <= 0 ? 3 : stageSel - 1); return true; }
+  };
+
+  /* ======================================================================
+     Label & garis ukur dari dunia 3D
+     ====================================================================== */
+  XW.onFrame = function (L) {
+    if (current === 'home') {
+      var t = L.tag;
+      var ok = t && t.v && performance.now() - tagSince > 1600 && !isMobile();
+      tagEl.classList.toggle('is-on', !!ok);
+      if (t) tagEl.style.transform = 'translate(' + (t.x - 5.5).toFixed(1) + 'px,' + t.y.toFixed(1) + 'px) translateY(-50%)';
+    }
+    if (current === 'atelier') {
+      if (L.dim && L.dim.a.v && L.dim.b.v) {
+        var a = L.dim.a, b = L.dim.b, dx = b.x - a.x, dy = b.y - a.y, ang = Math.atan2(dy, dx);
+        if (Math.abs(ang) > Math.PI / 2) { ang += Math.PI; a = L.dim.b; }
+        dimEl.style.width = Math.sqrt(dx * dx + dy * dy).toFixed(1) + 'px';
+        dimEl.style.transform = 'translate(' + a.x.toFixed(1) + 'px,' + (a.y + 22).toFixed(1) + 'px) rotate(' + ang.toFixed(4) + 'rad)';
+        $('#dimText').textContent = L.dim.w + ' cm';
+        dimEl.classList.add('is-on');
+      } else dimEl.classList.remove('is-on');
+    }
+    if (current === 'manufaktur') {
+      mls.forEach(function (m, i) {
+        var p = L.beacons && L.beacons[i];
+        if (!p || !p.v) { m.style.opacity = 0; return; }
+        m.style.opacity = '';
+        var anchor = isMobile() ? 'translate(10px, -100%)' : i === 1 ? 'translate(calc(-100% - 14px), -50%)' : i === 3 ? 'translate(14px, -10%)' : 'translate(10px, -100%)';
+        m.style.transform = 'translate(' + p.x.toFixed(1) + 'px,' + p.y.toFixed(1) + 'px) ' + anchor;
+      });
+    }
+  };
+
+  /* ======================================================================
+     BISNIS
+     ====================================================================== */
+  $('#services').innerHTML = XV.SERVICES.map(function (s) {
+    return '<li><a class="service" href="' + wa('Halo XIONCO, saya tertarik dengan layanan ' + s.title + ' (' + s.note + ') untuk proyek saya.') + '" target="_blank" rel="noopener" data-img="' + src(s.img, 768) + '" data-cursor="Diskusi">' +
+      '<span class="service__n">' + s.n + '</span><span class="service__t">' + esc(s.title) + '</span><span class="service__d">' + esc(s.note) + '</span><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></a></li>';
+  }).join('');
+  $('#clients').innerHTML = XV.CLIENTS.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('');
+  var peek = $('#peek'), peekImg = $('#peekImg'), peekOn = false, px = 0, py = 0;
+  $$('.service').forEach(function (s) {
+    s.addEventListener('pointerenter', function () { if (!FINE) return; peekImg.src = s.dataset.img; peek.classList.add('is-on'); peekOn = true; });
+    s.addEventListener('pointerleave', function () { peek.classList.remove('is-on'); peekOn = false; });
+  });
+  (function peekLoop() {
+    if (peekOn || peek.classList.contains('is-on')) {
+      px = lerp(px, mouse.x + 28, .12); py = lerp(py, mouse.y - 120, .12);
+      peek.style.left = px + 'px'; peek.style.top = py + 'px';
+    }
+    requestAnimationFrame(peekLoop);
+  })();
+  $('#bform').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = $('#fName').value.trim(), phone = $('#fPhone').value.replace(/[^\d+]/g, ''), note = $('#bNote');
+    $('#fName').parentNode.classList.toggle('is-err', !name);
+    $('#fPhone').parentNode.classList.toggle('is-err', phone.length < 8);
+    if (!name || phone.length < 8) { note.textContent = 'Mohon lengkapi nama dan nomor WhatsApp yang valid.'; note.classList.add('is-err'); return; }
+    note.classList.remove('is-err'); note.textContent = 'Membuka WhatsApp…';
+    var msg = 'Halo XIONCO, saya ' + name + ' (' + phone + ').\nJenis proyek: ' + $('#fType').value + '\nNilai proyek: ' + $('#fValue').value + ($('#fNeed').value.trim() ? '\nKebutuhan: ' + $('#fNeed').value.trim() : '');
+    window.open(wa(msg), '_blank', 'noopener');
+  });
+  enter.bisnis = function () { $('#bizScroll').scrollTop = 0; };
+  leave.bisnis = function () { peek.classList.remove('is-on'); peekOn = false; };
+
+  /* ======================================================================
+     GALERI — cincin 3D
+     ====================================================================== */
+  var ringEl = $('#ring'), track = $('#ringTrack'), N = XV.MUSE.length, STEP = 360 / N;
+  track.innerHTML = XV.MUSE.map(function (m, i) {
+    return '<div class="rcard" data-i="' + i + '"><figure><img src="' + src(m.img, 768) + '" alt="' + esc(m.title) + '" decoding="async" draggable="false"><figcaption>' + esc(m.title) + '</figcaption></figure></div>';
+  }).join('');
+  var cards = $$('.rcard', track);
+  var ring = { a: 0, t: 0, v: 0, drag: false, lx: 0, moved: 0, front: -1, active: false };
+  var front = function () { return ((Math.round(ring.a / STEP) % N) + N) % N; };
+  function ringTo(i) { ring.t = Math.round(ring.a / STEP) * STEP + (((i - front()) % N + N + N / 2) % N - N / 2) * STEP; }
+  (function ringLoop() {
+    requestAnimationFrame(ringLoop);
+    if (!ring.active) return;
+    if (!ring.drag) {
+      if (Math.abs(ring.v) > .02) { ring.t += ring.v; ring.v *= .9; if (Math.abs(ring.v) < .3) { ring.v = 0; ring.t = Math.round(ring.t / STEP) * STEP; } }
+      ring.a = lerp(ring.a, ring.t, REDUCED ? 1 : .07);
+    }
+    var R = track.offsetWidth / 2 / Math.tan(Math.PI / N) * 1.14;
+    track.style.transform = 'translateZ(' + (-R).toFixed(1) + 'px) rotateY(' + (-ring.a).toFixed(2) + 'deg)';
+    cards.forEach(function (c, i) {
+      var d = ((i * STEP - ring.a) % 360 + 540) % 360 - 180, cs = Math.max(0, Math.cos(d * Math.PI / 180));
+      c.style.transform = 'rotateY(' + (i * STEP) + 'deg) translateZ(' + R.toFixed(1) + 'px)';
+      c.style.opacity = (.12 + .88 * cs * cs).toFixed(3);
+    });
+    var f = front();
+    if (f !== ring.front) {
+      ring.front = f;
+      cards.forEach(function (c, i) { c.classList.toggle('is-front', i === f); });
+      var m = XV.MUSE[f];
+      $('#ringN').textContent = String(f + 1).padStart(2, '0') + ' / ' + String(N).padStart(2, '0');
+      $('#ringTitle').textContent = m.title; $('#ringNote').textContent = m.note;
+    }
+  })();
+  ringEl.addEventListener('pointerdown', function (e) { ring.drag = true; ring.lx = e.clientX; ring.moved = 0; ring.v = 0; try { ringEl.setPointerCapture(e.pointerId); } catch (err) {} });
+  ringEl.addEventListener('pointermove', function (e) { if (!ring.drag) return; var dx = e.clientX - ring.lx; ring.lx = e.clientX; ring.moved += Math.abs(dx); ring.a -= dx * .2; ring.t = ring.a; ring.v = -dx * .2; });
+  ringEl.addEventListener('pointerup', function (e) {
+    if (!ring.drag) return; ring.drag = false;
+    if (ring.moved < 6) {
+      var c = document.elementFromPoint(e.clientX, e.clientY); c = c && c.closest('.rcard');
+      if (c) { var i = +c.dataset.i; if (i === front()) openLb(i); else ringTo(i); }
+      ring.v = 0; ring.t = Math.round(ring.a / STEP) * STEP;
+    }
+  });
+  ringEl.addEventListener('pointercancel', function () { ring.drag = false; });
+  ringEl.addEventListener('wheel', function (e) { e.preventDefault(); ring.t = Math.round(ring.t / STEP) * STEP + ((Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) > 0 ? STEP : -STEP); }, { passive: false });
+  $('#ringPrev').addEventListener('click', function () { ring.t = Math.round(ring.t / STEP) * STEP - STEP; });
+  $('#ringNext').addEventListener('click', function () { ring.t = Math.round(ring.t / STEP) * STEP + STEP; });
+  var lb = $('#lb');
+  function openLb(i) {
+    var m = XV.MUSE[i];
+    $('#lbImg').src = src(m.img, 1024); $('#lbImg').alt = m.title;
+    $('#lbTitle').textContent = m.title; $('#lbNote').textContent = m.note;
+    closeAll(); lb.classList.add('is-open'); lb.setAttribute('aria-hidden', 'false');
+    if (ANIM) G.fromTo('.lb__fig', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out' });
+  }
+  lb.addEventListener('click', function (e) { if (e.target === lb) closeAll(); });
+  enter.galeri = function () { ring.active = true; };
+  leave.galeri = function () { ring.active = false; };
+  keys.galeri = function (e) {
+    if (e.key === 'ArrowRight') { $('#ringNext').click(); return true; }
+    if (e.key === 'ArrowLeft') { $('#ringPrev').click(); return true; }
+    if (e.key === 'Enter') { openLb(front()); return true; }
+  };
+
+  /* ======================================================================
+     Menu HP, overlay, keyboard
+     ====================================================================== */
+  var menu = $('#menu'), menuBtn = $('#menuBtn');
+  function closeMenu() { menu.classList.remove('is-open'); menu.setAttribute('aria-hidden', 'true'); menuBtn.setAttribute('aria-expanded', 'false'); menuBtn.textContent = 'Menu'; }
+  menuBtn.addEventListener('click', function () {
+    var open = !menu.classList.contains('is-open');
+    if (!open) return closeMenu();
+    menu.classList.add('is-open'); menu.setAttribute('aria-hidden', 'false'); menuBtn.setAttribute('aria-expanded', 'true'); menuBtn.textContent = 'Tutup';
+    if (ANIM) G.fromTo($$('.menu__list a', menu), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out', stagger: .05 });
+  });
+  function anyOpen() { return bagEl.classList.contains('is-open') || lb.classList.contains('is-open') || menu.classList.contains('is-open') || pd.classList.contains('is-open'); }
+  function closeAll(keepPd) {
+    bagEl.classList.remove('is-open'); bagEl.setAttribute('aria-hidden', 'true');
+    lb.classList.remove('is-open'); lb.setAttribute('aria-hidden', 'true');
+    if (!keepPd) closePd();
+  }
+  window.addEventListener('keydown', function (e) {
+    if (!booted) return;
+    var typing = /^(input|textarea|select)$/i.test(e.target.tagName || '');
+    if (e.key === 'Escape') {
+      if (typing) { e.target.blur(); return; }
+      if (menu.classList.contains('is-open')) { closeMenu(); return; }
+      if (bagEl.classList.contains('is-open') || lb.classList.contains('is-open')) { closeAll(true); return; }
+      if (pd.classList.contains('is-open')) { closePd(); return; }
+      if (current !== 'home') go('home');
+      return;
+    }
+    if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (keys[current] && keys[current](e)) e.preventDefault();
+  });
+  window.addEventListener('resize', function () { if (!isMobile()) closeMenu(); });
+
+  runVeil();
+})();
+
+</script>
+</body>
+</html>
