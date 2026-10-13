@@ -19,6 +19,24 @@ window.XIONCO_VERSIONS = /*VERSIONS*/[
     "note": "Gaya kotak seragam (navigator, deskripsi, panel, rincian), kursor baru, panel developer: versi, aset, katalog, custom."
   },
   {
+    "id": "5.01.02",
+    "name": "Versi 5.01.02",
+    "title": "5.01.02 — rombak alur & tampilan: checkout satu halaman (tamu/anggota, isi otomatis, alamat tersimpan, ongkir & pemasangan), akun WhatsApp/Google/Email/Instagram, rancangan tersimpan di profil, custom masuk tas dengan harga final, UI selaras",
+    "path": "checkpoints/5.01.02/index.html",
+    "date": "2026-10-13 07:17",
+    "type": "checkpoint",
+    "note": "Salinan v5 pada saat ini: 5.01.02 — rombak alur & tampilan: checkout satu halaman (tamu/anggota, isi otomatis, alamat tersimpan, ongkir & pemasangan), akun WhatsApp/Google/Email/Instagram, rancangan tersimpan di profil, custom masuk tas dengan harga final, UI selaras"
+  },
+  {
+    "id": "5.01.01",
+    "name": "Versi 5.01.01",
+    "title": "Sebelum rombak UI & alur (katalog xionco.shop, varian, pembayaran, Customize 1 halaman, Box 1/2)",
+    "path": "checkpoints/5.01.01/index.html",
+    "date": "2026-10-13 06:54",
+    "type": "checkpoint",
+    "note": "Salinan v5 pada saat ini: Sebelum rombak UI & alur (katalog xionco.shop, varian, pembayaran, Customize 1 halaman, Box 1/2)"
+  },
+  {
     "id": "v4",
     "name": "Versi 4",
     "title": "Maison — satu layar, panggung 3D",

@@ -30,7 +30,7 @@
   var canvas, renderer, scene, camera, controls;
   var W = 1, H = 1, MOBILE = false, last = 0, frame = 0, dtAvg = 16, slow = 0, clock = 0;
   var mats = {}, L = {}, O = {};
-  var st = { room: 'home', kind: 'cubix', drag: false, spin: 0, spinV: 0, lastDrag: -1e9, map: 0, mapT: 0, zoom: 1, zoomC: 1, off: false, orbitMoved: false, recenter: false };
+  var st = { room: 'home', kind: 'cubix', drag: false, spin: 0, spinV: 0, lastDrag: -1e9, map: 0, mapT: 0, zoom: 1, zoomC: 1, off: false, orbitMoved: false, recenter: false, cam: false, camYaw: 0, camPitch: 0, camYawT: 0, camPitchT: 0 };
   var view = { tx: 0, ty: .42, tz: 0, dist: 6.4, yaw: -.3, pitch: .17, fov: 30 };
   var inset = { l: 0, r: 0, b: 0, t: 0, x: 0, y: 0 };
   var mouse = { x: 0, y: 0, sx: 0, sy: 0 };
@@ -179,7 +179,7 @@
       mats.fabric.color.copy(fc); mats.fabric.sheenColor.setRGB(fc.r * 1.6 + .05, fc.g * 1.6 + .05, fc.b * 1.6 + .05); mats.base.color.copy(bc);
     }
     O.cubix.userData.bounds = cubixBounds();
-    if (st.kind === 'cubix' && O.plinth) setPlinth(O.cubix.userData.bounds.w, true, animate ? 1.1 : 0);
+    if (st.kind === 'cubix' && O.plinth) setPlinth(O.cubix.userData.bounds, true, animate ? 1.1 : 0);
     if (st.kind === 'cubix' && !orbit) frameItem(O.cubix.userData.bounds, animate ? 1.2 : 0);
     return { width: Math.round(cubixBounds().w * 100) };
   }
@@ -367,8 +367,10 @@
   function sink(obj, done) {
     tw(obj.position, { y: -1.8, duration: XW.reduced ? 0 : .7, ease: 'power3.in', onComplete: function () { obj.visible = false; if (done) done(); } });
   }
-  function setPlinth(w, visible, dur) {
-    var r = visible ? clamp(w * .52, .66, 1.6) : .001, d = dur == null ? 1.1 : dur;
+  // podium jauh lebih lebar dari objek (±1,3 × diagonal tapak) dan selalu mengikuti ukurannya
+  function setPlinth(b, visible, dur) {
+    b = typeof b === 'number' ? { w: b, d: b * .45 } : b || { w: 1, d: .5 };
+    var r = visible ? clamp(Math.sqrt(b.w * b.w + b.d * b.d) / 2 * 1.3 + .24, .95, 3.4) : .001, d = dur == null ? 1.1 : dur;
     tw(O.plinth.scale, { x: r, z: r, duration: d, ease: 'power3.inOut' });
     tw(O.plinth.position, { y: visible ? 0 : -.2, duration: d * .8, ease: 'power3.inOut' });
   }
@@ -381,7 +383,7 @@
     if (prev && prev !== obj && prev !== O.map) sink(prev, function () { if (prev.userData.dispose) prev.userData.dispose(); });
     if (obj === O.map) { O.map.position.y = 0; O.map.visible = true; }
     else if (prev !== obj) rise(obj, prev && prev !== O.map ? .45 : .1);
-    setPlinth(obj.userData.bounds.w, kind !== 'map');
+    setPlinth(obj.userData.bounds, kind !== 'map');
     var fog = kind === 'map' ? [34, 90] : [16, 46];
     tw(scene.fog, { near: fog[0], far: fog[1], duration: 1.4, ease: 'power2.inOut' });
     frameItem(obj.userData.bounds, 1.6);
@@ -477,11 +479,11 @@
     var fw = Math.max(200, W - inset.l - inset.r), fh = Math.max(200, H - inset.t - inset.b);
     var tight = inset.r > 0 || inset.b > 200;            // ada panel → objek dibingkai lebih dekat
     var kh = st.kind === 'art' ? 1.45 : tight ? 2.3 : 3.6, kw = st.kind === 'art' ? 1.3 : tight ? 1.6 : 2.25;
-    if (portrait) { kw = st.kind === 'art' ? 1.15 : st.kind === 'model' || st.kind === 'cubix' ? 1.5 : 1.3; kh = st.kind === 'art' ? 1.3 : 1.9; }
+    if (portrait) { kw = st.kind === 'art' ? 1.15 : st.kind === 'model' || st.kind === 'cubix' || st.kind === 'custom' ? 1.5 : 1.3; kh = st.kind === 'art' ? 1.3 : 1.9; }
     var needH = b.h * kh + .3, needW = (b.w * kw + .2) * (H / W);
     var span = Math.max(needH * H / fh, needW * W / fw);
     var dist = span / vf;
-    var turn = st.kind === 'cubix' || st.kind === 'model';   // objek 3D sungguhan: tampak 3/4
+    var turn = st.kind === 'cubix' || st.kind === 'model' || st.kind === 'custom';   // objek 3D sungguhan: tampak 3/4
     var yaw = turn ? -.3 : 0, pitch = turn ? .17 : .09;
     animView({ tx: 0, ty: LIFT + b.h * .48, tz: turn ? b.d * .12 : 0, dist: clamp(dist, 2.2, 16), yaw: yaw, pitch: pitch, fov: fov }, dur);
   }
@@ -565,23 +567,62 @@
     }
     if (orbit) controls.update();
     else {
-      var yaw = view.yaw + mouse.sx * .05 + (st.kind !== 'map' ? Math.sin(clock * .11) * .03 : 0), pitch = view.pitch - mouse.sy * .025;
+      st.camYaw = lerp(st.camYaw, st.camYawT, k * 1.4); st.camPitch = lerp(st.camPitch, st.camPitchT, k * 1.4);
+      var yaw = view.yaw + st.camYaw + mouse.sx * .05 + (st.kind !== 'map' ? Math.sin(clock * .11) * .03 : 0), pitch = clamp(view.pitch + st.camPitch, .02, 1.3) - mouse.sy * .025;
       st.zoomC = lerp(st.zoomC, st.zoom, k * .9);
       var dist = view.dist * st.zoomC;
       camera.position.set(view.tx + Math.sin(yaw) * Math.cos(pitch) * dist, view.ty + Math.sin(pitch) * dist, view.tz + Math.cos(yaw) * Math.cos(pitch) * dist);
       camera.lookAt(view.tx, view.ty, view.tz);
     }
-    var off = Math.abs(st.zoom - 1) > .02 || Math.abs(st.spin) > .03 || st.orbitMoved;
+    var off = Math.abs(st.zoom - 1) > .02 || Math.abs(st.spin) > .03 || st.orbitMoved || Math.abs(st.camYawT) > .03 || Math.abs(st.camPitchT) > .02;
     if (off !== st.off) { st.off = off; if (XW.onView) XW.onView(off); }
     if (Math.abs(camera.fov - view.fov) > .01) { camera.fov = view.fov; camera.updateProjectionMatrix(); }
     var Lb = XW.labels;
-    if (st.kind === 'cubix' && st.room === 'atelier' && Math.abs(O.cubix.position.y) < .01) {
+    if (st.kind === 'custom' && item && item.userData.bounds && Math.abs(item.position.y) < .01) {
+      var cb = item.userData.bounds, sp = item.userData.spin;
+      Lb.dim = { a: project(sp.localToWorld(new T.Vector3(-cb.w / 2, .01, cb.d / 2 + .08))), b: project(sp.localToWorld(new T.Vector3(cb.w / 2, .01, cb.d / 2 + .08))), w: Math.round(cb.w * 100) };
+    } else if (st.kind === 'cubix' && st.room === 'atelier' && Math.abs(O.cubix.position.y) < .01) {
       var tot = cfg.seats * SW + (cfg.arms ? 2 * AW : 0);
       Lb.dim = { a: project(sofa.localToWorld(new T.Vector3(-tot / 2, .01, D / 2 + .1))), b: project(sofa.localToWorld(new T.Vector3(tot / 2, .01, D / 2 + .1))), w: Math.round(tot * 100) };
     } else Lb.dim = null;
+    Lb.dims = dimsOn ? dimSegs() : null;
     Lb.beacons = st.map > .6 ? beacons.map(function (b) { return project(b.localToWorld(new T.Vector3(0, b.userData.h * b.scale.y + .05, 0))); }) : null;
     if (XW.onFrame) XW.onFrame(Lb);
     renderer.render(scene, camera);
+  }
+
+  /* ---------------------------------------------------------------- garis ukur lengkap (Pengaturan › Ukuran)
+     Lebar (tepi depan), kedalaman (sisi kanan), tinggi (sudut belakang kanan) + garis tegak tambahan
+     (dudukan, lengan, kaki, headboard …) dari XW.setDims(on, info). Info dalam cm; nilai info dipakai
+     bila cocok dengan ukuran objek (±8%), selain itu ukuran objek yang diukur. */
+  var dimsOn = false, dimsInfo = null;
+  XW.setDims = function (on, info) { dimsOn = !!on; dimsInfo = info || null; };
+  // ukuran objek yang sedang tampil (cm), untuk model 3D tanpa data dimensi
+  XW.measure = function () {
+    var b = st.kind === 'cubix' ? cubixBounds() : /^(custom|model)$/.test(st.kind) && item && item.userData.bounds;
+    return b ? { kind: st.kind, w: Math.round(b.w * 100), d: Math.round((st.kind === 'cubix' ? D : b.d) * 100), h: Math.round(b.h * 100) } : null;
+  };
+  function dimSegs() {
+    var tgt, floor, b;
+    if (st.kind === 'cubix') { if (Math.abs(O.cubix.position.y) > .01) return null; tgt = sofa; floor = 0; b = { w: cubixBounds().w, h: HH, d: D }; }
+    else if (/^(custom|model)$/.test(st.kind) && item && item.userData.spin && item.userData.bounds && Math.abs(item.position.y) < .01) { tgt = item.userData.spin; floor = LIFT; b = item.userData.bounds; }
+    else return null;
+    var inf = dimsInfo || {}, val = function (k) { var m = Math.round(b[k] * 100), v = +inf[k]; return v && (inf.exact || Math.abs(v - m) / m < .08) ? v : m; };
+    if (inf.exact && +inf.h) b = { w: b.w, d: b.d, h: inf.h / 100 };
+    var P = function (x, y, z) { return project(tgt.localToWorld(new T.Vector3(x, floor + y, z))); };
+    var hw = b.w / 2, hd = b.d / 2, o = .12, L = inf.labels || {};
+    var segs = [
+      { a: P(-hw, .005, hd + o), b: P(hw, .005, hd + o), k: L.w || 'W', t: val('w') + ' cm', at: 'mid' },
+      { a: P(hw + o, .005, hd), b: P(hw + o, .005, -hd), k: L.d || 'D', t: val('d') + ' cm', at: 'mid' },
+      { a: P(hw + o, 0, hd), b: P(hw + o, b.h, hd), k: L.h || 'H', t: val('h') + ' cm', at: 'mid', side: 1 }
+    ];
+    // garis tegak tambahan di sudut depan kiri: yang tertinggi paling dekat, label di ujung atas → tidak saling silang
+    (inf.v || []).slice().sort(function (p, q) { return q.cm - p.cm; }).forEach(function (e, i) {
+      var y = Math.min(b.h, e.cm / 100), x = -hw - o - i * .15;
+      segs.push({ a: P(x, 0, hd), b: P(x, y, hd), k: e.l, t: e.cm + ' cm', at: 'end', side: -1 });
+    });
+    segs.center = P(0, b.h / 2, 0);
+    return segs;
   }
 
   /* ---------------------------------------------------------------- kualitas & ukuran */
@@ -617,7 +658,7 @@
     buildLights(); buildRoom(); buildSofa(); buildMap();
     O.map.userData.bounds = { w: 12, h: 1, d: 4 };
     item = O.cubix;
-    setPlinth(cubixBounds().w, true, 0);
+    setPlinth(cubixBounds(), true, 0);
     if (T.OrbitControls) {
       controls = new T.OrbitControls(camera, canvas);
       controls.enabled = false; controls.enableDamping = true; controls.dampingFactor = .07;
@@ -629,27 +670,38 @@
     resize();
     window.addEventListener('resize', resize);
     window.addEventListener('pointermove', function (e) { mouse.x = e.clientX / W * 2 - 1; mouse.y = e.clientY / H * 2 - 1; }, { passive: true });
-    /* masukan: geser = putar · roda / cubit = zoom (objek apa pun, kapan pun) · ketuk objek = XW.onPick */
-    var dx0 = 0, ptrs = {}, pinch = null, down = null, hoverT = 0;
+    /* masukan: geser di produk = putar produk · geser di area kosong = ubah arah kamera ·
+       roda / cubit = zoom (objek apa pun, kapan pun) · ketuk objek = XW.onPick */
+    var dx0 = 0, dy0 = 0, ptrs = {}, pinch = null, down = null, hoverT = 0;
+    var camLimit = function () { return /^(product|art|map)$/.test(st.kind) ? .5 : 3.2; };   // foto datar: jangan sampai terlihat dari samping
     var gap = function () { var k = Object.keys(ptrs), a = ptrs[k[0]], b = ptrs[k[1]]; return Math.hypot(a.x - b.x, a.y - b.y) || 1; };
     canvas.addEventListener('pointerdown', function (e) {
       ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
       var n = Object.keys(ptrs).length;
       down = n === 1 ? { x: e.clientX, y: e.clientY, t: performance.now() } : null;
       if (n === 2 && !orbit) { st.drag = false; pinch = { d: gap(), z: st.zoom }; return; }
-      if (n > 1 || orbit || !(item && item.userData.spin)) return;
-      st.drag = true; dx0 = e.clientX; st.spinV = 0; st.recenter = false;
+      if (n > 1 || orbit) return;
+      dx0 = e.clientX; dy0 = e.clientY; st.recenter = false;
+      if (item && item.userData.spin && hit(e.clientX, e.clientY)) { st.drag = true; st.spinV = 0; }
+      else st.cam = true;
     });
     window.addEventListener('pointermove', function (e) {
       if (ptrs[e.pointerId]) { ptrs[e.pointerId].x = e.clientX; ptrs[e.pointerId].y = e.clientY; }
       if (pinch && Object.keys(ptrs).length >= 2) { setZoom(pinch.z * pinch.d / gap()); return; }
       if (st.drag) { var dx = e.clientX - dx0; dx0 = e.clientX; st.spin += dx * .006; st.spinV = dx * .35; st.lastDrag = performance.now(); return; }
+      if (st.cam) {
+        var cx = e.clientX - dx0, cy = e.clientY - dy0, lim = camLimit(); dx0 = e.clientX; dy0 = e.clientY;
+        st.camYawT = clamp(st.camYawT - cx * .005, -lim, lim);
+        st.camPitchT = clamp(st.camPitchT + cy * .004, -view.pitch + .02, 1.3 - view.pitch);
+        st.lastDrag = performance.now(); return;
+      }
       if (!e.buttons && e.target === canvas && XW.onHover && performance.now() - hoverT > 90) { hoverT = performance.now(); XW.onHover(hit(e.clientX, e.clientY)); }
     }, { passive: true });
     var up = function (e) {
       delete ptrs[e.pointerId];
       if (Object.keys(ptrs).length < 2) pinch = null;
       if (st.drag) { st.drag = false; st.lastDrag = performance.now(); }
+      if (st.cam) { st.cam = false; st.lastDrag = performance.now(); }
       if (down && e.type === 'pointerup' && e.target === canvas && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 7 && performance.now() - down.t < 550) {
         var k = hit(e.clientX, e.clientY);
         if (k && XW.onPick) XW.onPick(k);
@@ -716,11 +768,24 @@
       if (photo) return XW.showProduct(p, photo);
     });
   };
+  // foto kecil objek di panggung (thumbnail rancangan di tas & profil) — persegi di tengah ruang kosong
+  XW.snapshot = function (size) {
+    if (!renderer) return '';
+    try {
+      renderer.render(scene, camera);
+      var src = renderer.domElement, k = src.width / W;
+      var fw = W - inset.l - inset.r, fh = H - inset.t - inset.b, side = Math.min(fw, fh) * .82;
+      var cx = inset.l + fw / 2, cy = inset.t + fh / 2;
+      var c = document.createElement('canvas'), n = size || 240; c.width = c.height = n;
+      c.getContext('2d').drawImage(src, (cx - side / 2) * k, (cy - side / 2) * k, side * k, side * k, 0, 0, n, n);
+      return c.toDataURL('image/jpeg', .8);
+    } catch (e) { return ''; }
+  };
   XW.preloadModel = function (url) { getModel(url).catch(function () {}); };
   XW.setTint = function (hexStr) { if (st.kind === 'model') tintModel(item, hexStr); };
   // kembali ke posisi awal: zoom normal, putaran 0, bingkai kamera semula
   XW.recenter = function () {
-    st.zoom = 1; st.spinV = 0; st.recenter = true; st.orbitMoved = false;
+    st.zoom = 1; st.spinV = 0; st.recenter = true; st.orbitMoved = false; st.camYawT = 0; st.camPitchT = 0;
     if (orbit) {
       setOrbit(false, true); frameItem(null, 1.1);
       var back = function () { if (st.room === 'atelier' && st.kind === 'cubix') setOrbit(true); };
@@ -730,6 +795,44 @@
   XW.zoomBy = function (f) { setZoom(st.zoom * f); };
   XW.setTheme = function (n, dur) { setTheme(n, dur); };
   XW.hit = function (x, y) { return hit(x, y); };
+  /* Customize: rancangan parametrik dari maker.js. Dibangun ulang di tempat saat pilihan berubah
+     (putaran & zoom pengguna tetap), dibingkai ulang bila ukurannya berubah cukup jauh. */
+  var customKit = null;
+  function buildCustom(g, cfg) {
+    var spin = g.userData.spin, prevB = g.userData.bounds;
+    if (g.userData.built) { spin.remove(g.userData.built.group); g.userData.built.dispose(); }
+    if (!customKit) customKit = { T: T, rbox: rbox, col: col };
+    var b = window.XMAKER.build(cfg, customKit), box3 = new T.Box3().setFromObject(b.group), size = box3.getSize(new T.Vector3()), c = box3.getCenter(new T.Vector3());
+    b.group.position.set(-c.x, LIFT - box3.min.y, -c.z);
+    spin.add(b.group);
+    g.userData.built = b;
+    g.userData.bounds = { w: size.x, h: size.y, d: size.z };
+    var list = [];
+    b.group.traverse(function (o) { if (!o.isMesh) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (mt) { if (mt && 'envMapIntensity' in mt && list.indexOf(mt) < 0) { mt.userData.env0 = mt.metalness > .5 ? 1.1 : .5; list.push(mt); } }); });
+    g.userData.mats = list;
+    g.userData.blob.scale.set(size.x * 1.15, size.z * 1.2, 1);
+    return !prevB || Math.abs(prevB.w - size.x) / size.x > .06 || Math.abs(prevB.h - size.y) / size.y > .06;
+  }
+  XW.showCustom = function (cfg) {
+    if (!window.XMAKER) return;
+    if (st.kind === 'custom' && item && item.userData.custom) {
+      req++;
+      var big = buildCustom(item, cfg);
+      setPlinth(item.userData.bounds, true, .6);
+      if (big) frameItem(item.userData.bounds, .9);
+      return;
+    }
+    var my = ++req, g = new T.Group(), spin = new T.Group();
+    g.add(spin);
+    var blob = new T.Mesh(new T.PlaneGeometry(1, 1), new T.MeshBasicMaterial({ map: O.blobTex, transparent: true, depthWrite: false, opacity: .4 }));
+    blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.userData.noPick = true; g.add(blob);
+    g.userData = { spin: spin, custom: true, blob: blob };
+    g.userData.dispose = function () { scene.remove(g); if (g.userData.built) g.userData.built.dispose(); blob.geometry.dispose(); blob.material.dispose(); };
+    buildCustom(g, cfg);
+    if (my !== req) return;
+    g.visible = false; scene.add(g);
+    present('custom', g);
+  };
   XW.canSpin = function () { return !!(item && item.userData.spin); };
   XW.showArt = function (url) {
     var my = ++req;

@@ -1,7 +1,7 @@
 {
   "app": "XIONCO",
   "kind": "products",
-  "updated": null,
+  "updated": 1791847988403,
   "items": [
     {
       "status": "aktif",
@@ -773,7 +773,9 @@
       "variants": [],
       "variant": -1,
       "images": [],
-      "sold": 0
+      "sold": 0,
+      "was": null,
+      "from": false
     },
     {
       "status": "aktif",
@@ -2383,7 +2385,9 @@
       "variants": [],
       "variant": -1,
       "images": [],
-      "sold": 0
+      "sold": 0,
+      "was": null,
+      "from": false
     },
     {
       "status": "aktif",
@@ -2435,7 +2439,9 @@
       "variants": [],
       "variant": -1,
       "images": [],
-      "sold": 0
+      "sold": 0,
+      "was": null,
+      "from": false
     },
     {
       "status": "aktif",

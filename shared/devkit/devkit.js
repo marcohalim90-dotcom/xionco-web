@@ -266,6 +266,7 @@
     '.corners { display: grid; grid-template-columns: repeat(2, 110px); gap: 8px; }',
     '.corners button { height: 54px; border-radius: 12px; border: 1px solid var(--hair); position: relative; font: 400 9px var(--fh); letter-spacing: .2em; text-transform: uppercase; color: var(--tl3); }',
     '.corners button::after { content: ""; position: absolute; width: 10px; height: 10px; border-radius: 3px; background: var(--ivory3); }',
+    '.corners--2 { grid-template-columns: 1fr 1fr; } .corners--2 button::after { display: none; }',
     '.corners [data-pos="tl"]::after { left: 8px; top: 8px; } .corners [data-pos="tr"]::after { right: 8px; top: 8px; } .corners [data-pos="bl"]::after { left: 8px; bottom: 8px; } .corners [data-pos="br"]::after { right: 8px; bottom: 8px; }',
     '.corners button.is-on { border-color: var(--tl); color: var(--tl); } .corners button.is-on::after { background: var(--gold); }',
     '.keys { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; font-size: 12.5px; color: var(--tl2); }',
@@ -907,6 +908,8 @@
     el.body.innerHTML = '<div class="sets">' +
       '<div class="card set"><h3>Posisi tombol</h3><p>Default di kiri bawah. Tombol juga bisa diseret — ia akan menempel ke sudut terdekat.</p><div class="corners">' +
         [['tl', 'Kiri atas'], ['tr', 'Kanan atas'], ['bl', 'Kiri bawah'], ['br', 'Kanan bawah']].map(function (c) { return '<button type="button" data-act="pos" data-pos="' + c[0] + '"' + (s.position === c[0] ? ' class="is-on"' : '') + '>' + c[1] + '</button>'; }).join('') + '</div></div>' +
+      '<div class="card set"><h3>Tampilan Customize</h3><p>Box 1: semua pilihan di satu kotak kanan. Box 2 (uji): kotak kanan hanya judul &amp; pilihan terpilih — pilihan yang lebih dari 4 muncul di kotak baru sebelah kiri.</p><div class="corners corners--2">' +
+        [['box1', 'Box 1 · satu kotak'], ['box2', 'Box 2 · kotak kiri']].map(function (c) { return '<button type="button" data-act="czlayout" data-v="' + c[0] + '"' + ((s.czLayout || 'box1') === c[0] ? ' class="is-on"' : '') + '>' + c[1] + '</button>'; }).join('') + '</div></div>' +
       '<div class="card set"><h3>Tampilan tombol</h3><p>Sembunyikan tombol melayang. Panel tetap bisa dibuka dengan Ctrl + Shift + D.</p>' +
         '<button class="tg' + (s.hidden ? ' is-on' : '') + '" type="button" data-act="hide"><span class="sw"></span>Sembunyikan tombol</button></div>' +
       '<div class="card set"><h3>Database</h3><p>' + (XVDB.mode() === 'folder' ? 'Tersimpan di folder proyek: <span class="mono">data/products.json</span>, <span class="mono">data/checks.json</span> (ikut online saat dipublish) dan <span class="mono">data/private/customs.json</span> (data pelanggan — tidak pernah online). Cadangan otomatis di <span class="mono">data/history/</span>.' : XVDB.mode() === 'online' ? 'Situs online membaca katalog yang dipublish. Perubahan di sini hanya tersimpan di browser ini — ubah di komputer lokal lalu publish agar tampil untuk semua.' : 'Dibuka langsung dari file, jadi data tersimpan di browser ini. Jalankan <span class="mono">node tools/serve.js</span> agar tersimpan ke folder data/.') + '</p>' +
@@ -1034,6 +1037,7 @@
       closeEditor(); renderTab(); return;
     }
     if (a === 'pos') { XVDB.setSetting('position', t.dataset.pos); renderSet(); return; }
+    if (a === 'czlayout') { XVDB.setSetting('czLayout', t.dataset.v); renderSet(); toast(t.dataset.v === 'box2' ? 'Customize: Box 2 (kotak kiri)' : 'Customize: Box 1 (satu kotak)'); return; }
     if (a === 'hide') { var s = XVDB.settings(); XVDB.setSetting('hidden', !s.hidden); renderSet(); toast(!s.hidden ? 'Tombol disembunyikan · Ctrl+Shift+D' : 'Tombol ditampilkan'); return; }
     if (a === 'all-export') { download('XIONCO-database-' + new Date().toISOString().slice(0, 10) + '.json', JSON.stringify(XVDB.exportAll(), null, 2)); return; }
     if (a === 'all-reset') { if (!t.dataset.armed) { t.dataset.armed = '1'; t.lastChild.textContent = 'Yakin? klik lagi'; return; } XVDB.resetAll(); products = XVDB.products(); toast('Semua data lokal dihapus'); renderTab(); return; }

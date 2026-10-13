@@ -163,10 +163,19 @@ Pembaruan 13 Okt 2026:
   Tanya via WhatsApp. Semua pembelian berakhir di panel **Pembayaran** (gateway: `v5/js/pay.js`).
 - Panggung: **zoom** (roda / cubit) di objek apa pun, tombol **kembali ke posisi awal**, dan **ketuk objek**
   untuk membuka lagi halamannya di panel kanan.
-- Kanan atas: **Pengaturan** (bahasa Indonesia/English, tema gelap/terang) & **Profil** (pesanan, permintaan custom).
+- Kanan atas: **Pengaturan** (bahasa Indonesia/English, tema gelap/terang, pencahayaan siang/senja/malam) & **Profil** (pesanan, permintaan custom).
+- **Customize** (menggantikan Atelier): rancang furnitur dalam 6 langkah — jenis · bentuk · ukuran · material · detail · kirim —
+  dengan pratinjau **3D parametrik** & estimasi harga langsung. 4 kategori, 18 jenis:
+  kursi & sofa (sofa, armchair/lounge, bench, kursi makan, bar stool, ottoman), meja (makan, kopi, samping, konsol, kerja),
+  kabinet & lemari (TV, sideboard, wardrobe, rak, lemari sepatu, nakas), divan (divan, platform bed, headboard).
+  Tombol Custom di halaman produk membuka Customize yang sudah terisi dari produk itu (bisa beralih ke produk asli).
+  Tampilan: satu halaman gulir dengan tab; pilihan berupa kotak 4 per baris; harga estimasi → pop-up rincian;
+  Kirim → pop-up data pemesan. Developer Settings › Pengaturan › Tampilan Customize: Box 1 (satu kotak) /
+  Box 2 (uji: kelompok > 4 pilihan dibuka di kotak kiri).
 
 ```
 v5/                 index.html · css/v5.css · js/data.js · js/catalog.js · js/cutout.js · js/world.js
+                    js/custom-spec.js (pilihan Customize & estimasi) · js/maker.js (model 3D parametrik)
                     js/i18n.js · js/pay.js · js/app.js
 shared/versions.js  Daftar versi & checkpoint (dibaca Developer Settings)
 shared/db.js        Database lokal: katalog, pesanan custom, centang aset, pengaturan
@@ -195,6 +204,20 @@ Produk tanpa kategori di shop masuk sebagai `draft`.
 `v5/js/pay.js` — `XPAY.pay(order)` masih kosong: pesanan tersimpan dengan status *Menunggu pembayaran*
 dan pembeli diarahkan konfirmasi via WhatsApp. Untuk menyematkan gateway (Midtrans / Xendit / DOKU),
 isi `XPAY.provider` & ganti `XPAY.pay` di file itu saja — kunci rahasia gateway hanya di server.
+Tarif ongkir per wilayah (`XPAY.zones`), biaya pemasangan (`XPAY.install`) dan lama produksi
+(`XPAY.production`) masih **contoh** — ganti dengan angka resmi.
+
+### Akun, tas & checkout (5.01.02)
+
+- **Akun** (`v5/js/auth.js`, `XAUTH`): masuk via WhatsApp (kode), Google, Email, Instagram (hanya akun
+  bisnis/kreator — batasan Meta). Mode **pratinjau**: akun disimpan di perangkat. Versi live butuh server
+  (OTP WhatsApp / Google OAuth) — cukup ganti `XAUTH.signIn`.
+- **Rancangan Customize** bisa *Simpan* (Profil › Rancangan) atau *Ke tas* sebagai item custom dengan
+  harga final. Tanpa akun pun tersimpan di perangkat; setelah masuk ikut akun.
+- **Checkout satu halaman**: Pesanan → Kontak → Alamat → Pengiriman (+ pemasangan) → Pembayaran.
+  Tamu bisa langsung bayar; setelah selesai ditawari *Simpan data Anda* (1 ketukan → akun dibuat dengan
+  nama, kontak & alamat). Anggota: kontak & alamat utama terisi otomatis, tinggal pilih metode bayar.
+- Data: `xv5_account`, `xv5_designs`, `xv5_bag2`, `xv5_orders`, `xv5_customer` (localStorage).
 
 ## Developer Settings
 
