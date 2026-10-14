@@ -144,8 +144,11 @@ async function exportInPage(job) {
           const pr = await p.evaluate(id => { const x = (window.XV.PRODUCTS || []).filter(q => q.id === id)[0]; return x ? { model: x.model || '', name: x.name, type: x.type } : null; }, j.productId);
           if (!pr) throw new Error('produk "' + j.productId + '" tidak ada di katalog');
           if (!pr.model) throw new Error('produk "' + j.productId + '" belum punya model 3D (assets/items/' + j.productId + '/model.glb)');
-          fs.copyFileSync(path.join(ROOT, pr.model), dst);
-          fs.writeFileSync(path.join(OUT, j.id + '.json'), JSON.stringify({ id: j.id, productId: j.productId, title: pr.name + ' — ' + pr.type, source: pr.model }, null, 1));
+          // model bermodul channel (tools/glb/tile.py, *-tiles.glb) → render memakai model utuh aslinya bila ada
+          let srcModel = pr.model; const whole = pr.model.replace(/-tiles.glb$/, '.glb');
+          if (whole !== pr.model && fs.existsSync(path.join(ROOT, whole))) srcModel = whole;
+          fs.copyFileSync(path.join(ROOT, srcModel), dst);
+          fs.writeFileSync(path.join(OUT, j.id + '.json'), JSON.stringify({ id: j.id, productId: j.productId, title: pr.name + ' — ' + pr.type, source: srcModel }, null, 1));
         } else if (j.cfg && j.cfg.cat) {
           const r = await p.evaluate(exportInPage, j);
           fs.writeFileSync(dst, Buffer.from(r.b64, 'base64'));

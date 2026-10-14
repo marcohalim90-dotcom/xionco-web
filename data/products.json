@@ -191,7 +191,7 @@
       "shopId": 17,
       "shopName": "Kyrios - 3 Seater",
       "bg": "white",
-      "model": "assets/items/kyrios/model.glb"
+      "model": "assets/items/kyrios/model-tiles.glb"
     },
     {
       "status": "aktif",

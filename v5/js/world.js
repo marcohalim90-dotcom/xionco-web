@@ -85,11 +85,15 @@
   function buildRoom() {
     mats.floor = new T.MeshStandardMaterial({ color: col('#17130f'), roughness: .38, metalness: 0, envMapIntensity: .22 });
     var floor = new T.Mesh(new T.CircleGeometry(60, 96), mats.floor);
-    floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+    floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor); O.floor = floor;
     var wall = O.wall = new T.Mesh(new T.CylinderGeometry(15, 15, 14, 128, 1, true), new T.MeshBasicMaterial({ map: canvasTex(16, 512, backdrop), side: T.BackSide, toneMapped: false }));
     wall.position.y = 7; scene.add(wall);
     // cahaya hangat lembut di belakang panggung
-    O.halo = new T.Mesh(new T.PlaneGeometry(14, 9), new T.MeshBasicMaterial({ map: radial([[0, 'rgba(201,160,108,.34)'], [.45, 'rgba(150,110,70,.1)'], [1, 'rgba(0,0,0,0)']]), transparent: true, depthWrite: false, toneMapped: false }));
+    // tekstur halo memudar ke bawah → tidak ada garis tajam di tempat bidang halo memotong lantai
+    var haloTex = radial([[0, 'rgba(201,160,108,.34)'], [.45, 'rgba(150,110,70,.1)'], [1, 'rgba(0,0,0,0)']]), hc = haloTex.image, hg = hc.getContext('2d'), hf = hg.createLinearGradient(0, hc.height, 0, 0);
+    hf.addColorStop(0, 'rgba(0,0,0,0)'); hf.addColorStop(.42, 'rgba(0,0,0,1)'); hf.addColorStop(1, 'rgba(0,0,0,1)');
+    hg.globalCompositeOperation = 'destination-in'; hg.fillStyle = hf; hg.fillRect(0, 0, hc.width, hc.height); haloTex.needsUpdate = true;
+    O.halo = new T.Mesh(new T.PlaneGeometry(14, 9), new T.MeshBasicMaterial({ map: haloTex, transparent: true, depthWrite: false, toneMapped: false }));
     O.halo.position.set(0, 2.6, -9.5); scene.add(O.halo);
     // panggung bundar rendah + garis champagne
     O.plinth = new T.Group();
@@ -100,7 +104,54 @@
     O.plinth.scale.set(2, 1, 2);
     scene.add(O.plinth);
     O.blobTex = radial([[0, 'rgba(0,0,0,.75)'], [.5, 'rgba(0,0,0,.35)'], [1, 'rgba(0,0,0,0)']]);
+    buildHorizon(); buildStudio();
   }
+  /* ---------------------------------------------------------------- background: Default & Studio
+     Default = ruang gelap/terang dengan dinding melingkar; horizon dilunakkan: lantai memudar ke warna
+     dinding mendekati dinding + kabut tipis di kaki dinding (tidak ada garis patah).
+     Studio  = cyclorama studio foto: lantai melengkung mulus menjadi dinding (tanpa horizon). */
+  var bgName = 'default';
+  var STUDIO = { dark: '#57524c', light: '#f2f0ec' };
+  function fadeTex(radial) {
+    var c = document.createElement('canvas'), n = 512; c.width = radial ? n : 4; c.height = n;
+    var g = c.getContext('2d'), gr;
+    if (radial) { gr = g.createRadialGradient(n / 2, n / 2, 0, n / 2, n / 2, n / 2); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.3, 'rgba(255,255,255,0)'); gr.addColorStop(.62, 'rgba(255,255,255,.55)'); gr.addColorStop(.84, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,1)'); }
+    else { gr = g.createLinearGradient(0, n, 0, 0); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.25, 'rgba(255,255,255,.8)'); gr.addColorStop(.6, 'rgba(255,255,255,.3)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); }
+    g.fillStyle = gr; g.fillRect(0, 0, c.width, n);
+    return new T.CanvasTexture(c);
+  }
+  function buildHorizon() {
+    var wc = col(THEMES[themeName].wall[2]);
+    // lantai → warna dinding (cincin transparan di lantai, mulai r ±7,6 m)
+    O.hzFloor = new T.Mesh(new T.CircleGeometry(15.2, 128), new T.MeshBasicMaterial({ color: wc, map: fadeTex(true), transparent: true, depthWrite: false, toneMapped: false }));
+    O.hzFloor.rotation.x = -Math.PI / 2; O.hzFloor.position.y = .004; O.hzFloor.renderOrder = -1; O.hzFloor.userData.noPick = true; scene.add(O.hzFloor);
+    // kabut di kaki dinding: pita melingkar yang memudar ke atas
+    O.hzBand = new T.Mesh(new T.CylinderGeometry(14.9, 14.9, 5, 128, 1, true), new T.MeshBasicMaterial({ color: wc, map: fadeTex(false), transparent: true, depthWrite: false, side: T.BackSide, toneMapped: false }));
+    O.hzBand.position.y = 2.5; O.hzBand.userData.noPick = true; scene.add(O.hzBand);
+  }
+  function buildStudio() {
+    // profil: lantai datar → lengkung (r 2,6 m) → dinding tegak; diputar 360° jadi mangkuk mulus
+    var R = 11, cv = 2.6, Hh = 9, pts = [new T.Vector2(0, 0), new T.Vector2(R - cv, 0)];
+    for (var i = 1; i <= 16; i++) { var a = i / 16 * Math.PI / 2; pts.push(new T.Vector2(R - cv + Math.sin(a) * cv, cv - Math.cos(a) * cv)); }
+    pts.push(new T.Vector2(R, Hh));
+    var geo = new T.LatheGeometry(pts, 128);
+    O.studio = new T.Mesh(geo, new T.MeshStandardMaterial({ color: col(STUDIO[themeName]), roughness: .92, metalness: 0, side: T.BackSide, envMapIntensity: .35 }));
+    O.studio.receiveShadow = true; O.studio.visible = false; O.studio.userData.noPick = true; scene.add(O.studio);
+  }
+  function horizonColor(d) {
+    var wc = col(THEMES[themeName].wall[2]);
+    [O.hzFloor, O.hzBand].forEach(function (m) { if (m) tw(m.material.color, { r: wc.r, g: wc.g, b: wc.b, duration: d == null ? 1.2 : d }); });
+    if (O.studio) { var sc = col(STUDIO[themeName]); tw(O.studio.material.color, { r: sc.r, g: sc.g, b: sc.b, duration: d == null ? 1.2 : d }); }
+  }
+  XW.setBackground = function (name) {
+    bgName = name === 'studio' ? 'studio' : 'default';
+    var st0 = bgName === 'studio';
+    if (O.studio) O.studio.visible = st0;
+    [O.wall, O.halo, O.hzFloor, O.hzBand].forEach(function (m) { if (m) m.visible = !st0; });
+    if (mats.floor && O.floor) O.floor.visible = !st0;
+    if (O.plinth) O.plinth.visible = !st0;   // studio foto: furnitur langsung di lantai, tanpa podium
+  };
+  XW.background = function () { return bgName; };
 
   /* ---------------------------------------------------------------- CUBIX */
   var S = (XV && XV.STUDIO) || { seatW: 72, armW: 16, depth: 86, height: 74, fabrics: [{ id: 'fb03', color: '#c7bba7', type: 'fabric' }] };
@@ -301,8 +352,29 @@
     return modelCache[url];
   }
   var UNITS = [1, .01, .0254, .001];   // meter, cm, inci, mm
+  /* model bermodul (tools/glb/tile.py): ujung kiri + n lajur channel + ujung kanan.
+     Panjang berubah = jumlah lajur bertambah/berkurang, bukan channel yang diregangkan. */
+  function tileArrange(m, n) {
+    var t = m.userData.xionco_tile; if (!t) return;
+    var L = m.getObjectByName('endL'), R = m.getObjectByName('endR'), tpl = m.getObjectByName('tile');
+    if (!L || !R || !tpl) return;
+    var st0 = m.userData._tile || (m.userData._tile = { lx: L.position.x, rx: R.position.x, tx: tpl.position.x, clones: [] });
+    st0.clones.forEach(function (c) { c.parent.remove(c); });
+    st0.clones = [];
+    tpl.visible = false;
+    var shift = -(n - t.n0) * t.pitch / 2;
+    L.position.x = st0.lx + shift;
+    R.position.x = st0.rx + (n - t.n0) * t.pitch + shift;
+    for (var i = 0; i < n; i++) {
+      var c = tpl.clone(true); c.visible = true; c.name = 'tile#' + i;
+      c.position.x = st0.tx + i * t.pitch + shift;
+      tpl.parent.add(c); st0.clones.push(c);
+    }
+    m.userData._tileN = n;
+  }
   function makeModel(srcScene, p) {
     var m = srcScene.clone(true), box = new T.Box3(), size = new T.Vector3(), want = sizeFor(p);
+    if (m.userData.xionco_tile) tileArrange(m, m.userData.xionco_tile.n0);
     m.rotation.y = (+p.modelRot || 0) * Math.PI / 180;
     m.updateMatrixWorld(true); box.setFromObject(m); box.getSize(size);
     var wide = Math.max(size.x, size.z) || 1, s = 1, best = 1e9;
@@ -413,6 +485,9 @@
     if (obj === O.map) { O.map.position.y = 0; O.map.visible = true; }
     else if (prev !== obj) rise(obj, prev && prev !== O.map ? .45 : .1);
     setPlinth(obj.userData.bounds, kind !== 'map');
+    // ruang (beberapa furnitur): tanpa podium, sorot utama lebih lebar
+    O.plinth.visible = kind !== 'room' && bgName !== 'studio';
+    L.key.angle = kind === 'room' ? 1.05 : .5;
     var fog = kind === 'map' ? [34, 90] : [16, 46];
     tw(scene.fog, { near: fog[0], far: fog[1], duration: 1.4, ease: 'power2.inOut' });
     frameItem(obj.userData.bounds, 1.6);
@@ -491,6 +566,7 @@
     tw(theme, { halo: th.halo, exp: th.exp, env: th.env, duration: d, ease: 'power2.inOut' });
     if (CS.plane) tw(CS.plane.material, { opacity: name === 'light' ? .72 : 1, duration: d });
     var old = O.wall.material.map; O.wall.material.map = canvasTex(16, 512, backdrop); O.wall.material.needsUpdate = true; if (old) old.dispose();
+    horizonColor(d);
   }
 
   /* ---------------------------------------------------------------- kamera membingkai objek */
@@ -912,6 +988,8 @@
       if (n === 2 && !orbit) { st.drag = false; pinch = { d: gap(), z: st.zoom }; return; }
       if (n > 1 || orbit) return;
       dx0 = e.clientX; dy0 = e.clientY; st.recenter = false;
+      var rw = roomAt(e.clientX, e.clientY);
+      if (rw) { var fp = floorAt(e.clientX, e.clientY); ROOM.drag = { w: rw, ox: fp ? rw.position.x - fp.x : 0, oz: fp ? rw.position.z - fp.z : 0 }; return; }
       if (item && item.userData.spin && hit(e.clientX, e.clientY)) { st.drag = true; st.spinV = 0; }
       else st.cam = true;
     });
@@ -919,6 +997,7 @@
       if (ptrs[e.pointerId]) { ptrs[e.pointerId].x = e.clientX; ptrs[e.pointerId].y = e.clientY; }
       if (pinch && Object.keys(ptrs).length >= 2) { setZoom(pinch.z * pinch.d / gap()); return; }
       if (st.drag) { var dx = e.clientX - dx0; dx0 = e.clientX; st.spin += dx * .006; st.spinV = dx * .35; st.lastDrag = performance.now(); return; }
+      if (ROOM.drag) { var fp2 = floorAt(e.clientX, e.clientY); if (fp2) { ROOM.drag.w.position.x = clamp(fp2.x + ROOM.drag.ox, -6, 6); ROOM.drag.w.position.z = clamp(fp2.z + ROOM.drag.oz, -3, 3); } return; }
       if (st.cam) {
         var cx = e.clientX - dx0, cy = e.clientY - dy0, lim = camLimit(); dx0 = e.clientX; dy0 = e.clientY;
         st.camYawT = clamp(st.camYawT - cx * .005, -lim, lim);
@@ -931,6 +1010,7 @@
       delete ptrs[e.pointerId];
       if (Object.keys(ptrs).length < 2) pinch = null;
       if (st.drag) { st.drag = false; st.lastDrag = performance.now(); }
+      if (ROOM.drag) { var dw = ROOM.drag.w; ROOM.drag = null; if (XW.onRoomMove) XW.onRoomMove(dw.userData.rid, +dw.position.x.toFixed(3), +dw.position.z.toFixed(3)); }
       if (st.cam) { st.cam = false; st.lastDrag = performance.now(); }
       if (down && e.type === 'pointerup' && e.target === canvas && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 7 && performance.now() - down.t < 550) {
         var mo = motionAt(e.clientX, e.clientY);
@@ -1021,9 +1101,10 @@
     var spin = g.userData.spin, inv = new T.Matrix4(), list = [];
     spin.updateMatrixWorld(true);
     var spinInv = new T.Matrix4().copy(spin.matrixWorld).invert();
-    spin.traverse(function (o) {
+    spin.traverseVisible(function (o) {
       if (!o.isMesh || !o.geometry || !o.geometry.attributes.position) return;
-      o.geometry = o.geometry.clone();   // geometri GLB dipakai bersama antar klon → salin dulu
+      if (!o.userData.geo0) o.userData.geo0 = o.geometry;   // geometri asli (dipakai bersama antar klon)
+      o.geometry = o.userData.geo0.clone();
       var toSpin = new T.Matrix4().multiplyMatrices(spinInv, o.matrixWorld), back = new T.Matrix4().copy(toSpin).invert();
       var pos = o.geometry.attributes.position, nor = o.geometry.attributes.normal, v = new T.Vector3(), P = new Float32Array(pos.count * 3), N = nor ? new Float32Array(nor.count * 3) : null;
       var nm = new T.Matrix3().getNormalMatrix(toSpin);
@@ -1036,8 +1117,9 @@
     var box = new T.Box3();
     list.forEach(function (it) { for (var i = 0; i < it.P.length; i += 3) box.expandByPoint(new T.Vector3(it.P[i], it.P[i + 1], it.P[i + 2])); });
     var mats = [];
-    (g.userData.mats || []).forEach(function (mt) { if (mt.metalness > .5) { mt.userData.pcCol0 = mt.color.clone(); mt.userData.pcRough0 = mt.roughness; mt.userData.pcMetal0 = mt.metalness; mats.push(mt); } });
-    g.userData.pc = { list: list, box: box, mats: mats, b0: { w: g.userData.bounds.w, h: g.userData.bounds.h, d: g.userData.bounds.d }, blob0: g.children.filter(function (o) { return o.userData.blob; })[0] };
+    (g.userData.mats || []).forEach(function (mt) { if (mt.userData.pcCol0 || mt.metalness > .5) { if (!mt.userData.pcCol0) { mt.userData.pcCol0 = mt.color.clone(); mt.userData.pcRough0 = mt.roughness; mt.userData.pcMetal0 = mt.metalness; } mats.push(mt); } });
+    var bs = box.getSize(new T.Vector3());
+    g.userData.pc = { list: list, box: box, mats: mats, b0: { w: bs.x, h: bs.y, d: bs.z }, blob0: g.children.filter(function (o) { return o.userData.blob; })[0] };
     return g.userData.pc;
   }
   // regang 1D: zona tengah [c-a, c+a] diskalakan, sisi luar digeser
@@ -1045,12 +1127,21 @@
   XW.modelInfo = function () {
     if (st.kind !== 'model' || !item) return null;
     var pc = modelSetup(item), m = pc.mats[0];
-    return { w: Math.round(pc.b0.w * 100), d: Math.round(pc.b0.d * 100), h: Math.round(pc.b0.h * 100), metals: pc.mats.length, metalHex: m ? '#' + m.userData.pcCol0.getHexString() : null };
+    var mm = item.userData.spin.children[0], t = mm && mm.userData.xionco_tile, u = item.userData.unit || 1;
+    var b0 = t ? pc.b0.w - (mm.userData._tileN - t.n0) * t.pitch * u : pc.b0.w;   // lebar asli (lajur bawaan)
+    return { w: Math.round(b0 * 100), d: Math.round(pc.b0.d * 100), h: Math.round(pc.b0.h * 100), metals: pc.mats.length, metalHex: m ? '#' + m.userData.pcCol0.getHexString() : null,
+      tile: t ? { pitch: t.pitch * u * 100, n0: t.n0, n: mm.userData._tileN } : null };
   };
   // o: { w, d (cm, kosong = asli), metal: { hex, rough, metalness } | null }
   XW.reshapeModel = function (o) {
     if (st.kind !== 'model' || !item) return false;
     o = o || {};
+    var mm = item.userData.spin.children[0], tl = mm && mm.userData.xionco_tile, u = item.userData.unit || 1;
+    if (tl && o.w) {
+      var info0 = XW.modelInfo(), n = Math.max(1, Math.min(14, tl.n0 + Math.round((o.w - info0.w) / (tl.pitch * u * 100))));
+      if (n !== mm.userData._tileN) { tileArrange(mm, n); item.userData.pc = null; }
+      o = { d: o.d, metal: o.metal };   // lebar dari jumlah lajur, bukan diregangkan
+    }
     var pc = modelSetup(item), bx = pc.box, cx = (bx.min.x + bx.max.x) / 2, cz = (bx.min.z + bx.max.z) / 2;
     var hw = (bx.max.x - bx.min.x) / 2, hd = (bx.max.z - bx.min.z) / 2;
     var dx = o.w ? (o.w / 100 - pc.b0.w) / 2 : 0, dz = o.d ? (o.d / 100 - pc.b0.d) / 2 : 0;
@@ -1139,6 +1230,58 @@
     g.userData.blob.scale.set(size.x * 1.15, size.z * 1.2, 1);
     return !prevB || Math.abs(prevB.w - size.x) / size.x > .06 || Math.abs(prevB.h - size.y) / size.y > .06;
   }
+  /* ---------------------------------------------------------------- RUANG: beberapa furnitur sekaligus di panggung
+     entries = [{ rid, kind: custom|model|photo, cfg | url + p | photo + p, x, z, ry }]
+     Geser furnitur di lantai untuk memindahkan (XW.onRoomMove(rid, x, z)). */
+  var ROOM = { g: null, drag: null, my: 0 };
+  function roomPiece(e) {
+    if (e.kind === 'custom' && window.XMAKER) {
+      if (!customKit) customKit = { T: T, rbox: rbox, col: col };
+      var b = window.XMAKER.build(e.cfg, customKit);
+      (b.motions || []).forEach(function (m) { m.apply(0); });
+      var bx = new T.Box3().setFromObject(b.group), c = bx.getCenter(new T.Vector3());
+      b.group.position.set(-c.x, LIFT - bx.min.y, -c.z);
+      var g0 = new T.Group(); g0.add(b.group); g0.userData.dispose = b.dispose;
+      return Promise.resolve(g0);
+    }
+    if (e.kind === 'model') return getModel(e.url).then(function (s) { return makeModel(s, e.p || {}); });
+    if (e.kind === 'photo') return getCutout(e.url).then(function (r) { var wd = sizeFor(e.p || {}); return makeBillboard(r.tex, wd, wd / r.aspect); });
+    return Promise.resolve(null);
+  }
+  XW.showRoom = function (entries) {
+    var my = ++req;
+    return Promise.all((entries || []).map(function (e) { return roomPiece(e).catch(function () { return null; }); })).then(function (parts) {
+      if (my !== req) { parts.forEach(function (p) { if (p && p.userData.dispose) p.userData.dispose(); }); return; }
+      var g = new T.Group(), box = new T.Box3();
+      parts.forEach(function (p, i) {
+        if (!p) return;
+        var e = entries[i], wrap = new T.Group();
+        wrap.add(p); wrap.position.set(e.x || 0, 0, e.z || 0); wrap.rotation.y = (e.ry || 0) * Math.PI / 180;
+        wrap.userData.rid = e.rid; g.add(wrap);
+      });
+      g.updateMatrixWorld(true); box.setFromObject(g);
+      // tata letak dipusatkan di panggung (kamera membingkai dari titik pusat)
+      if (!box.isEmpty()) { var cc = box.getCenter(new T.Vector3()); g.position.set(-cc.x, 0, -cc.z); }
+      var sz = box.isEmpty() ? new T.Vector3(1, 1, 1) : box.getSize(new T.Vector3());
+      g.userData = { bounds: { w: Math.max(sz.x, 1), h: Math.max(sz.y, .5), d: Math.max(sz.z, 1) }, room: true };
+      g.userData.dispose = function () { scene.remove(g); g.children.forEach(function (wr) { wr.traverse(function (o) { if (o.userData.dispose && o !== wr) o.userData.dispose(); }); }); };
+      g.visible = false; scene.add(g); ROOM.g = g;
+      present('room', g);
+    });
+  };
+  XW.roomSet = function (rid, o) {
+    if (!ROOM.g) return;
+    ROOM.g.children.forEach(function (wr) { if (wr.userData.rid !== rid) return; if (o.ry != null) tw(wr.rotation, { y: o.ry * Math.PI / 180, duration: .6, ease: 'power2.inOut' }); if (o.x != null) wr.position.x = o.x; if (o.z != null) wr.position.z = o.z; });
+  };
+  function roomAt(x, y) {
+    if (st.kind !== 'room' || !ROOM.g) return null;
+    ndc.set(x / W * 2 - 1, -(y / H) * 2 + 1); ray.setFromCamera(ndc, camera);
+    var hits = ray.intersectObject(ROOM.g, true);
+    for (var i = 0; i < hits.length; i++) { if (hits[i].object.userData.noPick) continue; for (var o = hits[i].object; o; o = o.parent) if (o.userData.rid) return o; }
+    return null;
+  }
+  var floorPlane = new T.Plane(new T.Vector3(0, 1, 0), 0);
+  function floorAt(x, y) { ndc.set(x / W * 2 - 1, -(y / H) * 2 + 1); ray.setFromCamera(ndc, camera); var p = new T.Vector3(); return ray.ray.intersectPlane(floorPlane, p) ? p : null; }
   XW.showCustom = function (cfg) {
     if (!window.XMAKER) return;
     if (st.kind === 'custom' && item && item.userData.custom) {
@@ -1171,7 +1314,68 @@
     });
   };
   XW.showMap = function () { req++; if (item !== O.map) present('map', O.map); };
-  XW.setMood = function (n) { setMood(n); };
+  /* ---------------------------------------------------------------- pencahayaan manual (Pengaturan › Pencahayaan › Manual)
+     cfg = { ambient 0–2, lights: [{ type: spot|soft|point|sun, on, int 0–4, k 2200–7000 (Kelvin), az 0–360°, el 0–89°, dist m, shadow }] }
+     Lampu preset (key/fill/rim) dimatikan; ambient mengatur cahaya langit & pantulan lingkungan. */
+  var MAN = { on: false, objs: [], marks: null, showMarks: false };
+  function kelvin(k) {
+    var t = k / 100, r, g, b;
+    if (t <= 66) { r = 255; g = 99.47 * Math.log(t) - 161.12; b = t <= 19 ? 0 : 138.52 * Math.log(t - 10) - 305.04; }
+    else { r = 329.7 * Math.pow(t - 60, -.1332); g = 288.12 * Math.pow(t - 60, -.0755); b = 255; }
+    var c = function (v) { return Math.max(0, Math.min(255, v)) / 255; };
+    return new T.Color().setRGB(c(r), c(g), c(b)).convertSRGBToLinear();
+  }
+  function lightPos(l) {
+    var a = l.az * Math.PI / 180, e = l.el * Math.PI / 180;
+    return new T.Vector3(Math.sin(a) * Math.cos(e) * l.dist, Math.sin(e) * l.dist + .3, Math.cos(a) * Math.cos(e) * l.dist);
+  }
+  function clearManual() {
+    MAN.objs.forEach(function (o) { scene.remove(o); if (o.target) scene.remove(o.target); if (o.shadow && o.shadow.map) o.shadow.map.dispose(); if (o.dispose) o.dispose(); });
+    MAN.objs = [];
+    if (MAN.marks) { scene.remove(MAN.marks); MAN.marks = null; }
+  }
+  var lightSig = function (cfg) { return cfg && cfg.lights ? JSON.stringify(cfg.lights.map(function (l) { return [l.type, !!l.on, !!l.shadow]; })) : ''; };
+  XW.setLighting = function (cfg) {
+    if (MAN.on && cfg && cfg.lights && lightSig(cfg) === MAN.sig) {
+      var amb0 = cfg.ambient == null ? 1 : +cfg.ambient, j = 0;
+      mood.hemi = .22 * amb0; mood.env = .42 * amb0;
+      cfg.lights.forEach(function (l) { if (!l.on) return; var o = MAN.objs[j], mk = MAN.marks && MAN.marks.children[j * 2], ln = MAN.marks && MAN.marks.children[j * 2 + 1], p = lightPos(l), c = kelvin(l.k || 4000); j++; if (!o) return;
+        o.position.copy(p); o.color.copy(c); o.intensity = +l.int * (l.type === 'point' ? 1.6 : l.type === 'soft' ? 1.3 : 1);
+        if (mk) { mk.position.copy(p); mk.material.color.copy(c.clone().convertLinearToSRGB()); }
+        if (ln) { ln.geometry.setFromPoints([p, new T.Vector3(0, .35, 0)]); } });
+      return;
+    }
+    clearManual(); MAN.sig = lightSig(cfg);
+    MAN.on = !!(cfg && cfg.lights);
+    L.rim.intensity = MAN.on ? 0 : .3;
+    if (!MAN.on) { setMood(moodName); return; }
+    var amb = cfg.ambient == null ? 1 : +cfg.ambient, shadows = 0;
+    tw(mood, { key: 0, fill: 0, hemi: .22 * amb, env: .42 * amb, exp: 1, halo: .7, duration: .8, ease: 'power2.inOut' });
+    MAN.marks = new T.Group(); MAN.marks.visible = MAN.showMarks; scene.add(MAN.marks);
+    (cfg.lights || []).forEach(function (l) {
+      if (!l.on) return;
+      var c = kelvin(l.k || 4000), p = lightPos(l), o, I = +l.int;
+      if (l.type === 'sun') o = new T.DirectionalLight(c, I);
+      else if (l.type === 'point') o = new T.PointLight(c, I * 1.6, 0, 1);
+      else o = new T.SpotLight(c, I * (l.type === 'soft' ? 1.3 : 1), 0, l.type === 'soft' ? 1.05 : .55, l.type === 'soft' ? 1 : .75, 1);
+      o.position.copy(p);
+      if (o.target) { o.target.position.set(0, .35, 0); scene.add(o.target); }
+      if (l.shadow && shadows < 2 && o.shadow && XW.quality > 0) {
+        shadows++; o.castShadow = true; o.shadow.mapSize.set(MOBILE ? 1024 : 2048, MOBILE ? 1024 : 2048);
+        o.shadow.bias = -.0004; o.shadow.normalBias = .02;
+        if (o.shadow.camera.isOrthographicCamera) { var s = 4; o.shadow.camera.left = -s; o.shadow.camera.right = s; o.shadow.camera.top = s; o.shadow.camera.bottom = -s; }
+        o.shadow.camera.near = .5; o.shadow.camera.far = 20; o.shadow.radius = l.type === 'soft' ? 8 : 3;
+      }
+      scene.add(o); MAN.objs.push(o);
+      // penanda posisi lampu (terlihat saat Pengaturan terbuka)
+      var mk = new T.Mesh(new T.SphereGeometry(.07, 16, 12), new T.MeshBasicMaterial({ color: c.clone().convertLinearToSRGB(), toneMapped: false }));
+      mk.position.copy(p); mk.userData.noPick = true; MAN.marks.add(mk);
+      var ln = new T.Line(new T.BufferGeometry().setFromPoints([p, new T.Vector3(0, .35, 0)]), new T.LineBasicMaterial({ color: col('#c4a674'), transparent: true, opacity: .35 }));
+      MAN.marks.add(ln);
+    });
+  };
+  XW.lightMarkers = function (on) { MAN.showMarks = !!on; if (MAN.marks) MAN.marks.visible = MAN.showMarks; };
+  XW.setMood = function (n) { if (MAN.on) XW.setLighting(null); setMood(n); };
   XW.craft = function (c, animate) { return applyCfg(c, animate !== false); };
   XW.mapFocus = function (i) {
     XW.mapFocusI = i;

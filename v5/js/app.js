@@ -125,11 +125,12 @@
       tas: { n: T('Tas belanja'), t: T('Tas Anda'), p: T('Karya yang Anda pilih. Lanjutkan ke pembayaran kapan saja.'), m: T('Harga mengikuti xionco.shop') },
       bayar: { n: T('Pembayaran'), t: T('Pembayaran'), p: T('Periksa pesanan, isi data pengiriman, lalu pilih metode pembayaran.'), m: T('Transaksi aman') },
       setelan: { n: T('Pengaturan'), t: T('Pengaturan'), p: T('Bahasa dan tema tampilan. Tersimpan di perangkat ini.'), m: 'Maison XIONCO' },
-      profil: { n: T('Profil'), t: T('Akun Anda'), p: T('Pesanan dan permintaan custom Anda di perangkat ini.'), m: 'Maison XIONCO' }
+      profil: { n: T('Profil'), t: T('Akun Anda'), p: T('Pesanan dan permintaan custom Anda di perangkat ini.'), m: 'Maison XIONCO' },
+      ruang: { n: T('Ruang'), t: T('Ruang Anda'), p: T('Beberapa furnitur tampil bersama di panggung — geser untuk menata.'), m: 'Maison XIONCO' }
     };
   }
   buildSections();
-  var ROUTES = ['home', 'koleksi', 'customize', 'manufaktur', 'bisnis', 'galeri', 'kontak', 'tas', 'bayar', 'setelan', 'profil'];
+  var ROUTES = ['home', 'koleksi', 'customize', 'manufaktur', 'bisnis', 'galeri', 'kontak', 'tas', 'bayar', 'setelan', 'profil', 'ruang'];
   var ALIAS = { atelier: 'customize', custom: 'customize' };   // tautan lama tetap berfungsi
 
   /* ======================================================================
@@ -391,7 +392,7 @@
     html.style.setProperty('--cx', ((l - r) / 2) + 'px');
     requestAnimationFrame(fitDetail);
   }
-  var TOP_PANES = { setelan: '#setBtn', profil: '#userBtn', tas: '#bagBtn', bayar: '#bagBtn' };
+  var TOP_PANES = { setelan: '#setBtn', profil: '#userBtn', tas: '#bagBtn', bayar: '#bagBtn', ruang: '#roomBtn' };
   function titleOf(id) { return id === 'home' ? 'Maison XIONCO — Quality shouldn\'t be a luxury' : SECTIONS[id].t + ' — Maison XIONCO'; }
   function open(id) {
     var prev = current;
@@ -410,7 +411,7 @@
       if (ANIM && pane && prev !== id) G.fromTo($$('.pane__scroll:not(.pd) > *', pane).slice(0, 8), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .04, delay: prev === 'home' ? .35 : .2, clearProps: 'transform' });
     }
     // panggung
-    if (id === 'customize') { /* panggung diatur enter.customize → czStage */ }
+    if (id === 'customize' || id === 'ruang') { /* panggung diatur enter.customize → czStage / enter.ruang */ }
     else if (id === 'manufaktur') { stageKind = 'map'; if (XW.ok) XW.showMap(); mapDetail(-1); }
     else if (id === 'galeri') showArt(galSel);
     else {
@@ -418,7 +419,7 @@
       else if (stageKind === 'cubix') cubixDetail();
       else if (stageKind === 'custom') czDetail();
     }
-    if (XW.ok && prev !== id) XW.setMood(moodNow());
+    if (XW.ok && prev !== id) applyLighting();
     // model 3D cukup besar → mulai diunduh saat koleksi dibuka, agar tampil seketika saat dipilih
     if (id === 'koleksi' && XW.ok && XW.preloadModel) XV.PRODUCTS.forEach(function (p) { if (p.model) XW.preloadModel(src(p.model)); });
     if (XW.ok) XW.setRoom(id);
@@ -603,7 +604,7 @@
     if (pc.metal !== pc.metal0 && window.XC && XC.matPrice) { var a = XC.matPrice('metal.' + pc.metal), b = XC.matPrice('metal.' + pc.metal0); f *= (a.f || 1) / (b.f || 1); add = (a.add || 0) - (b.add || 0); }
     return Math.round((base * f + add) / 10000) * 10000;
   }
-  function pcLabel(pc) { var m = window.XC && XC.find(XC.METAL, pc.metal); return 'W ' + pc.w + ' · D ' + pc.d + ' cm' + (m ? ' · ' + L(m) : ''); }
+  function pcLabel(pc) { var m = window.XC && XC.find(XC.METAL, pc.metal); return 'W ' + Math.round(pc.w) + ' · D ' + pc.d + ' cm' + (m ? ' · ' + L(m) : ''); }
   // harga & label varian setelah penyesuaian (untuk halaman produk & kotak bawah)
   function pcCur(p, c) { var pc = pcFor(p); if (!pcChanged(pc) || !c.price) return c; var o = {}; for (var k in c) o[k] = c[k]; o.price = pcPrice(c.price, pc); o.was = null; o.label = (c.label ? c.label + ' · ' : '') + pcLabel(pc); return o; }
   function nearMetal(hex) {
@@ -632,7 +633,7 @@
     box.innerHTML = '<p class="og__h pc__h"><span>' + T('Sesuaikan {name}', { name: p.name }) + '</span></p>' +
       '<p class="note pc__n">' + T('Model asli diubah langsung — lengan & kaki tetap, bagian tengah yang menyesuaikan.') + '</p>' +
       (pcChanged(pc) ? '<p class="pc__r"><button type="button" class="mini" data-pc-reset>' + T('Ukuran asli') + '</button></p>' : '') +
-      rng('w', T('Lebar'), pc.w, pc.wMin, pc.wMax, 5) + rng('d', T('Kedalaman'), pc.d, pc.dMin, pc.dMax, 1) +
+      rng('w', T('Lebar'), Math.round(pc.w), Math.round(pc.wMin * 10) / 10, Math.round(pc.wMax * 10) / 10, pc.wStep) + (pc.tile ? '<p class="note pc__ch">' + T('{n} lajur channel', { n: pc.tile.n0 + Math.round((pc.w - pc.w0) / pc.tile.pitch) }) + '</p>' : '') + rng('d', T('Kedalaman'), pc.d, pc.dMin, pc.dMax, 1) +
       (pc.hasMetal ? '<div class="cz-g"><p class="og__h"><span>' + T('Warna kaki & base') + '</span><b>' + esc(cm0 ? L(cm0) : '') + '</b></p><div class="cz-grid">' +
         XC.METAL.map(function (m) { return cell(mg, m, m.id === pc.metal, false); }).join('') + '</div></div>' : '');
   }
@@ -651,7 +652,9 @@
     if (!info) { if ((tries || 0) < 40) setTimeout(function () { pcInit(p, (tries || 0) + 1); }, 250); return; }
     var r5 = function (v) { return Math.round(v / 5) * 5; };
     pc.w0 = pc.w = info.w; pc.d0 = pc.d = info.d;
-    pc.wMin = r5(info.w * .75); pc.wMax = r5(info.w * 1.35); pc.dMin = Math.round(info.d * .85); pc.dMax = Math.round(info.d * 1.2);
+    pc.wMin = r5(info.w * .75); pc.wMax = r5(info.w * 1.35); pc.wStep = 5; pc.dMin = Math.round(info.d * .85); pc.dMax = Math.round(info.d * 1.2);
+    // model bermodul channel: lebar bertambah per lajur (channel baru), bukan diregangkan
+    if (info.tile) { var tp = info.tile.pitch; pc.tile = info.tile; pc.wStep = tp; pc.wMin = info.w - (info.tile.n0 - 1) * tp; pc.wMax = info.w + 6 * tp; }
     pc.hasMetal = info.metals > 0; pc.metal0 = pc.metal = nearMetal(info.metalHex);
     pcRender();
   }
@@ -665,9 +668,10 @@
   $('#pdPc') && $('#pdPc').addEventListener('input', function (e) {
     var t = e.target; if (!t.dataset.pc) return;
     var pc = pcFor(kList[kI]); if (!pc) return;
-    pc[t.dataset.pc] = +t.value;
+    pc[t.dataset.pc] = t.dataset.pc === 'w' && pc.tile ? pc.w0 + Math.round((+t.value - pc.w0) / pc.tile.pitch) * pc.tile.pitch : +t.value;
+    var ch = $('#pdPc .pc__ch'); if (ch && pc.tile) ch.textContent = T('{n} lajur channel', { n: pc.tile.n0 + Math.round((pc.w - pc.w0) / pc.tile.pitch) });
     t.style.setProperty('--p', ((t.value - t.min) / (t.max - t.min) * 100).toFixed(1) + '%');
-    var b = t.parentNode.querySelector('.og__h b'); if (b) b.textContent = t.value + ' cm';
+    var b = t.parentNode.querySelector('.og__h b'); if (b) b.textContent = Math.round(pc[t.dataset.pc]) + ' cm';
     pcUpdate();
   });
   $('#pdPc') && $('#pdPc').addEventListener('change', function () { pcRender(); });
@@ -756,6 +760,69 @@
   }
   function addEntry(e) { bag[e.id] = e; renderBag(); bump(); notice(T('{name} × {q} ditambahkan ke tas', { name: e.title, q: e.q })); }
   function buyNow(p, q) { if (!p) return; var e = entryOf(p, q); if (line(e)) openPay([e], 'produk'); }
+  /* ======================================================================
+     RUANG — beberapa furnitur tampil bersama di panggung (tersimpan di perangkat)
+     Tambah dari Customize (rancangan) atau halaman produk; geser di panggung untuk menata.
+     ====================================================================== */
+  var roomList = function () { return store.get('xv5_room', []); };
+  function roomSave(l) { store.set('xv5_room', l); roomBadge(); }
+  function roomBadge() { var n = roomList().length, b = $('#roomCount'); if (b) { b.textContent = n || ''; b.dataset.n = n; } }
+  // perkiraan lebar (m) untuk penempatan awal berjajar
+  function roomWidth(e) {
+    if (e.kind === 'custom') return (+e.cfg.w || (e.cfg.dia ? +e.cfg.dia : 0) || (e.cfg.mattress ? +e.cfg.mattress + 10 : 100)) / 100;
+    var p = byId[e.pid]; return p ? ((p.cat === 'seats' ? 2 : p.cat === 'tables' ? 1.3 : p.cat === 'bedframe' ? 1.8 : 1)) : 1.2;
+  }
+  function roomAdd(e) {
+    var l = roomList(), right = l.reduce(function (m, x) { return Math.max(m, (x.x || 0) + roomWidth(x) / 2); }, -1e9);
+    e.rid = 'R' + Date.now().toString(36); e.ry = 0; e.z = 0;
+    e.x = l.length ? +(right + .35 + roomWidth(e) / 2).toFixed(2) : 0;
+    l.push(e); roomSave(l);
+    notice(T('{name} ditambahkan ke ruang', { name: e.title }) + ' · ' + T('Lihat ruang'));
+    var b = $('#roomBtn'); if (b) { b.classList.remove('is-bump'); void b.offsetWidth; b.classList.add('is-bump'); }
+  }
+  function roomEntries() {
+    return roomList().map(function (e) {
+      if (e.kind === 'custom') return { rid: e.rid, kind: 'custom', cfg: XC.normalize(JSON.parse(JSON.stringify(e.cfg))), x: e.x, z: e.z, ry: e.ry };
+      var p = byId[e.pid]; if (!p) return null;
+      var c = cur(p, { v: e.v, s: e.s });
+      return p.model ? { rid: e.rid, kind: 'model', url: src(p.model), p: p, x: e.x, z: e.z, ry: e.ry } : { rid: e.rid, kind: 'photo', url: src(c.img || p.img, 1024), p: p, x: e.x, z: e.z, ry: e.ry };
+    }).filter(Boolean);
+  }
+  function roomPrice(e) { if (e.kind === 'custom') return customUnit(e.cfg, e.price); var p = byId[e.pid]; return p ? cur(p, { v: e.v, s: e.s }).price || 0 : 0; }
+  function renderRoom() {
+    var l = roomList(), box = $('#roomList'); if (!box) return;
+    $('#roomEmpty').classList.toggle('is-on', !l.length);
+    $('#roomFoot').hidden = !l.length;
+    box.innerHTML = l.map(function (e) {
+      return '<li data-rid="' + e.rid + '"><div class="list__th">' + (e.img ? '<img class="is-snap" src="' + e.img + '" alt="">' : '<svg><use href="#i-ruler"/></svg>') + '</div>' +
+        '<div><p class="list__n"><span>' + esc(e.title) + '</span>' + (e.kind === 'custom' ? '<span class="tag tag--gold">Custom</span>' : '') + '</p><p class="list__v">' + esc(e.sub || '') + '</p><p class="list__p">' + rupiah(roomPrice(e)) + '</p>' +
+        '<div class="list__acts"><button class="mini" type="button" data-rot="-45">↺ 45°</button><button class="mini" type="button" data-rot="45">↻ 45°</button><button class="mini mini--gold" type="button" data-room-bag>' + T('Ke tas') + '</button></div></div>' +
+        '<div class="list__r"><button class="rm" type="button" data-room-rm>' + T('Hapus') + '</button></div></li>';
+    }).join('');
+    $('#roomTotal').textContent = rupiah(l.reduce(function (n, e) { return n + roomPrice(e); }, 0));
+  }
+  function roomStage() {
+    stageKind = 'room';
+    var l = roomList();
+    setDetail({ name: T('Ruang Anda'), sub: T('{n} furnitur · geser untuk menata', { n: l.length }), cols: [], priceK: T('Total ruang'), price: rupiah(l.reduce(function (n, e) { return n + roomPrice(e); }, 0)) });
+    if (XW.ok && XW.showRoom) XW.showRoom(roomEntries());
+  }
+  XW.onRoomMove = function (rid, x, z) { var l = roomList(); l.forEach(function (e) { if (e.rid === rid) { e.x = x; e.z = z; } }); roomSave(l); };
+  $('#roomList') && $('#roomList').addEventListener('click', function (e) {
+    var li = e.target.closest('[data-rid]'); if (!li) return;
+    var l = roomList(), it = l.filter(function (x) { return x.rid === li.dataset.rid; })[0]; if (!it) return;
+    var b;
+    if ((b = e.target.closest('[data-rot]'))) { it.ry = ((it.ry || 0) + +b.dataset.rot + 360) % 360; roomSave(l); if (XW.roomSet) XW.roomSet(it.rid, { ry: it.ry }); return; }
+    if (e.target.closest('[data-room-rm]')) { roomSave(l.filter(function (x) { return x !== it; })); renderRoom(); roomStage(); return; }
+    if (e.target.closest('[data-room-bag]')) {
+      if (it.kind === 'custom') addEntry({ id: 'cz-' + Date.now().toString(36), type: 'custom', title: it.title, sub: it.sub, mat: it.mat, cfg: it.cfg, price: roomPrice(it), img: it.img, q: 1 });
+      else { var p = byId[it.pid]; if (p) { var en = { id: p.id, v: it.v, s: it.s, q: 1 }; if (it.pc) en.pc = it.pc; var ln = line(en); if (ln) { if (bag[ln.key]) bag[ln.key].q++; else bag[ln.key] = en; renderBag(); bump(); notice(T('{name} × {q} ditambahkan ke tas', { name: p.name, q: 1 })); } } }
+    }
+  });
+  $('#roomClear') && $('#roomClear').addEventListener('click', function () { roomSave([]); renderRoom(); roomStage(); });
+  enter.ruang = function () { renderRoom(); roomStage(); };
+  leave.ruang = function () { showFurniture(); };
+  roomBadge();
   $('#bagCheckout').addEventListener('click', function () { openPay(Object.keys(bag).map(function (k) { return bag[k]; }), 'tas'); });
   renderBag();
 
@@ -1045,6 +1112,7 @@
     var el = $('#czFoot'); if (!el) return;
     el.innerHTML = '<button type="button" class="cz__price" data-breakdown><em>' + T('Harga · rincian') + '</em><b>' + rupiah(czUnit()) + '</b></button>' +
       '<button class="btn btn--line" type="button" data-cz-save><svg><use href="#i-heart"/></svg><span>' + T('Simpan') + '</span></button>' +
+      '<button class="btn btn--line btn--ic" type="button" data-cz-room title="' + T('Tambah ke ruang') + '" aria-label="' + T('Tambah ke ruang') + '"><svg><use href="#i-room"/></svg></button>' +
       '<button class="btn btn--gold" type="button" data-cz-add><svg><use href="#i-bag"/></svg><span>' + T('Ke tas') + '</span></button>';
   }
   function czEntry() {
@@ -1068,7 +1136,9 @@
     if (e.target.closest('[data-breakdown]')) czBreakdown();
     else if (e.target.closest('[data-cz-save]')) czSaveDesign();
     else if (e.target.closest('[data-cz-add]')) czAddToBag();
+    else if (e.target.closest('[data-cz-room]')) { var en = czEntry(); roomAdd({ kind: 'custom', title: en.title, sub: en.sub, mat: en.mat, cfg: en.cfg, price: en.price, img: en.img }); }
   });
+  $('#pdRoom').addEventListener('click', function () { var p = kList[kI]; if (!p) return; var s = selOf(p), c = cur(p, s), pc = pcFor(p), e = { kind: 'product', pid: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, title: p.name, sub: c.label || p.type, img: src(c.img || p.img, 400) }; if (pcChanged(pc)) e.pc = { w: pc.w, d: pc.d, w0: pc.w0, d0: pc.d0, metal: pc.metal, metal0: pc.metal0 }; roomAdd(e); });
 
   /* ---------- kartu pilihan 3:4 — atas 1:1 gambar garis (atau contoh warna/bahan), bawah label
      Gambar garis: assets/cz-icons (dibuat oleh tools/icons/build.js), tampil lewat CSS mask sehingga
@@ -1139,7 +1209,63 @@
       { id: '_sub', type: 'chips', l: 'Jenis', en: 'Type', opts: cat.subs }
     ];
   }
-  function groupsOf(step) { return step === 'jenis' ? jenisGroups() : XC.groups(cz, step); }
+  /* urutan tampil pilihan per kategori: dari yang terpenting, yang berkaitan bersebelahan
+     (mis. bentuk kaki → material kaki → finishing → tinggi kaki). Hanya tampilan — spesifikasi tetap.
+     [langkah, [judul kelompok (ID, EN), [id kelompok …]]] ; id yang tidak terdaftar tampil di akhir langkah aslinya */
+  var CZ_PLAN = {
+    kursi: [
+      ['bentuk', [['Bentuk dasar', 'Base form'], ['form', 'shape', 'seats', 'height', 'construction', 'frame', 'frameStyle', 'base']],
+                 [['Lengan & sandaran', 'Arms & back'], ['arm', 'armStyle', 'back', 'backStyle', 'backrest', 'backS', 'backTuft']],
+                 [['Dudukan', 'Seat'], ['seatC', 'seatTuft', 'top', 'topTuft', 'tuft', 'cushion', 'seatShape', 'sides', 'ends', 'storage']]],
+      ['ukuran', [null, ['w', 'd', 'h', 'dia', 'ret', 'seatH', 'seatD', 'armH']]],
+      ['material', [['Kain / kulit', 'Fabric / leather'], ['uph', 'color', 'color2']]],
+      ['detail', [['Kaki, rangka & base', 'Legs, frame & base'], ['leg', 'legFinish', 'wood', 'metal', 'legH', 'skirt', 'stretcher', 'footrest', 'footrestFinish', 'swivel']],
+                 [['Kenyamanan', 'Comfort'], ['fill', 'firm']],
+                 [['Jahitan & bantal', 'Stitching & pillows'], ['stitch', 'pipingC', 'pillows', 'pillowType', 'pillowColor', 'bolsters', 'headrest']],
+                 [['Aksen & tambahan', 'Accents & extras'], ['trim', 'extras']]]
+    ],
+    meja: [
+      ['bentuk', [null, ['seats', 'topShape', 'base', 'drawers']]],
+      ['ukuran', [null, ['w', 'd', 'dia', 'h', 'thick']]],
+      ['material', [['Daun meja', 'Table top'], ['topMat', 'wood', 'stone', 'panel']],
+                   [['Kaki & base', 'Legs & base'], ['baseMat', 'metal']]],
+      ['detail', [null, ['edge', 'extras']]]
+    ],
+    kabinet: [
+      ['bentuk', [null, ['doorType', 'doors', 'drawers', 'niches', 'lowerDoors']]],
+      ['ukuran', [null, ['w', 'd', 'h']]],
+      ['material', [['Muka & badan', 'Fronts & carcass'], ['finish', 'wood', 'panel', 'carcass']]],
+      ['detail', [['Handle', 'Handles'], ['handle', 'metal']],
+                 [['Dudukan & kaki', 'Mounting & legs'], ['mount', 'leg', 'legH']],
+                 [['Isi dalam', 'Interior'], ['interior']]]
+    ],
+    divan: [
+      ['bentuk', [null, ['headboard', 'hbW', 'storage']]],
+      ['ukuran', [null, ['mattress', 'h', 'hbH']]],
+      ['material', [null, ['uph', 'color', 'wood']]],
+      ['detail', [['Dasar & kaki', 'Base & legs'], ['mount', 'leg', 'legFinish', 'metal', 'legH']],
+                 [['Tambahan', 'Extras'], ['extras']]]
+    ]
+  };
+  // kelompok terlihat untuk satu langkah: [{ title, groups }]
+  function planOf(step) {
+    if (step === 'jenis') return [{ title: null, groups: jenisGroups() }];
+    var plan = CZ_PLAN[cz.cat], all = XC.groups(cz), used = {}, out = [];
+    if (!plan) return [{ title: null, groups: XC.groups(cz, step) }];
+    var byId = {}; all.forEach(function (g) { byId[g.id] = g; });
+    plan.forEach(function (st) {
+      st.slice(1).forEach(function (cl) { cl[1].forEach(function (id) { if (byId[id]) used[id] = st[0]; }); });
+      if (st[0] !== step) return;
+      st.slice(1).forEach(function (cl) {
+        var gs = cl[1].map(function (id) { return byId[id]; }).filter(Boolean);
+        if (gs.length) out.push({ title: cl[0], groups: gs });
+      });
+    });
+    var rest = all.filter(function (g) { return !used[g.id] && g.step === step; });
+    if (rest.length) out.push({ title: out.length ? ['Lainnya', 'Other'] : null, groups: rest });
+    if (out.length < 2) out.forEach(function (o) { o.title = null; });
+    return out;
+  }
   function findGroup(id) { var all = jenisGroups().concat(XC.groups(cz)); for (var i = 0; i < all.length; i++) if (all[i].id === id) return all[i]; return null; }
   // nilai kelompok jenis dibaca dari cz.cat / cz.sub
   var _get = function (gr) { return gr.id === '_cat' ? cz.cat : gr.id === '_sub' ? cz.sub : cz[gr.id]; };
@@ -1153,10 +1279,12 @@
           '<button class="btn btn--gold btn--full" type="button" data-cz-buy><svg><use href="#i-card"/></svg><span>' + T('Beli sekarang') + '</span></button>' +
           '<div class="btns"><button class="btn btn--line" type="button" data-cz-save><svg><use href="#i-heart"/></svg><span>' + T('Simpan') + '</span></button><button class="btn btn--line" type="button" data-send><svg><use href="#i-wa"/></svg><span>' + T('Tanya tim') + '</span></button></div>';
       } else {
-        var gs = groupsOf(st.id);
-        inner = gs.length ? gs.map(function (gr) {
-          if (gr.id === '_cat' || gr.id === '_sub') { var save = cz[gr.id]; cz[gr.id] = _get(gr); var h = czGroup(gr, box2); if (save === undefined) delete cz[gr.id]; else cz[gr.id] = save; return h; }
-          return czGroup(gr, box2);
+        var pl = planOf(st.id), en = I18N && I18N.lang() === 'en';
+        inner = pl.length ? pl.map(function (cl) {
+          return (cl.title ? '<p class="cz__sub">' + esc(cl.title[en ? 1 : 0]) + '</p>' : '') + cl.groups.map(function (gr) {
+            if (gr.id === '_cat' || gr.id === '_sub') { var save = cz[gr.id]; cz[gr.id] = _get(gr); var h = czGroup(gr, box2); if (save === undefined) delete cz[gr.id]; else cz[gr.id] = save; return h; }
+            return czGroup(gr, box2);
+          }).join('');
         }).join('') : '<p class="note">' + T('Tidak ada pilihan tambahan untuk jenis ini.') + '</p>';
       }
       return '<section class="cz__sec" data-sec="' + st.id + '" id="cz-' + st.id + '"><p class="cz__h"><i>' + String(i + 1).padStart(2, '0') + '</i>' + esc(L(st)) + '</p>' + inner + '</section>';
@@ -1225,7 +1353,9 @@
     if (g.hasAttribute('data-multi')) { var arr = (cz[id] || []).slice(), i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); XC.apply(cz, id, arr); }
     else XC.apply(cz, id, v);
     if (czBase && czView === 'product') czView = 'design';
+    var sc = $('#czScroll'), anc = g.closest && g.closest('[data-g]') && sc.contains(g) ? g.closest('[data-g]') : null, y0 = anc ? anc.getBoundingClientRect().top : 0;
     czSave(); czRender(true); czStage();
+    if (anc) { var a2 = sc.querySelector('[data-g="' + id + '"]'); if (a2) sc.scrollTop += a2.getBoundingClientRect().top - y0; }
   }
   function czReset(next) { var q = cz.qty; cz = next; cz.qty = q || 1; czSave(); czRender(true); czStage(); }
   $('#czBase').addEventListener('click', function (e) {
@@ -1404,12 +1534,81 @@
     if (XW.ok && XW.setTheme) XW.setTheme(name, instant ? 0 : 1.2);
     renderSettings();
   }
-  function moodNow() { var m = store.get('xv5_mood', 'senja'); return /^(siang|senja|malam)$/.test(m) ? m : 'senja'; }
-  $('#setMood').addEventListener('click', function (e) { var b = e.target.closest('[data-mood]'); if (!b) return; store.set('xv5_mood', b.dataset.mood); if (XW.ok) XW.setMood(b.dataset.mood); renderSettings(); });
+  function moodNow() { var m = store.get('xv5_mood', 'senja'); return /^(siang|senja|malam|manual)$/.test(m) ? m : 'senja'; }
+  /* ---- Pencahayaan manual: jenis lampu, jumlah, posisi, kecerahan & suhu warna (tersimpan di perangkat) ---- */
+  var LIGHT_TYPES = [['spot', 'Spot', 'Spot'], ['soft', 'Softbox', 'Softbox'], ['point', 'Bohlam', 'Bulb'], ['sun', 'Matahari', 'Sun']];
+  var LIGHT_DEF = { ambient: 1, lights: [
+    { type: 'spot', on: true, int: 1.55, k: 3200, az: 32, el: 50, dist: 8, shadow: true },
+    { type: 'soft', on: true, int: .4, k: 3800, az: -35, el: 14, dist: 7.2, shadow: false },
+    { type: 'sun', on: true, int: .3, k: 7000, az: 225, el: 35, dist: 6, shadow: false }
+  ] };
+  var lightCfg = function () { var c = store.get('xv5_lights', null); return c && c.lights ? c : JSON.parse(JSON.stringify(LIGHT_DEF)); };
+  function applyLighting() {
+    if (!XW.ok) return;
+    if (moodNow() === 'manual' && XW.setLighting) XW.setLighting(lightCfg());
+    else XW.setMood(moodNow());
+  }
+  var lightRaf = 0;
+  function renderLights() {
+    var box = $('#setLights'); if (!box) return;
+    var man = moodNow() === 'manual';
+    box.hidden = !man;
+    if (XW.lightMarkers) XW.lightMarkers(man && current === 'setelan');
+    if (!man) { box.innerHTML = ''; return; }
+    var cfg = lightCfg(), en = I18N && I18N.lang() === 'en';
+    var rng = function (path, lab, v, min, max, step, unit) {
+      return '<label class="lt__r"><span>' + lab + '</span><b>' + (unit === 'K' ? Math.round(v) + ' K' : unit === '°' ? Math.round(v) + '°' : unit === 'm' ? (+v).toFixed(1) + ' m' : (+v).toFixed(2)) + '</b>' +
+        '<input class="rng" type="range" min="' + min + '" max="' + max + '" step="' + step + '" value="' + v + '" data-lt="' + path + '" data-u="' + unit + '" style="--p:' + ((v - min) / (max - min) * 100).toFixed(1) + '%"></label>';
+    };
+    box.innerHTML = '<div class="lt__amb">' + rng('ambient', T('Cahaya ruang (ambient)'), cfg.ambient, 0, 2, .05, '') + '</div>' +
+      cfg.lights.map(function (l, i) {
+        return '<div class="lt' + (l.on ? '' : ' is-off') + '" data-li="' + i + '">' +
+          '<div class="lt__h"><b>' + T('Lampu {n}', { n: i + 1 }) + '</b><div class="seg seg--sm">' + LIGHT_TYPES.map(function (t) { return '<button type="button" data-lt-type="' + t[0] + '" class="' + (l.type === t[0] ? 'is-on' : '') + '">' + (en ? t[2] : t[1]) + '</button>'; }).join('') + '</div></div>' +
+          '<div class="lt__t"><button type="button" class="mini' + (l.on ? ' is-on' : '') + '" data-lt-on>' + (l.on ? T('Nyala') : T('Mati')) + '</button>' +
+          (l.type !== 'point' ? '<button type="button" class="mini' + (l.shadow ? ' is-on' : '') + '" data-lt-sh>' + T('Bayangan') + (l.shadow ? ' ✓' : '') + '</button>' : '') +
+          '<button type="button" class="rm" data-lt-rm>' + T('Hapus') + '</button></div>' +
+          rng(i + '.int', T('Kecerahan'), l.int, 0, 4, .05, '') + rng(i + '.k', T('Suhu warna'), l.k, 2200, 7000, 100, 'K') +
+          rng(i + '.az', T('Arah'), l.az, -180, 180, 1, '°') + rng(i + '.el', T('Ketinggian'), l.el, 2, 89, 1, '°') + rng(i + '.dist', T('Jarak'), l.dist, 1.5, 12, .1, 'm') +
+        '</div>';
+      }).join('') +
+      (cfg.lights.length < 6 ? '<button type="button" class="btn btn--line btn--full" data-lt-add><svg><use href="#i-plus"/></svg><span>' + T('Tambah lampu') + '</span></button>' : '') +
+      '<button type="button" class="btn btn--ghost btn--full" data-lt-reset><span>' + T('Kembali ke awal') + '</span></button>';
+  }
+  function saveLights(cfg, rebuild) {
+    store.set('xv5_lights', cfg);
+    cancelAnimationFrame(lightRaf);
+    lightRaf = requestAnimationFrame(function () { if (XW.ok && XW.setLighting) XW.setLighting(cfg); });
+    if (rebuild) renderLights();
+  }
+  $('#setLights') && $('#setLights').addEventListener('input', function (e) {
+    var t = e.target; if (!t.dataset.lt) return;
+    var cfg = lightCfg(), p = t.dataset.lt.split('.'), v = +t.value;
+    if (p.length === 1) cfg[p[0]] = v; else cfg.lights[+p[0]][p[1]] = v;
+    t.style.setProperty('--p', ((v - t.min) / (t.max - t.min) * 100).toFixed(1) + '%');
+    var u = t.dataset.u, b = t.parentNode.querySelector('b'); if (b) b.textContent = u === 'K' ? Math.round(v) + ' K' : u === '°' ? Math.round(v) + '°' : u === 'm' ? v.toFixed(1) + ' m' : v.toFixed(2);
+    saveLights(cfg, false);
+  });
+  $('#setLights') && $('#setLights').addEventListener('click', function (e) {
+    var cfg = lightCfg(), card = e.target.closest('[data-li]'), l = card ? cfg.lights[+card.dataset.li] : null, b;
+    if ((b = e.target.closest('[data-lt-type]')) && l) { l.type = b.dataset.ltType; if (l.type === 'point') l.shadow = false; saveLights(cfg, true); return; }
+    if (e.target.closest('[data-lt-on]') && l) { l.on = !l.on; saveLights(cfg, true); return; }
+    if (e.target.closest('[data-lt-sh]') && l) { l.shadow = !l.shadow; saveLights(cfg, true); return; }
+    if (e.target.closest('[data-lt-rm]') && card) { cfg.lights.splice(+card.dataset.li, 1); saveLights(cfg, true); return; }
+    if (e.target.closest('[data-lt-add]')) { cfg.lights.push({ type: 'spot', on: true, int: .8, k: 4000, az: -60, el: 40, dist: 6, shadow: false }); saveLights(cfg, true); return; }
+    if (e.target.closest('[data-lt-reset]')) { store.set('xv5_lights', null); saveLights(lightCfg(), true); }
+  });
+  enter.setelan = function () { if (XW.lightMarkers) XW.lightMarkers(moodNow() === 'manual'); };
+  leave.setelan = function () { if (XW.lightMarkers) XW.lightMarkers(false); };
+
+  var bgNow = function () { return store.get('xv5_bg', 'default') === 'studio' ? 'studio' : 'default'; };
+  $('#setBg').addEventListener('click', function (e) { var b = e.target.closest('[data-bg]'); if (!b) return; store.set('xv5_bg', b.dataset.bg); if (XW.ok && XW.setBackground) XW.setBackground(b.dataset.bg); renderSettings(); });
+  $('#setMood').addEventListener('click', function (e) { var b = e.target.closest('[data-mood]'); if (!b) return; store.set('xv5_mood', b.dataset.mood); applyLighting(); renderSettings(); });
   function renderSettings() {
     $$('#setMood [data-mood]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.mood === moodNow()); });
+    renderLights();
     $$('#setLang [data-lang]').forEach(function (b) { b.classList.toggle('is-on', I18N ? b.dataset.lang === I18N.lang() : b.dataset.lang === 'id'); });
     $$('#setTheme [data-theme]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.theme === themeNow()); });
+    $$('#setBg [data-bg]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.bg === bgNow()); });
     $$('#setDims [data-dims]').forEach(function (b) { b.classList.toggle('is-on', +b.dataset.dims === store.get('xv5_dims', 0)); });
   }
   $('#setDims').addEventListener('click', function (e) { var b = e.target.closest('[data-dims]'); if (!b) return; store.set('xv5_dims', +b.dataset.dims); renderSettings(); });
@@ -1813,7 +2012,7 @@
   try { gl = XW.init ? XW.init($('#world'), { mobile: isMobile() || !FINE, reduced: REDUCED }) : false; } catch (err) { gl = false; }
   if (!gl || !XW.ok) html.classList.add('no-webgl');
   XW.onLost = function () { html.classList.add('no-webgl'); };
-  if (XW.ok) { XW.setMood(moodNow()); if (themeNow() === 'light') XW.setTheme('light', 0); }
+  if (XW.ok) { applyLighting(); if (themeNow() === 'light') XW.setTheme('light', 0); if (XW.setBackground) XW.setBackground(bgNow()); }
   cubixDetail();
   function preload(list, cb) {
     var n = 0;

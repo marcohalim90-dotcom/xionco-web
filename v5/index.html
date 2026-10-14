@@ -27,6 +27,7 @@
   <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="1.5"/><path d="M9 7.5V5.5h6v2M3.5 12.5h17"/></symbol>
   <symbol id="i-frame" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx=".6"/><path d="m4.5 16 4.5-4.5 4 4 2.5-2.5 4 4"/><circle cx="15.5" cy="8.5" r="1.4"/></symbol>
   <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 18.5 5.6 15A7.5 7.5 0 1 1 9 18.2z"/></symbol>
+  <symbol id="i-room" viewBox="0 0 24 24"><path d="M3.5 18.5h17"/><path d="M5 18.5v-5h6v5M13 18.5v-8h6v8"/><path d="M6.5 13.5V11h3v2.5"/></symbol>
   <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 8.5h13l-1 11h-11z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-back" viewBox="0 0 24 24"><path d="M20 12H5M11 6l-6 6 6 6"/></symbol>
@@ -64,6 +65,7 @@
     <a class="top__link" data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener">Konsultasi</a>
     <button class="top__ic" id="setBtn" type="button" data-go="setelan" aria-label="Pengaturan"><svg><use href="#i-gear"/></svg></button>
     <button class="top__ic" id="userBtn" type="button" data-go="profil" aria-label="Profil"><svg><use href="#i-user"/></svg></button>
+    <button class="top__bag" id="roomBtn" type="button" data-go="ruang" aria-label="Ruang"><svg><use href="#i-room"/></svg><span id="roomCount">0</span></button>
     <button class="top__bag" id="bagBtn" type="button" data-go="tas" aria-label="Tas belanja"><svg><use href="#i-bag"/></svg><span id="bagCount">0</span></button>
   </div>
 </header>
@@ -135,6 +137,7 @@
       <button class="btn btn--gold btn--full" type="button" id="pdNow"><svg><use href="#i-card"/></svg><span>Beli langsung</span></button>
       <div class="btns">
         <button class="btn btn--ghost" type="button" id="pdCustom"><svg><use href="#i-ruler"/></svg><span>Customize</span></button>
+        <button class="btn btn--ghost" type="button" id="pdRoom"><svg><use href="#i-room"/></svg><span>Ke ruang</span></button>
         <a class="btn btn--ghost" id="pdWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span id="pdWaText">Tanya</span></a>
       </div>
       <div class="pc" id="pdPc" hidden></div>
@@ -262,13 +265,25 @@
       <div class="rows">
         <div class="row"><span>Bahasa</span><div class="seg" id="setLang"><button type="button" data-lang="id">Indonesia</button><button type="button" data-lang="en">English</button></div></div>
         <div class="row"><span>Tema</span><div class="seg" id="setTheme"><button type="button" data-theme="dark">Gelap</button><button type="button" data-theme="light">Terang</button></div></div>
-        <div class="row"><span>Pencahayaan</span><div class="seg" id="setMood"><button type="button" data-mood="siang">Siang</button><button type="button" data-mood="senja">Senja</button><button type="button" data-mood="malam">Malam</button></div></div>
+        <div class="row"><span>Pencahayaan</span><div class="seg" id="setMood"><button type="button" data-mood="siang">Siang</button><button type="button" data-mood="senja">Senja</button><button type="button" data-mood="malam">Malam</button><button type="button" data-mood="manual">Manual</button></div></div>
+        <div class="row"><span>Background</span><div class="seg" id="setBg"><button type="button" data-bg="default">Default</button><button type="button" data-bg="studio">Studio</button></div></div>
         <div class="row"><span>Tampilkan ukuran</span><div class="seg" id="setDims"><button type="button" data-dims="0">Tidak</button><button type="button" data-dims="1">Tampilkan</button></div></div>
       </div>
+      <div class="lights" id="setLights" hidden></div>
     </div>
   </section>
 
   <!-- PROFIL -->
+  <section class="pane" data-pane="ruang" aria-label="Ruang">
+    <div class="pane__scroll">
+      <header class="ph"><span class="ph__n"><svg><use href="#i-room"/></svg></span><div><p class="ph__e">Ruang</p><h2 class="ph__t">Tata beberapa furnitur</h2></div></header>
+      <p class="txt" style="margin:-6px 0 16px">Furnitur yang Anda tambahkan tampil bersama di panggung. Geser di panggung untuk memindahkan, putar dari daftar.</p>
+      <ul class="list" id="roomList"></ul>
+      <div class="empty-card" id="roomEmpty"><p class="txt">Ruang masih kosong. Tambahkan dari Customize (tombol ruang) atau halaman produk.</p><a class="btn btn--line" href="#/customize" data-go="customize"><span>Customize</span></a></div>
+      <div class="foot" id="roomFoot" hidden><div class="co-total"><span class="eyebrow">Total ruang</span><b class="price" id="roomTotal"></b></div><button class="btn btn--ghost btn--full" type="button" id="roomClear"><span>Kosongkan ruang</span></button></div>
+    </div>
+  </section>
+
   <section class="pane" data-pane="profil" aria-label="Profil">
     <div class="pane__scroll">
       <header class="ph"><span class="ph__n" id="pfAvatar"><svg><use href="#i-user"/></svg></span><div><p class="ph__e">Profil</p><h2 class="ph__t" id="pfTitle">Akun Anda</h2></div></header>
