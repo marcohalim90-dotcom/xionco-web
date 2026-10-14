@@ -100,11 +100,11 @@
     var disc = O.disc = shadowed(new T.Mesh(new T.CylinderGeometry(1, 1.02, .06, 128), new T.MeshStandardMaterial({ color: col('#1c1814'), roughness: .5, metalness: .1, envMapIntensity: .3 })));
     disc.position.y = .03; O.plinth.add(disc);
     var rim = new T.Mesh(new T.TorusGeometry(1.004, .0035, 8, 200), new T.MeshStandardMaterial({ color: col('#c4a674'), metalness: 1, roughness: .3, envMapIntensity: 1.2 }));
-    rim.rotation.x = Math.PI / 2; rim.position.y = .061; O.plinth.add(rim);
+    rim.rotation.x = Math.PI / 2; rim.position.y = .061; O.plinth.add(rim); O.rim = rim;
     O.plinth.scale.set(2, 1, 2);
     scene.add(O.plinth);
     O.blobTex = radial([[0, 'rgba(0,0,0,.75)'], [.5, 'rgba(0,0,0,.35)'], [1, 'rgba(0,0,0,0)']]);
-    buildHorizon(); buildStudio();
+    buildHorizon(); buildStudio(); buildGrid();
   }
   /* ---------------------------------------------------------------- background: Default & Studio
      Default = ruang gelap/terang dengan dinding melingkar; horizon dilunakkan: lantai memudar ke warna
@@ -138,13 +138,53 @@
     O.studio = new T.Mesh(geo, new T.MeshStandardMaterial({ color: col(STUDIO[themeName]), roughness: .92, metalness: 0, side: T.BackSide, envMapIntensity: .35 }));
     O.studio.receiveShadow = true; O.studio.visible = false; O.studio.userData.noPick = true; scene.add(O.studio);
   }
+  /* Garis = jaring garis halus di lantai & dinding (warna pilihan) · Neon = jaring bercahaya digital
+     (warna pilihan) + halo & garis podium ikut menyala. Garis dibuat di shader (anti-alias fwidth). */
+  var GRIDV = 'varying vec3 vW; void main() { vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }';
+  var GRIDF = 'uniform vec3 uC; uniform float uOp, uGlow, uWall; varying vec3 vW;\n' +
+    'float ln(vec2 p, float w) { vec2 q = abs(fract(p - 0.5) - 0.5) / fwidth(p); return 1.0 - min(min(q.x, q.y) / w, 1.0); }\n' +
+    'void main() {\n' +
+    ' vec2 p = uWall > 0.5 ? vec2(atan(vW.z, vW.x) * 14.8, vW.y) : vW.xz;\n' +
+    ' float minor = ln(p / 0.5, 1.0), major = ln(p / 2.5, 1.4);\n' +
+    ' float fade = uWall > 0.5 ? smoothstep(10.0, 0.5, vW.y) * smoothstep(-0.2, 0.6, vW.y) : 1.0 - smoothstep(4.0, 14.5, length(vW.xz));\n' +
+    ' float a = (minor * 0.28 + major * 0.75) * fade;\n' +
+    ' if (uGlow > 0.5) a += ln(p / 2.5, 7.0) * 0.22 * fade + ln(p / 0.5, 4.0) * 0.06 * fade;\n' +
+    ' gl_FragColor = vec4(uC * (1.0 + uGlow * 0.8), a * uOp);\n' +
+    '}';
+  function gridMat(wall) {
+    return new T.ShaderMaterial({ uniforms: { uC: { value: col('#bfa274') }, uOp: { value: .5 }, uGlow: { value: 0 }, uWall: { value: wall ? 1 : 0 } }, vertexShader: GRIDV, fragmentShader: GRIDF,
+      extensions: { derivatives: true }, transparent: true, depthWrite: false, toneMapped: false, side: wall ? T.BackSide : T.FrontSide });
+  }
+  function buildGrid() {
+    O.gridFloor = new T.Mesh(new T.CircleGeometry(15, 96), gridMat(false));
+    O.gridFloor.rotation.x = -Math.PI / 2; O.gridFloor.position.y = .006; O.gridFloor.renderOrder = 0;
+    O.gridWall = new T.Mesh(new T.CylinderGeometry(14.7, 14.7, 12, 128, 1, true), gridMat(true)); O.gridWall.position.y = 6;
+    [O.gridFloor, O.gridWall].forEach(function (m) { m.visible = false; m.userData.noPick = true; scene.add(m); });
+  }
+  var bgHex = '#22e1ff';
+  function gridLook(d) {
+    var on = bgName === 'grid' || bgName === 'neon', neon = bgName === 'neon', light = themeName === 'light';
+    var c = col(bgName === 'grid' && !bgHex ? '#bfa274' : bgHex);
+    [O.gridFloor, O.gridWall].forEach(function (m) {
+      if (!m) return; m.visible = on;
+      var u = m.material.uniforms; u.uGlow.value = neon ? 1 : 0;
+      m.material.blending = neon && !light ? T.AdditiveBlending : T.NormalBlending; m.material.needsUpdate = true;
+      tw(u.uC.value, { r: c.r, g: c.g, b: c.b, duration: d == null ? .5 : d });
+      u.uOp.value = neon ? (light ? .85 : 1) : (light ? .55 : .42);
+    });
+    // neon: halo & garis podium ikut warna
+    if (O.halo) { var hc = neon ? c.clone().multiplyScalar(1.6) : new T.Color(1, 1, 1); tw(O.halo.material.color, { r: hc.r, g: hc.g, b: hc.b, duration: .5 }); }
+    if (O.rim) { O.rim.material.emissive.copy(neon ? c : new T.Color(0, 0, 0)); O.rim.material.emissiveIntensity = neon ? 1.2 : 1; }
+  }
   function horizonColor(d) {
     var wc = col(THEMES[themeName].wall[2]);
     [O.hzFloor, O.hzBand].forEach(function (m) { if (m) tw(m.material.color, { r: wc.r, g: wc.g, b: wc.b, duration: d == null ? 1.2 : d }); });
     if (O.studio) { var sc = col(STUDIO[themeName]); tw(O.studio.material.color, { r: sc.r, g: sc.g, b: sc.b, duration: d == null ? 1.2 : d }); }
   }
-  XW.setBackground = function (name) {
-    bgName = name === 'studio' ? 'studio' : 'default';
+  XW.setBackground = function (name, hex) {
+    bgName = /^(studio|grid|neon)$/.test(name) ? name : 'default';
+    if (hex) bgHex = hex;
+    gridLook();
     var st0 = bgName === 'studio';
     if (O.studio) O.studio.visible = st0;
     [O.wall, O.halo, O.hzFloor, O.hzBand].forEach(function (m) { if (m) m.visible = !st0; });
@@ -152,6 +192,7 @@
     if (O.plinth) O.plinth.visible = !st0;   // studio foto: furnitur langsung di lantai, tanpa podium
   };
   XW.background = function () { return bgName; };
+  XW.setBackgroundColor = function (hex) { bgHex = hex; gridLook(); };
 
   /* ---------------------------------------------------------------- CUBIX */
   var S = (XV && XV.STUDIO) || { seatW: 72, armW: 16, depth: 86, height: 74, fabrics: [{ id: 'fb03', color: '#c7bba7', type: 'fabric' }] };
@@ -545,8 +586,10 @@
   }
   function tintModel(obj, hexStr, dur) {
     if (!obj || !obj.userData.mats) return;
+    var roles = obj.userData.mats.some(function (mt) { return mt.userData.role; });
     obj.userData.mats.forEach(function (mt) {
-      if (mt.metalness > .5 || !mt.map && !mt.userData.map0) return;      // logam (kuningan) tidak diwarnai
+      if (roles ? mt.userData.role !== 'fabric' : (mt.metalness > .5 || !mt.map && !mt.userData.map0)) return;   // model SKP: hanya kain (extras role); lainnya: logam tidak diwarnai
+      if (!mt.map && !mt.userData.map0) { if (!mt.userData.col0) mt.userData.col0 = mt.color.clone(); if (!hexStr) { mt.color.copy(mt.userData.col0); return; } var cc = col(hexStr); tw(mt.color, { r: cc.r, g: cc.g, b: cc.b, duration: dur == null ? .8 : dur, ease: 'power2.inOut' }); return; }
       if (!mt.userData.map0) { mt.userData.map0 = mt.map; mt.userData.col0 = mt.color.clone(); }
       if (!hexStr) { mt.map = mt.userData.map0; mt.color.copy(mt.userData.col0); mt.needsUpdate = true; return; }
       if (mt.userData.mapN === undefined) mt.userData.mapN = normalMap(mt.userData.map0);
@@ -566,7 +609,7 @@
     tw(theme, { halo: th.halo, exp: th.exp, env: th.env, duration: d, ease: 'power2.inOut' });
     if (CS.plane) tw(CS.plane.material, { opacity: name === 'light' ? .72 : 1, duration: d });
     var old = O.wall.material.map; O.wall.material.map = canvasTex(16, 512, backdrop); O.wall.material.needsUpdate = true; if (old) old.dispose();
-    horizonColor(d);
+    horizonColor(d); gridLook(d);
   }
 
   /* ---------------------------------------------------------------- kamera membingkai objek */
@@ -647,8 +690,11 @@
       envC[key] = rt.texture; return rt.texture;
     });
   }
+  // tampilan render: HDRI suasana, bayangan kontak, ambient occlusion — bisa dimatikan (XW.setLook)
+  var LOOK = { hdr: false, contact: false, ao: false };   // bawaan Klasik (seperti semula); Realistis = semua aktif
   function setEnv(name) {
-    envFor(MOODS[name] || MOODS.senja).then(function (t) { if (moodName === name) scene.environment = t; }, function () {});
+    if (!LOOK.hdr) { if (O.roomEnv) scene.environment = O.roomEnv; return; }
+    envFor(MOODS[name] || MOODS.senja).then(function (t) { if (moodName === name && LOOK.hdr) scene.environment = t; }, function () {});
   }
   var mood = Object.assign({}, MOODS.senja);
   function buildLights() {
@@ -878,7 +924,7 @@
     Lb.beacons = st.map > .6 ? beacons.map(function (b) { return project(b.localToWorld(new T.Vector3(0, b.userData.h * b.scale.y + .05, 0))); }) : null;
     if (XW.onFrame) XW.onFrame(Lb);
     var three = /^(cubix|custom|model)$/.test(st.kind);
-    PP.mix = lerp(PP.mix, three && item && Math.abs(item.position.y) < .05 ? 1 : 0, k * 1.2);
+    PP.mix = lerp(PP.mix, LOOK.ao && three && item && Math.abs(item.position.y) < .05 ? 1 : 0, k * 1.2);
     if (item) item.children.forEach(function (o) { if (o.userData.blob) o.visible = !(CS.on && three); });
     updateContact();
     draw();
@@ -914,11 +960,70 @@
       var y = Math.min(b.h, e.cm / 100), x = -hw - o - i * .15;
       segs.push({ a: P(x, 0, hd), b: P(x, y, hd), k: e.l, t: e.cm + ' cm', at: 'end', side: -1 });
     });
+    // ukuran bagian (kursi & sofa): diukur langsung dari model yang tampil (raycast), bukan dari angka konfigurasi
+    if (inf.probe === 'seat' && /^(custom|model)$/.test(st.kind)) {
+      var pr = probeSeat(tgt, b, floor, inf.key), LB = inf.plabels || {};
+      segs.stats = [];
+      if (pr) {
+        var add = function (k, a, bb, cmv, at) { segs.push({ a: P(a[0], a[1], a[2]), b: P(bb[0], bb[1], bb[2]), k: LB[k] || k, t: cmv + ' cm', at: at || 'mid', inner: true }); segs.stats.push([LB[k] || k, cmv + ' cm']); };
+        var ys = pr.seatTop + .012, xl = pr.xInL + Math.min(.12, (pr.xInR - pr.xInL) * .15);
+        if (pr.seatD) add('seatD', [xl, ys, pr.zFront], [xl, ys, pr.zBack], pr.seatD);
+        if (pr.seatL) add('seatL', [pr.xInL, ys, pr.zFront - .06], [pr.xInR, ys, pr.zFront - .06], pr.seatL);
+        if (pr.armW) add('armW', [pr.xInR, pr.armTop + .012, pr.zFront - .1], [hw, pr.armTop + .012, pr.zFront - .1], pr.armW);
+        if (pr.backD) add('backD', [xl, pr.backY, pr.zRear], [xl, pr.backY, pr.zBackY], pr.backD);
+        if (pr.seatH) segs.stats.push([LB.seatTop || 'seat', pr.seatH + ' cm']);
+      }
+    }
     segs.center = P(0, b.h / 2, 0);
     // siluet objek di layar (8 sudut kotak pembatas) — label ukuran menghindari area ini
     segs.box = [];
     [-hw, hw].forEach(function (x) { [0, b.h].forEach(function (y) { [-hd, hd].forEach(function (z) { segs.box.push(P(x, y, z)); }); }); });
     return segs;
+  }
+
+  /* probe dudukan: sinar ke model (ruang lokal objek berputar; y dari lantai) → tepi depan dudukan, muka sandaran,
+     punggung sandaran, sisi dalam lengan, permukaan duduk & atas lengan. Hasil disimpan per konfigurasi. */
+  var probeC = { key: null, res: null }, pray = new T.Raycaster();
+  function probeSeat(tgt, b, floor, key) {
+    tgt.updateMatrixWorld(true);
+    var meshes = []; tgt.traverse(function (o) { if (o.isMesh && o.visible && !o.userData.noPick && !o.userData.blob && !(o.material && o.material.transparent && o.material.opacity < .5)) meshes.push(o); });
+    // kunci = konfigurasi + geometri yang benar-benar tampil (model dibangun ulang di tempat → tunggu geometri baru)
+    key = key + '|' + meshes.length + '|' + (meshes[0] ? meshes[0].geometry.uuid : '') + '|' + b.w.toFixed(3);
+    if (probeC.key === key && probeC.tgt === tgt) return probeC.res;
+    var hw = b.w / 2, hd = b.d / 2, rot = new T.Matrix4().extractRotation(tgt.matrixWorld);
+    function cast(o, d, far) {
+      var ow = tgt.localToWorld(new T.Vector3(o[0], floor + o[1], o[2])), dw = new T.Vector3(d[0], d[1], d[2]).applyMatrix4(rot).normalize();
+      pray.set(ow, dw); pray.far = far || 20;
+      var h = pray.intersectObjects(meshes, false)[0]; if (!h) return null;
+      var l = tgt.worldToLocal(h.point.clone()); l.y -= floor; return l;
+    }
+    var r = {}, cm = function (v) { return Math.round(v * 100); };
+    // permukaan duduk: sinar turun di depan-tengah (hindari bantal sandaran)
+    var tops = [0, -.2, .2].map(function (x) { return cast([x * b.w, b.h + .2, hd * .45], [0, -1, 0]); }).filter(Boolean);
+    if (!tops.length) return (probeC = { key: key, tgt: tgt, res: null }).res;
+    r.seatTop = Math.min.apply(null, tops.map(function (p) { return p.y; }));
+    if (r.seatTop < .15 || r.seatTop > b.h - .05) return (probeC = { key: key, tgt: tgt, res: null }).res;
+    // tepi depan dudukan
+    var fr = cast([0, r.seatTop - .04, hd + 1], [0, 0, -1]); r.zFront = fr ? fr.z : hd;
+    // sisi dalam lengan (setinggi 8 cm di atas dudukan, tengah kedalaman dudukan)
+    var zMid = r.zFront - .15, yA = r.seatTop + .08;
+    var aR = cast([0, yA, zMid], [1, 0, 0]), aL = cast([0, yA, zMid], [-1, 0, 0]);
+    r.xInR = aR && aR.x < hw - .005 ? aR.x : hw; r.xInL = aL && aL.x > -hw + .005 ? aL.x : -hw;
+    // muka sandaran: sinar dari depan, beberapa titik x → yang paling belakang (bantal hias di depan diabaikan)
+    var xs = [-.3, -.1, .1, .3].map(function (f) { return (r.xInL + r.xInR) / 2 + f * (r.xInR - r.xInL); });
+    var bk = [];   // beberapa ketinggian: kursi makan sering punya celah antara dudukan & sandaran
+    [.1, .2, .3].forEach(function (dy) { if (bk.length) return; bk = xs.map(function (x) { return cast([x, r.seatTop + dy, hd + 1], [0, 0, -1]); }).filter(function (p) { return p && p.z < r.zFront - .1; }); });
+    r.zBack = bk.length ? Math.min.apply(null, bk.map(function (p) { return p.z; })) : null;
+    // tebal sandaran: setengah tinggi sandaran, depan & belakang
+    r.backY = r.seatTop + Math.max(.12, (b.h - r.seatTop) * .5);
+    var bf = cast([xs[1], r.backY, hd + 1], [0, 0, -1]), br = cast([xs[1], r.backY, -hd - 1], [0, 0, 1]);
+    if (bf && br && bf.z > br.z) { r.zBackY = bf.z; r.zRear = br.z; r.backD = cm(bf.z - br.z); }
+    // atas lengan kanan
+    if (r.xInR < hw - .02) { var at = cast([(r.xInR + hw) / 2, b.h + .2, zMid], [0, -1, 0]); r.armTop = at ? at.y : r.seatTop + .2; r.armW = cm(hw - r.xInR); }
+    if (r.zBack != null) r.seatD = cm(r.zFront - r.zBack);
+    r.seatL = cm(r.xInR - r.xInL);
+    r.seatH = cm(r.seatTop);
+    probeC = { key: key, tgt: tgt, res: r }; return r;
   }
 
   /* ---------------------------------------------------------------- kualitas & ukuran */
@@ -932,7 +1037,7 @@
     renderer.shadowMap.enabled = q > 0;
     renderer.setSize(W, H, false);
     if (PP.on) ppSize();
-    CS.on = q > 0 && !!CS.plane; CS.sig = '';
+    CS.on = q > 0 && !!CS.plane && LOOK.contact; CS.sig = '';
   }
   function resize() {
     W = window.innerWidth; H = window.innerHeight;
@@ -1117,7 +1222,7 @@
     var box = new T.Box3();
     list.forEach(function (it) { for (var i = 0; i < it.P.length; i += 3) box.expandByPoint(new T.Vector3(it.P[i], it.P[i + 1], it.P[i + 2])); });
     var mats = [];
-    (g.userData.mats || []).forEach(function (mt) { if (mt.userData.pcCol0 || mt.metalness > .5) { if (!mt.userData.pcCol0) { mt.userData.pcCol0 = mt.color.clone(); mt.userData.pcRough0 = mt.roughness; mt.userData.pcMetal0 = mt.metalness; } mats.push(mt); } });
+    (g.userData.mats || []).forEach(function (mt) { if (mt.userData.pcCol0 || mt.metalness > .5 || mt.userData.role === 'metal') { if (!mt.userData.pcCol0) { mt.userData.pcCol0 = mt.color.clone(); mt.userData.pcRough0 = mt.roughness; mt.userData.pcMetal0 = mt.metalness; } mats.push(mt); } });
     var bs = box.getSize(new T.Vector3());
     g.userData.pc = { list: list, box: box, mats: mats, b0: { w: bs.x, h: bs.y, d: bs.z }, blob0: g.children.filter(function (o) { return o.userData.blob; })[0] };
     return g.userData.pc;
@@ -1388,6 +1493,8 @@
   XW._debug = function () { return { view: Object.assign({}, view), inset: Object.assign({}, inset), cam: camera.position.toArray().map(function (v) { return +v.toFixed(2); }), W: W, H: H }; };
   XW.pause = function (v) { XW.paused = !!v; };
   // kualitas manual (mis. dari pengujian / pengaturan); lock = jangan turun otomatis
+  XW.setLook = function (o) { o = o || {}; ['hdr', 'contact', 'ao'].forEach(function (k) { if (o[k] != null) LOOK[k] = !!o[k]; }); setEnv(moodName); setQuality(XW.quality); return Object.assign({}, LOOK); };
+  XW.look = function () { return Object.assign({}, LOOK); };
   XW.setQuality = function (q, lock) { XW.qLock = !!lock; setQuality(q); };
   XW.info = function () { return { q: XW.quality, post: PP.on, ao: +PP.mix.toFixed(2), contact: CS.on, pr: renderer.getPixelRatio(), dtAvg: +dtAvg.toFixed(1), env: scene.environment && scene.environment.isTexture && envC[(MOODS[moodName] || {}).hdr + (MOODS[moodName] || {}).tint] === scene.environment ? moodName : 'room-env', calls: renderer.info.render.calls, tris: renderer.info.render.triangles }; };
   // ukur biaya GPU per frame (ms): n frame digambar beruntun lalu dipaksa selesai (readPixels)

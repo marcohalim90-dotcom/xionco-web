@@ -2,7 +2,8 @@
    XIONCO — Developer Settings
    Tombol melayang (default kiri bawah) → overlay hampir layar penuh yang
    bergeser dari kanan ke kiri. Tidak membuka halaman baru.
-   Tab: Versi · Aset · Katalog · Custom · Harga · Pengaturan
+   Tab: Versi · Aset · Katalog · Custom · Harga · (tab tambahan) · Pengaturan
+   Tab tambahan dari file lain lewat XVDevkit.add({...}) — mis. shared/devkit/ai3d.js (3D katalog, lokal saja).
    Gaya mengikuti versi 4 (ivory, garis champagne, Josefin Sans + Inter).
    Komponen terisolasi (Shadow DOM) → aman dipasang di versi mana pun.
    Pintasan: Ctrl + Shift + D
@@ -475,7 +476,8 @@
     var needData = !(window.XV && XV.PRODUCTS && XV.STUDIO);
     var chain = Promise.all(jobs);
     if (needData) chain = chain.then(function () { return loadScript(ROOT + 'v5/js/data.js'); });
-    return chain.then(function () { if (!window.XVDB) return loadScript(ROOT + 'shared/db.js'); }).then(function () { return window.XVDB && XVDB.ready; });
+    return chain.then(function () { if (!window.XVDB) return loadScript(ROOT + 'shared/db.js'); }).then(function () { return window.XVDB && XVDB.ready; })
+      .then(function (r) { return LOCAL && location.protocol !== 'file:' ? loadScript(ROOT + 'shared/devkit/ai3d.js').then(function () { return r; }) : r; });   // 3D AI butuh serve.js
   }
   function mount() {
     if (!window.XVDB || !window.XV) return;
@@ -588,19 +590,30 @@
     { id: 'katalog', l: 'Katalog', i: 'katalog' }, { id: 'custom', l: 'Custom', i: 'custom' },
     { id: 'harga', l: 'Harga', i: 'harga' }, { id: 'pengaturan', l: 'Pengaturan', i: 'set' }
   ];
+  /* tab tambahan: XVDevkit.add({ id, l, icon, prefix, count, render, click, change, input, setCard, init }) */
+  var PLUG = [];
+  function plugCtx() {
+    return { get root() { return root; }, el: el, ROOT: ROOT, esc: esc, ic: ic, toast: toast, head: head, imgSrc: imgSrc, dt: dt,
+      products: function () { return products; }, saveProducts: saveProducts, render: renderTab, renderTabs: renderTabs,
+      shown: function (id) { return state.open && state.tab === id; } };
+  }
+  window.XVDevkit = { add: function (pl) { PLUG.push(pl); if (pl.icon) I[pl.id] = pl.icon; if (pl.init) pl.init(plugCtx()); if (root) renderTabs(); } };
+  function allTabs() { return TABS.slice(0, -1).concat(PLUG.map(function (p) { return { id: p.id, l: p.l, i: p.id }; }), TABS.slice(-1)); }
+  function plugById(id) { return PLUG.filter(function (p) { return p.id === id; })[0]; }
   function counts() {
-    return {
+    var pc = {}; PLUG.forEach(function (p) { pc[p.id] = p.count ? p.count(plugCtx()) : ''; });
+    return Object.assign(pc, {
       versi: (window.XIONCO_VERSIONS || []).length,
       aset: assetSummary().readyAll + '/' + assetSummary().totalAll,
       katalog: products.length,
       custom: XVDB.customs().length,
       harga: window.XC && XC.priceTable ? (prCount() || '') : '',
       pengaturan: ''
-    };
+    });
   }
   function renderTabs() {
     var c = counts();
-    el.tabs.innerHTML = TABS.map(function (t) {
+    el.tabs.innerHTML = allTabs().map(function (t) {
       return '<button class="tab' + (state.tab === t.id ? ' is-on' : '') + '" type="button" data-tab="' + t.id + '">' + ic(t.i) + '<span>' + t.l + '</span><b>' + c[t.id] + '</b></button>';
     }).join('');
     var cur = currentVersion();
@@ -609,6 +622,8 @@
   }
   function renderTab() {
     renderTabs();
+    var pl = plugById(state.tab);
+    if (pl) { pl.render(plugCtx()); return; }
     ({ versi: renderVersi, aset: renderAset, katalog: renderKatalog, custom: renderCustom, harga: renderHarga, pengaturan: renderSet })[state.tab]();
   }
   function head(eye, title, sub, acts) {
@@ -931,7 +946,7 @@
   var pr = null, prT = 0;
   function xcReady() {
     if (window.XC && XC.priceTable) return Promise.resolve();
-    return loadScript(ROOT + 'v5/js/custom-spec.js').then(function () { if (window.XC && XC.setPricing) XC.setPricing(XVDB.pricing()); });
+    return loadScript(ROOT + 'v5/js/custom-spec.js').then(function () { return Promise.all(['meja', 'kabinet', 'divan'].map(function (k) { return loadScript(ROOT + 'v5/js/spec-' + k + '.js'); })); }).then(function () { if (window.XC && XC.setPricing) XC.setPricing(XVDB.pricing()); });
   }
   function prGet() { if (!pr) pr = XVDB.pricing(); pr.global = pr.global || {}; pr.subs = pr.subs || {}; pr.mats = pr.mats || {}; return pr; }
   function prSave() {
@@ -1094,7 +1109,7 @@
   function renderSet() {
     var s = XVDB.settings();
     head('06 · Pengaturan', 'Pengaturan', 'Posisi tombol, data, dan pintasan. Semua data tersimpan di browser ini — gunakan export untuk cadangan atau memindahkan ke komputer lain.');
-    el.body.innerHTML = '<div class="sets">' +
+    el.body.innerHTML = '<div class="sets">' + PLUG.map(function (p) { return p.setCard ? p.setCard(plugCtx()) : ''; }).join('') +
       '<div class="card set"><h3>Posisi tombol</h3><p>Default di kiri bawah. Tombol juga bisa diseret — ia akan menempel ke sudut terdekat.</p><div class="corners">' +
         [['tl', 'Kiri atas'], ['tr', 'Kanan atas'], ['bl', 'Kiri bawah'], ['br', 'Kanan bawah']].map(function (c) { return '<button type="button" data-act="pos" data-pos="' + c[0] + '"' + (s.position === c[0] ? ' class="is-on"' : '') + '>' + c[1] + '</button>'; }).join('') + '</div></div>' +
       '<div class="card set"><h3>Tampilan Customize</h3><p>Box 1: semua pilihan di satu kotak kanan. Box 2 (uji): kotak kanan hanya judul &amp; pilihan terpilih — pilihan yang lebih dari 4 muncul di kotak baru sebelah kiri.</p><div class="corners corners--2">' +
@@ -1185,6 +1200,7 @@
       p[t.dataset.cell] = !p[t.dataset.cell]; t.classList.toggle('is-on', p[t.dataset.cell]); saveProducts(); return;
     }
     var a = t.dataset.act;
+    for (var pi = 0; pi < PLUG.length; pi++) if (a && PLUG[pi].prefix && a.indexOf(PLUG[pi].prefix) === 0) { PLUG[pi].click(t, e, plugCtx()); return; }
     if (a === 'goto') { location.href = ROOT + t.dataset.path; return; }
     if (a === 'copy') { var txt = t.dataset.text; (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(function () { toast('Disalin'); }, function () { toast(txt); }); return; }
     if (a === 'scan') { state.detect = {}; scan(); return; }
@@ -1237,6 +1253,7 @@
   }
   function onInput(e) {
     var t = e.target;
+    if (t.dataset.plug) { var pl = plugById(t.dataset.plug); if (pl && pl.input) pl.input(t, e, plugCtx()); return; }
     if (t.dataset.f) { setFilter(t.dataset.f, t.value); clearTimeout(onInput.t); onInput.t = setTimeout(function () { var pos = t.selectionStart; renderTab(); var n = root.querySelector('[data-f="' + t.dataset.f + '"]'); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (err) {} } }, 200); return; }
     if (t.dataset.k && state.editor) {
       var d = edData();
@@ -1248,6 +1265,7 @@
   }
   function onChange(e) {
     var t = e.target;
+    if (t.dataset.plug) { var pl = plugById(t.dataset.plug); if (pl && pl.change) pl.change(t, e, plugCtx()); return; }
     if (t.dataset.f && t.tagName === 'SELECT') { setFilter(t.dataset.f, t.value); renderTab(); return; }
     if (t.dataset.hp) { hpSet(t.dataset.hp, t.value, t.dataset.kind); prSave(); state.harga.keep = true; var nextPath = t.dataset.hp; renderHarga(); renderTabs(); return; }
     if (t.dataset.money !== undefined) { t.value = fmt(num(t.value)); }

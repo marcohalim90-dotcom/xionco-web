@@ -1,7 +1,7 @@
 {
   "app": "XIONCO",
   "kind": "products",
-  "updated": 1791847988403,
+  "updated": 1792017241219,
   "items": [
     {
       "status": "aktif",
@@ -276,11 +276,12 @@
       "url": "https://xionco.shop/products/capra-deluxe-series",
       "shopId": 85,
       "shopName": "CAPRA DELUXE SERIES",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/capra/model-ai.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "198 × 82 × 71 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -465,11 +466,12 @@
       "url": "https://xionco.shop/products/guise-3-seater-sofa-minimalis",
       "shopId": 71,
       "shopName": "Guise - 3 Seater Sofa Minimalis",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/guise/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "187 × 90 × 65 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -524,7 +526,8 @@
       "url": "https://xionco.shop/products/cameo-sofa-bed",
       "shopId": 66,
       "shopName": "CAMEO - Sofa Bed",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cameo/model.glb"
     },
     {
       "status": "aktif",
@@ -560,7 +563,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "211 × 79 × 57 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -666,11 +669,12 @@
       "url": "https://xionco.shop/products/orycto-3-seater",
       "shopId": 54,
       "shopName": "ORYCTO - 3 Seater",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/orycto/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "294 × 144 × 93 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -751,7 +755,8 @@
       "url": "https://xionco.shop/products/canis-3-seater",
       "shopId": 115,
       "shopName": "CANIS - 3 Seater",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/canis/model.glb"
     },
     {
       "status": "aktif",
@@ -1123,7 +1128,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "50 × 62 × 84 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1151,7 +1156,8 @@
       "url": "https://xionco.shop/products/nora-dining-chair",
       "shopId": 104,
       "shopName": "NORA - Dining Chair",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/nora/model.glb"
     },
     {
       "status": "aktif",
@@ -1227,7 +1233,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "135 × 61 × 148 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1282,11 +1288,15 @@
       "url": "https://xionco.shop/products/verk-desk",
       "shopId": 32,
       "shopName": "VERK - Desk",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/verk/model.glb",
+      "vmodels": {
+        "Laci": "assets/items/verk/model-laci.glb"
+      }
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "78 × 78 × 37 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1314,11 +1324,12 @@
       "url": "https://xionco.shop/products/hout-coffee-table",
       "shopId": 45,
       "shopName": "HOUT - Coffee Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/hout/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "132 × 57 × 74 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1346,11 +1357,12 @@
       "url": "https://xionco.shop/products/trapezo-collaborative-office-desk-table",
       "shopId": 35,
       "shopName": "TRAPEZO - Collaborative Office Desk Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/trapezo/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "141 × 99 × 46 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1418,11 +1430,12 @@
       "url": "https://xionco.shop/products/rouled-nested-coffee-table",
       "shopId": 26,
       "shopName": "ROULED - Nested Coffee Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/rouled/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "94 × 63 × 39 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1477,11 +1490,15 @@
       "url": "https://xionco.shop/products/cubix-series-coffee-table",
       "shopId": 49,
       "shopName": "CUBIX SERIES - Coffee Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cubixct/model.glb",
+      "vmodels": {
+        "Gelap": "assets/items/cubixct/model-gelap.glb"
+      }
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "81 × 51 × 93 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1509,11 +1526,12 @@
       "url": "https://xionco.shop/products/arze-desk",
       "shopId": 29,
       "shopName": "ARZE - Desk",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/arze/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "114 × 57 × 91 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1541,11 +1559,12 @@
       "url": "https://xionco.shop/products/l7-desk",
       "shopId": 30,
       "shopName": "L7 - Desk",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/l7/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "109 × 59 × 41 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1613,11 +1632,12 @@
       "url": "https://xionco.shop/products/recta-coffee-table",
       "shopId": 34,
       "shopName": "RECTA - Coffee Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/recta/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "126 × 74 × 48 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1685,11 +1705,12 @@
       "url": "https://xionco.shop/products/pluq-coffee-table",
       "shopId": 33,
       "shopName": "PLUQ - Coffee Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/pluq/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "68 × 59 × 41 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -1756,11 +1777,12 @@
       "url": "https://xionco.shop/products/hexter-modular-side-table",
       "shopId": 36,
       "shopName": "HEXTER - Modular Side Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/hexter/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "137 × 171 × 81 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -2112,11 +2134,12 @@
       "url": "https://xionco.shop/products/somno-platform-bed",
       "shopId": 78,
       "shopName": "SOMNO - Platform Bed",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/somno/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "136 × 174 × 84 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -2210,7 +2233,8 @@
       "url": "https://xionco.shop/products/poel-platform-bed",
       "shopId": 25,
       "shopName": "POEL - Platform Bed",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/poel/model.glb"
     },
     {
       "status": "aktif",
@@ -2246,7 +2270,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "228 × 63 × 213 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -2301,7 +2325,8 @@
       "url": "https://xionco.shop/products/syme-sliding-wardrobe",
       "shopId": 55,
       "shopName": "SYME - Sliding Wardrobe",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/syme/model.glb"
     },
     {
       "status": "aktif",
@@ -2337,7 +2362,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "81 × 41 × 181 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -2365,7 +2390,8 @@
       "url": "https://xionco.shop/products/lucid-hanger-wardrobe",
       "shopId": 57,
       "shopName": "LUCID - Hanger Wardrobe",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/lucid/model.glb"
     },
     {
       "status": "draft",
@@ -2391,7 +2417,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "7 × 11 × 102 cm",
       "leadTime": "",
       "customizable": false,
       "stock": "Ready",
@@ -2419,11 +2445,12 @@
       "url": "https://xionco.shop/products/aether-cloud-k60",
       "shopId": 83,
       "shopName": "AETHER - CLOUD K60",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether/model.glb"
     },
     {
       "status": "draft",
-      "dims": "",
+      "dims": "7 × 10 × 81 cm",
       "leadTime": "",
       "customizable": false,
       "stock": "Ready",
@@ -2441,11 +2468,93 @@
       "images": [],
       "sold": 0,
       "was": null,
-      "from": false
+      "from": false,
+      "model": "assets/items/aetherk80/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "13 × 13 × 41 cm",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "aether-k40",
+      "cat": "lighting",
+      "name": "AETHER",
+      "type": "K40",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/aether-k40/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "7 × 10 × 61 cm",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "aether-k60",
+      "cat": "lighting",
+      "name": "AETHER",
+      "type": "K60",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/aether-k60/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "40 × 40 × 112 cm",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "aether-sky",
+      "cat": "lighting",
+      "name": "AETHER SKY",
+      "type": "Pendant",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/aether-sky/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "61 × 20 × 86 cm",
       "leadTime": "",
       "customizable": false,
       "stock": "Ready",
@@ -2472,11 +2581,12 @@
       "url": "https://xionco.shop/products/uruz-ii-steel",
       "shopId": 42,
       "shopName": "URUZ II Steel",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/uruz/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "60 × 2 × 240 cm",
       "leadTime": "",
       "customizable": false,
       "stock": "Ready",
@@ -2544,7 +2654,11 @@
       "url": "https://xionco.shop/products/kyoukai-wood-slat-wall",
       "shopId": 40,
       "shopName": "KYOUKAI - Wood Slat Wall",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/kyoukai/model.glb",
+      "vmodels": {
+        "SK060": "assets/items/kyoukai/model-sk060.glb"
+      }
     },
     {
       "status": "aktif",
@@ -2746,7 +2860,8 @@
       "url": "https://xionco.shop/products/lophus-bar-stool",
       "shopId": 144,
       "shopName": "LOPHUS - Bar Stool",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/lophus-bar-stool/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -2878,7 +2993,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "63 × 63 × 39 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -2985,7 +3100,35 @@
       "url": "https://xionco.shop/products/cubix-series-ottoman-kayu-terang",
       "shopId": 123,
       "shopName": "CUBIX SERIES - Ottoman | Kayu Terang",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cubix-series-ottoman-kayu-terang/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "63 × 63 × 39 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "cubix-series-ottoman-kayu-gelap",
+      "cat": "seats",
+      "name": "CUBIX SERIES",
+      "type": "Ottoman · Kayu Gelap",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/cubix-series-ottoman-kayu-gelap/model.glb"
     },
     {
       "status": "aktif",
@@ -3021,7 +3164,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "190 × 81 × 69 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -3049,7 +3192,8 @@
       "url": "https://xionco.shop/products/astral-3-seater",
       "shopId": 22,
       "shopName": "ASTRAL -  3 Seater",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/astral-3-seater/model.glb"
     },
     {
       "status": "aktif",
@@ -3085,7 +3229,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "190 × 64 × 82 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -3192,7 +3336,35 @@
       "url": "https://xionco.shop/products/cubix-series-3-seaters-ac-al-ac-kayu-terang",
       "shopId": 122,
       "shopName": "CUBIX SERIES - 3 Seaters (AC, AL, AC) | Kayu Terang",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-terang/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "190 × 64 × 82 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "cubix-series-3-seaters-ac-al-ac-kayu-gelap",
+      "cat": "seats",
+      "name": "CUBIX SERIES",
+      "type": "3 Seaters (AC, AL, AC) · Kayu Gelap",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-gelap/model.glb"
     },
     {
       "status": "aktif",
@@ -3356,7 +3528,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "29 × 31 × 30 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -3685,7 +3857,8 @@
       "url": "https://xionco.shop/products/tesse-kursi-puff-ottoman",
       "shopId": 124,
       "shopName": "TESSE - Kursi Puff Ottoman",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/tesse-kursi-puff-ottoman/model.glb"
     },
     {
       "status": "aktif",
@@ -4259,7 +4432,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "135 × 81 × 69 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -4287,7 +4460,35 @@
       "url": "https://xionco.shop/products/astral-2-seater",
       "shopId": 23,
       "shopName": "ASTRAL -  2 Seater",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/astral-2-seater/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "83 × 81 × 69 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "astral-1-seater",
+      "cat": "seats",
+      "name": "ASTRAL",
+      "type": "1 Seater",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/astral-1-seater/model.glb"
     },
     {
       "status": "aktif",
@@ -4355,7 +4556,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "109 × 107 × 55 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -4536,7 +4737,8 @@
       "url": "https://xionco.shop/products/rhombio-puff-ottoman",
       "shopId": 88,
       "shopName": "RHOMBIO - Puff Ottoman",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/rhombio-puff-ottoman/model.glb"
     },
     {
       "status": "aktif",
@@ -4631,7 +4833,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "84 × 82 × 62 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -4816,11 +5018,12 @@
       "url": "https://xionco.shop/products/kyrios-1-seater",
       "shopId": 27,
       "shopName": "KYRIOS - 1 Seater",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/kyrios-1-seater/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "122 × 72 × 69 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -5005,11 +5208,12 @@
       "url": "https://xionco.shop/products/guise-2-seater",
       "shopId": 76,
       "shopName": "Guise - 2 Seater",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/guise-2-seater/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "80 × 81 × 70 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -5194,7 +5398,8 @@
       "url": "https://xionco.shop/products/guise-1-seater",
       "shopId": 84,
       "shopName": "Guise - 1 Seater",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/guise-1-seater/model.glb"
     },
     {
       "status": "aktif",
@@ -5326,7 +5531,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "127 × 64 × 80 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -5433,7 +5638,35 @@
       "url": "https://xionco.shop/products/cubix-series-2-seater-ac-ac-kayu-terang",
       "shopId": 121,
       "shopName": "CUBIX SERIES - 2 Seater (AC, AC) | Kayu Terang",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cubix-series-2-seater-ac-ac-kayu-terang/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "127 × 64 × 80 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "cubix-series-2-seater-ac-ac-kayu-gelap",
+      "cat": "seats",
+      "name": "CUBIX SERIES",
+      "type": "2 Seater (AC, AC) · Kayu Gelap",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/cubix-series-2-seater-ac-ac-kayu-gelap/model.glb"
     },
     {
       "status": "aktif",
@@ -5509,7 +5742,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "198 × 93 × 79 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -5564,7 +5797,8 @@
       "url": "https://xionco.shop/products/eorde-sofa-bed-futon-sleeper-minimalis",
       "shopId": 53,
       "shopName": "EORDE - Sofa Bed / Futon Sleeper Minimalis",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/eorde-sofa-bed-futon-sleeper-minimalis/model.glb"
     },
     {
       "status": "aktif",
@@ -5699,11 +5933,12 @@
       "url": "https://xionco.shop/products/capra-signature-series",
       "shopId": 69,
       "shopName": "CAPRA SIGNATURE SERIES",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/capra-signature-series/model-ai.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "65 × 64 × 82 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -5810,11 +6045,39 @@
       "url": "https://xionco.shop/products/cubix-series-1-seater-al-kayu-terang",
       "shopId": 103,
       "shopName": "CUBIX SERIES - 1 Seater (AL) |  Kayu Terang",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cubix-series-1-seater-al-kayu-terang/model.glb"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "65 × 64 × 82 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "cubix-series-1-seater-al-kayu-gelap",
+      "cat": "seats",
+      "name": "CUBIX SERIES",
+      "type": "1 Seater (AL) · Kayu Gelap",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/cubix-series-1-seater-al-kayu-gelap/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "49 × 65 × 105 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -5842,7 +6105,8 @@
       "url": "https://xionco.shop/products/nora-bar-stool",
       "shopId": 105,
       "shopName": "NORA - Bar Stool",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/nora-bar-stool/model.glb"
     },
     {
       "status": "aktif",
@@ -5910,7 +6174,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "64 × 64 × 80 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -6017,7 +6281,35 @@
       "url": "https://xionco.shop/products/cubix-series-1-seater-ac-kayu-terang",
       "shopId": 95,
       "shopName": "CUBIX SERIES - 1 Seater(AC) | KAYU TERANG",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cubix-series-1-seater-ac-kayu-terang/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "64 × 64 × 80 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "cubix-series-1-seater-ac-kayu-gelap",
+      "cat": "seats",
+      "name": "CUBIX SERIES",
+      "type": "1 Seater (AC) · Kayu Gelap",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/cubix-series-1-seater-ac-kayu-gelap/model.glb"
     },
     {
       "status": "aktif",
@@ -6309,7 +6601,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "63 × 63 × 39 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -6364,7 +6656,11 @@
       "url": "https://xionco.shop/products/cubix-series-meja-sudut-side",
       "shopId": 52,
       "shopName": "CUBIX SERIES - Meja Sudut Side",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cubix-series-meja-sudut-side/model.glb",
+      "vmodels": {
+        "Gelap": "assets/items/cubix-series-meja-sudut-side/model-gelap.glb"
+      }
     },
     {
       "status": "aktif",
@@ -7384,7 +7680,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "249 × 44 × 39 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
@@ -7439,7 +7735,8 @@
       "url": "https://xionco.shop/products/gliza-tv-cabinet-stand",
       "shopId": 31,
       "shopName": "GLIZA - TV Cabinet Stand",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/gliza-tv-cabinet-stand/model.glb"
     },
     {
       "status": "aktif",
@@ -7475,7 +7772,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "21 × 21 × 163 cm",
       "leadTime": "",
       "customizable": false,
       "stock": "Ready",
@@ -7503,7 +7800,8 @@
       "url": "https://xionco.shop/products/aether-standing-side-floor-lamp",
       "shopId": 120,
       "shopName": "AETHER - Standing Side Floor Lamp",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-standing-side-floor-lamp/model.glb"
     },
     {
       "status": "aktif",
@@ -8134,7 +8432,8 @@
       "url": "https://xionco.shop/products/void-series-sky-b9",
       "shopId": 96,
       "shopName": "VOID SERIES - SKY B9",
-      "bg": "white"
+      "bg": "white",
+      "model": ""
     },
     {
       "status": "aktif",
@@ -9261,7 +9560,7 @@
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "49 × 25 × 46 cm",
       "leadTime": "",
       "customizable": false,
       "stock": "Ready",
@@ -9419,7 +9718,8 @@
       "url": "https://xionco.shop/products/cubix-series-throw-pillow-b",
       "shopId": 65,
       "shopName": "CUBIX SERIES - Throw Pillow (B)",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cubix-series-throw-pillow-b/model.glb"
     },
     {
       "status": "aktif",

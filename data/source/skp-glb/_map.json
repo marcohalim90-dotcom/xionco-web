@@ -1,0 +1,149 @@
+{
+ "aether-k100": "aether",
+ "aether-k80": "aetherk80",
+ "aether-stand": "aether-standing-side-floor-lamp",
+ "arze": "arze",
+ "astral-3-seater": {
+  "id": "astral-3-seater",
+  "mirrorMat": "[Color M00]"
+ },
+ "astral-2-seater": {
+  "id": "astral-2-seater",
+  "mirrorMat": "[Color M00]"
+ },
+ "cameo": "cameo",
+ "canis": "canis",
+ "cubix-ac": {
+  "id": "cubix-series-1-seater-ac-kayu-terang",
+  "lowTo": {
+   "from": "MIDGREY",
+   "to": "SUNGKAI",
+   "below": 0.24
+  }
+ },
+ "cubix-al": {
+  "id": "cubix-series-1-seater-al-kayu-terang",
+  "remap": {
+   "<auto>": "SUNGKAI",
+   "<auto>2": "MIDGREY"
+  },
+  "lowTo": {
+   "from": "MIDGREY",
+   "to": "SUNGKAI",
+   "below": 0.24
+  }
+ },
+ "cubix-acac": {
+  "id": "cubix-series-2-seater-ac-ac-kayu-terang",
+  "lowTo": {
+   "from": "MIDGREY",
+   "to": "SUNGKAI",
+   "below": 0.24
+  }
+ },
+ "cubix-acalac": {
+  "id": "cubix-series-3-seaters-ac-al-ac-kayu-terang",
+  "remap": {
+   "<auto>": "SUNGKAI",
+   "<auto>2": "MIDGREY"
+  },
+  "lowTo": {
+   "from": "MIDGREY",
+   "to": "SUNGKAI",
+   "below": 0.24
+  }
+ },
+ "cubix-ot": "cubix-series-ottoman-kayu-terang",
+ "cubix-ct": "cubixct",
+ "cubix-ct-gelap": {
+  "id": "cubixct",
+  "variant": "Gelap"
+ },
+ "cubix-st": "cubix-series-meja-sudut-side",
+ "cubix-st-gelap": {
+  "id": "cubix-series-meja-sudut-side",
+  "variant": "Gelap"
+ },
+ "eorde": "eorde-sofa-bed-futon-sleeper-minimalis",
+ "gliza": "gliza-tv-cabinet-stand",
+ "guise-1-seater": "guise-1-seater",
+ "guise-2-seater": "guise-2-seater",
+ "guise-3-seater": "guise",
+ "hexter": "hexter",
+ "hout": "hout",
+ "kyoukai-240": "kyoukai",
+ "kyoukai-60": {
+  "id": "kyoukai",
+  "variant": "SK060"
+ },
+ "kyrios-1-seater": "kyrios-1-seater",
+ "l7": "l7",
+ "lucid": "lucid",
+ "nora-bs": "nora-bar-stool",
+ "nora-dc": "nora",
+ "orycto": "orycto",
+ "pillow": "cubix-series-throw-pillow-b",
+ "pluq": "pluq",
+ "poel": "poel",
+ "recta": "recta",
+ "rhombio": "rhombio-puff-ottoman",
+ "rouled": "rouled",
+ "somno": "somno",
+ "syme": "syme",
+ "tesse": "tesse-kursi-puff-ottoman",
+ "trapezo": "trapezo",
+ "uruz": "uruz",
+ "verk": "verk",
+ "verk-laci": {
+  "id": "verk",
+  "variant": "Laci"
+ },
+ "aether-k40": "aether-k40",
+ "aether-k60": "aether-k60",
+ "aether-sky": "aether-sky",
+ "astral-1-seater": {
+  "id": "astral-1-seater",
+  "mirrorMat": "[Color M00]"
+ },
+ "cubix-ac-gelap": {
+  "id": "cubix-series-1-seater-ac-kayu-gelap",
+  "lowTo": {
+   "from": "MIDGREY",
+   "to": "SUNGKAI",
+   "below": 0.24
+  }
+ },
+ "cubix-al-gelap": {
+  "id": "cubix-series-1-seater-al-kayu-gelap",
+  "remap": {
+   "<auto>": "SUNGKAI",
+   "<auto>2": "MIDGREY"
+  },
+  "lowTo": {
+   "from": "MIDGREY",
+   "to": "SUNGKAI",
+   "below": 0.24
+  }
+ },
+ "cubix-acac-gelap": {
+  "id": "cubix-series-2-seater-ac-ac-kayu-gelap",
+  "lowTo": {
+   "from": "MIDGREY",
+   "to": "SUNGKAI",
+   "below": 0.24
+  }
+ },
+ "cubix-acalac-gelap": {
+  "id": "cubix-series-3-seaters-ac-al-ac-kayu-gelap",
+  "remap": {
+   "<auto>": "SUNGKAI",
+   "<auto>2": "MIDGREY"
+  },
+  "lowTo": {
+   "from": "MIDGREY",
+   "to": "SUNGKAI",
+   "below": 0.24
+  }
+ },
+ "cubix-ot-gelap": "cubix-series-ottoman-kayu-gelap"
+}

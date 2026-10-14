@@ -18,6 +18,18 @@ for o in meshes:
 bpy.context.view_layer.objects.active = meshes[0]
 bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
 bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+# normal halus impor terinterpolasi di titik potong → pantulan logam belang per lajur.
+# Objek ber-material logam saja (alas emas, kaki) → buang normal impor, haluskan per sudut. Kain tetap normal aslinya.
+for o in meshes:   # pisah per material supaya logam bisa diperlakukan sendiri
+    if len(o.data.materials) > 1:
+        bpy.ops.object.select_all(action='DESELECT'); o.select_set(True); bpy.context.view_layer.objects.active = o
+        bpy.ops.object.mode_set(mode='EDIT'); bpy.ops.mesh.separate(type='MATERIAL'); bpy.ops.object.mode_set(mode='OBJECT')
+meshes = [o for o in bpy.context.scene.objects if o.type == 'MESH']
+for o in meshes:
+    mats = [m for m in o.data.materials if m and o.data.polygons]
+    if mats and all((m.get('role') == 'metal') or ('gold' in m.name.lower()) for m in mats) and o.data.has_custom_normals:
+        bpy.context.view_layer.objects.active = o; bpy.ops.mesh.customdata_custom_splitnormals_clear()
+        for pl in o.data.polygons: pl.use_smooth = False
 
 def cut(obj, lo, hi):
     """sisakan bagian lo <= x <= hi (None = tak terbatas)"""

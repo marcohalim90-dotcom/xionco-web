@@ -92,6 +92,9 @@
       headboard: { m: 'region', r: 'head', v: { az: 16, el: 12 } },
       lowerDoors: { m: 'full' },
       doorType: { m: 'full', v: { az: 24, el: 12 }, open: 'one' },
+      // kabinet (spec-kabinet.js): model pintu, jenis kaca, batu top, model & panel kabinet gantung
+      doorStyle: { m: 'full', v: { az: 24, el: 12 }, open: 'one' }, glassType: { m: 'region', r: 'frontR', v: { az: 14, el: 8 } },
+      topStone: { m: 'full', v: { el: 30 } }, wallType: { m: 'full', v: { az: 26, el: 10 } }, wallPanel: { m: 'full', v: { az: 26, el: 10 } },
       handle: { m: 'region', r: 'frontR', v: { az: 18, el: 10 } },
       interior: { m: 'diff', open: 'all', v: { az: 18, el: 12 } },
       trim: { m: 'diff', anchor: 'right' }, extras: { m: 'diff', anchor: 'right' }, swivel: { m: 'diff' }
@@ -101,10 +104,31 @@
     if (k === 'kursi/chaise' && gid === 'base') r = { m: 'full', v: { el: 12 } };
     if (k === 'kursi/bench' && gid === 'leg') r = { m: 'region', r: 'leg', v: { az: 34, el: 12 } };
     if (k === 'kursi/ottoman' && gid === 'leg') r = { m: 'full', v: { az: 30, el: 8 } };
+    // divan & ranjang (spec-divan.js): susun / loft / sorong / daybed / kanopi / anak
+    if (cat === 'divan') {
+      var DV = { layout: { m: 'full', v: { az: 30, el: 16 } }, access: { m: 'full', v: { az: 34, el: 12 } }, rail: { m: 'full', v: { az: 26, el: 18 } },
+        under: { m: 'region', r: 'low', v: { az: 24, el: 12 } }, trundle: { m: 'region', r: 'low', v: { az: 24, el: 12 }, open: 'all' }, below: { m: 'full', v: { az: 26, el: 8 } },
+        bottom: { m: 'common', v: { az: 28, el: 34 } }, post: { m: 'full', v: { az: 30, el: 10 } }, canopy: { m: 'full', v: { az: 30, el: 14 } }, drape: { m: 'full', v: { az: 30, el: 12 } },
+        roof: { m: 'full', v: { az: 30, el: 12 } }, sides: { m: 'full', v: { az: 28, el: 16 } }, infill: { m: 'full', v: { az: 24, el: 12 } }, foot: { m: 'full', v: { az: 30, el: 14 } } };
+      if (DV[gid]) r = DV[gid];
+      if (gid === 'style' || gid === 'frame') r = { m: 'full', v: { az: 30, el: 14 } };
+      if (gid === 'arm' && /^(trundle|daybed)$/.test(sub)) r = { m: 'region', r: 'arm', v: { az: 30, el: 14 } };
+    }
+    // meja (spec-meja.js): tata letak dilihat dari atas, kaki / pijakan dari samping, panel depan rendah
+    if (cat === 'meja') {
+      var MJ = { layout: { m: 'full', v: { az: 30, el: 34 } }, plan: { m: 'full', v: { az: 30, el: 30 } }, form: { m: 'full', v: { az: 30, el: 22 } }, side: { m: 'full', v: { az: 30, el: 34 } },
+        pieces: { m: 'full', v: { el: 24 } }, legStyle: { m: 'region', r: 'leg', v: { az: 34, el: 12 } }, footrest: { m: 'full', v: { el: 8 } }, frame: { m: 'full', v: { el: 14 } }, mount: { m: 'full', v: { el: 12 } },
+        pedestal: { m: 'full', v: { az: 26, el: 14 } }, pedType: { m: 'full', v: { az: 26, el: 12 } }, pedDrawers: { m: 'full', v: { az: 24, el: 10 } }, islandBody: { m: 'full', v: { az: 22, el: 10 } },
+        hutch: { m: 'full', v: { el: 14 } }, tower: { m: 'full', v: { el: 14 } }, face: { m: 'full', v: { az: 18, el: 8 } }, front: { m: 'full', v: { az: 16, el: 8 } }, screen: { m: 'full', v: { el: 16 } },
+        mped: { m: 'full', v: { el: 14 } }, ada: { m: 'full', v: { el: 12 } }, plinth: { m: 'region', r: 'low', v: { az: 24, el: 8 } }, mirror: { m: 'full', v: { az: 24, el: 10 } }, stool: { m: 'full', v: { el: 14 } },
+        inlay: { m: 'full', v: { el: 40 } }, tableware: { m: 'full', v: { el: 40 } } };
+      if (MJ[gid]) r = MJ[gid];
+      if (gid === 'seats') r.set = { tableware: 'mats' };
+    }
     // tanpa bantal hias agar permukaan / bentuk sandaran terlihat
     if (/^(back|backTuft|seatTuft|seatC|arm)$/.test(gid)) r.set = { pillows: 0, bolsters: 0 };
     // alas piring linen (penanda kapasitas) hanya pada kelompok kapasitas meja makan
-    r.mats = gid === 'seats' ? 'faint' : 'hide';
+    r.mats = gid === 'seats' || gid === 'tableware' ? 'faint' : 'hide';
     return r;
   }
   // aturan per pilihan (menggantikan aturan kelompok)

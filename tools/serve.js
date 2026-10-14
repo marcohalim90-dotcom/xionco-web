@@ -9,12 +9,14 @@
      data/checks.json           centang aset manual  (ikut online)
      data/pricing.json          harga Customize      (ikut online)
      data/private/customs.json  pesanan custom + data pelanggan (TIDAK ikut online)
+     data/private/ai3d.json     key fal.ai + pilihan model 3D AI (TIDAK ikut online, tak pernah dikirim ke browser)
      data/history/              cadangan otomatis setiap kali disimpan (lokal saja)
    API hanya menerima permintaan dari localhost.
    ========================================================================== */
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const ai3d = require('./ai3d');
 
 const ROOT = path.resolve(__dirname, '..');
 const PORT = +process.env.PORT || 5173;
@@ -84,6 +86,7 @@ function api(req, res, p) {
     return send(res, 200, { ok: true, writable: true, files: files });
   }
   if (p === '/api/assets' && req.method === 'GET') return send(res, 200, { ok: true, files: listAssets() });
+  if (p.indexOf('/api/ai3d/') === 0) return ai3d.handle(req, res, p, send);   // 3D AI (Tripo via fal.ai)
 
   const m = p.match(/^\/api\/db\/([a-z]+)$/);
   if (!m || !DB[m[1]]) return send(res, 404, { ok: false, error: 'Tidak dikenal' });

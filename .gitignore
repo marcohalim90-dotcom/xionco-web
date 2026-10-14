@@ -12,7 +12,13 @@ data/history/
 
 # model referensi pihak ketiga (FurniMesh) — lisensi belum jelas, hanya lokal
 data/source/furnimesh/
+
+# 3D AI: foto upload, GLB mentah fal.ai & status pekerjaan — lokal saja
+data/source/ai3d/
 tools/icons/last-build.log
 
 # hasil render foto Blender (tools/render) — besar & bisa dibuat ulang
 output/
+
+# GLB mentah hasil SKP (besar, bisa dibuat ulang) — yang online hanya hasil rapi di assets/items/
+data/source/skp-glb/*/

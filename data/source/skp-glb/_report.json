@@ -1,0 +1,972 @@
+[
+ {
+  "file": "AETHER K100.skp",
+  "name": "AETHER K100",
+  "slug": "aether-k100",
+  "w_cm": 6.6,
+  "d_cm": 10.5,
+  "h_cm": 102.0,
+  "tris": 3964,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "DefaultMaterial"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.5
+ },
+ {
+  "file": "AETHER K40.skp",
+  "name": "AETHER K40",
+  "slug": "aether-k40",
+  "w_cm": 13.1,
+  "d_cm": 13.1,
+  "h_cm": 40.5,
+  "tris": 5034,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "DefaultMaterial"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "AETHER K60.skp",
+  "name": "AETHER K60",
+  "slug": "aether-k60",
+  "w_cm": 6.7,
+  "d_cm": 10.4,
+  "h_cm": 60.9,
+  "tris": 3494,
+  "objects": 1,
+  "materials": [
+   "<auto>",
+   "DefaultMaterial"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "AETHER K80.skp",
+  "name": "AETHER K80",
+  "slug": "aether-k80",
+  "w_cm": 6.7,
+  "d_cm": 10.4,
+  "h_cm": 81.4,
+  "tris": 3466,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "DefaultMaterial"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.1
+ },
+ {
+  "file": "AETHER SKY.skp",
+  "name": "AETHER SKY",
+  "slug": "aether-sky",
+  "w_cm": 40.3,
+  "d_cm": 40.3,
+  "h_cm": 111.6,
+  "tris": 4540,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "DefaultMaterial"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "AETHER STAND.skp",
+  "name": "AETHER STAND",
+  "slug": "aether-stand",
+  "w_cm": 21.3,
+  "d_cm": 21.3,
+  "h_cm": 163.2,
+  "tris": 6456,
+  "objects": 1,
+  "materials": [
+   "<auto>1"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "ARZE.skp",
+  "name": "ARZE",
+  "slug": "arze",
+  "w_cm": 81.3,
+  "d_cm": 51.3,
+  "h_cm": 92.9,
+  "tris": 8814,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.4
+ },
+ {
+  "file": "ASTRAL 1 SEATER.skp",
+  "name": "ASTRAL 1 SEATER",
+  "slug": "astral-1-seater",
+  "w_cm": 83.0,
+  "d_cm": 81.3,
+  "h_cm": 69.2,
+  "tris": 22336,
+  "objects": 1,
+  "materials": [
+   "*",
+   "[Color M00]",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.1
+ },
+ {
+  "file": "ASTRAL 2 SEATER.skp",
+  "name": "ASTRAL 2 SEATER",
+  "slug": "astral-2-seater",
+  "w_cm": 134.6,
+  "d_cm": 81.3,
+  "h_cm": 69.2,
+  "tris": 22336,
+  "objects": 1,
+  "materials": [
+   "*",
+   "[Color M00]",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.9
+ },
+ {
+  "file": "ASTRAL 3 SEATER.skp",
+  "name": "ASTRAL 3 SEATER",
+  "slug": "astral-3-seater",
+  "w_cm": 190.3,
+  "d_cm": 81.3,
+  "h_cm": 69.2,
+  "tris": 22336,
+  "objects": 1,
+  "materials": [
+   "*",
+   "[Color M00]",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.9
+ },
+ {
+  "file": "CAMEO.skp",
+  "name": "CAMEO",
+  "slug": "cameo",
+  "w_cm": 187.4,
+  "d_cm": 90.1,
+  "h_cm": 64.6,
+  "tris": 21290,
+  "objects": 1,
+  "materials": [
+   "<auto>2",
+   "<auto>5",
+   "MIDGREY"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.8
+ },
+ {
+  "file": "CANIS.skp",
+  "name": "CANIS",
+  "slug": "canis",
+  "w_cm": 294.1,
+  "d_cm": 144.3,
+  "h_cm": 93.1,
+  "tris": 17955,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "KYOKAI 2",
+   "MIDGREY"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.7
+ },
+ {
+  "file": "CUBIX AC GELAP.skp",
+  "name": "CUBIX AC GELAP",
+  "slug": "cubix-ac-gelap",
+  "w_cm": 63.8,
+  "d_cm": 64.0,
+  "h_cm": 79.6,
+  "tris": 5336,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "MIDGREY",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.3
+ },
+ {
+  "file": "CUBIX AC.skp",
+  "name": "CUBIX AC",
+  "slug": "cubix-ac",
+  "w_cm": 63.8,
+  "d_cm": 64.0,
+  "h_cm": 79.6,
+  "tris": 5336,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "MIDGREY",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.3
+ },
+ {
+  "file": "CUBIX ACAC GELAP.skp",
+  "name": "CUBIX ACAC GELAP",
+  "slug": "cubix-acac-gelap",
+  "w_cm": 126.6,
+  "d_cm": 64.2,
+  "h_cm": 79.6,
+  "tris": 10672,
+  "objects": 2,
+  "materials": [
+   "<auto>1",
+   "MIDGREY",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.3
+ },
+ {
+  "file": "CUBIX ACAC.skp",
+  "name": "CUBIX ACAC",
+  "slug": "cubix-acac",
+  "w_cm": 126.6,
+  "d_cm": 64.2,
+  "h_cm": 79.6,
+  "tris": 10672,
+  "objects": 2,
+  "materials": [
+   "<auto>1",
+   "MIDGREY",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.3
+ },
+ {
+  "file": "CUBIX ACALAC GELAP.skp",
+  "name": "CUBIX ACALAC GELAP",
+  "slug": "cubix-acalac-gelap",
+  "w_cm": 189.5,
+  "d_cm": 64.3,
+  "h_cm": 81.5,
+  "tris": 44536,
+  "objects": 3,
+  "materials": [
+   "<auto>",
+   "<auto>1",
+   "<auto>2",
+   "MIDGREY",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.5
+ },
+ {
+  "file": "CUBIX ACALAC.skp",
+  "name": "CUBIX ACALAC",
+  "slug": "cubix-acalac",
+  "w_cm": 189.5,
+  "d_cm": 64.3,
+  "h_cm": 81.5,
+  "tris": 44536,
+  "objects": 3,
+  "materials": [
+   "<auto>",
+   "<auto>1",
+   "<auto>2",
+   "MIDGREY",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.5
+ },
+ {
+  "file": "CUBIX AL GELAP.skp",
+  "name": "CUBIX AL GELAP",
+  "slug": "cubix-al-gelap",
+  "w_cm": 64.5,
+  "d_cm": 64.2,
+  "h_cm": 81.5,
+  "tris": 33864,
+  "objects": 1,
+  "materials": [
+   "<auto>",
+   "<auto>1",
+   "<auto>2",
+   "MIDGREY",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.0
+ },
+ {
+  "file": "CUBIX AL.skp",
+  "name": "CUBIX AL",
+  "slug": "cubix-al",
+  "w_cm": 64.5,
+  "d_cm": 64.2,
+  "h_cm": 81.5,
+  "tris": 33864,
+  "objects": 1,
+  "materials": [
+   "<auto>",
+   "<auto>1",
+   "<auto>2",
+   "MIDGREY",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.2
+ },
+ {
+  "file": "CUBIX CT GELAP.skp",
+  "name": "CUBIX CT GELAP",
+  "slug": "cubix-ct-gelap",
+  "w_cm": 93.9,
+  "d_cm": 63.3,
+  "h_cm": 39.4,
+  "tris": 598,
+  "objects": 1,
+  "materials": [
+   "<auto>3",
+   "SUNGKAI",
+   "[Translucent Glass Gray]"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "CUBIX CT.skp",
+  "name": "CUBIX CT",
+  "slug": "cubix-ct",
+  "w_cm": 93.9,
+  "d_cm": 63.3,
+  "h_cm": 39.4,
+  "tris": 598,
+  "objects": 1,
+  "materials": [
+   "<auto>3",
+   "SUNGKAI",
+   "[Translucent Glass Gray]"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "CUBIX OT GELAP.skp",
+  "name": "CUBIX OT GELAP",
+  "slug": "cubix-ot-gelap",
+  "w_cm": 62.8,
+  "d_cm": 62.8,
+  "h_cm": 39.4,
+  "tris": 1968,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "MIDGREY",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.3
+ },
+ {
+  "file": "CUBIX OT.skp",
+  "name": "CUBIX OT",
+  "slug": "cubix-ot",
+  "w_cm": 62.8,
+  "d_cm": 62.8,
+  "h_cm": 39.4,
+  "tris": 1968,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "MIDGREY",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "CUBIX ST GELAP.skp",
+  "name": "CUBIX ST GELAP",
+  "slug": "cubix-st-gelap",
+  "w_cm": 63.3,
+  "d_cm": 62.9,
+  "h_cm": 39.4,
+  "tris": 601,
+  "objects": 1,
+  "materials": [
+   "<auto>3",
+   "SUNGKAI",
+   "[Translucent Glass Gray]"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.1
+ },
+ {
+  "file": "CUBIX ST.skp",
+  "name": "CUBIX ST",
+  "slug": "cubix-st",
+  "w_cm": 63.3,
+  "d_cm": 62.9,
+  "h_cm": 39.4,
+  "tris": 601,
+  "objects": 1,
+  "materials": [
+   "<auto>3",
+   "SUNGKAI",
+   "[Translucent Glass Gray]"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.1
+ },
+ {
+  "file": "EORDE.skp",
+  "name": "EORDE",
+  "slug": "eorde",
+  "w_cm": 197.7,
+  "d_cm": 93.2,
+  "h_cm": 79.0,
+  "tris": 24586,
+  "objects": 1,
+  "materials": [
+   "MIDGREY",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.1
+ },
+ {
+  "file": "GLIZA.skp",
+  "name": "GLIZA",
+  "slug": "gliza",
+  "w_cm": 248.7,
+  "d_cm": 44.4,
+  "h_cm": 39.0,
+  "tris": 1354,
+  "objects": 1,
+  "materials": [
+   "[Color M07]",
+   "kayu minsi",
+   "mindi2"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "GUISE 1 SEATER.skp",
+  "name": "GUISE 1 SEATER",
+  "slug": "guise-1-seater",
+  "w_cm": 80.2,
+  "d_cm": 80.6,
+  "h_cm": 69.6,
+  "tris": 23125,
+  "objects": 1,
+  "materials": [
+   "*1",
+   "[Wood Veneer 01]1"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.9
+ },
+ {
+  "file": "GUISE 2 SEATER.skp",
+  "name": "GUISE 2 SEATER",
+  "slug": "guise-2-seater",
+  "w_cm": 122.3,
+  "d_cm": 72.0,
+  "h_cm": 69.4,
+  "tris": 18332,
+  "objects": 1,
+  "materials": [
+   "*1",
+   "DefaultMaterial",
+   "[Wood Veneer 01]1"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.9
+ },
+ {
+  "file": "GUISE 3 SEATER.skp",
+  "name": "GUISE 3 SEATER",
+  "slug": "guise-3-seater",
+  "w_cm": 198.2,
+  "d_cm": 82.1,
+  "h_cm": 71.3,
+  "tris": 110249,
+  "objects": 1,
+  "materials": [
+   "*1",
+   "[Wood Veneer 01]"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 4.2
+ },
+ {
+  "file": "HEXTER.skp",
+  "name": "HEXTER",
+  "slug": "hexter",
+  "w_cm": 68.0,
+  "d_cm": 59.0,
+  "h_cm": 40.6,
+  "tris": 1268,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "HOUT.skp",
+  "name": "HOUT",
+  "slug": "hout",
+  "w_cm": 77.5,
+  "d_cm": 77.5,
+  "h_cm": 37.2,
+  "tris": 1104,
+  "objects": 1,
+  "materials": [
+   "<auto>",
+   "<auto>1",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "KYOUKAI 240.skp",
+  "name": "KYOUKAI 240",
+  "slug": "kyoukai-240",
+  "w_cm": 60.2,
+  "d_cm": 2.3,
+  "h_cm": 239.8,
+  "tris": 7872,
+  "objects": 1,
+  "materials": [
+   "<auto>",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.3
+ },
+ {
+  "file": "KYOUKAI 60.skp",
+  "name": "KYOUKAI 60",
+  "slug": "kyoukai-60",
+  "w_cm": 60.3,
+  "d_cm": 2.3,
+  "h_cm": 60.6,
+  "tris": 7872,
+  "objects": 1,
+  "materials": [
+   "<auto>",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.3
+ },
+ {
+  "file": "KYRIOS 1 SEATER.skp",
+  "name": "KYRIOS 1 SEATER",
+  "slug": "kyrios-1-seater",
+  "w_cm": 84.3,
+  "d_cm": 81.9,
+  "h_cm": 61.5,
+  "tris": 24084,
+  "objects": 1,
+  "materials": [
+   "*",
+   "Materiagold"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.1
+ },
+ {
+  "file": "KYRIOS 3 SEATER.skp",
+  "name": "KYRIOS 3 SEATER",
+  "slug": "kyrios-3-seater",
+  "w_cm": 197.5,
+  "d_cm": 82.8,
+  "h_cm": 61.8,
+  "tris": 35960,
+  "objects": 1,
+  "materials": [
+   "*",
+   "Materiagold"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.3
+ },
+ {
+  "file": "L7.skp",
+  "name": "L7",
+  "slug": "l7",
+  "w_cm": 113.5,
+  "d_cm": 57.4,
+  "h_cm": 91.4,
+  "tris": 2808,
+  "objects": 1,
+  "materials": [
+   "[Color M07]"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "LUCID.skp",
+  "name": "LUCID",
+  "slug": "lucid",
+  "w_cm": 81.1,
+  "d_cm": 40.5,
+  "h_cm": 180.9,
+  "tris": 656,
+  "objects": 1,
+  "materials": [
+   "<auto>1"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.1
+ },
+ {
+  "file": "NORA BS.skp",
+  "name": "NORA BS",
+  "slug": "nora-bs",
+  "w_cm": 48.5,
+  "d_cm": 64.6,
+  "h_cm": 104.7,
+  "tris": 8426,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "KULIT"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.3
+ },
+ {
+  "file": "NORA DC.skp",
+  "name": "NORA DC",
+  "slug": "nora-dc",
+  "w_cm": 49.5,
+  "d_cm": 61.7,
+  "h_cm": 84.2,
+  "tris": 6202,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "KULIT"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.3
+ },
+ {
+  "file": "ORYCTO.skp",
+  "name": "ORYCTO",
+  "slug": "orycto",
+  "w_cm": 210.6,
+  "d_cm": 79.2,
+  "h_cm": 57.1,
+  "tris": 15009,
+  "objects": 1,
+  "materials": [
+   "<auto>5",
+   "<auto>6",
+   "orycto"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.6
+ },
+ {
+  "file": "PILLOW.skp",
+  "name": "PILLOW",
+  "slug": "pillow",
+  "w_cm": 48.8,
+  "d_cm": 24.6,
+  "h_cm": 45.7,
+  "tris": 8064,
+  "objects": 1,
+  "materials": [
+   "MIDGREY"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.3
+ },
+ {
+  "file": "PLUQ.skp",
+  "name": "PLUQ",
+  "slug": "pluq",
+  "w_cm": 126.2,
+  "d_cm": 74.2,
+  "h_cm": 48.2,
+  "tris": 3732,
+  "objects": 1,
+  "materials": [
+   "<auto>",
+   "<auto>2"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "POEL.skp",
+  "name": "POEL",
+  "slug": "poel",
+  "w_cm": 136.4,
+  "d_cm": 174.2,
+  "h_cm": 84.1,
+  "tris": 42821,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "DefaultMaterial",
+   "SUNGKAI",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.3
+ },
+ {
+  "file": "RECTA.skp",
+  "name": "RECTA",
+  "slug": "recta",
+  "w_cm": 108.9,
+  "d_cm": 59.4,
+  "h_cm": 41.4,
+  "tris": 3325,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "[Translucent Glass Gray]1"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.1
+ },
+ {
+  "file": "RHOMBIO.skp",
+  "name": "RHOMBIO",
+  "slug": "rhombio",
+  "w_cm": 109.3,
+  "d_cm": 107.4,
+  "h_cm": 55.0,
+  "tris": 16764,
+  "objects": 1,
+  "materials": [
+   "GREEN",
+   "RED",
+   "YELLOW"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.7
+ },
+ {
+  "file": "ROULED.skp",
+  "name": "ROULED",
+  "slug": "rouled",
+  "w_cm": 7744.9,
+  "d_cm": 6106.1,
+  "h_cm": 2327.7,
+  "tris": 119584,
+  "objects": 2,
+  "materials": [
+   "<auto>",
+   "<auto>1"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.7
+ },
+ {
+  "file": "SOMNO.skp",
+  "name": "SOMNO",
+  "slug": "somno",
+  "w_cm": 137.0,
+  "d_cm": 170.5,
+  "h_cm": 81.0,
+  "tris": 43898,
+  "objects": 1,
+  "materials": [
+   "MIDGREY",
+   "SUNGKAI",
+   "[Color M00]",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 1.4
+ },
+ {
+  "file": "SYME.skp",
+  "name": "SYME",
+  "slug": "syme",
+  "w_cm": 228.3,
+  "d_cm": 63.3,
+  "h_cm": 212.8,
+  "tris": 138,
+  "objects": 1,
+  "materials": [
+   "<auto>",
+   "<auto>1",
+   "SUNGKAI",
+   "[0111_SlateGray]"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.4
+ },
+ {
+  "file": "TESSE.skp",
+  "name": "TESSE",
+  "slug": "tesse",
+  "w_cm": 29.1,
+  "d_cm": 30.5,
+  "h_cm": 29.8,
+  "tris": 1574,
+  "objects": 1,
+  "materials": [
+   "MIDGREY"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.1
+ },
+ {
+  "file": "TRAPEZO.skp",
+  "name": "TRAPEZO",
+  "slug": "trapezo",
+  "w_cm": 132.2,
+  "d_cm": 57.4,
+  "h_cm": 73.7,
+  "tris": 4084,
+  "objects": 1,
+  "materials": [
+   "<auto>1",
+   "SUNGKAI"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.2
+ },
+ {
+  "file": "URUZ.skp",
+  "name": "URUZ",
+  "slug": "uruz",
+  "w_cm": 60.5,
+  "d_cm": 20.2,
+  "h_cm": 86.0,
+  "tris": 32970,
+  "objects": 1,
+  "materials": [
+   "<auto>1"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.7
+ },
+ {
+  "file": "VERK LACI.skp",
+  "name": "VERK LACI",
+  "slug": "verk-laci",
+  "w_cm": 174.0,
+  "d_cm": 63.8,
+  "h_cm": 148.5,
+  "tris": 22442,
+  "objects": 1,
+  "materials": [
+   "<auto>",
+   "<auto>1",
+   "<auto>2",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.7
+ },
+ {
+  "file": "VERK.skp",
+  "name": "VERK",
+  "slug": "verk",
+  "w_cm": 134.9,
+  "d_cm": 61.4,
+  "h_cm": 148.2,
+  "tris": 15214,
+  "objects": 1,
+  "materials": [
+   "<auto>",
+   "<auto>1",
+   "kayu"
+  ],
+  "removed": [],
+  "ok": true,
+  "sec": 0.6
+ }
+]

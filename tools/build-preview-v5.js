@@ -21,7 +21,7 @@ const cssTag = /<link rel="stylesheet" href="css\/v5\.css">/;
 if (!cssTag.test(html)) throw new Error('Tag CSS tidak ditemukan: css/v5.css');
 html = html.replace(cssTag, () => '<style>\n' + read('css/v5.css') + '\n</style>');
 
-for (const src of ['js/data.js', 'js/catalog.js', 'js/cutout.js', 'js/texlib.js', 'js/world.js', 'js/custom-spec.js', 'js/maker.js', 'js/i18n.js', 'js/pay.js', 'js/app.js']) {
+for (const src of ['js/data.js', 'js/catalog.js', 'js/cutout.js', 'js/texlib.js', 'js/world.js', 'js/custom-spec.js', 'js/spec-meja.js', 'js/spec-kabinet.js', 'js/spec-divan.js', 'js/maker.js', 'js/mk-meja.js', 'js/mk-kabinet.js', 'js/mk-divan.js', 'js/i18n.js', 'js/pay.js', 'js/app.js']) {
   const tag = new RegExp('<script src="' + src.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&') + '"></script>\\n?');
   if (!tag.test(html)) throw new Error('Script tag tidak ditemukan: ' + src);
   html = html.replace(tag, () => '<script>\n' + safeJs(read(src)) + '\n</script>\n');

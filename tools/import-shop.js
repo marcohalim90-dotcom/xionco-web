@@ -46,7 +46,7 @@ const LEGACY_MAP = {
   42: 'uruz', 92: 'vazra', 97: 'vazratrack'
 };
 // kolom khusus v5 yang tidak boleh tertimpa impor
-const KEEP = ['model', 'modelRot', 'dims', 'leadTime', 'note'];
+const KEEP = ['model', 'vmodels', 'modelRot', 'dims', 'leadTime', 'note'];
 
 const CATEGORIES = [
   { id: 'seats', label: 'Seats', note: 'Sofa, kursi & ottoman' },
@@ -165,6 +165,8 @@ shopItems.filter((p) => !legacyById[p.id])
 let prev = {};
 try { (JSON.parse(fs.readFileSync(OUT_DB, 'utf8')).items || []).forEach((p) => { prev[p.id] = p; }); } catch (e) {}
 out.forEach((p) => KEEP.forEach((k) => { if (prev[p.id] && prev[p.id][k] != null && prev[p.id][k] !== '') p[k] = prev[p.id][k]; }));
+// produk lokal (local: true — mis. dari file SKP, belum ada di xionco.shop) tetap dipertahankan
+Object.values(prev).filter((p) => p.local && !out.some((o) => o.id === p.id)).forEach((p) => out.push(p));
 
 const stamp = new Date().toISOString().slice(0, 10);
 const js = '/* ==========================================================================\n' +

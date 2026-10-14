@@ -391,181 +391,18 @@
         ] })
     ] }),
 
-    O('meja', 'Meja', 'Tables', { subs: [
-      O('dining', 'Meja makan', 'Dining table', { base: 4200000, dims: { w: [80, 320, 5, 180], d: [70, 120, 1, 90], h: [70, 78, 1, 75] }, tableH: true,
-        def: { seats: '6', topShape: 'rect', topMat: 'wood', wood: 'walnut', stone: 'carrara', panel: 'ivory', metal: 'black', edge: 'eased', thick: 4, base: 'legs4', baseMat: 'wood' },
-        groups: [
-          { id: 'seats', step: 'bentuk', type: 'chips', l: 'Kapasitas', en: 'Seats', opts: [O('2', '2 orang', '2 people'), O('4', '4 orang', '4 people'), O('6', '6 orang', '6 people'), O('8', '8 orang', '8 people'), O('10', '10 orang', '10 people'), O('12', '12 orang', '12 people')],
-            preset: { w: { 2: 80, 4: 140, 6: 180, 8: 220, 10: 260, 12: 300 } } },
-          { id: 'topShape', step: 'bentuk', type: 'chips', l: 'Bentuk top', en: 'Top shape', opts: [O('rect', 'Persegi panjang', 'Rectangle'), O('square', 'Persegi', 'Square'), O('round', 'Bulat', 'Round'),
-            O('oval', 'Oval', 'Oval', { f: 1.06 }), O('capsule', 'Kapsul (racetrack)', 'Racetrack', { f: 1.06 }), O('organic', 'Organik', 'Organic', { f: 1.15 })] },
-          { id: 'base', step: 'bentuk', type: 'chips', l: 'Bentuk kaki / base', en: 'Base', opts: [O('legs4', '4 kaki', '4 legs'), O('pedestal', 'Pedestal', 'Pedestal', { add: 900000 }), O('double', 'Double pedestal', 'Double pedestal', { add: 1500000 }),
-            O('trestle', 'Trestle', 'Trestle', { add: 600000 }), O('sled', 'Sled (rangka U)', 'Sled frame', { add: 500000 }), O('slab', 'Panel / slab', 'Slab panels', { add: 700000 }), O('x', 'Kaki X', 'X-legs', { add: 500000 }), O('v', 'Kaki V', 'V-legs', { add: 450000 })] },
-          g('w', { l: 'Panjang', en: 'Length', when: function (c) { return c.topShape !== 'round' && c.topShape !== 'square'; } }),
-          g('d', { l: 'Lebar', en: 'Width', when: function (c) { return c.topShape !== 'round' && c.topShape !== 'square'; } }),
-          { id: 'dia', step: 'ukuran', type: 'range', l: 'Diameter / sisi', en: 'Diameter / side', unit: 'cm', min: 70, max: 180, inc: 5, when: function (c) { return c.topShape === 'round' || c.topShape === 'square'; } },
-          g('h'), g('thick'),
-          { id: 'topMat', step: 'material', type: 'chips', l: 'Material top', en: 'Top material', opts: [O('wood', 'Kayu solid', 'Solid wood', { f: 1.2 }), O('veneer', 'Veneer kayu', 'Wood veneer', { f: 1 }), O('hpl', 'HPL', 'HPL laminate', { f: .85 }),
-            O('stone', 'Marmer / batu', 'Marble / stone', { f: 1.6 }), O('glass', 'Kaca tempered', 'Tempered glass', { f: 1 }), O('duco', 'Duco (cat)', 'Painted (duco)', { f: .95 })] },
-          g('wood', { when: function (c) { return /^(wood|veneer)$/.test(c.topMat) || c.baseMat === 'wood'; } }),
-          { id: 'stone', step: 'material', type: 'swatch', l: 'Batu / marmer', en: 'Stone', opts: STONE, when: function (c) { return c.topMat === 'stone'; } },
-          { id: 'panel', step: 'material', type: 'swatch', l: 'Warna HPL / duco', en: 'HPL / paint colour', opts: PANEL, when: function (c) { return c.topMat === 'hpl' || c.topMat === 'duco'; } },
-          { id: 'baseMat', step: 'material', type: 'chips', l: 'Material kaki', en: 'Base material', opts: [O('wood', 'Kayu', 'Wood'), O('metal', 'Besi / logam', 'Metal'), O('stone', 'Batu (sama dengan top)', 'Stone (as top)', { f: 1.15 })] },
-          g('metal', { when: function (c) { return c.baseMat === 'metal'; } }),
-          { id: 'edge', step: 'detail', type: 'chips', l: 'Profil tepi', en: 'Edge profile', opts: [O('square', 'Lurus 90°', 'Square'), O('eased', 'Eased (tumpul tipis)', 'Eased'), O('bevel', 'Bevel (miring)', 'Bevelled', { add: 250000 }),
-            O('bullnose', 'Bullnose (bulat)', 'Bullnose', { add: 300000 }), O('knife', 'Knife edge (tipis)', 'Knife edge', { add: 350000 }), O('live', 'Live edge (alami)', 'Live edge', { add: 900000 })] },
-          { id: 'extras', step: 'detail', type: 'multi', l: 'Tambahan', en: 'Extras', opts: [O('extend', 'Bisa diperpanjang (extension)', 'Extendable', { add: 1800000 }), O('lazy', 'Lazy susan (putar)', 'Lazy susan', { add: 700000 }),
-            O('cable', 'Lubang kabel', 'Cable grommet', { add: 150000 }), O('socket', 'Stopkontak VAZRA di meja', 'VAZRA power socket', { add: 650000 }), O('protect', 'Coating anti noda', 'Stain-proof coating', { add: 400000 })] }
-        ] }),
-      O('coffee', 'Meja kopi (coffee table)', 'Coffee table', { base: 1300000, dims: { w: [50, 160, 5, 110], d: [40, 100, 1, 60], h: [28, 50, 1, 38] }, tableH: true,
-        def: { topShape: 'rect', topMat: 'wood', wood: 'oak', stone: 'travertine', panel: 'ivory', metal: 'black', edge: 'eased', thick: 3, base: 'legs4', baseMat: 'wood', dia: 90 },
-        groups: [
-          { id: 'topShape', step: 'bentuk', type: 'chips', l: 'Bentuk top', en: 'Top shape', opts: [O('rect', 'Persegi panjang', 'Rectangle'), O('square', 'Persegi', 'Square'), O('round', 'Bulat', 'Round'), O('oval', 'Oval', 'Oval'), O('capsule', 'Kapsul', 'Racetrack'), O('organic', 'Organik', 'Organic', { f: 1.15 }), O('nesting', 'Nesting (set 2)', 'Nesting set of 2', { f: 1.5 })] },
-          { id: 'base', step: 'bentuk', type: 'chips', l: 'Bentuk kaki / base', en: 'Base', opts: [O('legs4', '4 kaki', '4 legs'), O('pedestal', 'Pedestal', 'Pedestal', { add: 400000 }), O('drum', 'Drum (base penuh)', 'Drum base', { add: 500000 }), O('sled', 'Sled', 'Sled', { add: 300000 }), O('slab', 'Panel / slab', 'Slab panels', { add: 400000 }), O('x', 'Kaki X', 'X-legs', { add: 300000 })] },
-          g('w', { l: 'Panjang', en: 'Length', when: function (c) { return !/^(round|square)$/.test(c.topShape); } }), g('d', { l: 'Lebar', en: 'Width', when: function (c) { return !/^(round|square)$/.test(c.topShape); } }),
-          { id: 'dia', step: 'ukuran', type: 'range', l: 'Diameter / sisi', en: 'Diameter / side', unit: 'cm', min: 50, max: 130, inc: 5, when: function (c) { return /^(round|square)$/.test(c.topShape); } },
-          g('h'), g('thick'),
-          { id: 'topMat', step: 'material', type: 'chips', l: 'Material top', en: 'Top material', opts: [O('wood', 'Kayu solid', 'Solid wood', { f: 1.2 }), O('veneer', 'Veneer kayu', 'Wood veneer'), O('hpl', 'HPL', 'HPL laminate', { f: .85 }), O('stone', 'Marmer / batu', 'Marble / stone', { f: 1.6 }), O('glass', 'Kaca tempered', 'Tempered glass'), O('duco', 'Duco (cat)', 'Painted (duco)', { f: .95 })] },
-          g('wood', { when: function (c) { return /^(wood|veneer)$/.test(c.topMat) || c.baseMat === 'wood'; } }),
-          { id: 'stone', step: 'material', type: 'swatch', l: 'Batu / marmer', en: 'Stone', opts: STONE, when: function (c) { return c.topMat === 'stone'; } },
-          { id: 'panel', step: 'material', type: 'swatch', l: 'Warna HPL / duco', en: 'HPL / paint colour', opts: PANEL, when: function (c) { return c.topMat === 'hpl' || c.topMat === 'duco'; } },
-          { id: 'baseMat', step: 'material', type: 'chips', l: 'Material kaki', en: 'Base material', opts: [O('wood', 'Kayu', 'Wood'), O('metal', 'Besi / logam', 'Metal'), O('stone', 'Batu (sama dengan top)', 'Stone (as top)', { f: 1.15 })] },
-          g('metal', { when: function (c) { return c.baseMat === 'metal'; } }),
-          { id: 'edge', step: 'detail', type: 'chips', l: 'Profil tepi', en: 'Edge profile', opts: [O('square', 'Lurus 90°', 'Square'), O('eased', 'Eased', 'Eased'), O('bevel', 'Bevel', 'Bevelled', { add: 150000 }), O('bullnose', 'Bullnose', 'Bullnose', { add: 200000 }), O('knife', 'Knife edge', 'Knife edge', { add: 250000 }), O('live', 'Live edge', 'Live edge', { add: 600000 })] },
-          { id: 'extras', step: 'detail', type: 'multi', l: 'Tambahan', en: 'Extras', opts: [O('shelf', 'Rak bawah', 'Lower shelf', { add: 300000 }), O('drawer', 'Laci', 'Drawer', { add: 450000 }), O('lift', 'Top angkat (lift-top)', 'Lift-top', { add: 900000 }), O('protect', 'Coating anti noda', 'Stain-proof coating', { add: 250000 })] }
-        ] }),
-      O('side', 'Meja samping (side table)', 'Side table', { base: 650000, dims: { w: [30, 70, 1, 45], d: [30, 70, 1, 45], h: [40, 70, 1, 55] }, tableH: true,
-        def: { topShape: 'round', topMat: 'wood', wood: 'walnut', stone: 'nero', panel: 'sage', metal: 'brass', edge: 'eased', thick: 2.5, base: 'pedestal', baseMat: 'metal', dia: 45 },
-        groups: [
-          { id: 'topShape', step: 'bentuk', type: 'chips', l: 'Bentuk top', en: 'Top shape', opts: [O('round', 'Bulat', 'Round'), O('square', 'Persegi', 'Square'), O('rect', 'Persegi panjang', 'Rectangle'), O('organic', 'Organik', 'Organic')] },
-          { id: 'base', step: 'bentuk', type: 'chips', l: 'Bentuk kaki / base', en: 'Base', opts: [O('pedestal', 'Pedestal', 'Pedestal'), O('legs3', '3 kaki', '3 legs'), O('legs4', '4 kaki', '4 legs'), O('cshape', 'C-shape (masuk ke sofa)', 'C-shape (slides over sofa)', { add: 200000 }), O('drum', 'Drum', 'Drum', { add: 200000 })] },
-          { id: 'dia', step: 'ukuran', type: 'range', l: 'Diameter / sisi', en: 'Diameter / side', unit: 'cm', min: 30, max: 70, inc: 1, when: function (c) { return c.topShape !== 'rect'; } },
-          g('w', { when: function (c) { return c.topShape === 'rect'; } }), g('d', { when: function (c) { return c.topShape === 'rect'; } }), g('h'), g('thick'),
-          { id: 'topMat', step: 'material', type: 'chips', l: 'Material top', en: 'Top material', opts: [O('wood', 'Kayu solid', 'Solid wood', { f: 1.2 }), O('hpl', 'HPL', 'HPL laminate', { f: .85 }), O('stone', 'Marmer / batu', 'Marble / stone', { f: 1.5 }), O('glass', 'Kaca', 'Glass'), O('duco', 'Duco', 'Painted')] },
-          g('wood', { when: function (c) { return c.topMat === 'wood' || c.baseMat === 'wood'; } }),
-          { id: 'stone', step: 'material', type: 'swatch', l: 'Batu / marmer', en: 'Stone', opts: STONE, when: function (c) { return c.topMat === 'stone'; } },
-          { id: 'panel', step: 'material', type: 'swatch', l: 'Warna HPL / duco', en: 'HPL / paint colour', opts: PANEL, when: function (c) { return c.topMat === 'hpl' || c.topMat === 'duco'; } },
-          { id: 'baseMat', step: 'material', type: 'chips', l: 'Material kaki', en: 'Base material', opts: [O('metal', 'Besi / logam', 'Metal'), O('wood', 'Kayu', 'Wood')] },
-          g('metal', { when: function (c) { return c.baseMat === 'metal'; } }),
-          { id: 'extras', step: 'detail', type: 'multi', l: 'Tambahan', en: 'Extras', opts: [O('shelf', 'Rak bawah', 'Lower shelf', { add: 150000 }), O('charger', 'Wireless charger', 'Wireless charger', { add: 450000 }), O('lamp', 'Lampu terintegrasi', 'Integrated lamp', { add: 600000 })] }
-        ] }),
-      O('console', 'Meja konsol', 'Console table', { base: 2100000, dims: { w: [80, 200, 5, 120], d: [28, 50, 1, 36], h: [70, 90, 1, 80] }, tableH: true,
-        def: { topShape: 'rect', topMat: 'wood', wood: 'walnut', stone: 'travertine', panel: 'greige', metal: 'brass', edge: 'eased', thick: 3, base: 'slab', baseMat: 'wood', drawers: 2 },
-        groups: [
-          { id: 'base', step: 'bentuk', type: 'chips', l: 'Bentuk kaki / base', en: 'Base', opts: [O('legs4', '4 kaki', '4 legs'), O('slab', 'Panel / slab', 'Slab panels'), O('sled', 'Sled', 'Sled'), O('pedestal', 'Pedestal', 'Pedestal')] },
-          { id: 'drawers', step: 'bentuk', type: 'range', l: 'Laci', en: 'Drawers', unit: 'pcs', min: 0, max: 3, inc: 1, addEach: 350000 },
-          g('w', { l: 'Panjang', en: 'Length' }), g('d'), g('h'), g('thick'),
-          { id: 'topMat', step: 'material', type: 'chips', l: 'Material top', en: 'Top material', opts: [O('wood', 'Kayu solid', 'Solid wood', { f: 1.2 }), O('veneer', 'Veneer kayu', 'Wood veneer'), O('hpl', 'HPL', 'HPL laminate', { f: .85 }), O('stone', 'Marmer / batu', 'Marble / stone', { f: 1.5 }), O('duco', 'Duco', 'Painted')] },
-          g('wood', { when: function (c) { return /^(wood|veneer)$/.test(c.topMat) || c.baseMat === 'wood'; } }),
-          { id: 'stone', step: 'material', type: 'swatch', l: 'Batu / marmer', en: 'Stone', opts: STONE, when: function (c) { return c.topMat === 'stone'; } },
-          { id: 'panel', step: 'material', type: 'swatch', l: 'Warna HPL / duco', en: 'HPL / paint colour', opts: PANEL, when: function (c) { return c.topMat === 'hpl' || c.topMat === 'duco'; } },
-          { id: 'baseMat', step: 'material', type: 'chips', l: 'Material kaki', en: 'Base material', opts: [O('wood', 'Kayu', 'Wood'), O('metal', 'Besi / logam', 'Metal')] },
-          g('metal', { when: function (c) { return c.baseMat === 'metal' || c.drawers > 0; }, l: 'Finishing besi / handle', en: 'Metal / handle finish' }),
-          { id: 'extras', step: 'detail', type: 'multi', l: 'Tambahan', en: 'Extras', opts: [O('shelf', 'Rak bawah', 'Lower shelf', { add: 300000 }), O('led', 'Lampu LED', 'LED light', { add: 450000 }), O('socket', 'Stopkontak VAZRA', 'VAZRA power socket', { add: 650000 })] }
-        ] }),
-      O('desk', 'Meja kerja', 'Desk', { base: 2000000, dims: { w: [90, 240, 5, 140], d: [50, 90, 1, 70], h: [70, 78, 1, 75] }, tableH: true,
-        def: { topShape: 'rect', topMat: 'veneer', wood: 'oak', stone: 'carrara', panel: 'charcoal', metal: 'black', edge: 'eased', thick: 3, base: 'sled', baseMat: 'metal', drawers: 1 },
-        groups: [
-          { id: 'topShape', step: 'bentuk', type: 'chips', l: 'Bentuk', en: 'Shape', opts: [O('rect', 'Lurus', 'Straight'), O('lshape', 'L-shape', 'L-shape', { f: 1.5 }), O('executive', 'Executive (dengan kabinet)', 'Executive (with pedestal)', { f: 1.6 })] },
-          { id: 'base', step: 'bentuk', type: 'chips', l: 'Bentuk kaki / base', en: 'Base', opts: [O('sled', 'Sled', 'Sled'), O('legs4', '4 kaki', '4 legs'), O('slab', 'Panel / slab', 'Slab panels'), O('electric', 'Standing desk elektrik', 'Electric standing desk', { add: 3500000 })] },
-          { id: 'drawers', step: 'bentuk', type: 'range', l: 'Laci', en: 'Drawers', unit: 'pcs', min: 0, max: 3, inc: 1, addEach: 350000 },
-          g('w', { l: 'Panjang', en: 'Length' }), g('d'), g('h'), g('thick'),
-          { id: 'topMat', step: 'material', type: 'chips', l: 'Material top', en: 'Top material', opts: [O('wood', 'Kayu solid', 'Solid wood', { f: 1.25 }), O('veneer', 'Veneer kayu', 'Wood veneer'), O('hpl', 'HPL', 'HPL laminate', { f: .85 }), O('stone', 'Sintered stone', 'Sintered stone', { f: 1.5 })] },
-          g('wood', { when: function (c) { return /^(wood|veneer)$/.test(c.topMat) || c.baseMat === 'wood'; } }),
-          { id: 'stone', step: 'material', type: 'swatch', l: 'Batu', en: 'Stone', opts: STONE, when: function (c) { return c.topMat === 'stone'; } },
-          { id: 'panel', step: 'material', type: 'swatch', l: 'Warna HPL', en: 'HPL colour', opts: PANEL, when: function (c) { return c.topMat === 'hpl'; } },
-          { id: 'baseMat', step: 'material', type: 'chips', l: 'Material kaki', en: 'Base material', opts: [O('metal', 'Besi / logam', 'Metal'), O('wood', 'Kayu', 'Wood')] },
-          g('metal', { when: function (c) { return c.baseMat === 'metal' || c.base === 'electric'; } }),
-          { id: 'extras', step: 'detail', type: 'multi', l: 'Tambahan', en: 'Extras', opts: [O('cable', 'Tray & lubang kabel', 'Cable tray & grommet', { add: 350000 }), O('socket', 'Stopkontak VAZRA', 'VAZRA power socket', { add: 650000 }),
-            O('modesty', 'Panel depan (modesty)', 'Modesty panel', { add: 400000 }), O('monitor', 'Rak monitor', 'Monitor shelf', { add: 450000 }), O('lock', 'Laci berkunci', 'Lockable drawer', { add: 200000 })] }
-        ] })
-    ] }),
-
-    O('kabinet', 'Kabinet & lemari', 'Cabinets & storage', { subs: [
-      O('tv', 'Kabinet TV', 'TV cabinet', { base: 2900000, dims: { w: [100, 320, 5, 180], d: [30, 55, 1, 42], h: [30, 70, 1, 48] }, cab: true,
-        def: { doorType: 'swing', doors: 2, drawers: 2, niches: 1, finish: 'veneer', wood: 'walnut', panel: 'ivory', metal: 'brass', handle: 'grip', mount: 'legs', leg: 'tapered', legH: 14, carcass: 'multiplek', interior: [] },
-        groups: [] }),
-      O('sideboard', 'Sideboard / buffet', 'Sideboard / buffet', { base: 3700000, dims: { w: [100, 260, 5, 180], d: [38, 55, 1, 45], h: [65, 95, 1, 80] }, cab: true,
-        def: { doorType: 'swing', doors: 3, drawers: 3, niches: 0, finish: 'fluted', wood: 'oak', panel: 'greige', metal: 'brass', handle: 'bar', mount: 'legs', leg: 'straight', legH: 12, carcass: 'multiplek', interior: [] },
-        groups: [] }),
-      O('wardrobe', 'Lemari pakaian (wardrobe)', 'Wardrobe', { base: 6200000, dims: { w: [80, 320, 5, 180], d: [52, 68, 1, 60], h: [170, 260, 5, 220] }, cab: true,
-        def: { doorType: 'swing', doors: 4, drawers: 2, niches: 0, finish: 'hpl', wood: 'oak', panel: 'ivory', metal: 'black', handle: 'grip', mount: 'plinth', leg: 'plinth', legH: 8, carcass: 'multiplek', interior: ['hang', 'shelf'] },
-        groups: [] }),
-      O('bookshelf', 'Rak buku / display', 'Bookshelf / display', { base: 2300000, dims: { w: [60, 280, 5, 160], d: [28, 45, 1, 35], h: [80, 260, 5, 200] }, cab: true,
-        def: { doorType: 'open', doors: 2, drawers: 0, niches: 0, finish: 'veneer', wood: 'walnut', panel: 'charcoal', metal: 'black', handle: 'push', mount: 'plinth', leg: 'plinth', legH: 6, carcass: 'multiplek', interior: ['shelf'], lowerDoors: 'yes' },
-        groups: [] }),
-      O('shoe', 'Lemari sepatu', 'Shoe cabinet', { base: 2100000, dims: { w: [60, 200, 5, 110], d: [24, 42, 1, 32], h: [80, 200, 5, 110] }, cab: true,
-        def: { doorType: 'flip', doors: 2, drawers: 0, niches: 0, finish: 'duco', wood: 'oak', panel: 'sage', metal: 'brass', handle: 'tab', mount: 'legs', leg: 'round', legH: 12, carcass: 'multiplek', interior: ['shelf'] },
-        groups: [] }),
-      O('nightstand', 'Nakas (nightstand)', 'Nightstand', { base: 1100000, dims: { w: [35, 70, 1, 50], d: [30, 50, 1, 40], h: [40, 70, 1, 52] }, cab: true,
-        def: { doorType: 'none', doors: 0, drawers: 2, niches: 1, finish: 'veneer', wood: 'walnut', panel: 'ivory', metal: 'brass', handle: 'knob', mount: 'legs', leg: 'tapered', legH: 14, carcass: 'multiplek', interior: [] },
-        groups: [] })
-    ] }),
-
-    O('divan', 'Divan & tempat tidur', 'Divans & beds', { subs: [
-      O('divan', 'Divan', 'Divan base', { base: 2400000, bed: true, dims: { h: [20, 45, 1, 30] },
-        def: { mattress: '160', storage: 'none', headboard: 'channel', hbH: 110, hbW: 'fit', uph: 'vienna', color: 'midgrey', mount: 'plinth', leg: 'plinth', legH: 10, legFinish: 'wood', wood: 'walnut', metal: 'black', extras: [] },
-        groups: [] }),
-      O('platform', 'Platform bed (rangka kayu)', 'Platform bed', { base: 3100000, bed: true, platform: true, dims: { h: [15, 40, 1, 25] },
-        def: { mattress: '160', storage: 'none', headboard: 'woodpanel', hbH: 95, hbW: 'fit', uph: 'linen', color: 'natural', mount: 'legs', leg: 'tapered', legH: 12, legFinish: 'wood', wood: 'oak', metal: 'black', extras: [] },
-        groups: [] }),
-      O('headboard', 'Headboard saja', 'Headboard only', { base: 1300000, bed: true, hbOnly: true, dims: { h: [20, 45, 1, 30] },
-        def: { mattress: '160', storage: 'none', headboard: 'button', hbH: 120, hbW: 'fit', uph: 'velvet', color: 'navy', mount: 'plinth', leg: 'plinth', legH: 10, legFinish: 'wood', wood: 'walnut', metal: 'brass', extras: [] },
-        groups: [] })
-    ] })
-  ];
-
-  /* ------------------------------------------------------------------ kelompok kabinet (dipakai semua sub kabinet) */
-  var CAB_GROUPS = [
-    { id: 'doorType', step: 'bentuk', type: 'chips', l: 'Jenis pintu', en: 'Door type', opts: [O('swing', 'Pintu engsel (swing)', 'Hinged doors'), O('sliding', 'Pintu geser (sliding)', 'Sliding doors', { add: 600000 }),
-      O('folding', 'Pintu lipat', 'Folding doors', { add: 700000 }), O('flip', 'Flip-up / tipping', 'Flip / tipping doors', { add: 350000 }), O('glass', 'Pintu kaca berbingkai', 'Framed glass doors', { add: 500000 }), O('open', 'Terbuka (tanpa pintu)', 'Open (no doors)', { f: .82 }), O('none', 'Hanya laci', 'Drawers only')] },
-    { id: 'doors', step: 'bentuk', type: 'range', l: 'Jumlah pintu / kolom', en: 'Doors / columns', unit: 'pcs', min: 1, max: 6, inc: 1, when: function (c) { return c.doorType !== 'none'; } },
-    { id: 'drawers', step: 'bentuk', type: 'range', l: 'Laci', en: 'Drawers', unit: 'pcs', min: 0, max: 6, inc: 1, addEach: 300000 },
-    { id: 'niches', step: 'bentuk', type: 'range', l: 'Ruang terbuka (niche)', en: 'Open niches', unit: 'pcs', min: 0, max: 3, inc: 1, when: function (c) { return c.sub !== 'wardrobe' && c.sub !== 'bookshelf'; } },
-    { id: 'lowerDoors', step: 'bentuk', type: 'chips', l: 'Pintu bawah', en: 'Lower doors', opts: [O('no', 'Tidak', 'No'), O('yes', 'Ya (kabinet bawah)', 'Yes (lower cabinet)', { add: 600000 })], when: function (c) { return c.sub === 'bookshelf'; } },
-    g('w'), g('d'), g('h'),
-    { id: 'finish', step: 'material', type: 'chips', l: 'Finishing muka', en: 'Front finish', opts: [O('hpl', 'HPL', 'HPL laminate', { f: .9 }), O('veneer', 'Veneer kayu', 'Wood veneer'), O('solid', 'Kayu solid', 'Solid wood', { f: 1.3 }),
-      O('duco', 'Duco doff', 'Matte lacquer', { f: 1.08 }), O('gloss', 'Duco glossy', 'Gloss lacquer', { f: 1.15 }), O('fluted', 'Fluted (kisi vertikal)', 'Fluted', { f: 1.18 }), O('cane', 'Rotan / cane', 'Rattan cane', { f: 1.2 })] },
-    g('wood', { when: function (c) { return /^(veneer|solid|fluted|cane)$/.test(c.finish) || c.leg === 'tapered' || c.leg === 'straight'; } }),
-    { id: 'panel', step: 'material', type: 'swatch', l: 'Warna HPL / duco', en: 'HPL / paint colour', opts: PANEL, when: function (c) { return /^(hpl|duco|gloss)$/.test(c.finish); } },
-    { id: 'carcass', step: 'material', type: 'chips', l: 'Material badan', en: 'Carcass', opts: [O('multiplek', 'Multiplek (plywood)', 'Plywood'), O('blockboard', 'Blockboard', 'Blockboard', { f: .95 }), O('solid', 'Kayu solid', 'Solid wood', { f: 1.25 }), O('mdf', 'MDF', 'MDF', { f: .9 })] },
-    { id: 'handle', step: 'detail', type: 'chips', l: 'Handle', en: 'Handles', opts: [O('push', 'Tanpa handle (push to open)', 'Handleless (push-to-open)', { add: 200000 }), O('grip', 'Profil grip (J)', 'J-profile grip'), O('bar', 'Handle batang', 'Bar handle'),
-      O('knob', 'Knob', 'Knob'), O('tab', 'Tab kulit', 'Leather tab', { add: 100000 }), O('recessed', 'Coakan (recessed)', 'Recessed pull')] },
-    g('metal', { l: 'Finishing handle / besi', en: 'Handle / metal finish', when: function (c) { return /^(bar|knob)$/.test(c.handle) || c.leg === 'round' || c.leg === 'hairpin' || c.leg === 'sled'; } }),
-    { id: 'mount', step: 'detail', type: 'chips', l: 'Dudukan kabinet', en: 'Mounting', opts: [O('legs', 'Berkaki', 'On legs'), O('plinth', 'Plinth', 'Plinth'), O('floating', 'Gantung di dinding', 'Wall-hung (floating)', { add: 250000 }), O('castor', 'Roda', 'Castors', { add: 200000 })] },
-    { id: 'leg', step: 'detail', type: 'chips', l: 'Bentuk kaki', en: 'Leg style', opts: [O('tapered', 'Kayu tapered', 'Tapered wood'), O('straight', 'Kayu lurus', 'Straight wood'), O('round', 'Besi bulat', 'Round metal'), O('hairpin', 'Hairpin', 'Hairpin'), O('sled', 'Sled', 'Sled')], when: function (c) { return c.mount === 'legs'; } },
-    g('legH', { when: function (c) { return c.mount === 'legs'; } }),
-    { id: 'interior', step: 'detail', type: 'multi', l: 'Isi dalam', en: 'Interior', opts: [O('shelf', 'Rak adjustable', 'Adjustable shelves'), O('hang', 'Gantungan baju', 'Hanging rail'), O('inner', 'Laci dalam', 'Inner drawers', { add: 450000 }),
-      O('mirror', 'Cermin', 'Mirror', { add: 400000 }), O('led', 'Lampu LED', 'LED lighting', { add: 500000 }), O('lock', 'Kunci', 'Lock', { add: 150000 }), O('soft', 'Soft close', 'Soft-close hinges & runners', { add: 300000 }), O('cable', 'Lubang kabel', 'Cable outlet', { add: 80000 })] }
-  ];
-
-  /* ------------------------------------------------------------------ kelompok divan */
-  var BED_GROUPS = [
-    { id: 'mattress', step: 'ukuran', type: 'chips', l: 'Ukuran kasur', en: 'Mattress size', opts: [O('90', '90 × 200 (single)', '90 × 200 (single)'), O('100', '100 × 200', '100 × 200'), O('120', '120 × 200 (double)', '120 × 200 (double)'),
-      O('140', '140 × 200', '140 × 200'), O('160', '160 × 200 (queen)', '160 × 200 (queen)'), O('180', '180 × 200 (king)', '180 × 200 (king)'), O('200', '200 × 200 (super king)', '200 × 200 (super king)')] },
-    g('h', { l: 'Tinggi divan (tanpa kasur)', en: 'Base height (without mattress)', when: function (c) { return c.sub !== 'headboard'; } }),
-    { id: 'hbH', step: 'ukuran', type: 'range', l: 'Tinggi headboard (dari lantai)', en: 'Headboard height (from floor)', unit: 'cm', min: 80, max: 160, inc: 5, when: function (c) { return c.headboard !== 'none'; } },
-    { id: 'headboard', step: 'bentuk', type: 'chips', l: 'Model headboard', en: 'Headboard style', opts: [O('none', 'Tanpa headboard', 'No headboard', { f: .75 }), O('panel', 'Panel polos', 'Plain panel'), O('channel', 'Channel tufting', 'Channel tufted', { add: 500000 }),
-      O('button', 'Button tufting', 'Button tufted', { add: 450000 }), O('wingback', 'Wingback', 'Wingback', { add: 700000 }), O('arch', 'Melengkung (arch)', 'Arched', { add: 400000 }), O('woodpanel', 'Panel kayu', 'Wood panel'), O('slat', 'Slat kayu', 'Wood slats', { add: 300000 })] },
-    { id: 'hbW', step: 'bentuk', type: 'chips', l: 'Lebar headboard', en: 'Headboard width', opts: [O('fit', 'Sesuai kasur', 'Fits the bed'), O('wide', 'Lebar + panel samping', 'Extended with side panels', { add: 1500000 })], when: function (c) { return c.headboard !== 'none'; } },
-    { id: 'storage', step: 'bentuk', type: 'chips', l: 'Penyimpanan', en: 'Storage', opts: [O('none', 'Tanpa', 'None'), O('d2', '2 laci', '2 drawers', { add: 900000 }), O('d4', '4 laci', '4 drawers', { add: 1600000 }), O('lift', 'Hidrolik (angkat)', 'Hydraulic lift-up', { add: 2200000 })], when: function (c) { return c.sub === 'divan'; } },
-    g('uph', { l: 'Kain divan & headboard', en: 'Bed & headboard fabric' }), g('color'),
-    g('wood', { when: function (c) { return c.sub === 'platform' || /^(woodpanel|slat)$/.test(c.headboard) || (c.mount === 'legs' && c.legFinish === 'wood'); } }),
-    { id: 'mount', step: 'detail', type: 'chips', l: 'Dasar', en: 'Base', opts: [O('plinth', 'Plinth tertutup', 'Closed plinth'), O('legs', 'Berkaki', 'On legs'), O('floating', 'Melayang + LED', 'Floating + LED glow', { add: 650000 })], when: function (c) { return c.sub !== 'headboard'; } },
-    { id: 'leg', step: 'detail', type: 'chips', l: 'Bentuk kaki', en: 'Leg style', opts: [O('tapered', 'Kayu tapered', 'Tapered wood'), O('block', 'Blok', 'Block'), O('round', 'Besi bulat', 'Round metal')], when: function (c) { return c.mount === 'legs' && c.sub !== 'headboard'; } },
-    g('legH', { min: 6, max: 20, when: function (c) { return c.mount === 'legs' && c.sub !== 'headboard'; } }),
-    g('legFinish', { when: function (c) { return c.mount === 'legs' && c.sub !== 'headboard'; } }),
-    g('metal', { when: function (c) { return c.mount === 'legs' && c.legFinish === 'metal'; } }),
-    { id: 'extras', step: 'detail', type: 'multi', l: 'Tambahan', en: 'Extras', opts: [O('bench', 'Bench ujung kasur', 'End-of-bed bench', { add: 1400000 }), O('nightstand', 'Nakas pasangan (×2)', 'Matching nightstands (×2)', { add: 2200000 }),
-      O('readlamp', 'Lampu baca di headboard', 'Headboard reading lights', { add: 600000 }), O('usb', 'Port USB / VAZRA', 'USB / VAZRA ports', { add: 450000 }), O('mattressinc', 'Termasuk kasur', 'Mattress included', { add: 3500000 })] }
+    // meja, kabinet & divan: js/spec-meja.js · spec-kabinet.js · spec-divan.js (XC.defineCat)
+    O('meja', 'Meja', 'Tables', { subs: [] }),
+    O('kabinet', 'Kabinet & lemari', 'Cabinets & storage', { subs: [] }),
+    O('divan', 'Divan & tempat tidur', 'Divans & beds', { subs: [] })
   ];
 
   // umum untuk semua: jumlah & catatan (langkah kirim)
-  CATS.forEach(function (c) {
+  function prep(c) {
     c.subs.forEach(function (s) {
       s.cat = c.id;
-      if (s.cab) s.groups = CAB_GROUPS.slice();
-      if (s.bed) s.groups = BED_GROUPS.slice();
+      if (s.cab && c.CAB_GROUPS) s.groups = c.CAB_GROUPS.slice();
+      if (s.bed && c.BED_GROUPS) s.groups = c.BED_GROUPS.slice();
       s.groups.forEach(function (gr) { if (gr.type === 'range' && G[gr.id] && s.dims && s.dims[gr.id] && gr.min == null) { var dm = s.dims[gr.id]; gr.min = dm[0]; gr.max = dm[1]; gr.inc = dm[2]; } });
       s.groups = s.groups.map(function (gr) {
         if (gr.type !== 'range' || !s.dims || !s.dims[gr.id]) return gr;
@@ -574,7 +411,8 @@
         return o;
       });
     });
-  });
+  }
+  CATS.forEach(prep);
 
   var STEPS = [
     O('jenis', 'Jenis', 'Type'), O('bentuk', 'Bentuk', 'Shape'), O('ukuran', 'Ukuran', 'Size'),
@@ -614,7 +452,9 @@
        leg=castor → leg=tapered + trim castor (roda kuningan) · armchair shape=swivel → shape=standar + base=swivelDisc
        armchair extras rocking → base=rocking · dining arms none/arms → armStyle none/carver
        bench leg floating/metalplinth → plinth, round → conic · ottoman leg hairpin → round, sled → openFrame */
+  var MIGR = {};   // migrasi tambahan per kategori (XC.addMigrate)
   function migrate(c) {
+    if (c && MIGR[c.cat]) MIGR[c.cat].forEach(function (fn) { fn(c); });
     if (!c || c.cat !== 'kursi') return c;
     var s = c.sub, add = function (k, v) { var a = Array.isArray(c[k]) ? c[k].slice() : []; if (a.indexOf(v) < 0) a.push(v); c[k] = a; };
     if (s === 'sofa' || s === 'armchair') {
@@ -645,7 +485,7 @@
   function stale(c) {
     if (!c || !c.cat) return false;
     if (sub(c).groups.some(function (gr) { return c[gr.id] === undefined; })) return true;
-    if (c.cat !== 'kursi') return false;
+    if (c.cat !== 'kursi' && !MIGR[c.cat]) return false;
     var a = JSON.stringify(c); return JSON.stringify(migrate(JSON.parse(a))) !== a;
   }
   var current = function (c) { return stale(c) ? normalize(JSON.parse(JSON.stringify(c))) : c; };
@@ -723,7 +563,8 @@
       (typeof gr.opts === 'function' ? [] : gr.opts || []).forEach(function (o) { opts[gr.id + '.' + o.id] = { f: o.f || 1, add: o.add || 0 }; });
     });
     // kasur: dulu lewat rumus ukuran, sekarang tambahan per ukuran kasur
-    if (s.bed) BED_GROUPS[0].opts.forEach(function (o) { opts['mattress.' + o.id] = { f: 1, add: r1k(base * (Math.pow(+o.id / 160, .8) - 1)) }; });
+    var mg = s.groups.filter(function (x) { return x.id === 'mattress'; })[0];
+    if (s.bed && mg) mg.opts.forEach(function (o) { opts['mattress.' + o.id] = { f: 1, add: r1k(base * (Math.pow(+o.id / 160, .8) - 1)) }; });
     var out = { base: base, per10: per10, opts: opts, each: each };
     if (s.tableH && s.groups.some(function (g) { return g.id === 'dia'; })) out.baseRound = roundBase(s);
     return out;
@@ -744,7 +585,10 @@
     'kursi.sofa': { 'back.channel': 'backTuft.channelV', 'back.button': 'backTuft.button', 'leg.castor': 'trim.castor' },
     'kursi.armchair': { 'back.channel': 'backTuft.channelV', 'back.button': 'backTuft.button', 'leg.castor': 'trim.castor', 'shape.swivel': 'base.swivelDisc', 'extras.rocking': 'base.rocking' },
     'kursi.dining': { 'arms.none': 'armStyle.none', 'arms.arms': 'armStyle.carver' },
-    'kursi.ottoman': { 'leg.castor': 'trim.castor' }
+    'kursi.ottoman': { 'leg.castor': 'trim.castor' },
+    'meja.desk': { 'topShape.lshape': 'layout.lright', 'topShape.executive': 'pedestal.right' },
+    'meja.dining': { 'base.v': 'base.x' },
+    'meja.console': { 'base.pedestal': 'base.pillar' }
   };
   function migratePricing(p) {
     Object.keys(PRICE_ALIAS).forEach(function (sk) {
@@ -845,7 +689,11 @@
     setPricing: function (p) { p = migratePricing(p || {}); PRICE = { global: p.global || {}, subs: p.subs || {}, mats: p.mats || {} }; },
     getPricing: function () { return JSON.parse(JSON.stringify(PRICE)); },
     priceTable: priceTable, priceDefaults: function (s) { return JSON.parse(JSON.stringify(defOf(s))); }, sizeDrivers: sizeDrivers,
-    matDefaults: matDefaults, matPrice: matPrice, globalPrice: globalPrice, GLOBAL_DEF: GLOBAL_DEF, subKey: subKey, MAT_GROUPS: MAT_GROUPS, BED_GROUPS: BED_GROUPS,
+    matDefaults: matDefaults, matPrice: matPrice, globalPrice: globalPrice, GLOBAL_DEF: GLOBAL_DEF, subKey: subKey, MAT_GROUPS: MAT_GROUPS,
+    // modul kategori (spec-*.js): alat bersama + daftarkan / ganti kategori
+    K: { O: O, UPH: UPH, WOOD: WOOD, METAL: METAL, STONE: STONE, PANEL: PANEL, M: M, F: F, has: has, seat: seat, notNone: notNone, LEGLESS: LEGLESS, NOFIN: NOFIN, CAPLEG: CAPLEG, TIGHTBACK: TIGHTBACK, tb: tb, G: G, g: g, plus: plus, capOk: capOk, TRIM: TRIM, trimG: trimG, notSerp: notSerp, SOFA_SHAPES: SOFA_SHAPES, ARM: ARM, SOFA_ARM: SOFA_ARM, BACK: BACK, SOFA_BACK: SOFA_BACK, SEATC: SEATC, SOFA_LEGS: SOFA_LEGS, sofaLegs: sofaLegs, noBigMech: noBigMech, acLegs: acLegs, notWF: notWF, AC_ARM: AC_ARM, AC_BACK: AC_BACK, AC_LEGS: AC_LEGS, noLid: noLid, BENCH_LEGS: BENCH_LEGS, woodOnlyBack: woodOnlyBack, dnUph: dnUph, notTubBack: notTubBack, notWish: notWish, stBucket: stBucket, stUph: stUph, notPed: notPed, notWoodFr: notWoodFr, otLegs: otLegs, notOnFrame: notOnFrame, OT_LEGS: OT_LEGS, chLegs: chLegs },
+    defineCat: function (cat) { prep(cat); var i = -1; CATS.forEach(function (x, j) { if (x.id === cat.id) i = j; }); if (i >= 0) CATS[i] = cat; else CATS.push(cat); cacheDef = {}; return cat; },
+    addMigrate: function (catId, fn) { (MIGR[catId] = MIGR[catId] || []).push(fn); },
     find: function (list, id) { return (list || []).filter(function (o) { return o.id === id; })[0] || null; }
   };
 })();
