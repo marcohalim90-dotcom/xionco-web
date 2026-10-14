@@ -3,10 +3,12 @@
 #   map.json: { "<slug skp>": "<id produk>" | {"id": "...", "variant": "<label varian>"} }
 # Peran disimpan sebagai extras material (role) → world.js hanya mewarnai 'fabric' & mengganti finishing 'metal'.
 import bpy, bmesh, sys, os, json, re, mathutils
+import numpy as np
 argv = sys.argv[sys.argv.index('--') + 1:]
 src, mapf, root = argv[0], argv[1], argv[2]
 MAP = json.load(open(mapf))
-MAXTRI = 60000
+MAXTRI = 150000   # GUISE 110 rb segitiga: lebih baik utuh daripada diringankan (tufting rusak)
+WOOD_SAT = .55    # kejenuhan maks tekstur kayu (foto walnut ±.53); tekstur SketchUp .66–.84 tampak merah di panggung
 WOOD = re.compile(r'(sungkai|kayu|mindi|wood|veneer|kyokai|oak|walnut|teak|jati)', re.I)
 GLASS = re.compile(r'(glass|kaca|translucent)', re.I)
 FABRIC = re.compile(r'(midgrey|kulit|leather|fabric|velvet|boucle|orycto|green|red|yellow|^\*|color m00|pillow)', re.I)
@@ -26,6 +28,34 @@ def role(m):
         return 'paint'
     if 'gold' in n.lower(): return 'metal'
     return 'fabric'
+
+def calm_wood(m):
+    """Turunkan kejenuhan tekstur kayu yang terlalu oranye/merah (dibanding foto produk)."""
+    b = m.node_tree.nodes.get('Principled BSDF') if m.use_nodes else None
+    if not b or not b.inputs['Base Color'].is_linked: return
+    n = b.inputs['Base Color'].links[0].from_node
+    if n.type != 'TEX_IMAGE' or not n.image or n.image.get('calm'): return
+    im = n.image; px = np.empty(len(im.pixels), dtype=np.float32); im.pixels.foreach_get(px); px = px.reshape(-1, 4)
+    rgb = px[:, :3]; mx = rgb.max(1); mn = rgb.min(1)
+    sat = float(np.mean((mx - mn) / np.maximum(mx, 1e-4)))
+    if sat > WOOD_SAT:
+        lum = (rgb @ np.array([.2126, .7152, .0722], dtype=np.float32))[:, None]
+        px[:, :3] = lum + (rgb - lum) * (WOOD_SAT / sat)
+        im.pixels.foreach_set(px.ravel()); im.update()
+        print('CALM', m.name, round(sat, 2), '->', WOOD_SAT, flush=True)
+    im['calm'] = 1
+
+SMOOTH_DEG = 30   # sudut maks antar muka yang dihaluskan; di atasnya tetap tajam (tepi dudukan, kaki, kotak)
+
+def fix_normals(ms):
+    """SketchUp = segitiga lepas dengan normal kasar/menyimpang (noda belang di lipatan GUISE, permukaan tidak mulus)
+    → satukan titik, hapus normal bawaan, hitung ulang halus per sudut."""
+    import math
+    for o in ms:
+        bm = bmesh.new(); bm.from_mesh(o.data); bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=.0002); bm.to_mesh(o.data); bm.free()
+        bpy.ops.object.select_all(action='DESELECT'); o.select_set(True); bpy.context.view_layer.objects.active = o
+        if o.data.has_custom_normals: bpy.ops.mesh.customdata_custom_splitnormals_clear()
+        bpy.ops.object.shade_smooth_by_angle(angle=math.radians(SMOOTH_DEG))
 
 def mirror_mat(ms, matname):
     """Lengkapi detail simetris yang tertinggal di SKP (mis. piping hanya di satu lengan):
@@ -118,6 +148,7 @@ for slug, tgt in MAP.items():
             b.inputs['Alpha'].default_value = .35; m.blend_method = 'BLEND' if hasattr(m, 'blend_method') else None
         elif r == 'wood':
             b.inputs['Roughness'].default_value = .55
+            calm_wood(m)
         elif r == 'fabric':
             b.inputs['Roughness'].default_value = .9
     bpy.ops.object.select_all(action='DESELECT')
@@ -128,10 +159,12 @@ for slug, tgt in MAP.items():
         for o in ms: o.scale *= k; o.location *= k
     bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
     if mirror: mirror_mat(ms, mirror)
+    fix_normals(ms)
     tris = sum(sum(len(p.vertices) - 2 for p in o.data.polygons) for o in ms)
     if tris > MAXTRI:
         r = MAXTRI / tris
-        for o in ms:
+        for o in ms:   # SketchUp = segitiga lepas → satukan titik dulu, kalau tidak peringanan merobek permukaan
+            bm = bmesh.new(); bm.from_mesh(o.data); bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=.0002); bm.to_mesh(o.data); bm.free()
             md = o.modifiers.new('dec', 'DECIMATE'); md.ratio = r; md.use_collapse_triangulate = True
             bpy.context.view_layer.objects.active = o; bpy.ops.object.modifier_apply(modifier='dec')
     tris2 = sum(sum(len(p.vertices) - 2 for p in o.data.polygons) for o in ms)

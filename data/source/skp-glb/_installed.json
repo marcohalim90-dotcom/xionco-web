@@ -5,18 +5,18 @@
   "variant": null,
   "file": "assets/items/aether/model.glb",
   "scale": 1,
-  "tris": 3964,
-  "tris_out": 3964,
+  "tris": 2976,
+  "tris_out": 2976,
   "size_cm": [
    6.6,
    10.5,
-   102
+   102.0
   ],
   "roles": {
    "<auto>1": "metal",
    "DefaultMaterial": "paint"
   },
-  "kb": 78
+  "kb": 71
  },
  {
   "slug": "aether-k80",
@@ -24,8 +24,8 @@
   "variant": null,
   "file": "assets/items/aetherk80/model.glb",
   "scale": 1,
-  "tris": 3466,
-  "tris_out": 3466,
+  "tris": 3008,
+  "tris_out": 3008,
   "size_cm": [
    6.7,
    10.4,
@@ -35,7 +35,7 @@
    "<auto>1": "metal",
    "DefaultMaterial": "paint"
   },
-  "kb": 67
+  "kb": 70
  },
  {
   "slug": "aether-stand",
@@ -43,8 +43,8 @@
   "variant": null,
   "file": "assets/items/aether-standing-side-floor-lamp/model.glb",
   "scale": 1,
-  "tris": 6456,
-  "tris_out": 6456,
+  "tris": 5612,
+  "tris_out": 5612,
   "size_cm": [
    21.3,
    21.3,
@@ -53,7 +53,7 @@
   "roles": {
    "<auto>1": "metal"
   },
-  "kb": 410
+  "kb": 126
  },
  {
   "slug": "arze",
@@ -61,8 +61,8 @@
   "variant": null,
   "file": "assets/items/arze/model.glb",
   "scale": 1,
-  "tris": 8814,
-  "tris_out": 8814,
+  "tris": 6811,
+  "tris_out": 6811,
   "size_cm": [
    81.3,
    51.3,
@@ -72,7 +72,7 @@
    "<auto>1": "metal",
    "kayu": "wood"
   },
-  "kb": 977
+  "kb": 714
  },
  {
   "slug": "astral-3-seater",
@@ -80,8 +80,8 @@
   "variant": null,
   "file": "assets/items/astral-3-seater/model.glb",
   "scale": 1,
-  "tris": 22336,
-  "tris_out": 22336,
+  "tris": 15277,
+  "tris_out": 15277,
   "size_cm": [
    190.3,
    81.3,
@@ -92,7 +92,7 @@
    "[Color M00]": "fabric",
    "kayu": "wood"
   },
-  "kb": 1995
+  "kb": 1581
  },
  {
   "slug": "astral-2-seater",
@@ -100,8 +100,8 @@
   "variant": null,
   "file": "assets/items/astral-2-seater/model.glb",
   "scale": 1,
-  "tris": 22336,
-  "tris_out": 22336,
+  "tris": 15271,
+  "tris_out": 15271,
   "size_cm": [
    134.6,
    81.3,
@@ -112,7 +112,7 @@
    "[Color M00]": "fabric",
    "kayu": "wood"
   },
-  "kb": 1995
+  "kb": 1581
  },
  {
   "slug": "cameo",
@@ -120,8 +120,8 @@
   "variant": null,
   "file": "assets/items/cameo/model.glb",
   "scale": 1,
-  "tris": 21290,
-  "tris_out": 21290,
+  "tris": 20522,
+  "tris_out": 20522,
   "size_cm": [
    187.4,
    90.1,
@@ -132,7 +132,7 @@
    "<auto>5": "metal",
    "MIDGREY": "fabric"
   },
-  "kb": 1936
+  "kb": 1894
  },
  {
   "slug": "canis",
@@ -140,8 +140,8 @@
   "variant": null,
   "file": "assets/items/canis/model.glb",
   "scale": 1,
-  "tris": 17955,
-  "tris_out": 17955,
+  "tris": 17691,
+  "tris_out": 17691,
   "size_cm": [
    294.1,
    144.3,
@@ -152,7 +152,87 @@
    "KYOKAI 2": "wood",
    "MIDGREY": "fabric"
   },
-  "kb": 1932
+  "kb": 1918
+ },
+ {
+  "slug": "cubix-ac",
+  "id": "cubix-series-1-seater-ac-kayu-terang",
+  "variant": null,
+  "file": "assets/items/cubix-series-1-seater-ac-kayu-terang/model.glb",
+  "scale": 1,
+  "tris": 5336,
+  "tris_out": 5336,
+  "size_cm": [
+   63.8,
+   64.0,
+   79.6
+  ],
+  "roles": {
+   "<auto>1": "metal",
+   "MIDGREY": "fabric",
+   "SUNGKAI": "wood"
+  },
+  "kb": 487
+ },
+ {
+  "slug": "cubix-al",
+  "id": "cubix-series-1-seater-al-kayu-terang",
+  "variant": null,
+  "file": "assets/items/cubix-series-1-seater-al-kayu-terang/model.glb",
+  "scale": 1,
+  "tris": 13481,
+  "tris_out": 13481,
+  "size_cm": [
+   64.5,
+   64.2,
+   81.5
+  ],
+  "roles": {
+   "<auto>1": "metal",
+   "MIDGREY": "fabric",
+   "SUNGKAI": "wood"
+  },
+  "kb": 906
+ },
+ {
+  "slug": "cubix-acac",
+  "id": "cubix-series-2-seater-ac-ac-kayu-terang",
+  "variant": null,
+  "file": "assets/items/cubix-series-2-seater-ac-ac-kayu-terang/model.glb",
+  "scale": 1,
+  "tris": 10672,
+  "tris_out": 10672,
+  "size_cm": [
+   126.6,
+   64.2,
+   79.6
+  ],
+  "roles": {
+   "<auto>1": "metal",
+   "MIDGREY": "fabric",
+   "SUNGKAI": "wood"
+  },
+  "kb": 644
+ },
+ {
+  "slug": "cubix-acalac",
+  "id": "cubix-series-3-seaters-ac-al-ac-kayu-terang",
+  "variant": null,
+  "file": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-terang/model.glb",
+  "scale": 1,
+  "tris": 24153,
+  "tris_out": 24153,
+  "size_cm": [
+   189.5,
+   64.3,
+   81.5
+  ],
+  "roles": {
+   "<auto>1": "metal",
+   "MIDGREY": "fabric",
+   "SUNGKAI": "wood"
+  },
+  "kb": 1928
  },
  {
   "slug": "cubix-ot",
@@ -192,7 +272,7 @@
    "[Translucent Glass Gray]": "glass",
    "SUNGKAI": "wood"
   },
-  "kb": 43
+  "kb": 39
  },
  {
   "slug": "cubix-ct-gelap",
@@ -212,7 +292,7 @@
    "[Translucent Glass Gray]": "glass",
    "SUNGKAI": "wood"
   },
-  "kb": 47
+  "kb": 43
  },
  {
   "slug": "cubix-st",
@@ -220,8 +300,8 @@
   "variant": null,
   "file": "assets/items/cubix-series-meja-sudut-side/model.glb",
   "scale": 1,
-  "tris": 601,
-  "tris_out": 601,
+  "tris": 600,
+  "tris_out": 600,
   "size_cm": [
    63.3,
    62.9,
@@ -232,7 +312,7 @@
    "[Translucent Glass Gray]": "glass",
    "SUNGKAI": "wood"
   },
-  "kb": 43
+  "kb": 40
  },
  {
   "slug": "cubix-st-gelap",
@@ -240,8 +320,8 @@
   "variant": "Gelap",
   "file": "assets/items/cubix-series-meja-sudut-side/model-gelap.glb",
   "scale": 1,
-  "tris": 601,
-  "tris_out": 601,
+  "tris": 600,
+  "tris_out": 600,
   "size_cm": [
    63.3,
    62.9,
@@ -252,7 +332,7 @@
    "[Translucent Glass Gray]": "glass",
    "SUNGKAI": "wood"
   },
-  "kb": 47
+  "kb": 44
  },
  {
   "slug": "eorde",
@@ -265,13 +345,13 @@
   "size_cm": [
    197.7,
    93.2,
-   79
+   79.0
   ],
   "roles": {
    "kayu": "wood",
    "MIDGREY": "fabric"
   },
-  "kb": 2809
+  "kb": 2803
  },
  {
   "slug": "gliza",
@@ -279,19 +359,19 @@
   "variant": null,
   "file": "assets/items/gliza-tv-cabinet-stand/model.glb",
   "scale": 1,
-  "tris": 1354,
-  "tris_out": 1354,
+  "tris": 1350,
+  "tris_out": 1350,
   "size_cm": [
    248.7,
    44.4,
-   39
+   39.0
   ],
   "roles": {
    "[Color M07]": "metal",
    "kayu minsi": "wood",
    "mindi2": "wood"
   },
-  "kb": 331
+  "kb": 300
  },
  {
   "slug": "guise-1-seater",
@@ -299,8 +379,8 @@
   "variant": null,
   "file": "assets/items/guise-1-seater/model.glb",
   "scale": 1,
-  "tris": 23125,
-  "tris_out": 23125,
+  "tris": 23086,
+  "tris_out": 23086,
   "size_cm": [
    80.2,
    80.6,
@@ -310,7 +390,7 @@
    "*1": "fabric",
    "[Wood Veneer 01]1": "wood"
   },
-  "kb": 2303
+  "kb": 2301
  },
  {
   "slug": "guise-2-seater",
@@ -322,7 +402,7 @@
   "tris_out": 18332,
   "size_cm": [
    122.3,
-   72,
+   72.0,
    69.4
   ],
   "roles": {
@@ -338,8 +418,8 @@
   "variant": null,
   "file": "assets/items/guise/model.glb",
   "scale": 1,
-  "tris": 110249,
-  "tris_out": 60000,
+  "tris": 106890,
+  "tris_out": 106890,
   "size_cm": [
    198.2,
    82.1,
@@ -349,7 +429,7 @@
    "*1": "fabric",
    "[Wood Veneer 01]": "wood"
   },
-  "kb": 5874
+  "kb": 9765
  },
  {
   "slug": "hexter",
@@ -360,15 +440,15 @@
   "tris": 1268,
   "tris_out": 1268,
   "size_cm": [
-   68,
-   59,
+   68.0,
+   59.0,
    40.6
   ],
   "roles": {
    "<auto>1": "metal",
    "kayu": "wood"
   },
-  "kb": 231
+  "kb": 197
  },
  {
   "slug": "hout",
@@ -388,7 +468,7 @@
    "<auto>1": "metal",
    "kayu": "wood"
   },
-  "kb": 198
+  "kb": 175
  },
  {
   "slug": "kyoukai-240",
@@ -396,8 +476,8 @@
   "variant": null,
   "file": "assets/items/kyoukai/model.glb",
   "scale": 1,
-  "tris": 7872,
-  "tris_out": 7872,
+  "tris": 2162,
+  "tris_out": 2162,
   "size_cm": [
    60.2,
    2.3,
@@ -407,7 +487,7 @@
    "<auto>": "metal",
    "SUNGKAI": "wood"
   },
-  "kb": 781
+  "kb": 191
  },
  {
   "slug": "kyoukai-60",
@@ -415,8 +495,8 @@
   "variant": "SK060",
   "file": "assets/items/kyoukai/model-sk060.glb",
   "scale": 1,
-  "tris": 7872,
-  "tris_out": 7872,
+  "tris": 1461,
+  "tris_out": 1461,
   "size_cm": [
    60.3,
    2.3,
@@ -426,7 +506,7 @@
    "<auto>": "metal",
    "SUNGKAI": "wood"
   },
-  "kb": 781
+  "kb": 128
  },
  {
   "slug": "kyrios-1-seater",
@@ -434,8 +514,8 @@
   "variant": null,
   "file": "assets/items/kyrios-1-seater/model.glb",
   "scale": 1,
-  "tris": 24084,
-  "tris_out": 24084,
+  "tris": 24071,
+  "tris_out": 24071,
   "size_cm": [
    84.3,
    81.9,
@@ -445,7 +525,7 @@
    "*": "fabric",
    "Materiagold": "metal"
   },
-  "kb": 2255
+  "kb": 2257
  },
  {
   "slug": "l7",
@@ -453,8 +533,8 @@
   "variant": null,
   "file": "assets/items/l7/model.glb",
   "scale": 1,
-  "tris": 2808,
-  "tris_out": 2808,
+  "tris": 2804,
+  "tris_out": 2804,
   "size_cm": [
    113.5,
    57.4,
@@ -463,7 +543,7 @@
   "roles": {
    "[Color M07]": "metal"
   },
-  "kb": 52
+  "kb": 56
  },
  {
   "slug": "lucid",
@@ -481,7 +561,7 @@
   "roles": {
    "<auto>1": "metal"
   },
-  "kb": 34
+  "kb": 22
  },
  {
   "slug": "nora-bs",
@@ -489,8 +569,8 @@
   "variant": null,
   "file": "assets/items/nora-bar-stool/model.glb",
   "scale": 1,
-  "tris": 8426,
-  "tris_out": 8426,
+  "tris": 8406,
+  "tris_out": 8406,
   "size_cm": [
    48.5,
    64.6,
@@ -500,7 +580,7 @@
    "<auto>1": "metal",
    "KULIT": "fabric"
   },
-  "kb": 643
+  "kb": 641
  },
  {
   "slug": "nora-dc",
@@ -508,8 +588,8 @@
   "variant": null,
   "file": "assets/items/nora/model.glb",
   "scale": 1,
-  "tris": 6202,
-  "tris_out": 6202,
+  "tris": 4707,
+  "tris_out": 4707,
   "size_cm": [
    49.5,
    61.7,
@@ -519,7 +599,7 @@
    "<auto>1": "metal",
    "KULIT": "fabric"
   },
-  "kb": 478
+  "kb": 384
  },
  {
   "slug": "orycto",
@@ -527,8 +607,8 @@
   "variant": null,
   "file": "assets/items/orycto/model.glb",
   "scale": 1,
-  "tris": 15009,
-  "tris_out": 15009,
+  "tris": 13719,
+  "tris_out": 13719,
   "size_cm": [
    210.6,
    79.2,
@@ -539,7 +619,7 @@
    "<auto>6": "metal",
    "orycto": "fabric"
   },
-  "kb": 1194
+  "kb": 1120
  },
  {
   "slug": "pillow",
@@ -565,8 +645,8 @@
   "variant": null,
   "file": "assets/items/pluq/model.glb",
   "scale": 1,
-  "tris": 3732,
-  "tris_out": 3732,
+  "tris": 3728,
+  "tris_out": 3728,
   "size_cm": [
    126.2,
    74.2,
@@ -584,8 +664,8 @@
   "variant": null,
   "file": "assets/items/poel/model.glb",
   "scale": 1,
-  "tris": 42821,
-  "tris_out": 42821,
+  "tris": 15748,
+  "tris_out": 15748,
   "size_cm": [
    136.4,
    174.2,
@@ -597,7 +677,7 @@
    "kayu": "wood",
    "SUNGKAI": "wood"
   },
-  "kb": 3334
+  "kb": 1467
  },
  {
   "slug": "recta",
@@ -605,8 +685,8 @@
   "variant": null,
   "file": "assets/items/recta/model.glb",
   "scale": 1,
-  "tris": 3325,
-  "tris_out": 3325,
+  "tris": 3115,
+  "tris_out": 3115,
   "size_cm": [
    108.9,
    59.4,
@@ -616,7 +696,7 @@
    "<auto>1": "metal",
    "[Translucent Glass Gray]1": "glass"
   },
-  "kb": 232
+  "kb": 69
  },
  {
   "slug": "rhombio",
@@ -629,14 +709,14 @@
   "size_cm": [
    109.3,
    107.4,
-   55
+   55.0
   ],
   "roles": {
    "GREEN": "fabric",
    "RED": "fabric",
    "YELLOW": "fabric"
   },
-  "kb": 2149
+  "kb": 2150
  },
  {
   "slug": "rouled",
@@ -644,8 +724,8 @@
   "variant": null,
   "file": "assets/items/rouled/model.glb",
   "scale": 1,
-  "tris": 59792,
-  "tris_out": 59792,
+  "tris": 59103,
+  "tris_out": 59103,
   "size_cm": [
    140.5,
    98.8,
@@ -655,7 +735,7 @@
    "<auto>": "paint",
    "<auto>1": "metal"
   },
-  "kb": 4531
+  "kb": 1074
  },
  {
   "slug": "somno",
@@ -663,12 +743,12 @@
   "variant": null,
   "file": "assets/items/somno/model.glb",
   "scale": 1,
-  "tris": 43898,
-  "tris_out": 43898,
+  "tris": 36572,
+  "tris_out": 36572,
   "size_cm": [
-   137,
+   137.0,
    170.5,
-   81
+   81.0
   ],
   "roles": {
    "[Color M00]": "fabric",
@@ -676,7 +756,7 @@
    "MIDGREY": "fabric",
    "SUNGKAI": "wood"
   },
-  "kb": 3882
+  "kb": 3420
  },
  {
   "slug": "syme",
@@ -697,7 +777,7 @@
    "[0111_SlateGray]": "metal",
    "SUNGKAI": "wood"
   },
-  "kb": 17
+  "kb": 16
  },
  {
   "slug": "tesse",
@@ -723,8 +803,8 @@
   "variant": null,
   "file": "assets/items/trapezo/model.glb",
   "scale": 1,
-  "tris": 4084,
-  "tris_out": 4084,
+  "tris": 3478,
+  "tris_out": 3478,
   "size_cm": [
    132.2,
    57.4,
@@ -734,7 +814,7 @@
    "<auto>1": "metal",
    "SUNGKAI": "wood"
   },
-  "kb": 277
+  "kb": 208
  },
  {
   "slug": "uruz",
@@ -742,17 +822,17 @@
   "variant": null,
   "file": "assets/items/uruz/model.glb",
   "scale": 1,
-  "tris": 32970,
-  "tris_out": 32970,
+  "tris": 6731,
+  "tris_out": 6731,
   "size_cm": [
    60.5,
    20.2,
-   86
+   86.0
   ],
   "roles": {
    "<auto>1": "metal"
   },
-  "kb": 2603
+  "kb": 151
  },
  {
   "slug": "verk",
@@ -760,8 +840,8 @@
   "variant": null,
   "file": "assets/items/verk/model.glb",
   "scale": 1,
-  "tris": 15214,
-  "tris_out": 15214,
+  "tris": 10259,
+  "tris_out": 10259,
   "size_cm": [
    134.9,
    61.4,
@@ -772,7 +852,7 @@
    "<auto>1": "metal",
    "kayu": "wood"
   },
-  "kb": 1508
+  "kb": 837
  },
  {
   "slug": "verk-laci",
@@ -780,10 +860,10 @@
   "variant": "Laci",
   "file": "assets/items/verk/model-laci.glb",
   "scale": 1,
-  "tris": 22442,
-  "tris_out": 22442,
+  "tris": 17164,
+  "tris_out": 17164,
   "size_cm": [
-   174,
+   174.0,
    63.8,
    148.5
   ],
@@ -793,7 +873,7 @@
    "<auto>2": "metal",
    "kayu": "wood"
   },
-  "kb": 2171
+  "kb": 1296
  },
  {
   "slug": "aether-k40",
@@ -801,8 +881,8 @@
   "variant": null,
   "file": "assets/items/aether-k40/model.glb",
   "scale": 1,
-  "tris": 5034,
-  "tris_out": 5034,
+  "tris": 4289,
+  "tris_out": 4289,
   "size_cm": [
    13.1,
    13.1,
@@ -812,7 +892,7 @@
    "<auto>1": "metal",
    "DefaultMaterial": "paint"
   },
-  "kb": 93
+  "kb": 96
  },
  {
   "slug": "aether-k60",
@@ -820,8 +900,8 @@
   "variant": null,
   "file": "assets/items/aether-k60/model.glb",
   "scale": 1,
-  "tris": 3494,
-  "tris_out": 3494,
+  "tris": 3007,
+  "tris_out": 3007,
   "size_cm": [
    6.7,
    10.4,
@@ -831,7 +911,7 @@
    "<auto>": "metal",
    "DefaultMaterial": "paint"
   },
-  "kb": 67
+  "kb": 70
  },
  {
   "slug": "aether-sky",
@@ -850,7 +930,7 @@
    "<auto>1": "metal",
    "DefaultMaterial": "paint"
   },
-  "kb": 91
+  "kb": 104
  },
  {
   "slug": "astral-1-seater",
@@ -858,10 +938,10 @@
   "variant": null,
   "file": "assets/items/astral-1-seater/model.glb",
   "scale": 1,
-  "tris": 22336,
-  "tris_out": 22336,
+  "tris": 15282,
+  "tris_out": 15282,
   "size_cm": [
-   83,
+   83.0,
    81.3,
    69.2
   ],
@@ -870,7 +950,87 @@
    "[Color M00]": "fabric",
    "kayu": "wood"
   },
-  "kb": 1995
+  "kb": 1578
+ },
+ {
+  "slug": "cubix-ac-gelap",
+  "id": "cubix-series-1-seater-ac-kayu-gelap",
+  "variant": null,
+  "file": "assets/items/cubix-series-1-seater-ac-kayu-gelap/model.glb",
+  "scale": 1,
+  "tris": 5336,
+  "tris_out": 5336,
+  "size_cm": [
+   63.8,
+   64.0,
+   79.6
+  ],
+  "roles": {
+   "<auto>1": "metal",
+   "MIDGREY": "fabric",
+   "SUNGKAI": "wood"
+  },
+  "kb": 490
+ },
+ {
+  "slug": "cubix-al-gelap",
+  "id": "cubix-series-1-seater-al-kayu-gelap",
+  "variant": null,
+  "file": "assets/items/cubix-series-1-seater-al-kayu-gelap/model.glb",
+  "scale": 1,
+  "tris": 13481,
+  "tris_out": 13481,
+  "size_cm": [
+   64.5,
+   64.2,
+   81.5
+  ],
+  "roles": {
+   "<auto>1": "metal",
+   "MIDGREY": "fabric",
+   "SUNGKAI": "wood"
+  },
+  "kb": 910
+ },
+ {
+  "slug": "cubix-acac-gelap",
+  "id": "cubix-series-2-seater-ac-ac-kayu-gelap",
+  "variant": null,
+  "file": "assets/items/cubix-series-2-seater-ac-ac-kayu-gelap/model.glb",
+  "scale": 1,
+  "tris": 10672,
+  "tris_out": 10672,
+  "size_cm": [
+   126.6,
+   64.2,
+   79.6
+  ],
+  "roles": {
+   "<auto>1": "metal",
+   "MIDGREY": "fabric",
+   "SUNGKAI": "wood"
+  },
+  "kb": 648
+ },
+ {
+  "slug": "cubix-acalac-gelap",
+  "id": "cubix-series-3-seaters-ac-al-ac-kayu-gelap",
+  "variant": null,
+  "file": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-gelap/model.glb",
+  "scale": 1,
+  "tris": 24153,
+  "tris_out": 24153,
+  "size_cm": [
+   189.5,
+   64.3,
+   81.5
+  ],
+  "roles": {
+   "<auto>1": "metal",
+   "MIDGREY": "fabric",
+   "SUNGKAI": "wood"
+  },
+  "kb": 1932
  },
  {
   "slug": "cubix-ot-gelap",
@@ -891,165 +1051,5 @@
    "SUNGKAI": "wood"
   },
   "kb": 499
- },
- {
-  "slug": "cubix-ac",
-  "id": "cubix-series-1-seater-ac-kayu-terang",
-  "variant": null,
-  "file": "assets/items/cubix-series-1-seater-ac-kayu-terang/model.glb",
-  "scale": 1,
-  "tris": 5336,
-  "tris_out": 5336,
-  "size_cm": [
-   63.8,
-   64,
-   79.6
-  ],
-  "roles": {
-   "<auto>1": "metal",
-   "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
-  },
-  "kb": 840
- },
- {
-  "slug": "cubix-acac",
-  "id": "cubix-series-2-seater-ac-ac-kayu-terang",
-  "variant": null,
-  "file": "assets/items/cubix-series-2-seater-ac-ac-kayu-terang/model.glb",
-  "scale": 1,
-  "tris": 10672,
-  "tris_out": 10672,
-  "size_cm": [
-   126.6,
-   64.2,
-   79.6
-  ],
-  "roles": {
-   "<auto>1": "metal",
-   "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
-  },
-  "kb": 1323
- },
- {
-  "slug": "cubix-acalac",
-  "id": "cubix-series-3-seaters-ac-al-ac-kayu-terang",
-  "variant": null,
-  "file": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-terang/model.glb",
-  "scale": 1,
-  "tris": 44536,
-  "tris_out": 44536,
-  "size_cm": [
-   189.5,
-   64.3,
-   81.5
-  ],
-  "roles": {
-   "<auto>1": "metal",
-   "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
-  },
-  "kb": 3839
- },
- {
-  "slug": "cubix-al",
-  "id": "cubix-series-1-seater-al-kayu-terang",
-  "variant": null,
-  "file": "assets/items/cubix-series-1-seater-al-kayu-terang/model.glb",
-  "scale": 1,
-  "tris": 33864,
-  "tris_out": 33864,
-  "size_cm": [
-   64.5,
-   64.2,
-   81.5
-  ],
-  "roles": {
-   "<auto>1": "metal",
-   "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
-  },
-  "kb": 2844
- },
- {
-  "slug": "cubix-ac-gelap",
-  "id": "cubix-series-1-seater-ac-kayu-gelap",
-  "variant": null,
-  "file": "assets/items/cubix-series-1-seater-ac-kayu-gelap/model.glb",
-  "scale": 1,
-  "tris": 5336,
-  "tris_out": 5336,
-  "size_cm": [
-   63.8,
-   64,
-   79.6
-  ],
-  "roles": {
-   "<auto>1": "metal",
-   "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
-  },
-  "kb": 844
- },
- {
-  "slug": "cubix-acac-gelap",
-  "id": "cubix-series-2-seater-ac-ac-kayu-gelap",
-  "variant": null,
-  "file": "assets/items/cubix-series-2-seater-ac-ac-kayu-gelap/model.glb",
-  "scale": 1,
-  "tris": 10672,
-  "tris_out": 10672,
-  "size_cm": [
-   126.6,
-   64.2,
-   79.6
-  ],
-  "roles": {
-   "<auto>1": "metal",
-   "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
-  },
-  "kb": 1327
- },
- {
-  "slug": "cubix-acalac-gelap",
-  "id": "cubix-series-3-seaters-ac-al-ac-kayu-gelap",
-  "variant": null,
-  "file": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-gelap/model.glb",
-  "scale": 1,
-  "tris": 44536,
-  "tris_out": 44536,
-  "size_cm": [
-   189.5,
-   64.3,
-   81.5
-  ],
-  "roles": {
-   "<auto>1": "metal",
-   "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
-  },
-  "kb": 3843
- },
- {
-  "slug": "cubix-al-gelap",
-  "id": "cubix-series-1-seater-al-kayu-gelap",
-  "variant": null,
-  "file": "assets/items/cubix-series-1-seater-al-kayu-gelap/model.glb",
-  "scale": 1,
-  "tris": 33864,
-  "tris_out": 33864,
-  "size_cm": [
-   64.5,
-   64.2,
-   81.5
-  ],
-  "roles": {
-   "<auto>1": "metal",
-   "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
-  },
-  "kb": 2848
  }
 ]

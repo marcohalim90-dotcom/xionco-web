@@ -19,6 +19,15 @@ window.XIONCO_VERSIONS = /*VERSIONS*/[
     "note": "Gaya kotak seragam (navigator, deskripsi, panel, rincian), kursor baru, panel developer: versi, aset, katalog, custom."
   },
   {
+    "id": "5.01.03",
+    "name": "Versi 5.01.03",
+    "title": "3D katalog AI (fal.ai), meja/kabinet/divan, background garis & neon, garis ukur dudukan, 54 model SKP dirapikan (kayu, normal halus, warna produk), foto katalog tanpa potong latar",
+    "path": "checkpoints/5.01.03/index.html",
+    "date": "2026-10-15 06:23",
+    "type": "checkpoint",
+    "note": "Salinan v5 pada saat ini: 3D katalog AI (fal.ai), meja/kabinet/divan, background garis & neon, garis ukur dudukan, 54 model SKP dirapikan (kayu, normal halus, warna produk), foto katalog tanpa potong latar"
+  },
+  {
     "id": "5.01.02",
     "name": "Versi 5.01.02",
     "title": "5.01.02 — rombak alur & tampilan: checkout satu halaman (tamu/anggota, isi otomatis, alamat tersimpan, ongkir & pemasangan), akun WhatsApp/Google/Email/Instagram, rancangan tersimpan di profil, custom masuk tas dengan harga final, UI selaras",

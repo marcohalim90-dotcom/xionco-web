@@ -441,6 +441,7 @@
     blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.scale.set(size.x * 1.12, size.z * 1.2, 1); blob.userData.noPick = blob.userData.blob = true;
     g.add(blob);
     g.userData = { bounds: { w: size.x, h: size.y, d: size.z }, spin: spin, mats: list, unit: s };
+    applyWB(g);
     g.userData.dispose = function () { scene.remove(g); blob.geometry.dispose(); blob.material.dispose(); };
     return g;
   }
@@ -584,19 +585,42 @@
     t.wrapS = tex.wrapS; t.wrapT = tex.wrapT; t.repeat.copy(tex.repeat); t.offset.copy(tex.offset);
     return t;
   }
+  /* white balance produk: cahaya kunci Senja/Malam oranye → kain abu tampak cokelat, kayu tampak merah.
+     Warna material model katalog dikoreksi sebagian ke arah netral (panggung & Customize tetap hangat). Logam tidak. */
+  var WB = new T.Color(1, 1, 1), WB_K = .65;
+  function setWB(tintHex) {
+    var t = col(tintHex || '#ffffff'), f = function (v) { return 1 + (1 / Math.max(v, .05) - 1) * WB_K; };
+    var r = f(t.r), g = f(t.g), b = f(t.b), l = .2126 * r + .7152 * g + .0722 * b;
+    WB.setRGB(r / l, g / l, b / l);
+  }
+  function wbTarget(mt) {   // warna akhir: warna varian (kain) atau warna asli material, dikali WB
+    var u = mt.userData, c = u.tint ? col(u.tint).multiplyScalar(u.tintTex ? TINT_GAIN : 1) : u.col0.clone();
+    return c.multiply(WB);
+  }
+  function applyWB(obj, dur) {
+    if (!obj || !obj.userData.mats) return;
+    obj.userData.mats.forEach(function (mt) {
+      if (!mt.userData.col0) mt.userData.col0 = mt.color.clone();
+      if (mt.metalness > .5) return;
+      var c = wbTarget(mt);
+      if (dur) tw(mt.color, { r: c.r, g: c.g, b: c.b, duration: dur, ease: 'power2.inOut' }); else mt.color.copy(c);
+    });
+  }
   function tintModel(obj, hexStr, dur) {
     if (!obj || !obj.userData.mats) return;
     var roles = obj.userData.mats.some(function (mt) { return mt.userData.role; });
     obj.userData.mats.forEach(function (mt) {
+      if (!mt.userData.col0) mt.userData.col0 = mt.color.clone();
       if (roles ? mt.userData.role !== 'fabric' : (mt.metalness > .5 || !mt.map && !mt.userData.map0)) return;   // model SKP: hanya kain (extras role); lainnya: logam tidak diwarnai
-      if (!mt.map && !mt.userData.map0) { if (!mt.userData.col0) mt.userData.col0 = mt.color.clone(); if (!hexStr) { mt.color.copy(mt.userData.col0); return; } var cc = col(hexStr); tw(mt.color, { r: cc.r, g: cc.g, b: cc.b, duration: dur == null ? .8 : dur, ease: 'power2.inOut' }); return; }
-      if (!mt.userData.map0) { mt.userData.map0 = mt.map; mt.userData.col0 = mt.color.clone(); }
-      if (!hexStr) { mt.map = mt.userData.map0; mt.color.copy(mt.userData.col0); mt.needsUpdate = true; return; }
-      if (mt.userData.mapN === undefined) mt.userData.mapN = normalMap(mt.userData.map0);
-      if (mt.map !== (mt.userData.mapN || mt.userData.map0)) { mt.map = mt.userData.mapN || mt.userData.map0; mt.needsUpdate = true; }
-      var c = col(hexStr).multiplyScalar(TINT_GAIN);
-      tw(mt.color, { r: c.r, g: c.g, b: c.b, duration: dur == null ? .8 : dur, ease: 'power2.inOut' });
+      var tex = !!(mt.map || mt.userData.map0);
+      mt.userData.tint = hexStr || null; mt.userData.tintTex = tex;
+      if (!tex) return;
+      if (!mt.userData.map0) mt.userData.map0 = mt.map;
+      if (hexStr && mt.userData.mapN === undefined) mt.userData.mapN = normalMap(mt.userData.map0);
+      var want = hexStr ? mt.userData.mapN || mt.userData.map0 : mt.userData.map0;
+      if (mt.map !== want) { mt.map = want; mt.needsUpdate = true; }
     });
+    applyWB(obj, dur == null ? .8 : dur);
   }
 
   /* ---------------------------------------------------------------- tema terang / gelap */
@@ -697,6 +721,7 @@
     envFor(MOODS[name] || MOODS.senja).then(function (t) { if (moodName === name && LOOK.hdr) scene.environment = t; }, function () {});
   }
   var mood = Object.assign({}, MOODS.senja);
+  setWB(MOODS.senja.tint);
   function buildLights() {
     L.hemi = new T.HemisphereLight(col('#d8c7ad'), col('#140f0b'), .22); scene.add(L.hemi);
     L.key = new T.SpotLight(col('#ffd6aa'), 1.55, 0, .5, .9, 1);
@@ -712,6 +737,7 @@
     moodName = MOODS[name] ? name : 'senja'; setEnv(moodName);
     tw(mood, { key: m.key, hemi: m.hemi, fill: m.fill, env: m.env, exp: m.exp, halo: m.halo, duration: d, ease: 'power2.inOut' });
     tw(L.key.color, { r: c.r, g: c.g, b: c.b, duration: d });
+    setWB(m.tint); if (item) item.traverse(function (o) { if (o.userData.mats) applyWB(o, d); });
   }
 
   /* ---------------------------------------------------------------- layar penuh (dipakai bayangan kontak & pasca-proses) */
@@ -1155,15 +1181,13 @@
     if (item === O.cubix) { frameItem(null, 1.2); return; }
     present('cubix', O.cubix);
   };
-  // fallback: foto lain (mis. foto utama) bila latar foto ini terlalu rumit untuk dipotong rapi
-  XW.showProduct = function (p, url, fallback) {
+  // produk tanpa model 3D: foto apa adanya (latar tidak dipotong) dalam bingkai di atas penyangga
+  function photoSize(r) { var w = 1.4, h = w / r.aspect; if (h > 1.5) { h = 1.5; w = h * r.aspect; } return [w, h]; }
+  XW.showProduct = function (p, url) {
     var my = ++req;
-    return getCutout(url).then(function (r) {
+    return getRaw(url).then(function (r) {
       if (my !== req) return;
-      if (!r.ok && fallback && fallback !== url) return XW.showProduct(p, fallback);
-      var w = sizeFor(p), h = w / r.aspect;
-      if (h > 2.2) { h = 2.2; w = h * r.aspect; }
-      var g = makeBillboard(r.tex, w, h, false);
+      var s = photoSize(r), g = makeBillboard(r.tex, s[0], s[1], true);
       g.visible = false; scene.add(g);
       g.userData.dispose = function () { scene.remove(g); g.traverse(function (o) { if (o.geometry) o.geometry.dispose(); if (o.material && o.material !== mats.brass) o.material.dispose(); }); };
       present('product', g);
@@ -1350,7 +1374,7 @@
       return Promise.resolve(g0);
     }
     if (e.kind === 'model') return getModel(e.url).then(function (s) { return makeModel(s, e.p || {}); });
-    if (e.kind === 'photo') return getCutout(e.url).then(function (r) { var wd = sizeFor(e.p || {}); return makeBillboard(r.tex, wd, wd / r.aspect); });
+    if (e.kind === 'photo') return getRaw(e.url).then(function (r) { var s = photoSize(r); return makeBillboard(r.tex, s[0], s[1], true); });
     return Promise.resolve(null);
   }
   XW.showRoom = function (entries) {

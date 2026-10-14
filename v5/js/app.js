@@ -71,8 +71,8 @@
   }
   var priceText = function (p, c) { var pr = c ? c.price : p.price; return pr ? (p.from ? T('mulai') + ' ' : '') + rupiah(pr) : T('Melalui penawaran'); };
 
-  /* thumbnail: foto produk dipotong latarnya (cutout.js) agar menyatu dengan kotak.
-     Bila gagal (gambar tidak bisa dibaca), tampil di atas "piring" ivory. */
+  /* thumbnail: foto produk apa adanya (latar tidak dipotong — hasil potong kurang rapi) di atas "piring" ivory;
+     latar putih foto menyatu lewat multiply. Foto studio gelap (photoCls) tetap penuh (cover). */
   function thumbImg(p, u) {
     u = u || src(p.img, 768);
     if (!u) return '<span class="noimg"><svg><use href="#i-frame"/></svg><em>' + esc(T('Foto menyusul')) + '</em></span>';   // produk lokal tanpa foto
@@ -90,16 +90,32 @@
       if (cutIO) cutIO.observe(im); else { cutQ.push(im); pumpCut(); }
     });
   }
+  // sudut foto gelap? (salinan kecil terpisah ber-CORS; bila tidak bisa dibaca, anggap latar putih)
+  var darkMemo = {};
+  function darkBg(u, cb) {
+    if (darkMemo[u] != null) { if (darkMemo[u]) cb(); return; }
+    var p = new Image(); p.crossOrigin = 'anonymous';
+    p.onload = function () {
+      try {
+        var c = document.createElement('canvas'); c.width = c.height = 8;
+        var g = c.getContext('2d'); g.drawImage(p, 0, 0, 8, 8);
+        var d = g.getImageData(0, 0, 8, 8).data, lum = 0;
+        [0, 7, 56, 63].forEach(function (i) { lum += (d[i * 4] + d[i * 4 + 1] + d[i * 4 + 2]) / 3; });
+        darkMemo[u] = lum / 4 < 110; if (darkMemo[u]) cb();
+      } catch (e) { darkMemo[u] = false; }
+    };
+    p.src = u;
+  }
   function pumpCut() {
     while (cutActive < 3 && cutQ.length) {
       var im = cutQ.shift(); cutActive++;
       (function (im) {
         var u = im.dataset.cut, done = function () { cutActive--; pumpCut(); };
         var show = function () { im.classList.add('is-ready'); };
-        // gagal dibaca → di atas "piring"; latar studio rumit → foto apa adanya (cover)
-        var plain = function (e) { if (e && e.message === 'complex') im.classList.add('is-photo'); else if (im.parentNode) im.parentNode.classList.add('is-plate'); im.onload = show; im.src = u; done(); };
-        if (!window.XCUT) return plain();
-        XCUT.url(u, im.dataset.max ? +im.dataset.max : 360).then(function (obj) { im.onload = show; im.src = obj; done(); }, plain);
+        // latar putih → di atas "piring" ivory; latar studio gelap (foto varian) → penuh kotak (cover)
+        var dark = function () { im.classList.add('is-photo'); if (im.parentNode) im.parentNode.classList.remove('is-plate'); };
+        if (im.parentNode) im.parentNode.classList.add('is-plate');
+        im.onload = function () { show(); darkBg(u, dark); }; im.src = u; done();
       })(im);
     }
   }
@@ -2162,7 +2178,6 @@
   }
   function warm() {
     // siapkan potongan foto beberapa karya populer agar pergantian di panggung instan
-    if (XW.cutout) XV.PRODUCTS.slice(0, 6).forEach(function (p) { if (p.id !== 'cubix' && !p.model) XW.cutout(src(p.img, 1024)); });
     XV.MUSE.forEach(function (m) { var im = new Image(); im.src = src(m.img, 768); });
   }
   function start() {
