@@ -1,0 +1,10 @@
+Set      : fabric-velvet
+Asset    : Velour Velvet (velour_velvet)
+Author   : colormass (Photography), Rico Cilliers (Processing)
+Source   : https://polyhaven.com/a/velour_velvet
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/velour_velvet/velour_velvet_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/velour_velvet/velour_velvet_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/velour_velvet/velour_velvet_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 284 x 273 mm
+Processed: downscaled to 512 px, WebP. Albedo converted to normalised greyscale (colour comes from the chosen fabric/wood hex). Roughness normalised to mean 0.8.

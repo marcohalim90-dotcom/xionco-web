@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>XIONCO · Customize line drawings</title>
+<!-- Halaman kerja untuk tools/icons/build.js (puppeteer). Buka lewat server lokal:
+     http://127.0.0.1:5173/tools/icons/render.html — tidak dipakai oleh situs. -->
+<style>html, body { margin: 0; background: #f3efe8; } canvas { display: block; }</style>
+</head>
+<body>
+<canvas id="c" width="960" height="960"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+<script>
+  if (!window.THREE) ['build/three.min.js', 'examples/js/geometries/RoundedBoxGeometry.js'].forEach(function (f) { document.write('<script src="https://unpkg.com/three@0.147.0/' + f + '"><\/script>'); });
+</script>
+<script src="../../v5/js/custom-spec.js"></script>
+<script src="../../v5/js/parts.js"></script>
+<script src="../../v5/js/maker.js"></script>
+<script src="symbols.js"></script>
+<script src="render.js"></script>
+<script src="plan.js"></script>
+</body>
+</html>

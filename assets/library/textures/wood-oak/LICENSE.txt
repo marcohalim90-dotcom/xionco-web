@@ -1,0 +1,10 @@
+Set      : wood-oak
+Asset    : Oak Veneer 01 (oak_veneer_01)
+Author   : Jenelle van Heerden (All)
+Source   : https://polyhaven.com/a/oak_veneer_01
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/oak_veneer_01/oak_veneer_01_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/oak_veneer_01/oak_veneer_01_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/oak_veneer_01/oak_veneer_01_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1830 x 1830 mm
+Processed: downscaled to 1024 px, WebP. Albedo converted to normalised greyscale (colour comes from the chosen fabric/wood hex). Rotated 90 deg (grain along U). Roughness normalised to mean 0.8.

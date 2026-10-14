@@ -1,0 +1,12 @@
+{
+  "name": "xionco-render",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ekspor rancangan Customize (maker.js) ke GLB lalu render foto di Blender",
+  "scripts": {
+    "export": "node export.js jobs.json"
+  },
+  "dependencies": {
+    "puppeteer-core": "^23.11.1"
+  }
+}

@@ -1,0 +1,8 @@
+Set      : stone-slate
+Asset    : Marble 006 (Marble006)
+Author   : Lennart Demes (ambientCG)
+Source   : https://ambientcg.com/view?id=Marble006
+Download : https://ambientcg.com/get?file=Marble006_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: not published (scale set by eye)
+Processed: downscaled to 1024 px, WebP. Roughness normalised to mean 0.8.

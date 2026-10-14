@@ -1,0 +1,23 @@
+{
+  "defaults": {
+    "views": ["34", "front", "side", "detail"],
+    "size": [1600, 1200],
+    "samples": 128,
+    "look": "dark",
+    "hdri": "studio_small_09_2k.hdr"
+  },
+  "jobs": [
+    { "id": "sofa-vienna-graphite", "cfg": { "cat": "kursi", "sub": "sofa", "uph": "vienna", "color": "graphite" } },
+    { "id": "sofa-chesterfield-velvet", "cfg": { "cat": "kursi", "sub": "sofa", "arm": "scroll", "back": "tight", "backTuft": "diamond", "uph": "velvet", "color": "emerald", "pillows": 0 } },
+    { "id": "chaise-boucle-oat", "cfg": { "cat": "kursi", "sub": "chaise", "uph": "boucle", "color": "oat" } },
+    { "id": "armchair-leather-barrel", "cfg": { "cat": "kursi", "sub": "armchair", "shape": "barrel", "uph": "leather", "color": "cognac" } },
+    { "id": "bench-rattan-teak", "cfg": { "cat": "kursi", "sub": "bench", "top": "rattan", "wood": "teak" } },
+    { "id": "dining-chair-cane", "cfg": { "cat": "kursi", "sub": "dining", "back": "rattan", "cushion": "cane", "frame": "wood", "wood": "teak" } },
+    { "id": "stool-velvet-mustard", "cfg": { "cat": "kursi", "sub": "stool", "uph": "velvet", "color": "mustard", "metal": "brass" } },
+    { "id": "ottoman-chenille-sage", "cfg": { "cat": "kursi", "sub": "ottoman", "uph": "chenille", "color": "sage" } },
+    { "id": "tv-walnut-brass", "cfg": { "cat": "kabinet", "sub": "tv", "finish": "veneer", "wood": "walnut", "metal": "brass", "handle": "bar" } },
+    { "id": "dining-table-calacatta", "cfg": { "cat": "meja", "sub": "dining", "topMat": "stone", "stone": "calacatta", "base": "pedestal", "baseMat": "wood", "wood": "walnut" } },
+    { "id": "bed-divan-linen", "cfg": { "cat": "divan", "sub": "divan", "uph": "linen", "color": "natural", "headboard": "channel" } },
+    { "id": "kyrios", "productId": "kyrios", "look": "ivory" }
+  ]
+}

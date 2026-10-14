@@ -12,3 +12,6 @@ data/private
 data/history
 README.md
 data/source
+output
+# HDRI 2K hanya untuk render Blender lokal
+assets/library/hdri/*_2k.hdr

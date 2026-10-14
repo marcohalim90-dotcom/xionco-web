@@ -1,0 +1,10 @@
+Set      : fabric-boucle
+Asset    : Curly Teddy Natural (curly_teddy_natural)
+Author   : colormass (Photography), Rico Cilliers (Processing)
+Source   : https://polyhaven.com/a/curly_teddy_natural
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/curly_teddy_natural/curly_teddy_natural_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/curly_teddy_natural/curly_teddy_natural_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/curly_teddy_natural/curly_teddy_natural_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 336 x 331 mm
+Processed: downscaled to 1024 px, WebP. Albedo converted to normalised greyscale (colour comes from the chosen fabric/wood hex). Roughness normalised to mean 0.8.

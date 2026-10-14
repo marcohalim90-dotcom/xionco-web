@@ -5,6 +5,7 @@
                dibaca & disimpan langsung ke file di folder data/
                  data/products.json          katalog item       (ikut online saat di-push)
                  data/checks.json            centang aset       (ikut online)
+                 data/pricing.json           harga Customize    (ikut online — selisih dari harga bawaan)
                  data/private/customs.json   pesanan custom     (TIDAK ikut online)
    • online  — situs yang sudah online: membaca data/*.json yang dipublish;
                perubahan di Developer Settings hanya tersimpan di browser itu
@@ -16,6 +17,7 @@
      products() / activeProducts() / saveProducts(list) / resetProducts()
      customs() / saveCustom(rec) / deleteCustom(id)
      checks() / setCheck(key, bool)
+     pricing() / savePricing(obj) / resetPricing()  harga Customize (selisih dari bawaan custom-spec.js)
      settings() / setSetting(key, value)          (selalu per browser)
      assetList()           Promise<string[]> daftar file di assets/ (mode folder)
      exportAll() / importAll(obj) / resetAll()
@@ -54,9 +56,10 @@
 
   /* ------------------------------------------------------------------ penyimpanan */
   // isi file: { app:'XIONCO', kind, updated, items|records|checks }
-  var FIELD = { products: 'items', customs: 'records', checks: 'checks' };
-  var EMPTY = { products: function () { return clone(DEFAULTS); }, customs: function () { return []; }, checks: function () { return {}; } };
-  var state = { mode: 'browser', products: null, customs: null, checks: null, updated: {} };
+  var FIELD = { products: 'items', customs: 'records', checks: 'checks', pricing: 'pricing' };
+  var EMPTY = { products: function () { return clone(DEFAULTS); }, customs: function () { return []; }, checks: function () { return {}; }, pricing: function () { return {}; } };
+  var NAMES = ['products', 'customs', 'checks', 'pricing'];
+  var state = { mode: 'browser', products: null, customs: null, checks: null, pricing: null, updated: {} };
   function getJSON(url) {
     return fetch(url, { cache: 'no-store', headers: { 'X-XIONCO': '1' } }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
   }
@@ -88,11 +91,11 @@
     return tryFolder.then(function (info) {
       if (info && info.ok && info.writable) {
         state.mode = 'folder';
-        return Promise.all(['products', 'customs', 'checks'].map(function (n) { return getJSON(ROOT + 'api/db/' + n); })).then(function (docs) {
-          ['products', 'customs', 'checks'].forEach(function (n, i) { state[n] = fromFile(n, docs[i]); });
+        return Promise.all(NAMES.map(function (n) { return getJSON(ROOT + 'api/db/' + n); })).then(function (docs) {
+          NAMES.forEach(function (n, i) { state[n] = fromFile(n, docs[i]); });
           // pindahkan data lama dari browser ke folder (sekali saja)
-          ['products', 'customs', 'checks'].forEach(function (n) {
-            var local = read(n, null), fileIsDefault = state[n] == null || (n === 'products' ? !state.updated.products : (n === 'customs' ? !state[n].length : !Object.keys(state[n]).length));
+          NAMES.forEach(function (n) {
+            var local = read(n, null), fileIsDefault = state[n] == null || (n === 'products' ? !state.updated.products : (n === 'customs' ? !state[n].length : !Object.keys(state[n] || {}).length));
             if (local && fileIsDefault) {
               state[n] = n === 'products' ? local.map(normalize) : local;
               var same = n === 'products' && JSON.stringify(state[n]) === JSON.stringify(DEFAULTS);
@@ -103,7 +106,7 @@
         });
       }
       state.mode = HTTP ? 'online' : 'browser';
-      var pub = HTTP ? Promise.all([getJSON(ROOT + 'data/products.json'), getJSON(ROOT + 'data/checks.json')]) : Promise.resolve([null, null]);
+      var pub = HTTP ? Promise.all([getJSON(ROOT + 'data/products.json'), getJSON(ROOT + 'data/checks.json'), getJSON(ROOT + 'data/pricing.json')]) : Promise.resolve([null, null, null]);
       return pub.then(function (docs) {
         // perubahan di browser ini (bila ada) didahulukan, lalu file yang dipublish
         var lp = read('products', null), lc = read('checks', null);
@@ -111,17 +114,20 @@
         if (lp) state.updated.products = read('products.at', Date.now());
         state.checks = lc || fromFile('checks', docs[1]);
         state.customs = read('customs', null);
+        var lpr = read('pricing', null);
+        state.pricing = lpr || fromFile('pricing', docs[2]);
       });
     }).then(function () {
-      ['products', 'customs', 'checks'].forEach(function (n) { if (state[n] == null) { state[n] = EMPTY[n](); state.updated[n] = null; } });
+      NAMES.forEach(function (n) { if (state[n] == null) { state[n] = EMPTY[n](); state.updated[n] = null; } });
       if (XV.PRODUCTS) XV.PRODUCTS = DB.activeProducts();
+      if (window.XC && XC.setPricing) XC.setPricing(state.pricing);
       return DB;
     });
   }
   function reload(name) {
     var url = state.mode === 'folder' ? ROOT + 'api/db/' + name : null;
-    if (!url) { if (name === 'settings') emit('settings'); else { var v = read(name, null); if (v) state[name] = name === 'products' ? v.map(normalize) : v; emit(name); } return; }
-    getJSON(url).then(function (doc) { var v = fromFile(name, doc); state[name] = v == null ? EMPTY[name]() : v; emit(name); });
+    if (!url) { if (name === 'settings') emit('settings'); else { var v = read(name, null); if (v) state[name] = name === 'products' ? v.map(normalize) : v; if (name === 'pricing' && window.XC && XC.setPricing) XC.setPricing(state.pricing); emit(name); } return; }
+    getJSON(url).then(function (doc) { var v = fromFile(name, doc); state[name] = v == null ? EMPTY[name]() : v; if (name === 'pricing' && window.XC && XC.setPricing) XC.setPricing(state.pricing); emit(name); });
   }
 
   var DB = window.XVDB = {
@@ -150,6 +156,11 @@
     checks: function () { return clone(state.checks || {}); },
     setCheck: function (key, on) { var c = state.checks || {}; if (on) c[key] = Date.now(); else delete c[key]; state.checks = c; emit('checks'); return persist('checks'); },
 
+    // harga Customize: hanya selisih dari harga bawaan di v5/js/custom-spec.js
+    pricing: function () { return clone(state.pricing || {}); },
+    savePricing: function (p) { state.pricing = clone(p || {}); if (window.XC && XC.setPricing) XC.setPricing(state.pricing); emit('pricing'); return persist('pricing'); },
+    resetPricing: function () { state.pricing = {}; if (window.XC && XC.setPricing) XC.setPricing({}); emit('pricing'); return persist('pricing', true); },
+
     settings: function () { return Object.assign({ position: 'bl', hidden: false }, read('settings', {})); },
     setSetting: function (k, v) { var s = DB.settings(); s[k] = v; write('settings', s); emit('settings'); },
 
@@ -158,21 +169,23 @@
       return getJSON(ROOT + 'api/assets').then(function (r) { return r && r.ok ? r.files : null; });
     },
     exportAll: function () {
-      return { app: 'XIONCO', kind: 'database', exported: new Date().toISOString(), products: DB.products(), customs: DB.customs(), checks: DB.checks(), settings: DB.settings() };
+      return { app: 'XIONCO', kind: 'database', exported: new Date().toISOString(), products: DB.products(), customs: DB.customs(), checks: DB.checks(), pricing: DB.pricing(), settings: DB.settings() };
     },
     importAll: function (o) {
       if (!o || o.app !== 'XIONCO') throw new Error('Bukan file database XIONCO');
       if (o.products) { state.products = o.products.map(normalize); persist('products'); emit('products'); }
       if (o.customs) { state.customs = o.customs; persist('customs'); emit('customs'); }
       if (o.checks) { state.checks = o.checks; persist('checks'); emit('checks'); }
+      if (o.pricing) DB.savePricing(o.pricing);
       if (o.settings) { write('settings', o.settings); emit('settings'); }
     },
     resetAll: function () {
       state.products = clone(DEFAULTS); persist('products', true);
       state.customs = []; persist('customs');
       state.checks = {}; persist('checks');
+      state.pricing = {}; persist('pricing', true); if (window.XC && XC.setPricing) XC.setPricing({});
       drop('settings');
-      ['products', 'customs', 'checks', 'settings'].forEach(function (n) { emit(n); });
+      ['products', 'customs', 'checks', 'pricing', 'settings'].forEach(function (n) { emit(n); });
     }
   };
 
@@ -185,7 +198,7 @@
   });
 
   DB.ready = load().catch(function () {
-    ['products', 'customs', 'checks'].forEach(function (n) { if (state[n] == null) state[n] = EMPTY[n](); });
+    NAMES.forEach(function (n) { if (state[n] == null) state[n] = EMPTY[n](); });
     return DB;
   });
 

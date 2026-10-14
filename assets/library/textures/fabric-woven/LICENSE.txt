@@ -1,0 +1,8 @@
+Set      : fabric-woven
+Asset    : Fabric 062 (Fabric062)
+Author   : Lennart Demes (ambientCG)
+Source   : https://ambientcg.com/view?id=Fabric062
+Download : https://ambientcg.com/get?file=Fabric062_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 400 x 400 mm
+Processed: downscaled to 512 px, WebP. Albedo converted to normalised greyscale (colour comes from the chosen fabric/wood hex). Roughness normalised to mean 0.8.

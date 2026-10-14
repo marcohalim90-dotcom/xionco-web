@@ -9,3 +9,10 @@ Thumbs.db
 data/private/
 data/history/
 .wrangler/
+
+# model referensi pihak ketiga (FurniMesh) — lisensi belum jelas, hanya lokal
+data/source/furnimesh/
+tools/icons/last-build.log
+
+# hasil render foto Blender (tools/render) — besar & bisa dibuat ulang
+output/

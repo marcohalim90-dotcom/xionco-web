@@ -1,0 +1,21 @@
+HDRI pencahayaan (Maison XIONCO v5 & render foto Blender)
+=========================================================
+
+studio_small_09_512.hdr / studio_small_09_2k.hdr
+  Asset    : Studio Small 09 (studio_small_09)
+  Author   : Sergej Majboroda
+  Source   : https://polyhaven.com/a/studio_small_09
+  Download : https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/studio_small_09_1k.hdr
+             https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/studio_small_09_2k.hdr
+  License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+
+brown_photostudio_02_512.hdr / brown_photostudio_02_2k.hdr
+  Asset    : Brown Photostudio 02 (brown_photostudio_02)
+  Author   : Sergej Majboroda
+  Source   : https://polyhaven.com/a/brown_photostudio_02
+  Download : https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/brown_photostudio_02_1k.hdr
+             https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/brown_photostudio_02_2k.hdr
+  License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+
+*_512.hdr = versi 1K diperkecil ke 512 x 256 di Blender (dipakai situs, ±0,4 MB).
+*_2k.hdr  = asli 2K, hanya untuk tools/render (Blender); tidak ikut ditayangkan (.assetsignore).

@@ -111,7 +111,19 @@
     steel: { color: '#1d1c1b', metal: .9, rough: .32 }, brass: { color: '#b8924f', metal: 1, rough: .26 }
   };
   function rbox(w, h, d, r, seg) { return T.RoundedBoxGeometry ? new T.RoundedBoxGeometry(w, h, d, seg || 5, r) : new T.BoxGeometry(w, h, d); }
-  function part(g, geo, mat, x, y, z) { var m = shadowed(new T.Mesh(geo, mat)); m.position.set(x, y, z); g.add(m); return m; }
+  // UV kotak dalam meter (seperti uvBox di maker.js) → tekstur kain/kayu asli berskala nyata
+  function uvMetric(geo) {
+    var p = geo.attributes.position, n = geo.attributes.normal, uv = geo.attributes.uv; if (!p || !n || !uv) return geo;
+    geo.computeBoundingBox();
+    var bb = geo.boundingBox, ex = [bb.max.x - bb.min.x, bb.max.y - bb.min.y, bb.max.z - bb.min.z], P = p.array, N = n.array, U = uv.array;
+    for (var i = 0, j = 0; i < P.length; i += 3, j += 2) {
+      var ax = Math.abs(N[i]), ay = Math.abs(N[i + 1]), az = Math.abs(N[i + 2]), a = ax >= ay && ax >= az ? 0 : ay >= az ? 1 : 2, b = (a + 1) % 3, c = (a + 2) % 3;
+      if (ex[c] > ex[b]) { var t = b; b = c; c = t; }
+      U[j] = P[i + b]; U[j + 1] = P[i + c];
+    }
+    uv.needsUpdate = true; return geo;
+  }
+  function part(g, geo, mat, x, y, z) { var m = shadowed(new T.Mesh(uvMetric(geo), mat)); m.position.set(x, y, z); g.add(m); return m; }
   function makeSeat() {
     var g = new T.Group();
     part(g, rbox(SW - .02, PL, D - .06, .008, 2), mats.base, 0, PL / 2, 0);
@@ -145,6 +157,25 @@
     var total = cfg.seats * SW + (cfg.arms ? 2 * AW : 0);
     return { w: total, h: HH, d: D + (cfg.ottoman ? SW + .3 : 0) };
   }
+  function fabricOf(c) { return (S.fabrics || []).filter(function (x) { return x.id === c.fabric; })[0] || S.fabrics[0]; }
+  /* tekstur asli CUBIX (js/texlib.js): kain Vienna / kulit, kayu walnut / oak, logam brushed.
+     Selama memuat (atau file://) tetap kanvas prosedural O.weave / O.wood. */
+  var CTX = {};
+  function cubixTex(name) {
+    if (!window.XTEX || !XTEX.ok) return null;
+    if (CTX[name] === undefined) { CTX[name] = null; XTEX.load(name).then(function (t) { CTX[name] = t; cubixMaps(); }, function () {}); }
+    return CTX[name];
+  }
+  function cubixMaps() {
+    var f = fabricOf(cfg), b = BASES[cfg.base] || BASES.oak, leather = f.type === 'leather', fm = mats.fabric, bm = mats.base;
+    var ft = cubixTex(leather ? 'leather-fine' : 'fabric-woven'), bt = cubixTex(b.wood ? (cfg.base === 'walnut' ? 'wood-walnut' : 'wood-oak') : 'metal-brushed');
+    fm.map = leather ? null : ft ? ft.map : O.weave; fm.bumpMap = leather || ft ? null : O.weave;
+    fm.normalMap = ft ? ft.normalMap : null; fm.roughnessMap = ft ? ft.roughnessMap : null;
+    fm.normalScale.set(leather ? .5 : .85, leather ? .5 : .85); fm.roughness = (leather ? .4 : .92) / (ft ? .8 : 1);
+    bm.map = b.wood ? (bt ? bt.map : O.wood) : null; bm.normalMap = bt ? bt.normalMap : null; bm.roughnessMap = bt ? bt.roughnessMap : null;
+    bm.normalScale.set(b.wood ? .4 : .3, b.wood ? .4 : .3); bm.roughness = b.rough / (bt ? .8 : 1);
+    fm.needsUpdate = bm.needsUpdate = true;
+  }
   function applyCfg(c, animate) {
     cfg = Object.assign({}, cfg, c);
     var tg = targets(cfg), d = 0;
@@ -164,13 +195,11 @@
       } else if (animate) tw(o.position, { x: t.x, z: t.z, duration: 1, ease: 'power3.inOut' });
       else { o.position.x = t.x; o.position.z = t.z; }
     });
-    var f = (S.fabrics || []).filter(function (x) { return x.id === cfg.fabric; })[0] || S.fabrics[0];
-    var b = BASES[cfg.base] || BASES.oak, leather = f.type === 'leather';
+    var f = fabricOf(cfg), b = BASES[cfg.base] || BASES.oak, leather = f.type === 'leather';
     var fc = col(f.color).multiplyScalar(leather ? 1 : .82), bc = col(b.color);
-    mats.fabric.map = mats.fabric.bumpMap = leather ? null : O.weave;
-    mats.fabric.roughness = leather ? .4 : .92; mats.fabric.sheen = leather ? 0 : .55; mats.fabric.clearcoat = leather ? .3 : 0;
-    mats.fabric.needsUpdate = true;
-    mats.base.map = b.wood ? O.wood : null; mats.base.metalness = b.metal; mats.base.roughness = b.rough; mats.base.needsUpdate = true;
+    mats.fabric.sheen = leather ? 0 : .5; mats.fabric.clearcoat = leather ? .3 : 0;
+    mats.base.metalness = b.metal;
+    cubixMaps();
     if (animate) {
       tw(mats.fabric.color, { r: fc.r, g: fc.g, b: fc.b, duration: 1, ease: 'power2.inOut' });
       tw(mats.fabric.sheenColor, { r: fc.r * 1.6 + .05, g: fc.g * 1.6 + .05, b: fc.b * 1.6 + .05, duration: 1 });
@@ -229,7 +258,7 @@
       var rod = shadowed(new T.Mesh(new T.CylinderGeometry(.012, .012, .34, 12), mats.brass)); rod.position.set(0, LIFT + .17, -.05); g.add(rod);
     }
     var blob = new T.Mesh(new T.PlaneGeometry(1, 1), new T.MeshBasicMaterial({ map: O.blobTex, transparent: true, depthWrite: false, opacity: framed ? .45 : .6 }));
-    blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.scale.set(w * 1.15, framed ? .5 : Math.max(.35, w * .45), 1); blob.userData.noPick = true;
+    blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.scale.set(w * 1.15, framed ? .5 : Math.max(.35, w * .45), 1); blob.userData.noPick = blob.userData.blob = true;
     g.add(blob);
     g.userData.bounds = { w: w, h: h + (framed ? .32 : 0), d: .4 };
     return g;
@@ -296,7 +325,7 @@
     var spin = new T.Group(), g = new T.Group();
     spin.add(m); g.add(spin);
     var blob = new T.Mesh(new T.PlaneGeometry(1, 1), new T.MeshBasicMaterial({ map: O.blobTex, transparent: true, depthWrite: false, opacity: .4 }));
-    blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.scale.set(size.x * 1.12, size.z * 1.2, 1); blob.userData.noPick = true;
+    blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.scale.set(size.x * 1.12, size.z * 1.2, 1); blob.userData.noPick = blob.userData.blob = true;
     g.add(blob);
     g.userData = { bounds: { w: size.x, h: size.y, d: size.z }, spin: spin, mats: list, unit: s };
     g.userData.dispose = function () { scene.remove(g); blob.geometry.dispose(); blob.material.dispose(); };
@@ -460,6 +489,7 @@
     var to = function (c, hexStr) { var v = col(hexStr); tw(c, { r: v.r, g: v.g, b: v.b, duration: d, ease: 'power2.inOut' }); };
     to(scene.background, th.bg); to(scene.fog.color, th.bg); to(mats.floor.color, th.floor); to(O.disc.material.color, th.disc); to(L.hemi.groundColor, th.hemiG);
     tw(theme, { halo: th.halo, exp: th.exp, env: th.env, duration: d, ease: 'power2.inOut' });
+    if (CS.plane) tw(CS.plane.material, { opacity: name === 'light' ? .72 : 1, duration: d });
     var old = O.wall.material.map; O.wall.material.map = canvasTex(16, 512, backdrop); O.wall.material.needsUpdate = true; if (old) old.dispose();
   }
 
@@ -506,11 +536,44 @@
   }
 
   /* ---------------------------------------------------------------- suasana */
+  // hdr = lingkungan HDRI (lihat HDR di bawah) · tint = warna cahaya lingkungan (sRGB)
   var MOODS = {
-    siang: { key: 2.3, keyC: '#fff1e2', hemi: .45, fill: .55, env: .7, exp: 1.0, halo: .7 },
-    senja: { key: 1.55, keyC: '#ffd6aa', hemi: .22, fill: .3, env: .42, exp: .96, halo: 1 },
-    malam: { key: .8, keyC: '#ffc48a', hemi: .08, fill: .14, env: .2, exp: .92, halo: .55 }
+    siang: { key: 2.3, keyC: '#fff1e2', hemi: .45, fill: .55, env: .7, exp: 1.0, halo: .7, hdr: 'room', tint: '#fff8f0' },
+    senja: { key: 1.55, keyC: '#ffd6aa', hemi: .22, fill: .3, env: .42, exp: .96, halo: 1, hdr: 'studio', tint: '#ffe6cc' },
+    malam: { key: .8, keyC: '#ffc48a', hemi: .08, fill: .14, env: .2, exp: .92, halo: .55, hdr: 'studio', tint: '#ffd2a4' }
   };
+  /* ---------------------------------------------------------------- lingkungan HDRI (CC0 Poly Haven, assets/library/hdri)
+     RGBELoader dimuat malas; HDRI 512×256 dipasang di bola yang diputar (cahaya kunci kanan-depan, dinding
+     terang kiri) lalu PMREM → scene.environment (cache per suasana). k = penyama terang: irradiansi depan
+     setara RoomEnvironment lama, jadi envMapIntensity material tetap. Latar tetap ruang gelap / ivory.
+     Sebelum siap, bila gagal, atau dari file:// tetap RoomEnvironment. */
+  var HDR = { studio: { f: 'studio_small_09_512.hdr', k: 1.136, rot: -1.55 }, room: { f: 'brown_photostudio_02_512.hdr', k: 1.066, rot: -2.74 } };
+  var hdrP = {}, envC = {}, moodName = 'senja';
+  function hdrTex(id) {
+    if (!hdrP[id]) {
+      hdrP[id] = (T.RGBELoader ? Promise.resolve() : addScript('loaders/RGBELoader.js')).then(function () {
+        return new Promise(function (res, rej) { new T.RGBELoader().load((window.XTEX ? XTEX.root : '../') + 'assets/library/hdri/' + HDR[id].f, res, null, rej); });
+      });
+      hdrP[id].catch(function () { if (window.console) console.warn('[XW] HDRI gagal dimuat, tetap RoomEnvironment:', HDR[id].f); });
+    }
+    return hdrP[id];
+  }
+  function envFor(m) {
+    var key = m.hdr + m.tint;
+    if (envC[key]) return Promise.resolve(envC[key]);
+    if (location.protocol === 'file:' || !HDR[m.hdr]) return Promise.reject(new Error('tanpa HDRI'));
+    return hdrTex(m.hdr).then(function (tex) {
+      if (envC[key]) return envC[key];
+      var es = new T.Scene(), sp = new T.Mesh(new T.SphereGeometry(10, 48, 24), new T.MeshBasicMaterial({ map: tex, side: T.BackSide, toneMapped: false }));
+      sp.rotation.y = HDR[m.hdr].rot; sp.material.color.copy(col(m.tint)).multiplyScalar(HDR[m.hdr].k); es.add(sp);
+      var pm = new T.PMREMGenerator(renderer), rt = pm.fromScene(es, .02, .1, 50);
+      pm.dispose(); sp.geometry.dispose(); sp.material.dispose();
+      envC[key] = rt.texture; return rt.texture;
+    });
+  }
+  function setEnv(name) {
+    envFor(MOODS[name] || MOODS.senja).then(function (t) { if (moodName === name) scene.environment = t; }, function () {});
+  }
   var mood = Object.assign({}, MOODS.senja);
   function buildLights() {
     L.hemi = new T.HemisphereLight(col('#d8c7ad'), col('#140f0b'), .22); scene.add(L.hemi);
@@ -524,8 +587,151 @@
   }
   function setMood(name, dur) {
     var m = MOODS[name] || MOODS.senja, c = col(m.keyC), d = dur == null ? 1.5 : dur;
+    moodName = MOODS[name] ? name : 'senja'; setEnv(moodName);
     tw(mood, { key: m.key, hemi: m.hemi, fill: m.fill, env: m.env, exp: m.exp, halo: m.halo, duration: d, ease: 'power2.inOut' });
     tw(L.key.color, { r: c.r, g: c.g, b: c.b, duration: d });
+  }
+
+  /* ---------------------------------------------------------------- layar penuh (dipakai bayangan kontak & pasca-proses) */
+  var VQ = 'varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }';
+  var FQ = null;
+  function quad(mat, target) {
+    if (!FQ) { FQ = { s: new T.Scene(), c: new T.OrthographicCamera(-1, 1, 1, -1, 0, 1), m: new T.Mesh(new T.PlaneGeometry(2, 2)) }; FQ.m.frustumCulled = false; FQ.s.add(FQ.m); }
+    FQ.m.material = mat; renderer.setRenderTarget(target || null); renderer.render(FQ.s, FQ.c);
+  }
+  // blur gauss 9 ketuk (dir = langkah texel), juga untuk alpha
+  var BLUR9 = 'uniform sampler2D tDiffuse; uniform vec2 dir; varying vec2 vUv;\n' +
+    'void main() { vec4 s = texture2D(tDiffuse, vUv) * .2270270;\n' +
+    ' s += (texture2D(tDiffuse, vUv + dir * 1.3846154) + texture2D(tDiffuse, vUv - dir * 1.3846154)) * .3162162;\n' +
+    ' s += (texture2D(tDiffuse, vUv + dir * 3.2307692) + texture2D(tDiffuse, vUv - dir * 3.2307692)) * .0702703;\n' +
+    ' gl_FragColor = s; }';
+
+  /* ---------------------------------------------------------------- bayangan kontak di panggung
+     Kamera ortografis dari bawah merekam bagian objek 3D yang ≤ 35 cm di atas panggung sebagai bayangan
+     lembut (blur dua kali). Hanya dirender ulang bila objek bergerak / berganti / dibangun ulang.
+     Foto potong, karya & peta tetap memakai bayangan bulat (blob). Kualitas 0 → blob saja. */
+  var CS = { on: false, sig: '', H: .35, N: 256 };
+  function buildContact() {
+    var mk = function () { var r = new T.WebGLRenderTarget(CS.N, CS.N); r.texture.generateMipmaps = false; return r; };
+    CS.rt = mk(); CS.rtB = mk();
+    CS.g = new T.Group(); CS.g.position.y = LIFT + .0015; scene.add(CS.g);
+    CS.plane = new T.Mesh(new T.PlaneGeometry(1, 1).rotateX(Math.PI / 2), new T.MeshBasicMaterial({ map: CS.rt.texture, transparent: true, depthWrite: false, opacity: 1, toneMapped: false }));
+    CS.plane.renderOrder = 1; CS.plane.userData.noPick = true; CS.plane.visible = false; CS.g.add(CS.plane);
+    CS.cam = new T.OrthographicCamera(-.5, .5, .5, -.5, 0, CS.H); CS.cam.rotation.x = Math.PI / 2; CS.g.add(CS.cam);
+    CS.depth = new T.MeshDepthMaterial(); CS.dark = { value: 1.5 };
+    CS.depth.onBeforeCompile = function (sh) {
+      sh.uniforms.darkness = CS.dark;
+      sh.fragmentShader = 'uniform float darkness;\n' + sh.fragmentShader.replace('gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );', 'gl_FragColor = vec4( vec3( 0.0 ), pow( 1.0 - fragCoordZ, 1.6 ) * darkness );');
+    };
+    CS.depth.depthTest = CS.depth.depthWrite = false;
+    CS.blur = new T.ShaderMaterial({ uniforms: { tDiffuse: { value: null }, dir: { value: new T.Vector2() } }, vertexShader: VQ, fragmentShader: BLUR9, depthTest: false, depthWrite: false });
+  }
+  var tmpC = new T.Color();
+  function contactBlur(px) {
+    CS.blur.uniforms.tDiffuse.value = CS.rt.texture; CS.blur.uniforms.dir.value.set(px / CS.N, 0); quad(CS.blur, CS.rtB);
+    CS.blur.uniforms.tDiffuse.value = CS.rtB.texture; CS.blur.uniforms.dir.value.set(0, px / CS.N); quad(CS.blur, CS.rt);
+  }
+  function updateContact() {
+    if (!CS.plane) return;
+    var three = /^(cubix|custom|model)$/.test(st.kind), on = CS.on && item && item.visible && three && item.position.y > -.45;
+    CS.plane.visible = !!on;
+    if (!on) { CS.sig = ''; return; }
+    var b = item.userData.bounds || cubixBounds(), S = Math.sqrt(b.w * b.w + b.d * b.d) + .8, sp = item.userData.spin;
+    var sig = [item.uuid, item.position.y.toFixed(3), sp ? sp.rotation.y.toFixed(3) : '', S.toFixed(2), item.userData.built ? item.userData.built.group.uuid : ''].join('|');
+    if (item.userData.built && item.userData.built.motions) item.userData.built.motions.forEach(function (m) { sig += ',' + (m.lin == null ? m.t : m.lin).toFixed(3); });
+    if (item === O.cubix) Object.keys(slots).forEach(function (k) { var p = slots[k].position; sig += ',' + k + p.x.toFixed(3) + p.y.toFixed(3); });
+    if (sig === CS.sig) return;
+    CS.sig = sig;
+    CS.plane.scale.set(S, -1, S);
+    CS.cam.left = CS.cam.bottom = -S / 2; CS.cam.right = CS.cam.top = S / 2; CS.cam.updateProjectionMatrix();
+    var vis = scene.children.map(function (o) { var v = o.visible; o.visible = o === item; return v; }), hid = [];
+    item.traverse(function (o) { if (o.userData.blob && o.visible) { o.visible = false; hid.push(o); } });
+    var bg = scene.background, fog = scene.fog, ca = renderer.getClearAlpha(), au = renderer.shadowMap.autoUpdate;
+    renderer.getClearColor(tmpC);
+    scene.background = null; scene.fog = null; scene.overrideMaterial = CS.depth; renderer.shadowMap.autoUpdate = false;
+    renderer.setClearColor(0x000000, 0); renderer.setRenderTarget(CS.rt); renderer.clear(); renderer.render(scene, CS.cam);
+    scene.overrideMaterial = null;
+    contactBlur(2.2); contactBlur(.9);
+    renderer.setRenderTarget(null); renderer.setClearColor(tmpC, ca); renderer.shadowMap.autoUpdate = au;
+    scene.background = bg; scene.fog = fog;
+    scene.children.forEach(function (o, i) { o.visible = vis[i]; });
+    hid.forEach(function (o) { o.visible = true; });
+  }
+
+  /* ---------------------------------------------------------------- pasca-proses (kualitas 2, desktop, WebGL2)
+     Adegan → target HalfFloat MSAA 4× + depth (nilai sRGB) → AO (SAO ringan: setengah resolusi, 12 sampel, normal dari
+     depth) → blur bilateral 2 arah → komposit: warna × AO + dither halus → layar. Tone mapping ACES
+     tetap di shader material (sama seperti render langsung). AO hanya untuk objek 3D — foto potong, karya
+     & peta tidak (PP.mix → 0). Tanpa WebGL2 / float RT, ponsel, atau kualitas < 2 → render langsung. */
+  var PP = { ok: false, on: false, mix: 0, w: 0, h: 0 };
+  var AOF = 'uniform sampler2D tDepth; uniform mat4 projInv; uniform vec2 texel, psc, fade; uniform float radius, bias, intensity; varying vec2 vUv;\n' +
+    'vec3 vpos(vec2 uv) { float d = texture2D(tDepth, uv).x; vec4 p = projInv * vec4(uv * 2.0 - 1.0, d * 2.0 - 1.0, 1.0); return p.xyz / p.w; }\n' +
+    'float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }\n' +
+    'void main() {\n' +
+    ' float d = texture2D(tDepth, vUv).x; if (d > .99999) { gl_FragColor = vec4(1.0, 1e4, 0.0, 1.0); return; }\n' +
+    ' vec3 P = vpos(vUv);\n' +
+    ' vec3 r = vpos(vUv + vec2(texel.x, 0.0)) - P, l = P - vpos(vUv - vec2(texel.x, 0.0)), u = vpos(vUv + vec2(0.0, texel.y)) - P, w = P - vpos(vUv - vec2(0.0, texel.y));\n' +
+    ' vec3 N = normalize(cross(abs(r.z) < abs(l.z) ? r : l, abs(u.z) < abs(w.z) ? u : w));\n' +
+    ' vec2 rv = min(psc * radius / -P.z, vec2(.12));\n' +
+    ' float a0 = hash(gl_FragCoord.xy) * 6.2832, occ = 0.0;\n' +
+    ' for (int i = 0; i < 12; i++) {\n' +
+    '  float t = (float(i) + .5) / 12.0, a = a0 + float(i) * 2.39996;\n' +
+    '  vec3 v = vpos(vUv + vec2(cos(a), sin(a)) * sqrt(t) * rv) - P; float L = length(v);\n' +
+    '  occ += max(0.0, dot(v, N) / (L + 1e-4) - bias) * clamp(1.0 - L / radius, 0.0, 1.0);\n' +
+    ' }\n' +
+    ' occ *= 1.0 - smoothstep(fade.x, fade.y, -P.z);\n' +   // AO hanya di sekitar objek, bukan dinding jauh
+    ' gl_FragColor = vec4(clamp(1.0 - occ / 12.0 * intensity, 0.0, 1.0), -P.z, 0.0, 1.0);\n' +
+    '}';
+  var AOB = 'uniform sampler2D tAO; uniform vec2 dir; varying vec2 vUv;\n' +
+    'void main() { vec4 c = texture2D(tAO, vUv); float z = c.g, s = c.r * .2270270, ws = .2270270;\n' +
+    ' for (int i = 1; i <= 4; i++) { float k = i == 1 ? .1945946 : i == 2 ? .1216216 : i == 3 ? .0540541 : .0162162;\n' +
+    '  vec4 a = texture2D(tAO, vUv + dir * float(i)), b = texture2D(tAO, vUv - dir * float(i));\n' +
+    '  float wa = k * max(0.0, 1.0 - abs(a.g - z) / (z * .04)), wb = k * max(0.0, 1.0 - abs(b.g - z) / (z * .04));\n' +
+    '  s += a.r * wa + b.r * wb; ws += wa + wb; }\n' +
+    ' gl_FragColor = vec4(s / ws, z, 0.0, 1.0); }';
+  var OUTF = 'uniform sampler2D tColor, tAO; uniform float aoMix; varying vec2 vUv;\n' +
+    'float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }\n' +
+    'void main() { vec4 c = texture2D(tColor, vUv); float ao = texture2D(tAO, vUv).r;\n' +
+    ' gl_FragColor = vec4(c.rgb * mix(1.0, ao, aoMix) + (hash(gl_FragCoord.xy) - .5) / 255.0, 1.0); }';
+  function ppInit() {
+    var gl = renderer.getContext();
+    if (!renderer.capabilities.isWebGL2 || !(gl.getExtension('EXT_color_buffer_float') || gl.getExtension('EXT_color_buffer_half_float'))) return;
+    var sm = function (f, u) { return new T.ShaderMaterial({ uniforms: u, vertexShader: VQ, fragmentShader: f, depthTest: false, depthWrite: false, toneMapped: false }); };
+    PP.aoM = sm(AOF, { tDepth: { value: null }, projInv: { value: new T.Matrix4() }, texel: { value: new T.Vector2() }, psc: { value: new T.Vector2() }, fade: { value: new T.Vector2(8, 10) }, radius: { value: .3 }, bias: { value: .1 }, intensity: { value: 2 } });
+    PP.blM = sm(AOB, { tAO: { value: null }, dir: { value: new T.Vector2() } });
+    PP.outM = sm(OUTF, { tColor: { value: null }, tAO: { value: null }, aoMix: { value: 0 } });
+    PP.ok = true;
+  }
+  var v2 = new T.Vector2();
+  function ppSize() {
+    var s = renderer.getDrawingBufferSize(v2), w = s.x, h = s.y;
+    if (PP.rt && PP.w === w && PP.h === h) return;
+    if (PP.rt) { PP.rt.depthTexture.dispose(); PP.rt.dispose(); PP.a.dispose(); PP.b.dispose(); }
+    PP.w = w; PP.h = h;
+    PP.rt = new T.WebGLRenderTarget(w, h, { type: T.HalfFloatType, samples: 4 });
+    // material menulis nilai ter-encode sRGB (seperti ke kanvas) → pembauran transparan (halo, blob, bayangan
+    // kontak) identik dengan render langsung; r147 hanya memakai encoding target bila isXRRenderTarget
+    PP.rt.isXRRenderTarget = true; PP.rt.texture.encoding = T.sRGBEncoding;
+    PP.rt.depthTexture = new T.DepthTexture(w, h, T.UnsignedIntType);
+    var hw = Math.max(1, Math.round(w / 2)), hh = Math.max(1, Math.round(h / 2));
+    PP.a = new T.WebGLRenderTarget(hw, hh, { type: T.HalfFloatType, depthBuffer: false }); PP.b = PP.a.clone();
+    PP.a.texture.generateMipmaps = PP.b.texture.generateMipmaps = false;
+  }
+  function draw() {
+    if (!PP.on || !PP.rt) { renderer.setRenderTarget(null); renderer.render(scene, camera); return; }
+    renderer.setRenderTarget(PP.rt); renderer.render(scene, camera);
+    var ao = PP.mix > .01;
+    if (ao) {
+      var U = PP.aoM.uniforms, pm = camera.projectionMatrix.elements;
+      U.tDepth.value = PP.rt.depthTexture; U.projInv.value.copy(camera.projectionMatrixInverse);
+      U.texel.value.set(1 / PP.w, 1 / PP.h); U.psc.value.set(pm[0] * .5, pm[5] * .5);
+      var cd = view.dist * st.zoomC; U.fade.value.set(cd + 1.8, cd + 3.6);
+      quad(PP.aoM, PP.a);
+      PP.blM.uniforms.tAO.value = PP.a.texture; PP.blM.uniforms.dir.value.set(1 / PP.a.width, 0); quad(PP.blM, PP.b);
+      PP.blM.uniforms.tAO.value = PP.b.texture; PP.blM.uniforms.dir.value.set(0, 1 / PP.a.height); quad(PP.blM, PP.a);
+    }
+    PP.outM.uniforms.tColor.value = PP.rt.texture; PP.outM.uniforms.tAO.value = PP.a.texture; PP.outM.uniforms.aoMix.value = ao ? PP.mix : 0;
+    quad(PP.outM, null);
   }
 
   /* ---------------------------------------------------------------- loop */
@@ -536,7 +742,8 @@
     if (document.hidden || XW.paused) { last = now; return; }
     var dt = Math.min(.05, (now - (last || now)) / 1000); last = now; frame++; clock += dt;
     dtAvg = lerp(dtAvg, dt * 1000, .05);
-    if (frame > 150 && dtAvg > 32 && XW.quality > 0) { slow += dt; if (slow > 2.5) { setQuality(XW.quality - 1); slow = 0; } } else slow = 0;
+    // turun kualitas otomatis bila lambat: pasca-proses (AO) dilepas lebih dulu (< ±42 fps), lalu resolusi & bayangan (< 31 fps)
+    if (frame > 150 && XW.quality > 0 && !XW.qLock && dtAvg > (PP.on ? 24 : 32)) { slow += dt; if (slow > 2.5) { setQuality(XW.quality - 1); slow = 0; } } else slow = 0;
     var k = 1 - Math.pow(.001, dt);
     mouse.sx = lerp(mouse.sx, mouse.x, k * .5); mouse.sy = lerp(mouse.sy, mouse.y, k * .5);
     L.key.intensity = mood.key; L.hemi.intensity = mood.hemi; L.fill.intensity = mood.fill;
@@ -552,6 +759,12 @@
       if (st.recenter) { st.spin = lerp(st.spin, 0, k * .7); if (Math.abs(st.spin) < .002) { st.spin = 0; st.recenter = false; } }
     }
     if (item && item.userData.spin) item.userData.spin.rotation.y = st.spin;
+    if (item && item.userData.built && item.userData.built.motions) item.userData.built.motions.forEach(function (m) {
+      if (m.lin == null) m.lin = m.t;
+      if (Math.abs(m.to - m.lin) < .0005) return;
+      m.lin = m.to > m.lin ? Math.min(m.to, m.lin + dt / .75) : Math.max(m.to, m.lin - dt / .65);
+      m.t = m.lin; m.apply(ease(m.lin));
+    });
     st.map = lerp(st.map, st.mapT, k * .7);
     O.map.visible = st.map > .01;
     if (O.map.visible) {
@@ -588,7 +801,11 @@
     Lb.dims = dimsOn ? dimSegs() : null;
     Lb.beacons = st.map > .6 ? beacons.map(function (b) { return project(b.localToWorld(new T.Vector3(0, b.userData.h * b.scale.y + .05, 0))); }) : null;
     if (XW.onFrame) XW.onFrame(Lb);
-    renderer.render(scene, camera);
+    var three = /^(cubix|custom|model)$/.test(st.kind);
+    PP.mix = lerp(PP.mix, three && item && Math.abs(item.position.y) < .05 ? 1 : 0, k * 1.2);
+    if (item) item.children.forEach(function (o) { if (o.userData.blob) o.visible = !(CS.on && three); });
+    updateContact();
+    draw();
   }
 
   /* ---------------------------------------------------------------- garis ukur lengkap (Pengaturan › Ukuran)
@@ -622,16 +839,24 @@
       segs.push({ a: P(x, 0, hd), b: P(x, y, hd), k: e.l, t: e.cm + ' cm', at: 'end', side: -1 });
     });
     segs.center = P(0, b.h / 2, 0);
+    // siluet objek di layar (8 sudut kotak pembatas) — label ukuran menghindari area ini
+    segs.box = [];
+    [-hw, hw].forEach(function (x) { [0, b.h].forEach(function (y) { [-hd, hd].forEach(function (z) { segs.box.push(P(x, y, z)); }); }); });
     return segs;
   }
 
   /* ---------------------------------------------------------------- kualitas & ukuran */
+  /* 2 = penuh: desktop + WebGL2 → pasca-proses (MSAA 4×, AO, dither); ponsel → render langsung (MSAA kanvas)
+     1 = resolusi 1×, bayangan + bayangan kontak, tanpa AO · 0 = resolusi .75×, tanpa bayangan (blob saja) */
   function setQuality(q) {
-    XW.quality = q;
+    XW.quality = q = clamp(q, 0, 2);
     var dpr = window.devicePixelRatio || 1;
-    renderer.setPixelRatio(q >= 2 ? Math.min(dpr, MOBILE ? 1.5 : 1.75) : q === 1 ? 1 : .75);
+    PP.on = q >= 2 && !MOBILE && PP.ok;
+    renderer.setPixelRatio(q >= 2 ? Math.min(dpr, MOBILE || PP.on ? 1.5 : 1.75) : q === 1 ? 1 : .75);
     renderer.shadowMap.enabled = q > 0;
     renderer.setSize(W, H, false);
+    if (PP.on) ppSize();
+    CS.on = q > 0 && !!CS.plane; CS.sig = '';
   }
   function resize() {
     W = window.innerWidth; H = window.innerHeight;
@@ -653,9 +878,14 @@
     scene.background = col('#0f0c0a');
     scene.fog = new T.Fog(col('#0f0c0a'), 16, 46);
     camera = new T.PerspectiveCamera(30, 1, .05, 120);
-    if (T.RoomEnvironment) scene.environment = new T.PMREMGenerator(renderer).fromScene(new T.RoomEnvironment(), .04).texture;
+    // RoomEnvironment = cadangan sampai HDRI suasana siap (setMood → setEnv)
+    if (T.RoomEnvironment) scene.environment = O.roomEnv = new T.PMREMGenerator(renderer).fromScene(new T.RoomEnvironment(), .04).texture;
+    if (window.XTEX) XTEX.setAnisotropy(Math.min(8, renderer.capabilities.getMaxAnisotropy()));
+    try { ppInit(); } catch (e) { PP.ok = false; }
     mats.brass = new T.MeshStandardMaterial({ color: col('#b8924f'), metalness: 1, roughness: .28, envMapIntensity: 1 });
-    buildLights(); buildRoom(); buildSofa(); buildMap();
+    buildLights(); buildRoom(); buildContact(); buildSofa(); buildMap();
+    // lantai & podium tetap memantulkan ruang lama → tampilan panggung gelap tidak berubah oleh HDRI
+    if (O.roomEnv) { mats.floor.envMap = O.roomEnv; O.disc.material.envMap = O.roomEnv; }
     O.map.userData.bounds = { w: 12, h: 1, d: 4 };
     item = O.cubix;
     setPlinth(cubixBounds(), true, 0);
@@ -695,7 +925,7 @@
         st.camPitchT = clamp(st.camPitchT + cy * .004, -view.pitch + .02, 1.3 - view.pitch);
         st.lastDrag = performance.now(); return;
       }
-      if (!e.buttons && e.target === canvas && XW.onHover && performance.now() - hoverT > 90) { hoverT = performance.now(); XW.onHover(hit(e.clientX, e.clientY)); }
+      if (!e.buttons && e.target === canvas && XW.onHover && performance.now() - hoverT > 90) { hoverT = performance.now(); XW.onHover(hit(e.clientX, e.clientY), motionAt(e.clientX, e.clientY)); }
     }, { passive: true });
     var up = function (e) {
       delete ptrs[e.pointerId];
@@ -703,8 +933,9 @@
       if (st.drag) { st.drag = false; st.lastDrag = performance.now(); }
       if (st.cam) { st.cam = false; st.lastDrag = performance.now(); }
       if (down && e.type === 'pointerup' && e.target === canvas && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 7 && performance.now() - down.t < 550) {
-        var k = hit(e.clientX, e.clientY);
-        if (k && XW.onPick) XW.onPick(k);
+        var mo = motionAt(e.clientX, e.clientY);
+        if (mo) { toggleMotion(mo); if (XW.onMotion) XW.onMotion(mo); }
+        else { var k = hit(e.clientX, e.clientY); if (k && XW.onPick) XW.onPick(k); }
       }
       down = null;
     };
@@ -772,7 +1003,7 @@
   XW.snapshot = function (size) {
     if (!renderer) return '';
     try {
-      renderer.render(scene, camera);
+      draw();
       var src = renderer.domElement, k = src.width / W;
       var fw = W - inset.l - inset.r, fh = H - inset.t - inset.b, side = Math.min(fw, fh) * .82;
       var cx = inset.l + fw / 2, cy = inset.t + fh / 2;
@@ -782,6 +1013,77 @@
     } catch (e) { return ''; }
   };
   XW.preloadModel = function (url) { getModel(url).catch(function () {}); };
+  /* custom produk katalog: model GLB asli yang diubah langsung (bukan modul Customize).
+     Ukuran: lebar & dalam diregangkan hanya di zona tengah (9-slice) — lengan, sudut & kaki tetap
+     berukuran asli, hanya bergeser. Warna kaki/base: semua material logam diganti finishing pilihan. */
+  function modelSetup(g) {
+    if (g.userData.pc) return g.userData.pc;
+    var spin = g.userData.spin, inv = new T.Matrix4(), list = [];
+    spin.updateMatrixWorld(true);
+    var spinInv = new T.Matrix4().copy(spin.matrixWorld).invert();
+    spin.traverse(function (o) {
+      if (!o.isMesh || !o.geometry || !o.geometry.attributes.position) return;
+      o.geometry = o.geometry.clone();   // geometri GLB dipakai bersama antar klon → salin dulu
+      var toSpin = new T.Matrix4().multiplyMatrices(spinInv, o.matrixWorld), back = new T.Matrix4().copy(toSpin).invert();
+      var pos = o.geometry.attributes.position, nor = o.geometry.attributes.normal, v = new T.Vector3(), P = new Float32Array(pos.count * 3), N = nor ? new Float32Array(nor.count * 3) : null;
+      var nm = new T.Matrix3().getNormalMatrix(toSpin);
+      for (var i = 0; i < pos.count; i++) {
+        v.fromBufferAttribute(pos, i).applyMatrix4(toSpin); P[i * 3] = v.x; P[i * 3 + 1] = v.y; P[i * 3 + 2] = v.z;
+        if (N) { v.fromBufferAttribute(nor, i).applyMatrix3(nm).normalize(); N[i * 3] = v.x; N[i * 3 + 1] = v.y; N[i * 3 + 2] = v.z; }
+      }
+      list.push({ m: o, P: P, N: N, back: back, nback: new T.Matrix3().getNormalMatrix(back) });
+    });
+    var box = new T.Box3();
+    list.forEach(function (it) { for (var i = 0; i < it.P.length; i += 3) box.expandByPoint(new T.Vector3(it.P[i], it.P[i + 1], it.P[i + 2])); });
+    var mats = [];
+    (g.userData.mats || []).forEach(function (mt) { if (mt.metalness > .5) { mt.userData.pcCol0 = mt.color.clone(); mt.userData.pcRough0 = mt.roughness; mt.userData.pcMetal0 = mt.metalness; mats.push(mt); } });
+    g.userData.pc = { list: list, box: box, mats: mats, b0: { w: g.userData.bounds.w, h: g.userData.bounds.h, d: g.userData.bounds.d }, blob0: g.children.filter(function (o) { return o.userData.blob; })[0] };
+    return g.userData.pc;
+  }
+  // regang 1D: zona tengah [c-a, c+a] diskalakan, sisi luar digeser
+  function slice1(x, c, a, dlt) { var r = x - c; if (Math.abs(r) <= a) return c + r * (a + dlt) / a; return c + r + (r > 0 ? dlt : -dlt); }
+  XW.modelInfo = function () {
+    if (st.kind !== 'model' || !item) return null;
+    var pc = modelSetup(item), m = pc.mats[0];
+    return { w: Math.round(pc.b0.w * 100), d: Math.round(pc.b0.d * 100), h: Math.round(pc.b0.h * 100), metals: pc.mats.length, metalHex: m ? '#' + m.userData.pcCol0.getHexString() : null };
+  };
+  // o: { w, d (cm, kosong = asli), metal: { hex, rough, metalness } | null }
+  XW.reshapeModel = function (o) {
+    if (st.kind !== 'model' || !item) return false;
+    o = o || {};
+    var pc = modelSetup(item), bx = pc.box, cx = (bx.min.x + bx.max.x) / 2, cz = (bx.min.z + bx.max.z) / 2;
+    var hw = (bx.max.x - bx.min.x) / 2, hd = (bx.max.z - bx.min.z) / 2;
+    var dx = o.w ? (o.w / 100 - pc.b0.w) / 2 : 0, dz = o.d ? (o.d / 100 - pc.b0.d) / 2 : 0;
+    var ax = Math.max(.05, hw - Math.min(.24, hw * .3)), az = Math.max(.05, hd - Math.min(.16, hd * .28));   // zona lengan & tepi depan/belakang tetap
+    var sx = (ax + dx) / ax, sz = (az + dz) / az, v = new T.Vector3();
+    pc.list.forEach(function (it) {
+      var pos = it.m.geometry.attributes.position, nor = it.m.geometry.attributes.normal, P = it.P, N = it.N;
+      for (var i = 0, j = 0; i < pos.count; i++, j += 3) {
+        v.set(slice1(P[j], cx, ax, dx), P[j + 1], slice1(P[j + 2], cz, az, dz)).applyMatrix4(it.back);
+        pos.setXYZ(i, v.x, v.y, v.z);
+        if (N) {
+          var inX = Math.abs(P[j] - cx) <= ax, inZ = Math.abs(P[j + 2] - cz) <= az;
+          v.set(N[j] / (inX ? sx : 1), N[j + 1], N[j + 2] / (inZ ? sz : 1)).normalize().applyMatrix3(it.nback).normalize();
+          nor.setXYZ(i, v.x, v.y, v.z);
+        }
+      }
+      pos.needsUpdate = true; if (nor) nor.needsUpdate = true;
+      it.m.geometry.computeBoundingBox(); it.m.geometry.computeBoundingSphere();
+    });
+    var b = item.userData.bounds; b.w = pc.b0.w + 2 * dx; b.d = pc.b0.d + 2 * dz;
+    if (pc.blob0) pc.blob0.scale.set(b.w * 1.12, b.d * 1.2, 1);
+    pc.mats.forEach(function (mt) {
+      var m = o.metal;
+      if (!m) { mt.color.copy(mt.userData.pcCol0); mt.roughness = mt.userData.pcRough0; mt.metalness = mt.userData.pcMetal0; }
+      else { tw(mt.color, (function (c) { return { r: c.r, g: c.g, b: c.b, duration: .6, ease: 'power2.inOut' }; })(col(m.hex))); mt.roughness = m.rough != null ? m.rough : mt.userData.pcRough0; mt.metalness = m.metalness != null ? m.metalness : mt.userData.pcMetal0; }
+      mt.needsUpdate = true;
+    });
+    setPlinth(b, true, .6);
+    // bingkai kamera ikut bila ukuran berubah cukup jauh dari bingkai terakhir
+    var fb = pc.framed || pc.b0;
+    if (Math.abs(b.w - fb.w) / fb.w > .06 || Math.abs(b.d - fb.d) / fb.d > .1) { pc.framed = { w: b.w, d: b.d }; frameItem(b, .9); }
+    return true;
+  };
   XW.setTint = function (hexStr) { if (st.kind === 'model') tintModel(item, hexStr); };
   // kembali ke posisi awal: zoom normal, putaran 0, bingkai kamera semula
   XW.recenter = function () {
@@ -798,11 +1100,35 @@
   /* Customize: rancangan parametrik dari maker.js. Dibangun ulang di tempat saat pilihan berubah
      (putaran & zoom pengguna tetap), dibingkai ulang bila ukurannya berubah cukup jauh. */
   var customKit = null;
+  /* bagian bergerak rancangan (pintu, laci, panel geser, flip, lipat): klik → buka / tutup beranimasi.
+     Posisi terakhir diingat per jenis produk selama pilihan lain diubah. */
+  var motionMem = { key: '', s: {} };
+  var ease = function (v) { return v < .5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2; };
+  function motionAt(x, y) {
+    if (!item || !item.userData.custom || !item.visible || !camera) return null;
+    ndc.set(x / W * 2 - 1, -(y / H) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    var hits = ray.intersectObject(item, true);
+    for (var i = 0; i < hits.length; i++) {
+      if (hits[i].object.userData.noPick) continue;
+      for (var o = hits[i].object; o && o !== item; o = o.parent) if (o.userData.motion) return o.userData.motion;
+      return null;   // objek terdepan bukan bagian bergerak
+    }
+    return null;
+  }
+  function toggleMotion(m) { m.to = m.to > .5 ? 0 : 1; motionMem.s[m.id] = m.to; }
+  XW.motions = function () { return item && item.userData.built && item.userData.built.motions || []; };
+  XW.toggleMotion = function (id) { var m = XW.motions().filter(function (q) { return q.id === id; })[0]; if (m) toggleMotion(m); return !!m; };
   function buildCustom(g, cfg) {
     var spin = g.userData.spin, prevB = g.userData.bounds;
     if (g.userData.built) { spin.remove(g.userData.built.group); g.userData.built.dispose(); }
     if (!customKit) customKit = { T: T, rbox: rbox, col: col };
-    var b = window.XMAKER.build(cfg, customKit), box3 = new T.Box3().setFromObject(b.group), size = box3.getSize(new T.Vector3()), c = box3.getCenter(new T.Vector3());
+    var b = window.XMAKER.build(cfg, customKit), mv = b.motions || [];
+    mv.forEach(function (m) { m.apply(0); });   // ukur dalam keadaan tertutup
+    var box3 = new T.Box3().setFromObject(b.group), size = box3.getSize(new T.Vector3()), c = box3.getCenter(new T.Vector3());
+    var mkey = cfg.cat + '.' + cfg.sub;
+    if (motionMem.key !== mkey) motionMem = { key: mkey, s: {} };
+    mv.forEach(function (m) { if (motionMem.s[m.id] != null) m.t = m.to = motionMem.s[m.id]; m.lin = m.t; m.apply(ease(m.t)); });
     b.group.position.set(-c.x, LIFT - box3.min.y, -c.z);
     spin.add(b.group);
     g.userData.built = b;
@@ -825,7 +1151,7 @@
     var my = ++req, g = new T.Group(), spin = new T.Group();
     g.add(spin);
     var blob = new T.Mesh(new T.PlaneGeometry(1, 1), new T.MeshBasicMaterial({ map: O.blobTex, transparent: true, depthWrite: false, opacity: .4 }));
-    blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.userData.noPick = true; g.add(blob);
+    blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.userData.noPick = blob.userData.blob = true; g.add(blob);
     g.userData = { spin: spin, custom: true, blob: blob };
     g.userData.dispose = function () { scene.remove(g); if (g.userData.built) g.userData.built.dispose(); blob.geometry.dispose(); blob.material.dispose(); };
     buildCustom(g, cfg);
@@ -857,5 +1183,17 @@
   XW.kind = function () { return st.kind; };
   XW._debug = function () { return { view: Object.assign({}, view), inset: Object.assign({}, inset), cam: camera.position.toArray().map(function (v) { return +v.toFixed(2); }), W: W, H: H }; };
   XW.pause = function (v) { XW.paused = !!v; };
+  // kualitas manual (mis. dari pengujian / pengaturan); lock = jangan turun otomatis
+  XW.setQuality = function (q, lock) { XW.qLock = !!lock; setQuality(q); };
+  XW.info = function () { return { q: XW.quality, post: PP.on, ao: +PP.mix.toFixed(2), contact: CS.on, pr: renderer.getPixelRatio(), dtAvg: +dtAvg.toFixed(1), env: scene.environment && scene.environment.isTexture && envC[(MOODS[moodName] || {}).hdr + (MOODS[moodName] || {}).tint] === scene.environment ? moodName : 'room-env', calls: renderer.info.render.calls, tris: renderer.info.render.triangles }; };
+  // ukur biaya GPU per frame (ms): n frame digambar beruntun lalu dipaksa selesai (readPixels)
+  XW.bench = function (n) {
+    n = n || 40; var gl = renderer.getContext(), px = new Uint8Array(4);
+    draw(); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    var t0 = performance.now();
+    for (var i = 0; i < n; i++) { updateContact(); draw(); }
+    gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    return +((performance.now() - t0) / n).toFixed(2);
+  };
   XW.state = st;
 })();

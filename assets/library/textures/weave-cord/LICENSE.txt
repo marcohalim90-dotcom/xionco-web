@@ -1,0 +1,8 @@
+Set      : weave-cord
+Asset    : Wicker 004 (Wicker004)
+Author   : Lennart Demes (ambientCG)
+Source   : https://ambientcg.com/view?id=Wicker004
+Download : https://ambientcg.com/get?file=Wicker004_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 250 x 250 mm
+Processed: downscaled to 512 px, WebP. Albedo converted to normalised greyscale (colour comes from the chosen fabric/wood hex). Roughness normalised to mean 0.8.

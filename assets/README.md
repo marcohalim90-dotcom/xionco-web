@@ -21,3 +21,16 @@ Model 3D dari SketchUp (.skp) tidak bisa dibaca browser — ekspor dulu ke GLB
 Hapus figur manusia (Sumele) sebelum ekspor. Satuan cm/inci dikoreksi otomatis;
 bila model menghadap ke arah yang salah, isi "Putar model" di Katalog › edit item.
 (Aset versi 1 ada di `v1/assets/`.)
+
+## Pustaka CC0 (`assets/library/`)
+
+Aset bebas lisensi (CC0) yang dipakai situs & render Blender — sumber dan pembuat ada di
+`LICENSE.txt` tiap folder:
+
+```
+library/textures/<set>/{albedo,normal,rough}.webp   tekstur kain, kulit, kayu, logam, batu, anyaman (v5/js/texlib.js)
+library/hdri/*_512.hdr                               cahaya lingkungan panggung 3D (dimuat malas)
+library/hdri/*_2k.hdr                                hanya untuk tools/render (tidak ikut online)
+library/polyhaven/throw_pillows_01/                  bantal hias (v5/js/parts.js)
+```
+Albedo kain & kayu disimpan abu-abu ternormal: warna hex pilihan pelanggan yang mewarnainya.

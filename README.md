@@ -207,6 +207,21 @@ isi `XPAY.provider` & ganti `XPAY.pay` di file itu saja — kunci rahasia gatewa
 Tarif ongkir per wilayah (`XPAY.zones`), biaya pemasangan (`XPAY.install`) dan lama produksi
 (`XPAY.production`) masih **contoh** — ganti dengan angka resmi.
 
+### Harga Customize (Developer Settings › Harga)
+
+Semua angka harga Customize bisa diubah di tabel. Yang disimpan hanya **selisih** dari harga bawaan
+(`v5/js/custom-spec.js`) ke `data/pricing.json` (mode folder, ikut online saat dipublish).
+
+- Harga per unit = (harga dasar + penyesuaian ukuran) × faktor pilihan & material + tambahan pilihan,
+  material & komponen per buah → ± penyesuaian umum (%) → dibulatkan (bawaan IDR 10.000) → × jumlah unit.
+- Per sub-kategori: harga dasar (pada ukuran referensi), tambahan per 10 cm (lebar, dalam, tinggi,
+  sisi L, diameter, tinggi headboard) / per 1 cm tebal top, harga dasar top bulat, faktor & tambahan
+  setiap pilihan, harga per buah (bantal, laci).
+- Material & warna (berlaku untuk semua sub-kategori): kain, warna kain, kayu, besi, batu, warna HPL.
+- Umum: pembulatan, penyesuaian %, harga minimum. Export CSV untuk dicek di spreadsheet.
+- Perubahan langsung dipakai di Customize, tas (item custom dihitung ulang dari konfigurasinya),
+  rancangan tersimpan, dan checkout.
+
 ### Akun, tas & checkout (5.01.02)
 
 - **Akun** (`v5/js/auth.js`, `XAUTH`): masuk via WhatsApp (kode), Google, Email, Instagram (hanya akun

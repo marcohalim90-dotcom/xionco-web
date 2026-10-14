@@ -164,17 +164,18 @@
       target = t || null;
       cur$.classList.toggle('is-native', !!native);
       cur$.classList.toggle('is-hover', !!t);
-      if (!overWorld) { cur$.classList.remove('is-pick'); cur$.classList.remove('is-drag'); cur$.classList.remove('is-cam'); }
+      if (!overWorld) { cur$.classList.remove('is-pick'); cur$.classList.remove('is-drag'); cur$.classList.remove('is-cam'); cur$.classList.remove('is-door'); }
     });
     document.addEventListener('pointerdown', function () { cur$.classList.add('is-down'); });
     document.addEventListener('pointerup', function () { cur$.classList.remove('is-down'); });
     document.documentElement.addEventListener('mouseleave', function () { cur$.classList.add('is-out'); });
     document.documentElement.addEventListener('mouseenter', function () { cur$.classList.remove('is-out'); });
   }
-  XW.onHover = function (k) {
+  XW.onHover = function (k, mo) {
     cur$.classList.toggle('is-pick', !!k && overWorld);
-    // di produk: putar produk (‹ ›) · di area kosong: ubah arah kamera (cincin putus-putus)
-    cur$.classList.toggle('is-drag', overWorld && !!k && !!(XW.canSpin && XW.canSpin()));
+    // pintu / laci kabinet: klik untuk buka-tutup (cincin penuh) · produk: putar (‹ ›) · area kosong: arah kamera (putus-putus)
+    cur$.classList.toggle('is-door', overWorld && !!mo);
+    cur$.classList.toggle('is-drag', overWorld && !!k && !mo && !!(XW.canSpin && XW.canSpin()));
     cur$.classList.toggle('is-cam', overWorld && !k);
   };
 
@@ -313,7 +314,7 @@
     });
   }
   function productDetail(p) {
-    var c = cur(p), disc = c.was && c.price ? Math.round((1 - c.price / c.was) * 100) : 0;
+    var c = pcCur(p, cur(p)), disc = c.was && c.price ? Math.round((1 - c.price / c.was) * 100) : 0;
     setDetail({
       name: p.name, sub: p.type,
       cols: [c.label ? [T('Varian'), c.label] : [T('Kategori'), catLabel(p.cat)], [T('Kirim'), T('1–3 hari kerja')]],
@@ -342,7 +343,7 @@
   // objek di panggung mengikuti varian: model 3D diwarnai, foto berganti ke foto varian
   function stageShow(p) {
     var s = selOf(p), c = cur(p, s), photo = src(s.touched ? c.img : p.img, 1024);
-    if (p.model) XW.showModel(p, src(p.model), photo, c.hex);
+    if (p.model) { var pr = XW.showModel(p, src(p.model), photo, c.hex); if (pr && pr.then) pr.then(function () { if (pcFor(p)) { if (!pcz.w0) pcInit(p); else pcApply(); } }); }
     else XW.showProduct(p, photo, src(p.img, 1024));
   }
   function mapDetail(i) {
@@ -513,7 +514,8 @@
     $$('.tile', grid).forEach(function (t, k) { t.classList.toggle('is-on', k === kI); });
   }
   function fillPd(p, anim) {
-    var c = cur(p), disc = c.was && c.price ? Math.round((1 - c.price / c.was) * 100) : 0;
+    if (pcz && pcz.pid !== p.id) pcz = null;
+    var c = pcCur(p, cur(p)), disc = c.was && c.price ? Math.round((1 - c.price / c.was) * 100) : 0;
     $('#pdCat').textContent = catLabel(p.cat) + (p.sold ? ' · ' + T('{n} terjual', { n: p.sold }) : '');
     $('#pdName').textContent = p.name;
     $('#pdType').textContent = p.type;
@@ -529,7 +531,8 @@
     var canBuy = !!c.price && p.id !== 'cubix';
     $('#pdBuy').style.display = canBuy ? '' : 'none';
     $('#pdNow').style.display = canBuy ? '' : 'none';
-    $('#pdCustom').style.display = p.customizable || p.id === 'cubix' ? '' : 'none';
+    $('#pdCustom').style.display = p.customizable || p.id === 'cubix' || p.model ? '' : 'none';
+    pcRender();
     kQty = 1; $('#pdQty').textContent = 1;
     $('#pdWa').href = wa(T('Halo XIONCO, saya ingin tahu lebih lanjut tentang {name} ({type}).', { name: p.name, type: p.type + (c.label ? ' · ' + c.label : '') }));
     $('#pdWaText').textContent = c.price ? T('Tanya') : T('Tanya harga');
@@ -587,7 +590,98 @@
   $('#pdPlus').addEventListener('click', function () { kQty = Math.min(20, kQty + 1); $('#pdQty').textContent = kQty; });
   $('#pdAdd').addEventListener('click', function () { addToBag(kList[kI], kQty); });
   $('#pdNow').addEventListener('click', function () { buyNow(kList[kI], kQty); });
-  $('#pdCustom').addEventListener('click', function () { openCustomize(kList[kI]); });
+  /* ---- Sesuaikan produk katalog (model 3D asli): ukuran & warna kaki/base ----
+     Yang diubah adalah item itu sendiri (GLB), bukan rancangan Customize baru.
+     Harga = harga varian × (lebar/lebar asli)^0,85 × (dalam/dalam asli)^0,4 × faktor finishing
+     (+ tambahan finishing) — finishing memakai tabel Material › besi di Developer Settings › Harga. */
+  var pcz = null;   // { pid, w, d, w0, d0, metal, metal0, open }
+  var pcFor = function (p) { return p && pcz && pcz.pid === p.id ? pcz : null; };
+  var pcChanged = function (pc) { return !!pc && (pc.w !== pc.w0 || pc.d !== pc.d0 || pc.metal !== pc.metal0); };
+  function pcPrice(base, pc) {
+    if (!base || !pc) return base;
+    var f = Math.pow(pc.w / pc.w0, .85) * Math.pow(pc.d / pc.d0, .4), add = 0;
+    if (pc.metal !== pc.metal0 && window.XC && XC.matPrice) { var a = XC.matPrice('metal.' + pc.metal), b = XC.matPrice('metal.' + pc.metal0); f *= (a.f || 1) / (b.f || 1); add = (a.add || 0) - (b.add || 0); }
+    return Math.round((base * f + add) / 10000) * 10000;
+  }
+  function pcLabel(pc) { var m = window.XC && XC.find(XC.METAL, pc.metal); return 'W ' + pc.w + ' · D ' + pc.d + ' cm' + (m ? ' · ' + L(m) : ''); }
+  // harga & label varian setelah penyesuaian (untuk halaman produk & kotak bawah)
+  function pcCur(p, c) { var pc = pcFor(p); if (!pcChanged(pc) || !c.price) return c; var o = {}; for (var k in c) o[k] = c[k]; o.price = pcPrice(c.price, pc); o.was = null; o.label = (c.label ? c.label + ' · ' : '') + pcLabel(pc); return o; }
+  function nearMetal(hex) {
+    if (!hex || !window.XC) return 'brass';
+    var t = parseInt(hex.slice(1), 16), best = null, bd = 1e9;
+    XC.METAL.forEach(function (m) { var v = parseInt(m.hex.slice(1), 16), d = Math.abs((t >> 16) - (v >> 16)) + Math.abs((t >> 8 & 255) - (v >> 8 & 255)) + Math.abs((t & 255) - (v & 255)); if (d < bd) { bd = d; best = m.id; } });
+    return best;
+  }
+  function pcApply() {
+    var p = kList[kI], pc = pcFor(p);
+    if (!pc || !XW.reshapeModel || !(furniture.kind === 'product' && furniture.p === p)) return;
+    var m = XC.find(XC.METAL, pc.metal);
+    XW.reshapeModel({ w: pc.w, d: pc.d, metal: pc.metal === pc.metal0 || !m ? null : { hex: m.hex, rough: m.rough, metalness: m.id === 'ivory' ? .2 : 1 } });
+  }
+  function pcRender() {
+    var p = kList[kI], box = $('#pdPc'), pc = pcFor(p);
+    if (!box) return;
+    box.hidden = !(pc && pc.open);
+    $('#pdCustom span').textContent = pc && pc.open ? T('Tutup penyesuaian') : T('Sesuaikan');
+    if (!pc || !pc.open) { box.innerHTML = ''; return; }
+    if (!pc.w0) { box.innerHTML = '<p class="note">' + T('Memuat model 3D…') + '</p>'; return; }
+    var rng = function (k, lab, v, min, max, step) {
+      return '<div class="cz-g"><p class="og__h"><span>' + lab + '</span><b>' + v + ' cm</b></p><input class="rng" type="range" style="--p:' + ((v - min) / (max - min) * 100).toFixed(1) + '%" min="' + min + '" max="' + max + '" step="' + step + '" value="' + v + '" data-pc="' + k + '" aria-label="' + esc(lab) + '"><p class="rng__ends"><span>' + min + ' cm</span><span>' + max + ' cm</span></p></div>';
+    };
+    var mg = { id: 'metal', type: 'swatch' }, cm0 = XC.find(XC.METAL, pc.metal);
+    box.innerHTML = '<p class="og__h pc__h"><span>' + T('Sesuaikan {name}', { name: p.name }) + '</span></p>' +
+      '<p class="note pc__n">' + T('Model asli diubah langsung — lengan & kaki tetap, bagian tengah yang menyesuaikan.') + '</p>' +
+      (pcChanged(pc) ? '<p class="pc__r"><button type="button" class="mini" data-pc-reset>' + T('Ukuran asli') + '</button></p>' : '') +
+      rng('w', T('Lebar'), pc.w, pc.wMin, pc.wMax, 5) + rng('d', T('Kedalaman'), pc.d, pc.dMin, pc.dMax, 1) +
+      (pc.hasMetal ? '<div class="cz-g"><p class="og__h"><span>' + T('Warna kaki & base') + '</span><b>' + esc(cm0 ? L(cm0) : '') + '</b></p><div class="cz-grid">' +
+        XC.METAL.map(function (m) { return cell(mg, m, m.id === pc.metal, false); }).join('') + '</div></div>' : '');
+  }
+  function pcOpen(p) {
+    var pc = pcFor(p);
+    if (!pc) pc = pcz = { pid: p.id, open: false };
+    pc.open = !pc.open;
+    if (pc.open && !pc.w0) pcInit(p);
+    pcRender();
+    if (pc.open) setTimeout(function () { var b = $('#pdPc'); if (b && !b.hidden) b.scrollIntoView({ block: 'nearest', behavior: REDUCED ? 'auto' : 'smooth' }); }, 60);
+  }
+  // ukuran asli diambil dari model yang tampil di panggung (ditunggu bila belum termuat)
+  function pcInit(p, tries) {
+    var pc = pcFor(p); if (!pc || pc.w0) return;
+    var info = furniture.kind === 'product' && furniture.p === p && XW.modelInfo && XW.modelInfo();
+    if (!info) { if ((tries || 0) < 40) setTimeout(function () { pcInit(p, (tries || 0) + 1); }, 250); return; }
+    var r5 = function (v) { return Math.round(v / 5) * 5; };
+    pc.w0 = pc.w = info.w; pc.d0 = pc.d = info.d;
+    pc.wMin = r5(info.w * .75); pc.wMax = r5(info.w * 1.35); pc.dMin = Math.round(info.d * .85); pc.dMax = Math.round(info.d * 1.2);
+    pc.hasMetal = info.metals > 0; pc.metal0 = pc.metal = nearMetal(info.metalHex);
+    pcRender();
+  }
+  function pcUpdate() {
+    var p = kList[kI];
+    pcApply();
+    var c = pcCur(p, cur(p));
+    $('#pdPrice').innerHTML = c.price ? '<b>' + priceText(p, c) + '</b>' : '<b>' + T('Melalui penawaran') + '</b>';
+    productDetail(p);
+  }
+  $('#pdPc') && $('#pdPc').addEventListener('input', function (e) {
+    var t = e.target; if (!t.dataset.pc) return;
+    var pc = pcFor(kList[kI]); if (!pc) return;
+    pc[t.dataset.pc] = +t.value;
+    t.style.setProperty('--p', ((t.value - t.min) / (t.max - t.min) * 100).toFixed(1) + '%');
+    var b = t.parentNode.querySelector('.og__h b'); if (b) b.textContent = t.value + ' cm';
+    pcUpdate();
+  });
+  $('#pdPc') && $('#pdPc').addEventListener('change', function () { pcRender(); });
+  $('#pdPc') && $('#pdPc').addEventListener('click', function (e) {
+    var pc = pcFor(kList[kI]); if (!pc) return;
+    var b = e.target.closest('[data-v]');
+    if (b) { pc.metal = b.dataset.v; pcRender(); pcUpdate(); czLazy($('#pdPc')); return; }
+    if (e.target.closest('[data-pc-reset]')) { pc.w = pc.w0; pc.d = pc.d0; pc.metal = pc.metal0; pcRender(); pcUpdate(); }
+  });
+  $('#pdCustom').addEventListener('click', function () {
+    var p = kList[kI]; if (!p) return;
+    if (p.model) pcOpen(p);   // produk dengan model 3D: sesuaikan item itu sendiri
+    else openCustomize(p);    // belum ada model: rancangan Customize seperti sebelumnya
+  });
   enter.koleksi = function () { if (!kReady) { kReady = true; renderGrid(); } };
   leave.koleksi = function (to) { if (to !== 'customize' && to !== 'bayar') closePd(); };
 
@@ -596,19 +690,24 @@
      ====================================================================== */
   function loadBag() {
     var b = store.get('xv5_bag2', null);
-    if (b) return b;
+    // rancangan custom lama di tas → spesifikasi sekarang (mis. back=channel → backTuft)
+    if (b) { Object.keys(b).forEach(function (k) { var e = b[k]; if (e && e.type === 'custom' && e.cfg && window.XC && window.XC.normalize) { try { window.XC.normalize(e.cfg); } catch (err) {} } }); return b; }
     b = {};
     var old = store.get('xv5_bag', {});
     Object.keys(old).forEach(function (id) { if (typeof old[id] === 'number' && byId[id]) b[id + '|-1|-1'] = { id: id, v: -1, s: -1, q: old[id] }; });
     return b;
   }
   var bag = loadBag();
+  // harga rancangan custom dihitung ulang dari tabel harga terbaru (Developer Settings › Harga)
+  function customUnit(cfg, fallback) { if (!cfg || !window.XC) return fallback; try { var c = JSON.parse(JSON.stringify(cfg)); c.qty = 1; return window.XC.estimate(c) || fallback; } catch (err) { return fallback; } }
   function line(e) {
-    if (e.type === 'custom') return { key: e.id, custom: true, p: { id: e.id, name: e.title, type: e.sub }, c: { price: e.price, label: e.mat ? e.sub + ' · ' + e.mat : e.sub, img: e.img }, q: e.q, total: e.price * e.q, e: e };
+    if (e.type === 'custom') { var up = customUnit(e.cfg, e.price); return { key: e.id, custom: true, p: { id: e.id, name: e.title, type: e.sub }, c: { price: up, label: e.mat ? e.sub + ' · ' + e.mat : e.sub, img: e.img }, q: e.q, total: up * e.q, e: e }; }
     var p = byId[e.id]; if (!p) return null;
     var c = cur(p, { v: e.v, s: e.s });
     if (!c.price) return null;
-    return { key: e.id + '|' + e.v + '|' + e.s, p: p, c: c, q: e.q, total: c.price * e.q, e: e };
+    var key = e.id + '|' + e.v + '|' + e.s;
+    if (e.pc) { var o = {}; for (var k in c) o[k] = c[k]; o.price = pcPrice(c.price, e.pc); o.label = (c.label ? c.label + ' · ' : '') + pcLabel(e.pc); c = o; key += '|' + e.pc.w + 'x' + e.pc.d + e.pc.metal; }
+    return { key: key, p: p, c: c, q: e.q, total: c.price * e.q, e: e };
   }
   function bagLines() { return Object.keys(bag).map(function (k) { return line(bag[k]); }).filter(Boolean); }
   function cleanBag() { Object.keys(bag).forEach(function (k) { if (!line(bag[k])) delete bag[k]; }); }
@@ -645,7 +744,7 @@
     else if (e.target.closest('[data-rm]')) { delete bag[k]; renderBag(); }
     else if (e.target.closest('.list__th, .list__n')) { if (en.type === 'custom') openDesign(en); else openProduct(byId[en.id]); }
   });
-  function entryOf(p, q) { var s = selOf(p); return { id: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, q: q || 1 }; }
+  function entryOf(p, q) { var s = selOf(p), pc = pcFor(p), e = { id: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, q: q || 1 }; if (pcChanged(pc)) e.pc = { w: pc.w, d: pc.d, w0: pc.w0, d0: pc.d0, metal: pc.metal, metal0: pc.metal0 }; return e; }
   function bump() { var b = $('#bagBtn'); b.classList.remove('is-bump'); void b.offsetWidth; b.classList.add('is-bump'); }
   function addToBag(p, q) {
     if (!p) return;
@@ -851,7 +950,7 @@
     var k = coCalc();
     var order = {
       id: 'XC-' + Date.now().toString(36).toUpperCase(), created: Date.now(), account: u ? u.id : null,
-      items: k.lines.map(function (l) { return { id: l.p.id, name: l.p.name, variant: l.c.label, qty: l.q, price: l.c.price, custom: l.custom ? l.e.cfg : undefined }; }),
+      items: k.lines.map(function (l) { return { id: l.p.id, name: l.p.name, variant: l.c.label, qty: l.q, price: l.c.price, custom: l.custom ? l.e.cfg : undefined, adjust: l.e.pc || undefined }; }),
       subtotal: k.sub, shipping: k.ship, install: k.inst, total: k.total, customer: contact, address: addr, method: coState.method, eta: eta(k.zone)
     };
     coState.busy = true; renderCo(true);
@@ -898,10 +997,12 @@
   var XC = window.XC, dimEl = $('#dim');
   var L = function (o) { return !o ? '' : I18N && I18N.lang() === 'en' ? (o.en || o.l) : o.l; };
   var cz = null, czBase = null, czView = 'design', czPick = null;
-  try { cz = store.get('xv5_cz', null); if (cz) XC.sub(cz); } catch (e) { cz = null; }
+  try { cz = store.get('xv5_cz', null); if (cz) { XC.sub(cz); XC.normalize(cz); } } catch (e) { cz = null; }
   if (!cz || !cz.cat) cz = XC.defaults('kursi', 'sofa');
   var czSave = function () { store.set('xv5_cz', cz); };
   var cut15 = function (t) { t = String(t); return t.length > 15 ? t.slice(0, 14).replace(/\s+$/, '') + '…' : t; };
+  // label kotak pilihan ≤ 15: s (Indonesia) / se (English) bila label lengkap terlalu panjang; warna kain: s = tanpa nama lini
+  var shortL = function (x) { return I18N && I18N.lang() === 'en' ? (x.se || (x.s && x.en === x.l ? x.s : L(x))) : (x.s || x.l); };
   var short = function (n) { var en = I18N && I18N.lang() === 'en'; return n >= 1e6 ? (n / 1e6).toFixed(1).replace(/\.0$/, '').replace('.', en ? '.' : ',') + (en ? 'M' : ' jt') : Math.round(n / 1000) + (en ? 'k' : ' rb'); };
   var czVal = function (gr, v) { return gr.unit === 'pcs' ? String(v) : v + ' ' + gr.unit; };
   var czLayout = function () { var s = window.XVDB && XVDB.settings ? XVDB.settings() : {}; return s.czLayout === 'box2' && !isMobile() ? 'box2' : 'box1'; };
@@ -919,7 +1020,7 @@
   }
   function czTitle(lang) {
     var Lx = lang === 'id' ? function (o) { return o.l; } : L, sb = XC.sub(cz);
-    var g = XC.groups(cz, 'bentuk').filter(function (x) { return x.id === 'shape' || x.id === 'topShape'; })[0], o = g && XC.pick(g, cz);
+    var g = XC.groups(cz, 'bentuk').filter(function (x) { return x.id === 'shape' || x.id === 'topShape' || x.id === 'form'; })[0], o = g && XC.pick(g, cz);
     return Lx(sb) + (o ? ' · ' + Lx(o) : '');
   }
   function czMat(lang) {
@@ -960,7 +1061,7 @@
   }
   function openDesign(d) {
     czBase = d.base || null; czView = 'design'; czPick = null;
-    cz = JSON.parse(JSON.stringify(d.cfg)); czSave();
+    cz = XC.normalize(JSON.parse(JSON.stringify(d.cfg))); czSave();
     if (current !== 'customize') go('customize'); else { czRender(); czStage(); }
   }
   $('#czFoot').addEventListener('click', function (e) {
@@ -969,12 +1070,52 @@
     else if (e.target.closest('[data-cz-add]')) czAddToBag();
   });
 
-  /* ---------- tampilan */
+  /* ---------- kartu pilihan 3:4 — atas 1:1 gambar garis (atau contoh warna/bahan), bawah label
+     Gambar garis: assets/cz-icons (dibuat oleh tools/icons/build.js), tampil lewat CSS mask sehingga
+     warnanya mengikuti tema (emas saat dipilih). Dimuat saat kartu mendekati layar. */
+  // alamat absolut: url() di dalam variabel CSS dibaca relatif terhadap file CSS, bukan halaman
+  var CZI = { base: (function () { try { return new URL('../assets/cz-icons/', location.href).href; } catch (e) { return '../assets/cz-icons/'; } })(), man: null, seen: {}, io: null };
+  try {
+    fetch(CZI.base + 'manifest.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (m) {
+      if (!m || !m.subs) return; CZI.man = m;
+      if (current === 'customize') czRender(true);
+    }).catch(function () {});
+  } catch (e) {}
+  function czIcon(gr, x) {
+    var m = CZI.man, rel = null; if (!m) return null;
+    if (gr.id === '_cat') rel = m.jenis[x.id] ? '_jenis/' + x.id : null;
+    else if (gr.id === '_sub') rel = m.jenis[cz.cat + '/' + x.id] ? '_jenis/' + cz.cat + '__' + x.id : null;
+    else { var s = m.subs[cz.cat + '/' + cz.sub], e = s && s[gr.id + '__' + x.id]; if (e != null) rel = e || cz.cat + '/' + cz.sub + '/' + gr.id + '__' + x.id; }
+    return rel ? CZI.base + rel + '.png?v=' + m.v : null;
+  }
+  // contoh bahan untuk kelompok warna: kain (kulit / bouclé / beludru), kayu, logam, batu, warna HPL
+  function czSwatch(gr, x) {
+    var k = '', u = gr.id === 'color' || gr.id === 'color2' ? XC.find(XC.UPH, cz.uph) : null;
+    if (u) k = u.leather ? 'is-leather' : u.nap ? 'is-' + u.nap : 'is-weave';
+    else if (gr.id === 'wood' || x.grain) k = 'is-wood';
+    else if (gr.id === 'metal') k = 'is-metal';
+    else if (x.speck) k = 'is-speck';
+    else if (x.vein) k = 'is-stone';
+    return '<span class="cz-card__f"><i class="cz-sw ' + k + '" style="--c:' + x.hex + (x.vein ? ';--v:' + x.vein : '') + '"></i></span>';
+  }
   function cell(gr, x, on, multi) {
-    var full = L(x) + (x.add ? ' (+' + short(x.add) + ')' : '');
-    return '<button type="button" class="cz-o' + (on ? ' is-on' : '') + '" data-v="' + x.id + '" title="' + esc(full) + '">' +
-      (x.hex ? '<i class="cz-o__c' + (x.vein || x.speck ? ' is-stone' : '') + '" style="--c:' + x.hex + (x.vein ? ';--v:' + x.vein : '') + '"></i>' : multi ? '<i class="cz-o__k"></i>' : '') +
-      '<span>' + esc(cut15(x.s || L(x))) + '</span></button>';
+    var full = L(x) + (x.add ? ' (+' + short(x.add) + ')' : ''), fig = '', kind = 'is-tx';
+    if (x.hex) { fig = czSwatch(gr, x); kind = 'is-sw'; }
+    else {
+      var u = czIcon(gr, x);
+      if (u) { kind = 'is-ic'; fig = '<span class="cz-card__f"><i class="cz-card__m' + (CZI.seen[u] ? ' is-m" style="--m:url(\'' + u + '\')' : '') + '" data-m="' + esc(u) + '"></i></span>'; }
+    }
+    return '<button type="button" class="cz-o cz-card ' + kind + (on ? ' is-on' : '') + '" data-v="' + x.id + '" title="' + esc(full) + '">' + fig +
+      (multi ? '<i class="cz-o__k"></i>' : '') + '<span class="cz-card__l"><span>' + esc(cut15(shortL(x))) + '</span></span></button>';
+  }
+  // gambar garis dimuat saat kartu mendekati area gulir (panel atau kotak pilihan Box 2)
+  function czLazy(root) {
+    var list = $$('.cz-card__m:not(.is-m)', root); if (!list.length) return;
+    var show = function (el) { var u = el.getAttribute('data-m'); el.style.setProperty('--m', 'url(\'' + u + '\')'); el.classList.add('is-m'); CZI.seen[u] = 1; };
+    if (!('IntersectionObserver' in window)) { list.forEach(show); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { show(e.target); io.unobserve(e.target); } }); }, { root: root.closest('#czScroll, #czPicker') || null, rootMargin: '240px 0px' });
+    list.forEach(function (el) { io.observe(el); });
+    if (root === $('#czBody')) { if (CZI.io) CZI.io.disconnect(); CZI.io = io; }
   }
   function selText(gr) {
     var v = cz[gr.id];
@@ -1033,6 +1174,7 @@
     czFoot();
     $('#czBody').innerHTML = czSections(box2);
     sc.scrollTop = keepScroll ? top : 0;
+    czLazy($('#czBody'));
     czSpy();
     if (box2 && czPick && findGroup(czPick) && XC.opts(findGroup(czPick), cz).length > 4) czPickerFill(); else czPickerClose(true);
     czDetail();
@@ -1061,6 +1203,7 @@
     var grid = $('#czPickGrid');
     grid.dataset.g = gr.id; if (multi) grid.setAttribute('data-multi', ''); else grid.removeAttribute('data-multi');
     grid.innerHTML = XC.opts(gr, cz).map(function (x) { return cell(gr, x, multi ? (val || []).indexOf(x.id) >= 0 : x.id === val, multi); }).join('');
+    czLazy(grid);
     if (!picker.classList.contains('is-on')) { picker.classList.add('is-on'); picker.setAttribute('aria-hidden', 'false'); insets(); }
   }
   function czPickerClose(silent) {
@@ -1172,7 +1315,7 @@
     if (czBase) { type = 'existing'; data.item = czBase.id; data.basePrice = czBase.price || ''; data.matType = (XC.find(XC.UPH, cz.uph) || {}).l || ''; data.matColor = czMat('id'); data.notes = data.spec + (data.notes ? '\n\n' + data.notes : ''); }
     else {
       data.project = czTitle('id'); data.brief = data.spec;
-      data.category = { kursi: sb.id === 'sofa' || sb.id === 'armchair' ? 'Sofa' : 'Kursi', meja: 'Meja', kabinet: 'Kabinet / lemari', divan: 'Tempat tidur' }[cz.cat];
+      data.category = { kursi: /^(sofa|armchair|chaise)$/.test(sb.id) ? 'Sofa' : 'Kursi', meja: 'Meja', kabinet: 'Kabinet / lemari', divan: 'Tempat tidur' }[cz.cat];
       data.matMain = czMat('id'); data.color = (XC.colorOf(cz) || {}).l || '';
       var fg = XC.groups(cz).filter(function (x) { return x.id === 'finish'; })[0];
       data.finish = fg ? ((XC.pick(fg, cz) || {}).l || '') : cz.uph ? 'Upholstery' : '';
@@ -1199,7 +1342,7 @@
   // buka Customize: kosong, dari produk (Custom di halaman produk), atau CUBIX
   function czFromProduct(p) {
     var t = (p.name + ' ' + p.type + ' ' + (p.shopName || '')).toLowerCase(), cat = 'kursi', sb = 'sofa';
-    if (p.cat === 'seats') sb = /bench/.test(t) ? 'bench' : /ottoman|puff|pouf/.test(t) ? 'ottoman' : /stool/.test(t) ? 'stool' : /armchair|1 seater|single|lounge/.test(t) ? 'armchair' : /chair|kursi/.test(t) ? 'dining' : 'sofa';
+    if (p.cat === 'seats') sb = /chaise|daybed/.test(t) ? 'chaise' : /bench/.test(t) ? 'bench' : /ottoman|puff|pouf/.test(t) ? 'ottoman' : /stool/.test(t) ? 'stool' : /armchair|1 seater|single|lounge/.test(t) ? 'armchair' : /chair|kursi/.test(t) ? 'dining' : 'sofa';
     else if (p.cat === 'tables') { cat = 'meja'; sb = /dining|makan/.test(t) ? 'dining' : /side|samping/.test(t) ? 'side' : /console|konsol/.test(t) ? 'console' : /desk|workstation|kerja/.test(t) ? 'desk' : 'coffee'; }
     else if (p.cat === 'bedframe') { cat = 'divan'; sb = /platform/.test(t) && !/somno/.test(t) ? 'platform' : 'divan'; }
     else if (p.cat === 'cabinet') { cat = 'kabinet'; sb = /wardrobe|lemari pakaian/.test(t) ? 'wardrobe' : /tv/.test(t) ? 'tv' : /shoe|sepatu|shusio/.test(t) ? 'shoe' : /nightstand|bedside|nakas|qaztac/.test(t) ? 'nightstand' : /shelf|rak|hanger|lucid/.test(t) ? 'bookshelf' : 'sideboard'; }
@@ -1208,10 +1351,24 @@
       var m = t.match(/(\d)\s*-?\s*seat/); if (m) XC.apply(c, 'seats', String(Math.max(2, Math.min(5, +m[1]))));
       if (/sectional|l-shape|l shape/.test(t)) XC.apply(c, 'shape', 'lkiri');
       if (/sofa bed/.test(t)) c.extras = ['sofabed'];
-      if (/kyrios/.test(t)) { XC.apply(c, 'arm', 'shelter'); XC.apply(c, 'back', 'channel'); XC.apply(c, 'leg', 'metalplinth'); XC.apply(c, 'metal', 'brass'); XC.apply(c, 'seatC', 'bench'); c.pillows = 0; }
-      if (/guise/.test(t)) { XC.apply(c, 'arm', 'track'); XC.apply(c, 'back', 'button'); }
       if (/cubix/.test(t)) XC.apply(c, 'shape', 'modular');
     }
+    // ciri koleksi yang jelas → pilihan baru (tufting terpisah dari bentuk sandaran)
+    if (sb === 'sofa' || sb === 'armchair') {
+      if (/kyrios/.test(t)) { XC.apply(c, 'arm', 'shelter'); XC.apply(c, 'back', 'tight'); XC.apply(c, 'backTuft', 'channelV'); XC.apply(c, 'leg', 'metalplinth'); XC.apply(c, 'metal', 'brass'); if (sb === 'sofa') XC.apply(c, 'seatC', 'bench'); c.pillows = 0; }
+      if (/guise/.test(t)) { XC.apply(c, 'arm', 'track'); XC.apply(c, 'back', 'cushion'); XC.apply(c, 'backTuft', 'button'); }
+      if (/chesterfield/.test(t)) { XC.apply(c, 'arm', sb === 'sofa' ? 'scroll' : 'rolled'); XC.apply(c, 'back', 'tight'); XC.apply(c, 'backTuft', 'diamond'); XC.apply(c, 'leg', 'turned'); }
+      if (/channel/.test(t)) { XC.apply(c, 'back', 'tight'); XC.apply(c, 'backTuft', 'channelV'); }
+      if (/tufted|button/.test(t) && c.backTuft === 'plain') { XC.apply(c, 'back', 'cushion'); XC.apply(c, 'backTuft', 'button'); }
+      if (sb === 'armchair' && /swivel/.test(t)) { XC.apply(c, 'shape', 'barrel'); XC.apply(c, 'base', 'swivelDisc'); }
+      if (sb === 'armchair' && /rocking|goyang/.test(t)) { XC.apply(c, 'shape', 'woodframe'); XC.apply(c, 'base', 'rocking'); }
+    }
+    if (sb === 'ottoman' && /guise/.test(t)) XC.apply(c, 'tuft', 'button');
+    if (sb === 'ottoman' && /rhombio|diamond/.test(t)) XC.apply(c, 'tuft', 'diamond');
+    if (sb === 'bench' && /storage/.test(t)) XC.apply(c, 'storage', 'lid');
+    if (sb === 'stool' && /wood|kayu/.test(t)) { XC.apply(c, 'frame', 'wood'); XC.apply(c, 'base', 'legs'); }
+    if (sb === 'stool' && /dining stool|low stool/.test(t)) XC.apply(c, 'height', 'low');
+    if (sb === 'dining' && /stackable|stack/.test(t)) c.extras = (c.extras || []).concat(['stack']);
     var cv = cur(p);
     if (cv.v && cv.v.fabric && XC.groups(c).some(function (g) { return g.id === 'uph'; })) {
       var line = /cherokee/i.test(cv.v.fabric) ? 'cherokee' : /vienna/i.test(cv.v.fabric) ? 'vienna' : null;
@@ -1229,7 +1386,10 @@
   }
   enter.customize = function () { czRender(); czStage(); };
   leave.customize = function () { dimEl.classList.remove('is-on'); czPickerClose(); if (stageKind === 'custom') czDetail(); };
-  window.addEventListener('xvdb:change', function (e) { if (e.detail && e.detail.what === 'settings' && current === 'customize') czRender(true); });
+  window.addEventListener('xvdb:change', function (e) {
+    if (e.detail && e.detail.what === 'settings' && current === 'customize') czRender(true);
+    if (e.detail && e.detail.what === 'pricing') { if (cz) { czFoot(); if (stageKind === 'custom') czDetail(); if (current === 'customize') czRender(true); } renderBag(); if (current === 'bayar') renderCo(true); }
+  });
 
   /* ======================================================================
      PENGATURAN — bahasa, tema, pencahayaan (tersimpan di perangkat)
@@ -1283,7 +1443,7 @@
       }).join('') + '</ul>' : '<div class="empty-card is-on"><p class="txt">' + T('Belum ada pesanan.') + '</p><a class="btn btn--line" href="#/koleksi" data-go="koleksi"><span>' + T('Lihat koleksi') + '</span></a></div>';
     } else if (pfTab === 'rancangan') {
       html += ds.length ? '<ul class="list">' + ds.map(function (d) {
-        return '<li data-ds="' + d.id + '"><div class="list__th" data-ds-open>' + (d.img ? '<img class="is-snap" src="' + d.img + '" alt="">' : '<svg><use href="#i-ruler"/></svg>') + '</div><div><p class="list__n"><span>' + esc(d.title) + '</span></p><p class="list__v">' + esc(d.sub + (d.mat ? ' · ' + d.mat : '')) + '</p><p class="list__p">' + rupiah(d.price) + '</p>' +
+        return '<li data-ds="' + d.id + '"><div class="list__th" data-ds-open>' + (d.img ? '<img class="is-snap" src="' + d.img + '" alt="">' : '<svg><use href="#i-ruler"/></svg>') + '</div><div><p class="list__n"><span>' + esc(d.title) + '</span></p><p class="list__v">' + esc(d.sub + (d.mat ? ' · ' + d.mat : '')) + '</p><p class="list__p">' + rupiah(customUnit(d.cfg, d.price)) + '</p>' +
           '<div class="list__acts"><button class="mini mini--gold" type="button" data-ds-bag>' + T('Ke tas') + '</button><button class="mini" type="button" data-ds-open>' + T('Buka') + '</button></div></div>' +
           '<div class="list__r"><button class="rm" type="button" data-ds-rm>' + T('Hapus') + '</button></div></li>';
       }).join('') + '</ul>' : '<div class="empty-card is-on"><p class="txt">' + T('Belum ada rancangan tersimpan. Simpan dari Customize — kembali kapan saja.') + '</p><a class="btn btn--line" href="#/customize" data-go="customize"><span>Customize</span></a></div>';
@@ -1313,7 +1473,7 @@
     if (li) {
       var d = designs().filter(function (x) { return x.id === li.dataset.ds; })[0]; if (!d) return;
       if (e.target.closest('[data-ds-rm]')) { store.set('xv5_designs', designs().filter(function (x) { return x.id !== d.id; })); renderProfile(); return; }
-      if (e.target.closest('[data-ds-bag]')) { addEntry({ id: 'cz-' + Date.now().toString(36), type: 'custom', title: d.title, sub: d.sub, mat: d.mat, cfg: d.cfg, price: d.price, img: d.img, q: 1 }); return; }
+      if (e.target.closest('[data-ds-bag]')) { addEntry({ id: 'cz-' + Date.now().toString(36), type: 'custom', title: d.title, sub: d.sub, mat: d.mat, cfg: XC.normalize(JSON.parse(JSON.stringify(d.cfg))), price: customUnit(d.cfg, d.price), img: d.img, q: 1 }); return; }
       if (e.target.closest('[data-ds-open]')) { openDesign(d); return; }
     }
     var ad = e.target.closest('[data-ad]');
@@ -1382,7 +1542,7 @@
       if (has('armH')) v.push({ l: T('Lengan'), cm: +cz.armH });
       if (has('hbH')) v.push({ l: 'Headboard', cm: +cz.hbH });
       var round = /^(round|square)$/.test(cz.topShape) && cz.dia;
-      return { exact: true, w: round ? +cz.dia : +cz.w, d: round ? +cz.dia : /^(lkiri|lkanan|u|chaise)/.test(cz.shape) ? null : +cz.d, h: +cz.h, labels: lab, v: v, rows: rows, title: czTitle() };
+      return { exact: true, w: round ? +cz.dia : +cz.w, d: round ? +cz.dia : /^(lkiri|lkanan|lcurve|u|chaise)/.test(cz.shape || '') ? null : +cz.d, h: +cz.h, labels: lab, v: v, rows: rows, title: czTitle() };
     }
     if (stageKind === 'cubix') return { w: 248, d: 86, h: 74, labels: lab, rows: [[lab.w, '248 cm'], [lab.d, '86 cm'], [lab.h, '74 cm']], title: 'CUBIX Modular' };
     if (stageKind === 'product' && furniture.p) {
@@ -1394,6 +1554,89 @@
       return { w: n && n[0], d: n && n[1], h: n && n[2], labels: lab, rows: rows, title: p.name };
     }
     return null;
+  }
+  /* penempatan label ukuran: geometri layar sederhana */
+  var dimsPrevPos = {}, dimMeasure = null, dimWidths = {};
+  function dimLabelW(k, t) {
+    var key = k + '|' + t;
+    if (dimWidths[key]) return dimWidths[key];
+    if (!dimMeasure) dimMeasure = document.createElement('canvas').getContext('2d');
+    var fam = getComputedStyle(document.documentElement).getPropertyValue('--f-h') || 'sans-serif';
+    dimMeasure.font = '400 8px ' + fam; var kw = dimMeasure.measureText(String(k).toUpperCase()).width + String(k).length * 8 * .22;
+    dimMeasure.font = '400 10.5px ' + fam; var tw = dimMeasure.measureText(t).width + t.length * 10.5 * .14;
+    return (dimWidths[key] = Math.ceil(kw + 6 + tw));
+  }
+  function convexHull(pts) {
+    if (pts.length < 3) return pts.slice();
+    var p = pts.map(function (q) { return { x: q.x, y: q.y }; }).sort(function (a, b) { return a.x - b.x || a.y - b.y; });
+    var cross = function (o, a, b) { return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x); }, lo = [], up = [], i;
+    for (i = 0; i < p.length; i++) { while (lo.length >= 2 && cross(lo[lo.length - 2], lo[lo.length - 1], p[i]) <= 0) lo.pop(); lo.push(p[i]); }
+    for (i = p.length - 1; i >= 0; i--) { while (up.length >= 2 && cross(up[up.length - 2], up[up.length - 1], p[i]) <= 0) up.pop(); up.push(p[i]); }
+    return lo.slice(0, -1).concat(up.slice(0, -1));
+  }
+  function inPoly(x, y, poly) {
+    var inside = false;
+    for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      var a = poly[i], b = poly[j];
+      if ((a.y > y) !== (b.y > y) && x < (b.x - a.x) * (y - a.y) / (b.y - a.y) + a.x) inside = !inside;
+    }
+    return inside;
+  }
+  function segsCross(p1, p2, p3, p4) {
+    var d = function (a, b, c) { return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x); };
+    var d1 = d(p3, p4, p1), d2 = d(p3, p4, p2), d3 = d(p1, p2, p3), d4 = d(p1, p2, p4);
+    return (d1 > 0) !== (d2 > 0) && (d3 > 0) !== (d4 > 0);
+  }
+  function rectEdges(r) {
+    var a = { x: r.x, y: r.y }, b = { x: r.x + r.w, y: r.y }, c = { x: r.x + r.w, y: r.y + r.h }, d = { x: r.x, y: r.y + r.h };
+    return [[a, b], [b, c], [c, d], [d, a]];
+  }
+  function grow(r, m) { return { x: r.x - m, y: r.y - m, w: r.w + 2 * m, h: r.h + 2 * m }; }
+  function rectsHit(a, b, m) { return a.x - m < b.x + b.w && b.x - m < a.x + a.w && a.y - m < b.y + b.h && b.y - m < a.y + a.h; }
+  function segHitsRect(p, q, r, m) {
+    r = grow(r, m || 0);
+    if (p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h) return true;
+    if (q.x >= r.x && q.x <= r.x + r.w && q.y >= r.y && q.y <= r.y + r.h) return true;
+    return rectEdges(r).some(function (e) { return segsCross(p, q, e[0], e[1]); });
+  }
+  function rectHitsPoly(r, poly, m) {
+    if (poly.length < 3) return false;
+    r = grow(r, m || 0);
+    var corners = [[r.x, r.y], [r.x + r.w, r.y], [r.x + r.w, r.y + r.h], [r.x, r.y + r.h], [r.x + r.w / 2, r.y + r.h / 2]];
+    if (corners.some(function (k) { return inPoly(k[0], k[1], poly); })) return true;
+    if (poly.some(function (p) { return p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h; })) return true;
+    for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) if (rectEdges(r).some(function (e) { return segsCross(poly[i], poly[j], e[0], e[1]); })) return true;
+    return false;
+  }
+  // kandidat posisi label di sepanjang garis (tengah dulu), di kedua sisi, dua jarak; label ujung (garis tegak) juga di atas ujungnya
+  // area UI yang tidak boleh tertutup label (diperbarui tiap 0,4 detik)
+  var dimUi = { t: 0, list: [] };
+  function dimUiRects() {
+    var now = performance.now();
+    if (now - dimUi.t > 400) {
+      dimUi.t = now;
+      dimUi.list = ['#detail', '.panel.is-open, .panel', '#dimCard.is-on', '.rail', '.recenter.is-on', '.top', '#czPicker.is-open'].map(function (sel) { var e = document.querySelector(sel); if (!e) return null; var r = e.getBoundingClientRect(); return r.width && r.height && getComputedStyle(e).visibility !== 'hidden' && +getComputedStyle(e).opacity > .05 ? { x: r.left, y: r.top, w: r.width, h: r.height } : null; }).filter(Boolean);
+    }
+    return dimUi.list;
+  }
+  function segsCrossPoly(l, poly) { var a = { x: l.x, y: l.y }, b = { x: l.ex, y: l.ey }; for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) if (segsCross(a, b, poly[i], poly[j])) return true; return false; }
+  function dimCandidates(q, c, w, h) {
+    var dx = q.b.x - q.a.x, dy = q.b.y - q.a.y, len = Math.sqrt(dx * dx + dy * dy), nx = -dy / len, ny = dx / len, out = [];
+    var ts = q.at === 'end' ? [1, .75, .5, .25] : [.5, .34, .66, .2, .8];
+    var mx = (q.a.x + q.b.x) / 2, my = (q.a.y + q.b.y) / 2, outward = nx * (mx - c.x) + ny * (my - c.y) >= 0 ? 1 : -1;
+    var pref = q.at === 'end' || q.side ? (q.side > 0 ? (nx > 0 ? 1 : -1) : (nx > 0 ? -1 : 1)) : outward;
+    ts.forEach(function (tt, ti) {
+      var px = q.a.x + dx * tt, py = q.a.y + dy * tt;
+      [pref, -pref].forEach(function (sd, si) {
+        [10, 24, 46, 76, 112, 156, 210].forEach(function (dist, di) {
+          var ux = nx * sd, uy = ny * sd, ext = Math.abs(ux) * w / 2 + Math.abs(uy) * h / 2;
+          var cx = px + ux * (dist + ext), cy = py + uy * (dist + ext);
+          out.push({ r: { x: cx - w / 2, y: cy - h / 2, w: w, h: h }, cost: ti * 6 + si * 14 + di * 9, lead: dist > 24 ? { x: px, y: py, ex: cx - ux * ext, ey: cy - uy * ext } : null });
+        });
+      });
+    });
+    if (q.at === 'end') { var top = q.b.y < q.a.y ? q.b : q.a; out.push({ r: { x: top.x - w / 2, y: top.y - 12 - h, w: w, h: h }, cost: 10 }); }
+    return out;
   }
   function renderDims(segs) {
     var on = dimsOn() && /^(custom|cubix|product)$/.test(stageKind) && !/^(manufaktur|galeri)$/.test(current);
@@ -1407,20 +1650,34 @@
     dimCard.classList.toggle('is-on', !!dimsCache);
     var html = '';
     if (dimsCache && segs) {
-      var c = segs.center, f = function (n) { return n.toFixed(1); };
-      segs.forEach(function (s) {
-        if (!s.a.v || !s.b.v) return;
-        var dx = s.b.x - s.a.x, dy = s.b.y - s.a.y, len = Math.sqrt(dx * dx + dy * dy); if (len < 8) return;
-        var nx = -dy / len, ny = dx / len, mx = (s.a.x + s.b.x) / 2, my = (s.a.y + s.b.y) / 2, t = 5, lx, ly, an;
-        html += '<line x1="' + f(s.a.x) + '" y1="' + f(s.a.y) + '" x2="' + f(s.b.x) + '" y2="' + f(s.b.y) + '"/>';
-        [s.a, s.b].forEach(function (e) { html += '<line class="t" x1="' + f(e.x + nx * t) + '" y1="' + f(e.y + ny * t) + '" x2="' + f(e.x - nx * t) + '" y2="' + f(e.y - ny * t) + '"/>'; });
-        if (s.at === 'end') { lx = s.b.x + (s.side > 0 ? 10 : -10); ly = s.b.y; an = s.side > 0 ? 'start' : 'end'; }
-        else if (s.side) { lx = mx + 12; ly = my; an = 'start'; }
-        else {
-          if (nx * (mx - c.x) + ny * (my - c.y) < 0) { nx = -nx; ny = -ny; }
-          lx = mx + nx * 16; ly = my + ny * 16; an = Math.abs(nx) > .6 ? (nx > 0 ? 'start' : 'end') : 'middle';
-        }
-        html += '<text x="' + f(lx) + '" y="' + f(ly) + '" text-anchor="' + an + '" dominant-baseline="middle"><tspan class="k">' + esc(s.k) + '</tspan><tspan dx="6">' + esc(s.t) + '</tspan></text>';
+      var f = function (n) { return n.toFixed(1); };
+      var hull = convexHull((segs.box || []).filter(function (p) { return p.v; })), placed = [], ui = dimUiRects();
+      var vis = segs.filter(function (q) { return q.a.v && q.b.v && Math.sqrt(Math.pow(q.b.x - q.a.x, 2) + Math.pow(q.b.y - q.a.y, 2)) >= 8; });
+      var c = hull.length ? hull.reduce(function (m, p) { return { x: m.x + p.x / hull.length, y: m.y + p.y / hull.length }; }, { x: 0, y: 0 }) : segs.center;
+      vis.forEach(function (q) {
+        var dx = q.b.x - q.a.x, dy = q.b.y - q.a.y, len = Math.sqrt(dx * dx + dy * dy), nx = -dy / len, ny = dx / len, t = 5;
+        html += '<line x1="' + f(q.a.x) + '" y1="' + f(q.a.y) + '" x2="' + f(q.b.x) + '" y2="' + f(q.b.y) + '"/>';
+        [q.a, q.b].forEach(function (e) { html += '<line class="t" x1="' + f(e.x + nx * t) + '" y1="' + f(e.y + ny * t) + '" x2="' + f(e.x - nx * t) + '" y2="' + f(e.y - ny * t) + '"/>'; });
+      });
+      // label: pilih posisi kandidat dengan penalti terkecil — tidak menabrak objek, label lain, atau garis
+      vis.forEach(function (q) {
+        var lw = dimLabelW(q.k, q.t), lh = 14, best = null;
+        dimCandidates(q, c, lw, lh).forEach(function (cd, ci) {
+          var r = cd.r, pen = cd.cost;
+          if (rectHitsPoly(r, hull, 3)) pen += 1000;
+          ui.forEach(function (o) { if (rectsHit(r, o, 6)) pen += 900; });
+          if (cd.lead && hull.length > 2 && segsCrossPoly(cd.lead, hull)) pen += 60;
+          placed.forEach(function (o) { if (rectsHit(r, o, 4)) pen += 800; });
+          vis.forEach(function (o) { if (segHitsRect(o.a, o.b, r, 1)) pen += o === q ? 120 : 300; });
+          if (r.x < 6 || r.y < 6 || r.x + r.w > innerWidth - 6 || r.y + r.h > innerHeight - 6) pen += 600;
+          if (dimsPrevPos[q.k] === ci) pen -= 4;   // tahan posisi lama → tidak bergetar
+          if (!best || pen < best.pen) best = { pen: pen, r: r, ci: ci, lead: cd.lead };
+        });
+        dimsPrevPos[q.k] = best.ci; placed.push(best.r);
+        var r = best.r;
+        if (best.lead) html += '<line class="ld" x1="' + f(best.lead.x) + '" y1="' + f(best.lead.y) + '" x2="' + f(best.lead.ex) + '" y2="' + f(best.lead.ey) + '"/>';
+        if (best.pen >= 900) html += '<rect class="bg" x="' + f(r.x - 5) + '" y="' + f(r.y - 2) + '" width="' + f(r.w + 10) + '" height="' + f(r.h + 4) + '" rx="4"/>';
+        html += '<text x="' + f(r.x) + '" y="' + f(r.y + r.h / 2) + '" dominant-baseline="middle"><tspan class="k">' + esc(q.k) + '</tspan><tspan dx="6">' + esc(q.t) + '</tspan></text>';
       });
     }
     if (html !== dimsHtml) { dimsHtml = html; dimsSvg.innerHTML = html; }
@@ -1428,15 +1685,8 @@
     return !!html;
   }
   XW.onFrame = function (L) {
-    var full = renderDims(L.dims);
-    if (!full && current === 'customize' && stageKind === 'custom' && L.dim && L.dim.a.v && L.dim.b.v) {
-      var a = L.dim.a, b = L.dim.b, dx = b.x - a.x, dy = b.y - a.y, ang = Math.atan2(dy, dx);
-      if (Math.abs(ang) > Math.PI / 2) { ang += Math.PI; a = L.dim.b; }
-      dimEl.style.width = Math.sqrt(dx * dx + dy * dy).toFixed(1) + 'px';
-      dimEl.style.transform = 'translate(' + a.x.toFixed(1) + 'px,' + (a.y + 20).toFixed(1) + 'px) rotate(' + ang.toFixed(4) + 'rad)';
-      $('#dimText').textContent = L.dim.w + ' cm';
-      dimEl.classList.add('is-on');
-    } else dimEl.classList.remove('is-on');
+    // garis ukur hanya tampil bila Pengaturan › Tampilkan ukuran aktif
+    renderDims(L.dims);
     if (current === 'manufaktur') {
       mls.forEach(function (m, i) {
         var p = L.beacons && L.beacons[i];

@@ -188,6 +188,9 @@
     'Menunggu pembayaran': 'Awaiting payment', 'Dibayar': 'Paid', 'Gagal': 'Failed',
     'Kartu kredit / debit': 'Credit / debit card', 'Semua e-wallet & m-banking': 'All e-wallets & mobile banking', 'Cicilan 0%': '0% instalments', 'Kartu kredit & paylater': 'Credit card & paylater',
     'Jawa Barat & Banten': 'West Java & Banten', 'Jawa Tengah & DIY': 'Central Java & Yogyakarta', 'Jawa Timur': 'East Java', 'Bali & Nusa Tenggara': 'Bali & Nusa Tenggara', 'Kalimantan & Sulawesi': 'Kalimantan & Sulawesi', 'Maluku & Papua': 'Maluku & Papua',
+    // sesuaikan produk katalog
+    'Sesuaikan': 'Customize', 'Tutup penyesuaian': 'Close customizing', 'Memuat model 3D…': 'Loading 3D model…', 'Sesuaikan {name}': 'Customize {name}', 'Ukuran asli': 'Original size',
+    'Model asli diubah langsung — lengan & kaki tetap, bagian tengah yang menyesuaikan.': 'The original model is adjusted directly — arms & legs stay, the middle section adapts.', 'Kedalaman': 'Depth', 'Warna kaki & base': 'Leg & base finish',
     // 5.01.02 — garis ukur
     'Tampilkan ukuran': 'Show dimensions', 'Tidak': 'Off', 'Tampilkan': 'Show', 'Lebar': 'Width', 'Dalam': 'Depth', 'Tinggi': 'Height',
     'Dudukan': 'Seat', 'Kaki': 'Legs', 'Lengan': 'Arms', 'Ukuran': 'Size', 'Belum tercatat': 'Not recorded yet', 'Sumber': 'Source', 'Model 3D': '3D model',

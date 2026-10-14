@@ -1,0 +1,8 @@
+Set      : stone-travertine
+Asset    : Travertine 009 (Travertine009)
+Author   : Lennart Demes (ambientCG)
+Source   : https://ambientcg.com/view?id=Travertine009
+Download : https://ambientcg.com/get?file=Travertine009_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1200 x 1200 mm
+Processed: downscaled to 1024 px, WebP. Roughness normalised to mean 0.8.

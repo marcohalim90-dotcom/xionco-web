@@ -2,7 +2,7 @@
    XIONCO — Developer Settings
    Tombol melayang (default kiri bawah) → overlay hampir layar penuh yang
    bergeser dari kanan ke kiri. Tidak membuka halaman baru.
-   Tab: Versi · Aset · Katalog · Custom · Pengaturan
+   Tab: Versi · Aset · Katalog · Custom · Harga · Pengaturan
    Gaya mengikuti versi 4 (ivory, garis champagne, Josefin Sans + Inter).
    Komponen terisolasi (Shadow DOM) → aman dipasang di versi mana pun.
    Pintasan: Ctrl + Shift + D
@@ -75,7 +75,8 @@
     trash: '<path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12"/>',
     scan: '<path d="M4 8V5h3M17 5h3v3M20 16v3h-3M7 19H4v-3M4 12h16"/>',
     check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
-    dup: '<rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>'
+    dup: '<rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>',
+    harga: '<path d="M3.5 12.5V4.5a1 1 0 0 1 1-1h8l8 8-9 9z"/><circle cx="8.5" cy="8.5" r="1.6"/>'
   };
   var ic = function (n, cls) { return '<svg class="ic ' + (cls || '') + '" viewBox="0 0 24 24" aria-hidden="true">' + I[n] + '</svg>'; };
 
@@ -271,6 +272,28 @@
     '.corners button.is-on { border-color: var(--tl); color: var(--tl); } .corners button.is-on::after { background: var(--gold); }',
     '.keys { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; font-size: 12.5px; color: var(--tl2); }',
     '.keys kbd { font: 400 11px ui-monospace, Consolas, monospace; padding: 3px 7px; border-radius: 6px; border: 1px solid var(--hair); background: rgba(255,250,242,.5); color: var(--tl); justify-self: start; }',
+    /* harga */
+    '.hp { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 26px; align-items: start; }',
+    '.hp-nav { position: sticky; top: 0; display: flex; flex-direction: column; gap: 2px; padding: 10px; border: 1px solid var(--hair); border-radius: 16px; background: rgba(255,250,242,.28); max-height: calc(100vh - 230px); overflow-y: auto; scrollbar-width: thin; }',
+    '.hp-nav__h { margin: 14px 10px 6px; font: 400 9px/1.3 var(--fh); letter-spacing: .26em; text-transform: uppercase; color: var(--goldlo); }',
+    '.hp-nav button { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 34px; padding: 6px 10px; border-radius: 9px; text-align: left; font-size: 12.5px; color: var(--tl2); transition: background .25s, color .25s; }',
+    '.hp-nav button:hover { background: rgba(27,24,21,.05); color: var(--tl); }',
+    '.hp-nav button.is-on { background: var(--tl); color: var(--ivory); }',
+    '.hp-nav button b { font: 500 10px var(--f); color: var(--goldlo); } .hp-nav button.is-on b { color: var(--goldhi); }',
+    '.hp-main .group__h:first-of-type { margin-top: 22px; }',
+    '.hp-est { margin-bottom: 4px; } .hp-est p { max-width: 46ch; }',
+    '.tr--hp { grid-template-columns: minmax(180px, 1.7fr) minmax(120px, 1.1fr) 104px 150px 140px 36px; padding-top: 6px; padding-bottom: 6px; }',
+    '.tr--hp > span { min-width: 0; font-size: 12.5px; }',
+    '.tr--hp .r { text-align: right; font-variant-numeric: tabular-nums; }',
+    '.tr--hp.tr--sub { background: rgba(191,162,116,.08); padding-top: 9px; padding-bottom: 7px; }',
+    '.tr--hp.tr--sub > span:first-child { font: 400 10px/1.3 var(--fh); letter-spacing: .2em; text-transform: uppercase; color: var(--tl); }',
+    '.tr--hp.tr--in .hp-opt { padding-left: 22px; color: var(--tl2); }',
+    '.hp-opt { display: flex; align-items: center; gap: 8px; }',
+    '.hp-sw { width: 12px; height: 12px; border-radius: 3px; flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }',
+    '.hp-c { position: relative; display: block; } .hp-c i { position: absolute; right: 8px; top: 8px; font: 400 11px var(--f); font-style: normal; color: var(--tl3); pointer-events: none; }',
+    '.hp-c .cell-in { border-color: var(--hair); background: rgba(255,250,242,.4); } .hp-c .is-f { padding-right: 22px; }',
+    '.hp-c.is-mod .cell-in { border-color: var(--gold); background: rgba(191,162,116,.14); }',
+    '@media (max-width: 1100px) { .hp { grid-template-columns: 1fr; } .hp-nav { position: static; max-height: 240px; } .tr--hp { grid-template-columns: minmax(140px, 1.5fr) 96px 130px 110px 32px; } .tr--hp > :nth-child(2) { display: none; } }',
     /* toast */
     '.toast { position: fixed; z-index: 6; left: 50%; bottom: 30px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; padding: 12px 20px 10px; border-radius: 999px; background: var(--ink2); color: var(--td); border: 1px solid rgba(191,162,116,.35); font: 400 10.5px/1 var(--fh); letter-spacing: .2em; text-transform: uppercase; transition: opacity .4s, transform .6s var(--ease); white-space: nowrap; }',
     '.toast.is-on { opacity: 1; transform: translate(-50%, 0); }',
@@ -439,6 +462,7 @@
     aset: { q: '', status: 'semua', level: 'semua', cat: 'semua' },
     kat: { q: '', cat: 'semua', status: 'semua' },
     cus: { q: '', type: 'semua', status: 'semua' },
+    harga: { sel: 'kursi.sofa', keep: false },
     detect: {}, scanning: false, editor: null
   };
   var products = [], saveT = 0;
@@ -489,7 +513,8 @@
     window.addEventListener('xvdb:error', function (e) { toast(e.detail && e.detail.message ? 'Gagal menyimpan — cek serve.js' : 'Gagal menyimpan'); });
     window.addEventListener('xvdb:change', function (e) {
       if (e.detail && e.detail.what === 'settings') placeFab();
-      if (state.open && (!state.editor || e.detail.what !== 'customs')) renderTab();
+      if (e.detail && e.detail.what === 'pricing') pr = null;
+      if (state.open && (!state.editor || e.detail.what !== 'customs') && !(e.detail && e.detail.what === 'pricing' && state.tab === 'harga')) renderTab();
     });
     setupFab();
     placeFab();
@@ -561,7 +586,7 @@
   var TABS = [
     { id: 'versi', l: 'Versi', i: 'versi' }, { id: 'aset', l: 'Aset', i: 'aset' },
     { id: 'katalog', l: 'Katalog', i: 'katalog' }, { id: 'custom', l: 'Custom', i: 'custom' },
-    { id: 'pengaturan', l: 'Pengaturan', i: 'set' }
+    { id: 'harga', l: 'Harga', i: 'harga' }, { id: 'pengaturan', l: 'Pengaturan', i: 'set' }
   ];
   function counts() {
     return {
@@ -569,6 +594,7 @@
       aset: assetSummary().readyAll + '/' + assetSummary().totalAll,
       katalog: products.length,
       custom: XVDB.customs().length,
+      harga: window.XC && XC.priceTable ? (prCount() || '') : '',
       pengaturan: ''
     };
   }
@@ -583,7 +609,7 @@
   }
   function renderTab() {
     renderTabs();
-    ({ versi: renderVersi, aset: renderAset, katalog: renderKatalog, custom: renderCustom, pengaturan: renderSet })[state.tab]();
+    ({ versi: renderVersi, aset: renderAset, katalog: renderKatalog, custom: renderCustom, harga: renderHarga, pengaturan: renderSet })[state.tab]();
   }
   function head(eye, title, sub, acts) {
     el.head.innerHTML = '<div><p class="eyebrow">' + eye + '</p><h2>' + title + '</h2>' + (sub ? '<p>' + sub + '</p>' : '') + '</div><div class="acts">' + (acts || '') + '</div>';
@@ -899,12 +925,175 @@
     el.body.innerHTML = html;
   }
 
+  /* ---------------------------------------------------------------- HARGA CUSTOMIZE
+     Tabel semua angka yang membentuk harga Customize (v5/js/custom-spec.js).
+     Yang disimpan hanya selisih dari bawaan → data/pricing.json (ikut online saat dipublish). */
+  var pr = null, prT = 0;
+  function xcReady() {
+    if (window.XC && XC.priceTable) return Promise.resolve();
+    return loadScript(ROOT + 'v5/js/custom-spec.js').then(function () { if (window.XC && XC.setPricing) XC.setPricing(XVDB.pricing()); });
+  }
+  function prGet() { if (!pr) pr = XVDB.pricing(); pr.global = pr.global || {}; pr.subs = pr.subs || {}; pr.mats = pr.mats || {}; return pr; }
+  function prSave() {
+    var p = prGet();
+    Object.keys(p.subs).forEach(function (k) { var o = p.subs[k]; ['per10', 'opts', 'each'].forEach(function (j) { if (o[j] && !Object.keys(o[j]).length) delete o[j]; }); if (!Object.keys(o).length) delete p.subs[k]; });
+    if (window.XC && XC.setPricing) XC.setPricing(p);
+    clearTimeout(prT); prT = setTimeout(function () { XVDB.savePricing(p); toast('Harga tersimpan'); }, 300);
+  }
+  function prCount() {
+    var p = prGet(), n = Object.keys(p.global).length + Object.keys(p.mats).length;
+    Object.keys(p.subs).forEach(function (k) { var o = p.subs[k]; n += (o.base != null) + (o.baseRound != null) + Object.keys(o.per10 || {}).length + Object.keys(o.opts || {}).length + Object.keys(o.each || {}).length; });
+    return n;
+  }
+  var fx = function (f) { f = +f; return f === 1 ? '1' : String(Math.round(f * 1000) / 1000).replace('.', ','); };
+  var dec = function (v) { var s = String(v == null ? '' : v).replace(',', '.').replace(/[^\d.\-]/g, ''); return s === '' || isNaN(+s) ? null : +s; };
+  function subsAll() { var out = []; XC.CATS.forEach(function (c) { c.subs.forEach(function (s) { out.push({ cat: c, s: s, key: XC.subKey(s) }); }); }); return out; }
+  function subChanged(key) { var o = prGet().subs[key]; if (!o) return 0; return (o.base != null) + (o.baseRound != null) + Object.keys(o.per10 || {}).length + Object.keys(o.opts || {}).length + Object.keys(o.each || {}).length; }
+  function hpCell(path, val, def, kind) {
+    var mod = val !== def;
+    var shown = kind === 'f' ? fx(val) : fmt(val);
+    return '<span class="hp-c' + (mod ? ' is-mod' : '') + '"><input class="cell-in' + (kind === 'f' ? ' is-f' : ' is-price') + '" data-hp="' + esc(path) + '" data-kind="' + kind + '" value="' + esc(shown) + '" inputmode="decimal" title="Bawaan: ' + esc(kind === 'f' ? '×' + fx(def) : rupiah(def)) + '">' + (kind === 'f' ? '<i>×</i>' : '') + '</span>';
+  }
+  function hpReset(path, mod) { return mod ? '<button class="ibtn" type="button" data-act="hp-reset" data-path="' + esc(path) + '" aria-label="Kembali ke bawaan" title="Kembali ke bawaan">' + ic('reset') + '</button>' : '<span></span>'; }
+  function renderHarga() {
+    if (!window.XC || !XC.priceTable) { head('05 · Database', 'Harga Customize', 'Memuat spesifikasi Customize…'); el.body.innerHTML = '<div class="empty">Memuat…</div>'; xcReady().then(function () { if (state.tab === 'harga') renderHarga(); }); return; }
+    var H = state.harga, n = prCount();
+    head('05 · Database', 'Harga Customize', 'Semua angka yang membentuk harga di Customize. Harga per unit = (harga dasar + penyesuaian ukuran) × faktor pilihan + tambahan, lalu penyesuaian umum & pembulatan. Ubah langsung di tabel — tersimpan otomatis' + (XVDB.mode() === 'folder' ? ' ke <span class="mono">data/pricing.json</span>' : ' di browser ini') + ' dan langsung dipakai di Customize, tas, dan checkout. ' + (n ? '<b>' + n + ' angka diubah</b> dari bawaan.' : 'Semua masih harga bawaan.'),
+      '<button class="btn" type="button" data-act="hp-csv">' + ic('down') + 'CSV</button>' +
+      '<button class="btn btn--ghost" type="button" data-act="hp-reset-all">' + ic('reset') + 'Semua ke bawaan</button>');
+    var nav = '<nav class="hp-nav">' +
+      '<button type="button" data-act="hp-sel" data-v="umum" class="' + (H.sel === 'umum' ? 'is-on' : '') + '"><span>Umum</span><b>' + (Object.keys(prGet().global).length || '') + '</b></button>' +
+      '<button type="button" data-act="hp-sel" data-v="material" class="' + (H.sel === 'material' ? 'is-on' : '') + '"><span>Material & warna</span><b>' + (Object.keys(prGet().mats).length || '') + '</b></button>' +
+      XC.CATS.map(function (c) {
+        return '<p class="hp-nav__h">' + esc(c.l) + '</p>' + c.subs.map(function (s) { var k = XC.subKey(s), m = subChanged(k); return '<button type="button" data-act="hp-sel" data-v="' + k + '" class="' + (H.sel === k ? 'is-on' : '') + '"><span>' + esc(s.l) + '</span><b>' + (m || '') + '</b></button>'; }).join('');
+      }).join('') + '</nav>';
+    var main = H.sel === 'umum' ? hargaUmum() : H.sel === 'material' ? hargaMaterial() : hargaSub(H.sel);
+    var sc = el.body.querySelector('.hp-main'), top = sc ? sc.scrollTop : 0, bodyTop = el.body.scrollTop;
+    el.body.innerHTML = '<div class="hp">' + nav + '<div class="hp-main">' + main + '</div></div>';
+    if (state.harga.keep) { el.body.scrollTop = bodyTop; state.harga.keep = false; }
+  }
+  function hpHead(cols) { return '<div class="tr tr--hp th"><span>' + cols[0] + '</span><span>' + cols[1] + '</span><span style="text-align:right">Faktor</span><span style="text-align:right">Tambahan (IDR)</span><span style="text-align:right">Dampak contoh</span><span></span></div>'; }
+  function hargaSub(key) {
+    var it = subsAll().filter(function (x) { return x.key === key; })[0]; if (!it) return '<div class="empty">Pilih sub-kategori.</div>';
+    var s = it.s, def = XC.priceDefaults(s), tbl = XC.priceTable(s), cfg = XC.defaults(it.cat.id, s.id), bd = XC.breakdown(cfg), drivers = XC.sizeDrivers(s);
+    var refTxt = drivers.filter(function (k) { return /^(w|d|h)$/.test(k.id); }).map(function (k) { return k.id.toUpperCase() + ' ' + k.ref; }).join(' · ') + ' cm';
+    var out = '<div class="est hp-est"><div><span>Contoh harga · konfigurasi bawaan</span><b>' + rupiah(bd.total) + '</b></div><p>' + esc(XC.dimsText(cfg)) + '<br>' + bd.rows.length + ' komponen harga — buka Customize untuk mencoba kombinasi lain; harga di sana ikut tabel ini.</p></div>';
+    // dasar & ukuran
+    var p = 'sub|' + key + '|';
+    out += '<p class="group__h">Harga dasar & ukuran <small>ukuran referensi ' + esc(refTxt) + '</small></p><div class="tbl">' +
+      '<div class="tr tr--hp th"><span>Komponen</span><span>Keterangan</span><span></span><span style="text-align:right">IDR</span><span style="text-align:right">Bawaan</span><span></span></div>' +
+      '<div class="tr tr--hp"><span><b>Harga dasar</b></span><span class="muted">pada ukuran referensi</span><span></span>' + hpCell(p + 'base', tbl.base, def.base, 'm') + '<span class="muted r">' + rupiah(def.base) + '</span>' + hpReset(p + 'base', tbl.base !== def.base) + '</div>' +
+      (def.baseRound != null ? '<div class="tr tr--hp"><span><b>Harga dasar top bulat / persegi</b></span><span class="muted">pada Ø ' + ((drivers.filter(function (k) { return k.id === 'dia'; })[0] || {}).ref || 90) + ' cm</span><span></span>' + hpCell(p + 'baseRound', tbl.baseRound, def.baseRound, 'm') + '<span class="muted r">' + rupiah(def.baseRound) + '</span>' + hpReset(p + 'baseRound', tbl.baseRound !== def.baseRound) + '</div>' : '') +
+      drivers.map(function (k) {
+        var g = s.groups.filter(function (x) { return x.id === k.id; })[0] || {}, range = g.min != null ? g.min + '–' + g.max + ' cm' : '';
+        return '<div class="tr tr--hp"><span>' + esc(k.l) + ' · per ' + k.per + ' cm</span><span class="muted">ref ' + k.ref + ' cm' + (range ? ' · ' + range : '') + '</span><span></span>' + hpCell(p + 'per10|' + k.id, tbl.per10[k.id], def.per10[k.id], 'm') + '<span class="muted r">' + rupiah(def.per10[k.id]) + '</span>' + hpReset(p + 'per10|' + k.id, tbl.per10[k.id] !== def.per10[k.id]) + '</div>';
+      }).join('') + '</div>';
+    // pilihan per kelompok
+    var groupsOf = s.groups.filter(function (g) { return g.type !== 'range' && !XC.MAT_GROUPS[g.id] && g.id !== 'color' && typeof g.opts !== 'function'; });
+    out += '<p class="group__h">Pilihan <small>faktor × mengalikan (dasar + ukuran) · tambahan ditambahkan per unit</small></p><div class="tbl">' + hpHead(['Pilihan', 'Kelompok']) +
+      groupsOf.map(function (g) {
+        return '<div class="tr tr--hp tr--sub"><span>' + esc(g.l) + '</span><span class="muted">' + esc({ jenis: 'Jenis', bentuk: 'Bentuk', ukuran: 'Ukuran', material: 'Material', detail: 'Detail' }[g.step] || g.step) + (g.type === 'multi' ? ' · bisa lebih dari satu' : '') + '</span><span></span><span></span><span></span><span></span></div>' +
+          g.opts.map(function (o) {
+            var k2 = g.id + '.' + o.id, d0 = def.opts[k2] || { f: 1, add: 0 }, v = tbl.opts[k2] || d0, mod = v.f !== d0.f || v.add !== d0.add;
+            var imp = def.base * (v.f - 1) + v.add;
+            return '<div class="tr tr--hp"><span class="hp-opt">' + esc(o.l) + '</span><span class="muted">' + (o.en && o.en !== o.l ? esc(o.en) : '') + '</span>' + hpCell(p + 'opts|' + k2 + '|f', v.f, d0.f, 'f') + hpCell(p + 'opts|' + k2 + '|add', v.add, d0.add, 'm') +
+              '<span class="r' + (imp ? '' : ' muted') + '">' + (imp ? (imp > 0 ? '+ ' : '− ') + rupiah(Math.abs(imp)) : '—') + '</span>' + hpReset(p + 'opts|' + k2, mod) + '</div>';
+          }).join('');
+      }).join('') + '</div>';
+    // per unit
+    var eachKeys = Object.keys(def.each);
+    if (eachKeys.length) out += '<p class="group__h">Per buah</p><div class="tbl"><div class="tr tr--hp th"><span>Komponen</span><span>Keterangan</span><span></span><span style="text-align:right">IDR / buah</span><span style="text-align:right">Bawaan</span><span></span></div>' +
+      eachKeys.map(function (k) { var g = s.groups.filter(function (x) { return x.id === k; })[0] || { l: k }; return '<div class="tr tr--hp"><span>' + esc(g.l) + '</span><span class="muted">' + (g.min != null ? g.min + '–' + g.max + ' buah' : '') + '</span><span></span>' + hpCell(p + 'each|' + k, tbl.each[k], def.each[k], 'm') + '<span class="muted r">' + rupiah(def.each[k]) + '</span>' + hpReset(p + 'each|' + k, tbl.each[k] !== def.each[k]) + '</div>'; }).join('') + '</div>';
+    out += '<p class="muted" style="margin-top:14px">Kain, warna, kayu, besi, batu & warna HPL diatur sekali untuk semua sub-kategori di <b>Material & warna</b>.</p>';
+    return out;
+  }
+  function hargaMaterial() {
+    var md = XC.matDefaults(), T2 = { uph: 'Kain & kulit', wood: 'Kayu', metal: 'Finishing besi / logam', stone: 'Batu & marmer', panel: 'Warna HPL / duco' };
+    var row = function (key, label, sub, indent) {
+      var d0 = md[key] || { f: 1, add: 0 }, v = XC.matPrice(key), mod = v.f !== d0.f || v.add !== d0.add, imp = 3300000 * (v.f - 1) + v.add;
+      return '<div class="tr tr--hp' + (indent ? ' tr--in' : '') + '"><span class="hp-opt">' + label + '</span><span class="muted">' + (sub || '') + '</span>' + hpCell('mat|' + key + '|f', v.f, d0.f, 'f') + hpCell('mat|' + key + '|add', v.add, d0.add, 'm') +
+        '<span class="r' + (imp ? '' : ' muted') + '">' + (imp ? (imp > 0 ? '+ ' : '− ') + rupiah(Math.abs(imp)) : '—') + '</span>' + hpReset('mat|' + key, mod) + '</div>';
+    };
+    var sw = function (hex) { return hex ? '<i class="hp-sw" style="background:' + esc(hex) + '"></i>' : ''; };
+    return '<div class="est hp-est"><div><span>Material berlaku untuk semua sub-kategori</span><b>Faktor × &amp; tambahan</b></div><p>Faktor mengalikan harga (dasar + ukuran) — cocok untuk kain/kulit yang kebutuhannya ikut ukuran. Kolom “dampak contoh” memakai sofa 3 dudukan bawaan (IDR 3.300.000).</p></div>' +
+      Object.keys(XC.MAT_GROUPS).map(function (g) {
+        var list = XC.MAT_GROUPS[g];
+        return '<p class="group__h">' + T2[g] + '</p><div class="tbl">' + hpHead(['Material', 'Keterangan']) +
+          list.map(function (o) {
+            var r = row(g + '.' + o.id, sw(o.hex) + esc(o.l), g === 'uph' ? o.colors.length + ' warna' : '', false);
+            if (g === 'uph') r += o.colors.map(function (c) { return row('color.' + o.id + '.' + c.id, sw(c.hex) + esc(c.l), '', true); }).join('');
+            return r;
+          }).join('') + '</div>';
+      }).join('');
+  }
+  function hargaUmum() {
+    var g = XC.globalPrice(), d = XC.GLOBAL_DEF, P = prGet().global;
+    var rounds = [1000, 5000, 10000, 50000, 100000];
+    return '<div class="sets">' +
+      '<div class="card set"><h3>Pembulatan harga</h3><p>Harga per unit dibulatkan ke kelipatan ini (bawaan ' + rupiah(d.round) + ').</p><select class="sel" data-hp="glob|round" data-kind="sel">' + rounds.map(function (r) { return '<option value="' + r + '"' + (g.round === r ? ' selected' : '') + '>' + rupiah(r) + '</option>'; }).join('') + '</select></div>' +
+      '<div class="card set"><h3>Penyesuaian umum</h3><p>Persen yang ditambahkan (atau dikurangi, pakai minus) ke semua harga Customize — mis. kenaikan bahan baku. Bawaan 0%.</p><div class="unit" style="max-width:180px"><input class="in" data-hp="glob|markup" data-kind="p" value="' + esc(String(g.markup).replace('.', ',')) + '" inputmode="decimal"><i>%</i></div>' + (P.markup != null ? hpReset('glob|markup', true) : '') + '</div>' +
+      '<div class="card set"><h3>Harga minimum</h3><p>Harga per unit tidak akan di bawah angka ini (0 = tanpa batas).</p><div class="unit" style="max-width:220px"><input class="in" data-hp="glob|min" data-kind="m" value="' + fmt(g.min) + '" inputmode="numeric"><i>IDR</i></div>' + (P.min != null ? hpReset('glob|min', true) : '') + '</div>' +
+      '<div class="card set"><h3>Cara kerja</h3><p>1. Harga dasar sub-kategori pada ukuran referensi.<br>2. + penyesuaian per 10 cm dari ukuran referensi.<br>3. × faktor setiap pilihan & material (berurutan).<br>4. + tambahan setiap pilihan, material & komponen per buah.<br>5. ± penyesuaian umum, lalu dibulatkan. Jumlah unit dikalikan terakhir.</p></div>' +
+    '</div>';
+  }
+  function hpSet(path, raw, kind) {
+    var p = prGet(), seg = path.split('|');
+    if (seg[0] === 'glob') {
+      var gv = kind === 'p' ? dec(raw) : kind === 'sel' ? +raw : num(raw);
+      if (gv == null || gv === XC.GLOBAL_DEF[seg[1]]) delete p.global[seg[1]]; else p.global[seg[1]] = gv;
+      return;
+    }
+    var val = kind === 'f' ? dec(raw) : num(raw);
+    if (seg[0] === 'mat') {
+      var key = seg[1], f = seg[2], d0 = XC.matDefaults()[key] || { f: 1, add: 0 }, o = p.mats[key] || {};
+      if (val == null) val = d0[f];
+      if (val === d0[f]) delete o[f]; else o[f] = val;
+      if (Object.keys(o).length) p.mats[key] = o; else delete p.mats[key];
+      return;
+    }
+    var sk = seg[1], it = subsAll().filter(function (x) { return x.key === sk; })[0]; if (!it) return;
+    var def = XC.priceDefaults(it.s), o2 = p.subs[sk] = p.subs[sk] || {};
+    if (seg[2] === 'base' || seg[2] === 'baseRound') { if (val == null || val === def[seg[2]]) delete o2[seg[2]]; else o2[seg[2]] = val; return; }
+    if (seg[2] === 'per10' || seg[2] === 'each') { var m = o2[seg[2]] = o2[seg[2]] || {}; if (val == null || val === def[seg[2]][seg[3]]) delete m[seg[3]]; else m[seg[3]] = val; return; }
+    if (seg[2] === 'opts') {
+      var ok = seg[3], fld = seg[4], d1 = def.opts[ok] || { f: 1, add: 0 }, oo = (o2.opts = o2.opts || {})[ok] || {};
+      if (val == null) val = d1[fld];
+      if (val === d1[fld]) delete oo[fld]; else oo[fld] = val;
+      if (Object.keys(oo).length) o2.opts[ok] = oo; else delete o2.opts[ok];
+    }
+  }
+  function hpResetPath(path) {
+    var p = prGet(), seg = path.split('|');
+    if (seg[0] === 'glob') delete p.global[seg[1]];
+    else if (seg[0] === 'mat') delete p.mats[seg[1]];
+    else { var o = p.subs[seg[1]]; if (!o) return; if (seg.length === 3) delete o[seg[2]]; else if (o[seg[2]]) delete o[seg[2]][seg[3]]; }
+  }
+  function hpCsv() {
+    var rows = [['Bagian', 'Sub-kategori', 'Kelompok', 'Pilihan / komponen', 'Faktor', 'Tambahan (IDR)', 'Faktor bawaan', 'Tambahan bawaan (IDR)']];
+    rows.push(['Umum', '', '', 'Pembulatan', '', XC.globalPrice().round, '', XC.GLOBAL_DEF.round]);
+    rows.push(['Umum', '', '', 'Penyesuaian umum (%)', '', XC.globalPrice().markup, '', 0]);
+    subsAll().forEach(function (it) {
+      var s = it.s, def = XC.priceDefaults(s), t = XC.priceTable(s), nm = it.cat.l + ' › ' + s.l;
+      rows.push(['Dasar', nm, '', 'Harga dasar', '', t.base, '', def.base]);
+      if (def.baseRound != null) rows.push(['Dasar', nm, '', 'Harga dasar top bulat / persegi', '', t.baseRound, '', def.baseRound]);
+      XC.sizeDrivers(s).forEach(function (k) { rows.push(['Ukuran', nm, '', k.l + ' per ' + k.per + ' cm (ref ' + k.ref + ')', '', t.per10[k.id], '', def.per10[k.id]]); });
+      s.groups.forEach(function (g) {
+        if (g.type === 'range' || XC.MAT_GROUPS[g.id] || g.id === 'color' || typeof g.opts === 'function') return;
+        g.opts.forEach(function (o) { var k = g.id + '.' + o.id, v = t.opts[k] || { f: 1, add: 0 }, d0 = def.opts[k] || { f: 1, add: 0 }; rows.push(['Pilihan', nm, g.l, o.l, v.f, v.add, d0.f, d0.add]); });
+      });
+      Object.keys(def.each).forEach(function (k) { rows.push(['Per buah', nm, '', k, '', t.each[k], '', def.each[k]]); });
+    });
+    var md = XC.matDefaults();
+    Object.keys(md).forEach(function (k) { var v = XC.matPrice(k); rows.push(['Material', '', k.split('.')[0], k.split('.').slice(1).join(' · '), v.f, v.add, md[k].f, md[k].add]); });
+    download('XIONCO-harga-customize.csv', csv(rows), 'text/csv');
+  }
+
   /* ---------------------------------------------------------------- PENGATURAN */
   var MODE_TEXT = { folder: 'Folder data/ (lokal)', online: 'Online — hanya di browser ini', browser: 'Browser ini (buka lewat serve.js)' };
   function storageSize() { var n = 0; try { for (var k in localStorage) if (k.indexOf('xionco') === 0) n += (localStorage.getItem(k) || '').length; } catch (e) {} return n; }
   function renderSet() {
     var s = XVDB.settings();
-    head('05 · Pengaturan', 'Pengaturan', 'Posisi tombol, data, dan pintasan. Semua data tersimpan di browser ini — gunakan export untuk cadangan atau memindahkan ke komputer lain.');
+    head('06 · Pengaturan', 'Pengaturan', 'Posisi tombol, data, dan pintasan. Semua data tersimpan di browser ini — gunakan export untuk cadangan atau memindahkan ke komputer lain.');
     el.body.innerHTML = '<div class="sets">' +
       '<div class="card set"><h3>Posisi tombol</h3><p>Default di kiri bawah. Tombol juga bisa diseret — ia akan menempel ke sudut terdekat.</p><div class="corners">' +
         [['tl', 'Kiri atas'], ['tr', 'Kanan atas'], ['bl', 'Kiri bawah'], ['br', 'Kanan bawah']].map(function (c) { return '<button type="button" data-act="pos" data-pos="' + c[0] + '"' + (s.position === c[0] ? ' class="is-on"' : '') + '>' + c[1] + '</button>'; }).join('') + '</div></div>' +
@@ -1036,6 +1225,10 @@
       else { XVDB.deleteCustom(E2.rec.id); toast('Pesanan dihapus'); }
       closeEditor(); renderTab(); return;
     }
+    if (a === 'hp-sel') { state.harga.sel = t.dataset.v; renderHarga(); el.body.scrollTop = 0; return; }
+    if (a === 'hp-reset') { hpResetPath(t.dataset.path); prSave(); state.harga.keep = true; renderHarga(); renderTabs(); return; }
+    if (a === 'hp-csv') { hpCsv(); return; }
+    if (a === 'hp-reset-all') { if (!t.dataset.armed) { t.dataset.armed = '1'; t.lastChild.textContent = 'Yakin? klik lagi'; setTimeout(function () { if (t.isConnected) { delete t.dataset.armed; t.lastChild.textContent = 'Semua ke bawaan'; } }, 3000); return; } pr = {}; XVDB.resetPricing(); pr = null; toast('Semua harga kembali ke bawaan'); renderHarga(); renderTabs(); return; }
     if (a === 'pos') { XVDB.setSetting('position', t.dataset.pos); renderSet(); return; }
     if (a === 'czlayout') { XVDB.setSetting('czLayout', t.dataset.v); renderSet(); toast(t.dataset.v === 'box2' ? 'Customize: Box 2 (kotak kiri)' : 'Customize: Box 1 (satu kotak)'); return; }
     if (a === 'hide') { var s = XVDB.settings(); XVDB.setSetting('hidden', !s.hidden); renderSet(); toast(!s.hidden ? 'Tombol disembunyikan · Ctrl+Shift+D' : 'Tombol ditampilkan'); return; }
@@ -1056,6 +1249,7 @@
   function onChange(e) {
     var t = e.target;
     if (t.dataset.f && t.tagName === 'SELECT') { setFilter(t.dataset.f, t.value); renderTab(); return; }
+    if (t.dataset.hp) { hpSet(t.dataset.hp, t.value, t.dataset.kind); prSave(); state.harga.keep = true; var nextPath = t.dataset.hp; renderHarga(); renderTabs(); return; }
     if (t.dataset.money !== undefined) { t.value = fmt(num(t.value)); }
     if (t.dataset.k && t.tagName === 'SELECT') onInput(e);
     if (t.dataset.cell) {

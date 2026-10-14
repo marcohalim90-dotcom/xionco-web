@@ -7,6 +7,7 @@
    Database Developer Settings disimpan sebagai file di folder data/:
      data/products.json         katalog item         (ikut online saat di-push)
      data/checks.json           centang aset manual  (ikut online)
+     data/pricing.json          harga Customize      (ikut online)
      data/private/customs.json  pesanan custom + data pelanggan (TIDAK ikut online)
      data/history/              cadangan otomatis setiap kali disimpan (lokal saja)
    API hanya menerima permintaan dari localhost.
@@ -23,6 +24,7 @@ const KEEP = 30;                                   // cadangan per file
 const DB = {
   products: path.join(DATA, 'products.json'),
   checks: path.join(DATA, 'checks.json'),
+  pricing: path.join(DATA, 'pricing.json'),
   customs: path.join(DATA, 'private', 'customs.json')
 };
 const TYPES = {

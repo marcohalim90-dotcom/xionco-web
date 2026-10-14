@@ -1,0 +1,8 @@
+Set      : metal-brushed
+Asset    : Metal 009 (Metal009)
+Author   : Lennart Demes (ambientCG)
+Source   : https://ambientcg.com/view?id=Metal009
+Download : https://ambientcg.com/get?file=Metal009_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: not published (scale set by eye)
+Processed: downscaled to 1024 px, WebP. Albedo not used. Roughness normalised to mean 0.8.
