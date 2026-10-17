@@ -1,0 +1,7 @@
+Set      : room-floor-parquet
+Asset    : Herringbone Parquet (herringbone_parquet)
+Author   : Jenelle van Heerden, Sergej Majboroda
+Source   : https://polyhaven.com/a/herringbone_parquet
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 3400 x 3400 mm
+Processed: 1024 px WebP, warna asli dipertahankan (finishing ruangan). Roughness dinormalkan ke rata-rata 0.8.

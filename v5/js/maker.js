@@ -2033,7 +2033,25 @@
 
     var sub = c.sub;
     if (c.cat === 'kursi') ({ sofa: sofa, chaise: chaise, armchair: armchair, bench: bench, dining: dining, stool: stool, ottoman: ottoman }[sub] || sofa)();
+    if (c.cat === 'kursi' && (c.extras || []).indexOf('sofabed') >= 0) sofaBedPull();
     else { var mk = window.XMK && window.XMK[c.cat]; if (mk) mk(H); }   // meja/kabinet/divan: js/mk-meja.js · mk-kabinet.js · mk-divan.js
+
+    /* sofa bed: kasur tarik keluar dari bawah dudukan ke depan, rata dengan permukaan duduk, kaki depan turun.
+       Tersembunyi saat tertutup; klik kasur / klik kanan › Animate. */
+    function sofaBedPull() {
+      root.updateMatrixWorld(true);
+      var bx = new T.Box3().setFromObject(root); if (bx.isEmpty()) return;
+      var W = bx.max.x - bx.min.x, SHs = Math.min(cm(c.seatH, 45), bx.max.y - .12), mw = Math.max(.8, W - .36), L = 1.3, th = .12, yTop = SHs - .012, yF = yTop - th - .03;
+      var pg = new T.Group(), sg = new T.Group(), lg = new T.Group(), mtl = metal(X.METAL[4]);
+      pg.position.set((bx.max.x + bx.min.x) / 2, 0, bx.max.z - .03); pg.add(sg); root.add(pg);
+      box(sg, mw, th, L, linen(), 0, yTop - th / 2, L / 2, .035);
+      box(sg, mw + .02, .025, L, mtl, 0, yF + .0125, L / 2, .004);
+      lg.position.set(0, yF, L - .06); sg.add(lg);
+      [-1, 1].forEach(function (e) { rod(lg, [e * (mw / 2 - .06), 0, 0], [e * (mw / 2 - .06), -yF, 0], .011, mtl, 12); });
+      rod(lg, [-(mw / 2 - .06), -yF + .04, 0], [mw / 2 - .06, -yF + .04, 0], .009, mtl, 12);
+      var mo = { id: 'sofabed', kind: 'sofabed', t: 0, to: 0, apply: function (v) { sg.visible = v > .01; sg.position.z = -L * (1 - v); lg.rotation.x = -(1 - Math.min(1, Math.max(0, v * 1.6 - .6))) * Math.PI / 2; } };
+      mo.apply(0); sg.traverse(function (o) { o.userData.motion = mo; }); motions.push(mo);
+    }
 
     return {
       group: root, motions: motions,

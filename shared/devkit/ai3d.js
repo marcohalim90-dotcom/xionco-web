@@ -13,7 +13,7 @@
   var RUN = ['tunggu', 'kirim', 'antri', 'proses', 'unduh', 'rapikan'];
   var LABEL = { tunggu: 'Menunggu giliran', kirim: 'Mengirim foto', antri: 'Antre di fal.ai', proses: 'Membuat model 3D', unduh: 'Mengunduh', rapikan: 'Merapikan (Blender)' };
   var MV = 'https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js';
-  var S = { cfg: null, jobs: {}, sel: {}, uploads: {}, f: 'belum', cat: 'semua', q: '', open: null, slot: 0, key: '', loaded: false, cssOn: false, view: null };
+  var S = { cfg: null, jobs: {}, sel: {}, uploads: {}, done: {}, f: 'belum', cat: 'semua', q: '', open: null, slot: 0, key: '', loaded: false, cssOn: false, view: null };
   var C;   // konteks devkit terakhir
 
   var ICON = '<path d="m12 3.5 7.5 4.2v8.6L12 20.5l-7.5-4.2V7.7z"/><path d="m4.5 7.7 7.5 4.3 7.5-4.3M12 12v8.5"/>';
@@ -27,6 +27,7 @@
   var ic2 = function (n) { return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">' + IC[n] + '</svg>'; };
 
   var CSS = [
+    '.ai-warn { margin: -4px 0 10px; padding: 8px 10px; border-radius: 8px; background: rgba(166, 92, 60, .08); color: #8a4a2e; font-size: 11px; line-height: 1.5; }',
     '.ai-key { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; margin-bottom: 14px; }',
     '.ai-key .in { height: 38px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--hair); background: rgba(255,250,242,.6); font-size: 12.5px; outline: none; min-width: 0; }',
     '.ai-key .in:focus { border-color: var(--gold); }',
@@ -105,7 +106,7 @@
   function loadJobs() {
     return api('GET', 'jobs').then(function (r) {
       if (!r.ok) return false;
-      var old = S.jobs; S.jobs = r.jobs || {}; S.sel = r.sel || {}; S.uploads = r.uploads || {}; S.loaded = true;
+      var old = S.jobs; S.jobs = r.jobs || {}; S.sel = r.sel || {}; S.uploads = r.uploads || {}; S.done = r.done || {}; S.loaded = true;
       var changed = [];
       Object.keys(S.jobs).forEach(function (id) { if (JSON.stringify(old[id]) !== JSON.stringify(S.jobs[id])) changed.push(id); });
       return changed;
@@ -132,19 +133,33 @@
     var c = S.cfg, m = c && c.models && c.models[c.model]; if (!m) return null;
     return (c.texture === 'detailed' ? m.cost.detailed : m.cost.standard) + (c.geometry === 'detailed' ? m.cost.geo : 0);
   }
+  /* Done = sudah tercentang: hasil AI selesai, sudah punya model 3D di situs (SKP / AI), CUBIX (3D dari konfigurator),
+     atau dicentang manual. Belum 3D = sisanya (tidak sedang berjalan). */
+  var BUILT = { cubix: 'Konfigurator 3D' };
+  function doneWhy(p) {
+    var j = job(p.id);
+    if (S.done[p.id]) return 'Dicentang manual';
+    if (j && j.status === 'selesai') return p.model === j.file ? 'AI · dipakai di situs' : 'AI selesai';
+    if (p.model) return 'Model 3D di situs';
+    if (BUILT[p.id]) return BUILT[p.id];
+    return '';
+  }
   function list() {
     var q = S.q.trim().toLowerCase();
     return C.products().filter(function (p) {
       if (p.status === 'arsip') return false;
-      var j = job(p.id), ai = j && j.file && p.model === j.file;
-      if (S.f === 'belum' && p.model && !ai) return false;
+      var j = job(p.id), dn = !!doneWhy(p);
+      if (S.f === 'belum' && (dn || isRun(j))) return false;
       if (S.f === 'jalan' && !isRun(j)) return false;
-      if (S.f === 'selesai' && !(j && j.status === 'selesai')) return false;
+      if (S.f === 'selesai' && !dn) return false;
       if (S.cat !== 'semua' && p.cat !== S.cat) return false;
       if (q && (p.name + ' ' + p.id + ' ' + p.type).toLowerCase().indexOf(q) < 0) return false;
       return true;
-    });
+    }).map(function (p, i) { return { p: p, i: i, t: newAt(p) }; })
+      .sort(function (a, b) { return (b.t - a.t) || (a.i - b.i); })   // 3D paling baru (selesai / sedang berjalan / dicentang) di paling atas
+      .map(function (x) { return x.p; });
   }
+  function newAt(p) { var j = job(p.id); return Math.max(j ? (isRun(j) ? Date.now() : j.done || (j.last && j.last.done) || j.at || 0) : 0, S.done[p.id] || 0); }
   var mmss = function (ms) { var s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); };
 
   /* ---------------------------------------------------------------- tampilan */
@@ -157,14 +172,17 @@
         '<button class="ai-clr" type="button" data-act="ai-clr" data-id="' + C.esc(p.id) + '" data-i="' + i + '" aria-label="Kosongkan">' + ic2('x') + '</button><em>' + l + '</em></div>';
     }).join('') + '</div>';
   }
+  function fCount(k) { var f0 = S.f, n; S.f = k; var q0 = S.q, c0 = S.cat; S.q = ''; S.cat = 'semua'; n = list().length; S.f = f0; S.q = q0; S.cat = c0; return n; }
   function statusHTML(p) {
-    var j = job(p.id);
-    if (!j) return '<div><span class="chk"></span><span class="muted">Belum dibuat</span></div>';
+    var j = job(p.id), why = doneWhy(p);
+    // centang Done: klik untuk tandai / lepas manual (otomatis bila hasil AI selesai atau sudah ada model di situs)
+    var tick = '<button type="button" class="chk' + (why ? ' is-on' : '') + '" data-act="ai-done" data-id="' + C.esc(p.id) + '" title="' + (S.done[p.id] ? 'Lepas centang Done' : why ? why : 'Tandai Done') + '">' + (why ? C.ic('check') : '') + '</button>';
+    if (!j || (j.status !== 'selesai' && !isRun(j) && why)) return '<div>' + tick + '<span' + (why ? '' : ' class="muted"') + '>' + (why ? 'Done · ' + why : 'Belum dibuat') + '</span></div>';
     if (isRun(j)) return '<div><span class="ai-spin"></span><span>' + LABEL[j.status] + (j.status === 'antri' && j.queue != null ? ' · #' + (j.queue + 1) : '') + '</span></div>' +
       '<div class="ai-bar"></div><small>' + (j.multi ? j.nviews + ' foto · multiview' : '1 foto') + ' · <span data-ai-el="' + C.esc(p.id) + '">' + mmss(Date.now() - j.started) + '</span></small>';
     if (j.status === 'selesai') {
       var inf = j.info || {}, sz = inf.size_cm ? inf.size_cm.map(Math.round).join(' × ') + ' cm' : '';
-      return '<div><span class="chk is-on">' + C.ic('check') + '</span><span>Selesai</span></div><small>' + [sz, inf.kb ? (inf.kb / 1024).toFixed(1) + ' MB' : '', j.done ? C.dt(j.done) : ''].filter(Boolean).join(' · ') + '</small>';
+      return '<div>' + tick + '<span>Done · ' + why + '</span></div><small>' + [sz, inf.kb ? (inf.kb / 1024).toFixed(1) + ' MB' : '', j.done ? C.dt(j.done) : ''].filter(Boolean).join(' · ') + '</small>';
     }
     if (j.status === 'batal') return '<div><span class="chk"></span><span class="muted">Dibatalkan</span></div>';
     return '<div><span class="pill pill--bad">Gagal</span></div><div class="ai-err">' + C.esc(j.error || '') + '</div>' + (j.last ? '<small>Hasil sebelumnya masih ada</small>' : '');
@@ -186,6 +204,7 @@
     var v = views(p);
     return '<div class="ai-panel"><p>Klik kotak <b>' + VIEWS[S.slot] + '</b> di atas lalu pilih foto di bawah. Foto terbaik: latar polos, produk utuh, sudut lurus (bukan foto ruangan). ' +
       'Depan wajib — Kiri, Belakang, Kanan opsional dan diisi berurutan (multiview lebih akurat' + (S.cfg && S.cfg.models && S.cfg.models[S.cfg.model] && !S.cfg.models[S.cfg.model].multi ? '; model sekarang hanya memakai foto Depan' : '') + ').</p>' +
+      '<p class="ai-warn"><b>Penting:</b> pada multiview, AI menganggap semua foto adalah benda yang sama dari sisi berbeda — isi foto suasana (meja, kursi, gelas, ruangan) ikut dibentuk jadi 3D. Bila hanya ada satu foto produk polos, isi slot Depan saja.</p>' +
       '<div class="ai-gal">' + photos(p).map(function (ph) {
         var at = v.indexOf(ph.u), up = ph.tag === 'Upload';
         return '<div class="ai-ph"><button type="button" data-act="ai-pick" data-id="' + C.esc(p.id) + '" data-u="' + C.esc(ph.u) + '" style="display:block;width:100%;height:100%"><img src="' + C.esc(src(ph.u)) + '" alt="" loading="lazy"></button>' +
@@ -212,7 +231,7 @@
     var c = S.cfg || {}, m = c.models && c.models[c.model], all = C.products().filter(function (p) { return p.status !== 'arsip'; });
     var nNo = all.filter(function (p) { return !p.model; }).length, nDone = Object.keys(S.jobs).filter(function (k) { return S.jobs[k].status === 'selesai'; }).length;
     var nRun = Object.keys(S.jobs).filter(function (k) { return isRun(S.jobs[k]); }).length;
-    C.head('07 · 3D AI', '3D katalog', nNo + ' produk belum punya model 3D · ' + nDone + ' selesai dibuat AI' + (nRun ? ' · ' + nRun + ' sedang berjalan' : '') + '. Cek foto tiap produk, upload bila kurang bagus, lalu Run. Hasil baru tampil di situs setelah Anda menyalakan <b>Di situs</b>.',
+    C.head('07 · 3D AI', '3D katalog', fCount('belum') + ' produk belum 3D · ' + fCount('selesai') + ' Done (' + nDone + ' dibuat AI)' + (nRun ? ' · ' + nRun + ' sedang berjalan' : '') + '. Cek foto tiap produk, upload bila kurang bagus, lalu Run. Hasil baru tampil di situs setelah Anda menyalakan <b>Di situs</b>.',
       '<button class="btn" type="button" data-act="ai-set">' + C.ic('set') + 'Model &amp; key</button>');
     var cats = (window.XV && XV.CATEGORIES) || [];
     var h = '<div class="ai-sum">' +
@@ -222,7 +241,7 @@
         (c.blender === false ? '<span class="pill pill--bad">Blender tidak ditemukan</span>' : '')) + '</div>';
     h += '<div class="bar"><input class="in in--search" type="search" placeholder="Cari produk…" value="' + C.esc(S.q) + '" data-plug="' + ID + '" data-ai="q">' +
       '<select class="sel" data-plug="' + ID + '" data-ai="cat"><option value="semua">Semua kategori</option>' + cats.map(function (k) { return '<option value="' + k.id + '"' + (S.cat === k.id ? ' selected' : '') + '>' + C.esc(k.label) + '</option>'; }).join('') + '</select>' +
-      '<div class="seg">' + [['belum', 'Belum 3D'], ['jalan', 'Berjalan'], ['selesai', 'Selesai'], ['semua', 'Semua']].map(function (o) { return '<button type="button" data-act="ai-f" data-v="' + o[0] + '"' + (S.f === o[0] ? ' class="is-on"' : '') + '>' + o[1] + '</button>'; }).join('') + '</div>' +
+      '<div class="seg">' + [['belum', 'Belum 3D'], ['jalan', 'Berjalan'], ['selesai', 'Done'], ['semua', 'Semua']].map(function (o) { return '<button type="button" data-act="ai-f" data-v="' + o[0] + '"' + (S.f === o[0] ? ' class="is-on"' : '') + '>' + o[1] + ' <b>' + fCount(o[0]) + '</b>' + '</button>'; }).join('') + '</div>' +
       '<span class="muted" data-ai-n>' + list().length + ' ditampilkan</span></div>';
     var L = list();
     h += '<div class="tbl tbl--ai"><div class="tr tr--ai th"><span>Produk</span><span>Foto untuk AI</span><span>Status</span><span style="text-align:right">Aksi</span></div>' +
@@ -321,6 +340,12 @@
     C = ctx; var a = t.dataset.act, id = t.dataset.id, p = id && byId(id);
     if (a === 'ai-set') { var tb = C.root.querySelector('[data-tab="pengaturan"]'); if (tb) tb.click(); return; }
     if (a === 'ai-f') { S.f = t.dataset.v; render(C); return; }
+    if (a === 'ai-done') {   // centang manual: hanya untuk produk yang belum otomatis Done
+      var on = !S.done[id], auto = doneWhy(p) && !S.done[id];
+      if (auto) { C.toast('Sudah Done otomatis (' + doneWhy(p) + ')'); return; }
+      api('PUT', 'done/' + encodeURIComponent(id), { on: on }).then(function (r) { if (!r.ok) { C.toast(r.error || 'Gagal'); return; } S.done = r.done || {}; C.toast(on ? 'Ditandai Done' : 'Centang Done dilepas'); render(C); C.renderTabs(); });
+      return;
+    }
     if (a === 'ai-open') { S.open = S.open === id ? null : id; S.slot = 0; render(C); return; }
     if (a === 'ai-slot') {
       var i = +t.dataset.i;

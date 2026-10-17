@@ -1,0 +1,7 @@
+Set      : room-floor-carpet
+Asset    : Poly Wool Herringbone (poly_wool_herringbone)
+Author   : colormass, Rico Cilliers
+Source   : https://polyhaven.com/a/poly_wool_herringbone
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 270 x 276 mm
+Processed: 1024 px WebP, warna asli dipertahankan (finishing ruangan). Roughness dinormalkan ke rata-rata 0.8.

@@ -1,0 +1,7 @@
+Set      : room-wall-beige
+Asset    : Beige Wall 001 (beige_wall_001)
+Author   : Dimitrios Savva, Rico Cilliers
+Source   : https://polyhaven.com/a/beige_wall_001
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 3000 x 3000 mm
+Processed: 1024 px WebP, warna asli dipertahankan (finishing ruangan). Roughness dinormalkan ke rata-rata 0.8.

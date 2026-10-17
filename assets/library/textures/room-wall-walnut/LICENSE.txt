@@ -1,0 +1,7 @@
+Set      : room-wall-walnut
+Asset    : Natural Walnut Veneer (natural_walnut_veneer)
+Author   : Jenelle van Heerden
+Source   : https://polyhaven.com/a/natural_walnut_veneer
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1000 x 1000 mm
+Processed: 1024 px WebP, warna asli. Roughness dinormalkan ke rata-rata 0.8.

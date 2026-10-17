@@ -347,7 +347,7 @@
                [['Akses & pengaman', 'Access & safety'], ['access', 'rail']],
                [['Bawah & penyimpanan', 'Underneath & storage'], ['below', 'under', 'trundle', 'storage']]],
     ['ukuran', [null, ['mattress', 'bottom', 'h', 'backH', 'hbH']]],
-    ['material', [null, ['uph', 'color', 'wood', 'panel', 'metal', 'legFinish']]],
+    ['material', [['Kain / kulit', 'Fabric / leather'], ['uph', 'color']], [['Kayu & logam', 'Wood & metal'], ['wood', 'panel', 'metal', 'legFinish']]],
     ['detail', [['Dasar & kaki', 'Base & legs'], ['mount', 'leg', 'legH']],
                [['Bantal', 'Pillows'], ['pillows', 'bolsters']],
                [['Tambahan', 'Extras'], ['drape', 'extras']]]

@@ -415,7 +415,7 @@
   CATS.forEach(prep);
 
   var STEPS = [
-    O('jenis', 'Jenis', 'Type'), O('bentuk', 'Bentuk', 'Shape'), O('ukuran', 'Ukuran', 'Size'),
+    O('jenis', 'Jenis', 'Type'), O('ukuran', 'Ukuran', 'Size'), O('bentuk', 'Bentuk', 'Shape'),   // pemilik: ukuran sebelum bentuk
     O('material', 'Material', 'Material'), O('detail', 'Detail', 'Details'), O('kirim', 'Ringkasan', 'Summary')
   ];
 
@@ -535,6 +535,10 @@
   var subKey = function (s) { return s.cat + '.' + s.id; };
   var r1k = function (v) { return Math.round(v / 1000) * 1000; };
   // ukuran pemicu harga sebuah sub-kategori + ukuran referensinya
+  /* harga ukuran: 'ratio' = harga dikali (ukuran / ukuran referensi) tiap ukuran, berurutan (aturan pemilik untuk sofa:
+     10.000 @ 50 cm → panjang 70: 70/50 × 10.000 = 14.000 → lebar 70: 70/50 × 14.000 = 19.600); 'per10' = tambahan per 10 cm (kategori lain) */
+  var RATIO_CATS = { kursi: true };
+  function sizeMode(s) { return RATIO_CATS[s.cat] ? 'ratio' : 'per10'; }
   function sizeDrivers(s) {
     var d = s.dims || {}, out = [];
     var has = function (id) { return s.groups.some(function (g) { return g.id === id; }); };
@@ -627,14 +631,14 @@
     var round = /^(round|square)$/.test(c.topShape) && tbl.baseRound != null;
     var base = round ? tbl.baseRound : tbl.base;
     rows.push({ k: 'base', l: L(s) + (round ? ' · ' + L({ l: 'top bulat / persegi', en: 'round / square top' }) : ''), v: base });
-    var size = 0;
+    var size = 0, ratio = sizeMode(s) === 'ratio';
     sizeDrivers(s).forEach(function (k) {
       if (round ? /^(w|d)$/.test(k.id) : k.id === 'dia') return;
       if (k.id === 'ret' && !/^(lkiri|lkanan|lcurve|u|chaise)/.test(c.shape || '')) return;
       if (k.id === 'hbH' && c.headboard === 'none') return;
-      var v = +c[k.id]; if (!v || !tbl.per10[k.id]) return;
-      var dv = tbl.per10[k.id] * (v - k.ref) / k.per;
-      if (Math.abs(dv) >= 1) { size += dv; rows.push({ k: 'size', l: L(k) + ' ' + v + ' cm', v: dv }); }
+      var v = +c[k.id]; if (!v || (!ratio && !tbl.per10[k.id])) return;
+      var dv = ratio ? (base + size) * (v / k.ref - 1) : tbl.per10[k.id] * (v - k.ref) / k.per;
+      if (Math.abs(dv) >= 1) { size += dv; rows.push({ k: 'size', l: L(k) + ' ' + v + ' cm' + (ratio ? ' (× ' + v + '/' + k.ref + ')' : ''), v: dv }); }
     });
     var run = base + size;
     groups(c).forEach(function (gr) {
@@ -688,7 +692,7 @@
     // harga (Developer Settings › Harga)
     setPricing: function (p) { p = migratePricing(p || {}); PRICE = { global: p.global || {}, subs: p.subs || {}, mats: p.mats || {} }; },
     getPricing: function () { return JSON.parse(JSON.stringify(PRICE)); },
-    priceTable: priceTable, priceDefaults: function (s) { return JSON.parse(JSON.stringify(defOf(s))); }, sizeDrivers: sizeDrivers,
+    priceTable: priceTable, priceDefaults: function (s) { return JSON.parse(JSON.stringify(defOf(s))); }, sizeDrivers: sizeDrivers, sizeMode: sizeMode,
     matDefaults: matDefaults, matPrice: matPrice, globalPrice: globalPrice, GLOBAL_DEF: GLOBAL_DEF, subKey: subKey, MAT_GROUPS: MAT_GROUPS,
     // modul kategori (spec-*.js): alat bersama + daftarkan / ganti kategori
     K: { O: O, UPH: UPH, WOOD: WOOD, METAL: METAL, STONE: STONE, PANEL: PANEL, M: M, F: F, has: has, seat: seat, notNone: notNone, LEGLESS: LEGLESS, NOFIN: NOFIN, CAPLEG: CAPLEG, TIGHTBACK: TIGHTBACK, tb: tb, G: G, g: g, plus: plus, capOk: capOk, TRIM: TRIM, trimG: trimG, notSerp: notSerp, SOFA_SHAPES: SOFA_SHAPES, ARM: ARM, SOFA_ARM: SOFA_ARM, BACK: BACK, SOFA_BACK: SOFA_BACK, SEATC: SEATC, SOFA_LEGS: SOFA_LEGS, sofaLegs: sofaLegs, noBigMech: noBigMech, acLegs: acLegs, notWF: notWF, AC_ARM: AC_ARM, AC_BACK: AC_BACK, AC_LEGS: AC_LEGS, noLid: noLid, BENCH_LEGS: BENCH_LEGS, woodOnlyBack: woodOnlyBack, dnUph: dnUph, notTubBack: notTubBack, notWish: notWish, stBucket: stBucket, stUph: stUph, notPed: notPed, notWoodFr: notWoodFr, otLegs: otLegs, notOnFrame: notOnFrame, OT_LEGS: OT_LEGS, chLegs: chLegs },

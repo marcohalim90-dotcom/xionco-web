@@ -1,0 +1,7 @@
+Set      : room-floor-greyoak
+Asset    : Washed Grey Oak Veneer (washed_grey_oak_veneer)
+Author   : Jenelle van Heerden
+Source   : https://polyhaven.com/a/washed_grey_oak_veneer
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1000 x 1000 mm
+Processed: 1024 px WebP, warna asli. Roughness dinormalkan ke rata-rata 0.8.

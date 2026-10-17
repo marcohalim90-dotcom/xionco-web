@@ -9,6 +9,7 @@
      data/checks.json           centang aset manual  (ikut online)
      data/pricing.json          harga Customize      (ikut online)
      data/private/customs.json  pesanan custom + data pelanggan (TIDAK ikut online)
+     data/private/quotes.json   penawaran harga khusus + nama/WA customer (TIDAK ikut online) — tools/quotes.js
      data/private/ai3d.json     key fal.ai + pilihan model 3D AI (TIDAK ikut online, tak pernah dikirim ke browser)
      data/history/              cadangan otomatis setiap kali disimpan (lokal saja)
    API hanya menerima permintaan dari localhost.
@@ -17,6 +18,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const ai3d = require('./ai3d');
+const quotes = require('./quotes');   // penawaran harga khusus (server tiruan)
+const staging = require('./staging');   // aset material untuk direview (Developer Settings › Aset material)
 
 const ROOT = path.resolve(__dirname, '..');
 const PORT = +process.env.PORT || 5173;
@@ -76,6 +79,7 @@ function listAssets() {
 }
 
 function api(req, res, p) {
+  if (p.indexOf('/api/pub/') === 0 || p === '/api/quotes' || p.indexOf('/api/quotes/') === 0) return quotes.handle(req, res, p, send, isLocalHost);   // publik + admin penawaran
   if (!isLocalHost(req)) return send(res, 403, { ok: false, error: 'Hanya dari localhost' });
   // penulisan butuh header khusus → permintaan dari situs lain diblokir browser (CORS)
   if (req.method !== 'GET' && req.headers['x-xionco'] !== '1') return send(res, 403, { ok: false, error: 'Header tidak valid' });
@@ -86,7 +90,8 @@ function api(req, res, p) {
     return send(res, 200, { ok: true, writable: true, files: files });
   }
   if (p === '/api/assets' && req.method === 'GET') return send(res, 200, { ok: true, files: listAssets() });
-  if (p.indexOf('/api/ai3d/') === 0) return ai3d.handle(req, res, p, send);   // 3D AI (Tripo via fal.ai)
+  if (p.indexOf('/api/ai3d/') === 0) return ai3d.handle(req, res, p, send);
+  if (p === '/api/staging' || p.indexOf('/api/staging/') === 0) return staging.handle(req, res, p, send);   // 3D AI (Tripo via fal.ai)
 
   const m = p.match(/^\/api\/db\/([a-z]+)$/);
   if (!m || !DB[m[1]]) return send(res, 404, { ok: false, error: 'Tidak dikenal' });

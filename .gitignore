@@ -22,3 +22,7 @@ output/
 
 # GLB mentah hasil SKP (besar, bisa dibuat ulang) — yang online hanya hasil rapi di assets/items/
 data/source/skp-glb/*/
+
+# aset material untuk direview (katalog & unduhan mentah) — lokal saja; yang di-Acc masuk assets/library/textures/
+data/source/staging/
+data/source/glb-orig/

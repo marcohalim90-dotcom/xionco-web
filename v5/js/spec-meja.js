@@ -403,8 +403,11 @@
                [['Laci & penyimpanan', 'Drawers & storage'], ['pedestal', 'pedType', 'pedDrawers', 'drawers', 'face', 'islandBody', 'hutch', 'tower', 'mped']],
                [['Panel & cermin', 'Panels & mirror'], ['front', 'screen', 'ada', 'mirror']]],
     ['ukuran', [null, ['w', 'd', 'dia', 'retL', 'h', 'thick']]],
-    ['material', [['Daun meja', 'Table top'], ['topMat', 'wood', 'stone', 'inlay']],
-                 [['Badan, laci & kaki', 'Body, drawers & base'], ['body', 'panel', 'baseMat', 'metal']]],
+    // kayu / batu / warna HPL dipakai bersama beberapa bagian → ditempatkan otomatis di bawah bagian yang memakainya (app.js CZ_SHARED)
+    ['material', [['Daun meja', 'Table top'], ['topMat', 'inlay']],
+                 [['Kaki & penopang', 'Legs & base'], ['baseMat', 'metal']],
+                 [['Badan & laci', 'Body & drawers'], ['body']],
+                 [['Kayu, batu & warna', 'Wood, stone & colour'], ['wood', 'stone', 'panel']]],
     ['detail', [['Tepi & tampilan', 'Edge & display'], ['edge', 'tableware']],
                [['Tambahan', 'Extras'], ['stool', 'stoolC', 'extras']]]
   ];

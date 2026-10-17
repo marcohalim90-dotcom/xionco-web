@@ -35,7 +35,7 @@ function readJSON(f, d) { try { return JSON.parse(fs.readFileSync(f, 'utf8')); }
 function writeJSON(f, o) { fs.mkdirSync(path.dirname(f), { recursive: true }); const t = f + '.tmp'; fs.writeFileSync(t, JSON.stringify(o, null, 2) + '\n'); fs.renameSync(t, f); }
 const conf = () => Object.assign({}, DEF, readJSON(CONF, {}));
 const db = readJSON(JOBS, { jobs: {}, sel: {} });
-db.jobs = db.jobs || {}; db.sel = db.sel || {};
+db.jobs = db.jobs || {}; db.sel = db.sel || {}; db.done = db.done || {};   // done: centang manual "sudah selesai"
 let saveT = 0;
 function saveDb() { clearTimeout(saveT); saveT = setTimeout(() => writeJSON(JOBS, JSON.parse(JSON.stringify(db, (k, v) => k[0] === '_' ? undefined : v))), 150); }
 const safeId = (id) => /^[a-z0-9][a-z0-9-]{0,80}$/.test(id) ? id : null;
@@ -118,9 +118,16 @@ function target(job) {
   const wide = (['seats', 'tables', 'bedframe', 'cabinet'].includes(p.cat) && !/stool|chair|ottoman|pouf|side|nightstand/.test(t)) ? 'wide' : '';
   return [p.dims || (job.model === 'p1' ? String(guessCm(p)) : ''), job.model === 'p1' ? 'turn-90' : wide];   // P1: depan selalu ke +X (dicek CAPRA & LOPHUS)
 }
+/* kompres model situs bila alatnya terpasang (cd tools/compress && npm install); gagal → file tetap dipakai apa adanya */
+function compressGlb(file) {
+  const tool = path.join(ROOT, 'tools/compress/compress.js');
+  if (!fs.existsSync(path.join(ROOT, 'tools/compress/node_modules'))) return Promise.resolve();
+  return new Promise((ok) => require('child_process').execFile(process.execPath, [tool, file], { cwd: ROOT, timeout: 180000 }, () => ok()));
+}
 async function finish(job) {
   const rel = 'assets/items/' + job.id + '/model-ai.glb';
   const info = await blender([path.join(ROOT, job.raw), path.join(ROOT, rel)].concat(target(job)));
+  await compressGlb(path.join(ROOT, rel));   // Draco + WebP (tools/compress) agar ringan di situs
   set(job, { status: 'selesai', file: rel, info, done: Date.now(), error: null });
 }
 
@@ -212,7 +219,7 @@ async function handle(req, res, p, send) {
       const jobs = {}, up = {};
       for (const id in db.jobs) jobs[id] = pub(db.jobs[id]);
       if (fs.existsSync(WORK)) fs.readdirSync(WORK).forEach((id) => { if (safeId(id)) { const u = uploads(id); if (u.length) up[id] = u; } });
-      return send(res, 200, { ok: true, jobs, sel: db.sel, uploads: up });
+      return send(res, 200, { ok: true, jobs, sel: db.sel, uploads: up, done: db.done });
     }
     let m;
     if ((m = p.match(/^\/api\/ai3d\/sel\/([^/]+)$/)) && req.method === 'PUT') {
@@ -220,6 +227,12 @@ async function handle(req, res, p, send) {
       const b = JSON.parse((await body(req, 1e5)).toString() || '{}');
       db.sel[id] = (Array.isArray(b.views) ? b.views : []).slice(0, 4).map((v) => typeof v === 'string' && v ? v : null);
       saveDb(); return send(res, 200, { ok: true });
+    }
+    if ((m = p.match(/^\/api\/ai3d\/done\/([^/]+)$/)) && req.method === 'PUT') {   // centang / lepas Done manual
+      const id = safeId(m[1]); if (!id) return send(res, 400, { ok: false, error: 'ID tidak valid' });
+      const b = JSON.parse((await body(req, 1e4)).toString() || '{}');
+      if (b.on) db.done[id] = Date.now(); else delete db.done[id];
+      saveDb(); return send(res, 200, { ok: true, done: db.done });
     }
     if ((m = p.match(/^\/api\/ai3d\/upload\/([^/]+)$/)) && req.method === 'POST') {
       const id = safeId(m[1]); if (!id) return send(res, 400, { ok: false, error: 'ID tidak valid' });

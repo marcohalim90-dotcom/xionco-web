@@ -516,10 +516,12 @@
 
   /* urutan tampil di panel Customize (app.js memakai cat.plan bila ada) */
   cat.plan = [
-    ['bentuk', [['Model', 'Model'], ['wallType']], [null, ['layout']], [['Pintu, kaca & top', 'Doors, glass & top'], ['doorStyle', 'glassType', 'top', 'topStone']]],
+    ['bentuk', [['Model', 'Model'], ['wallType']], [null, ['layout']], [['Pintu, kaca & top', 'Doors, glass & top'], ['doorStyle', 'glassType', 'top']]],
     ['ukuran', [null, ['w', 'd', 'h', 'elev']]],
-    ['material', [['Muka & badan', 'Fronts & carcass'], ['finish', 'wood', 'panel', 'carcass']], [['Panel dinding', 'Wall panel'], ['wallPanel']]],
-    ['detail', [['Handle', 'Handles'], ['handle', 'metal']], [['Dudukan & kaki', 'Mounting & legs'], ['mount', 'leg', 'legH']], [['Isi dalam & aksesori', 'Interior & accessories'], ['interior']]]
+    // semua bahan di langkah Material, per bagian; konstruksi badan dipisah dari finishing muka
+    ['material', [['Muka & finishing', 'Fronts & finish'], ['finish', 'wood', 'panel']], [['Top', 'Top'], ['topStone']], [['Konstruksi badan', 'Carcass construction'], ['carcass']],
+                 [['Handle & logam', 'Handles & metal'], ['metal']], [['Panel dinding', 'Wall panel'], ['wallPanel']]],
+    ['detail', [['Handle', 'Handles'], ['handle']], [['Dudukan & kaki', 'Mounting & legs'], ['mount', 'leg', 'legH']], [['Isi dalam & aksesori', 'Interior & accessories'], ['interior']]]
   ];
   cat.s = 'Kabinet'; cat.se = 'Cabinets';
   XC.defineCat(cat);

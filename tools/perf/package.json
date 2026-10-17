@@ -1,0 +1,8 @@
+{
+  "name": "xionco-perf",
+  "private": true,
+  "description": "Anggaran performa situs — lihat budget.js",
+  "dependencies": {
+    "puppeteer-core": "^23.11.1"
+  }
+}

@@ -3,7 +3,8 @@
    Tombol melayang (default kiri bawah) → overlay hampir layar penuh yang
    bergeser dari kanan ke kiri. Tidak membuka halaman baru.
    Tab: Versi · Aset · Katalog · Custom · Harga · (tab tambahan) · Pengaturan
-   Tab tambahan dari file lain lewat XVDevkit.add({...}) — mis. shared/devkit/ai3d.js (3D katalog, lokal saja).
+   Tab tambahan dari file lain lewat XVDevkit.add({...}) — mis. shared/devkit/ai3d.js (3D katalog, lokal saja),
+   shared/devkit/links.js (Link & penawaran, lokal saja).
    Gaya mengikuti versi 4 (ivory, garis champagne, Josefin Sans + Inter).
    Komponen terisolasi (Shadow DOM) → aman dipasang di versi mana pun.
    Pintasan: Ctrl + Shift + D
@@ -477,7 +478,7 @@
     var chain = Promise.all(jobs);
     if (needData) chain = chain.then(function () { return loadScript(ROOT + 'v5/js/data.js'); });
     return chain.then(function () { if (!window.XVDB) return loadScript(ROOT + 'shared/db.js'); }).then(function () { return window.XVDB && XVDB.ready; })
-      .then(function (r) { return LOCAL && location.protocol !== 'file:' ? loadScript(ROOT + 'shared/devkit/ai3d.js').then(function () { return r; }) : r; });   // 3D AI butuh serve.js
+      .then(function (r) { return LOCAL && location.protocol !== 'file:' ? loadScript(ROOT + 'shared/devkit/ai3d.js').then(function () { return loadScript(ROOT + 'shared/devkit/links.js'); }).then(function () { return loadScript(ROOT + 'shared/devkit/materials.js'); }).then(function () { return r; }) : r; });   // 3D AI butuh serve.js
   }
   function mount() {
     if (!window.XVDB || !window.XV) return;
@@ -555,6 +556,9 @@
     var bottomGap = mob ? 172 : m + (document.querySelector('.hud-bot') && !mob ? 34 : 0);   // v3 punya bar status di bawah
     el.fab.style.width = el.fab.style.height = size + 'px';
     el.fab.classList.toggle('is-under', state.open || (mob && document.documentElement.classList.contains('is-panel')));
+    // jangan menimpa panel situs: panel di kiri (layout III) → tombol pindah ke kanan, dan sebaliknya
+    var hc = document.documentElement.classList;
+    if (!mob && hc.contains('is-panel')) { var pl = !!document.querySelector('.lay3'); if (pl && pos[1] === 'l') pos = pos[0] + 'r'; else if (!pl && pos[1] === 'r' && document.querySelector('#panel')) pos = pos[0] + 'l'; }
     el.fab.dataset.pos = pos;
     el.fab.style.left = (pos[1] === 'l' ? m : innerWidth - size - m) + 'px';
     el.fab.style.top = (pos[0] === 't' ? (mob ? 220 : m) : innerHeight - size - bottomGap) + 'px';
@@ -1001,6 +1005,7 @@
       (def.baseRound != null ? '<div class="tr tr--hp"><span><b>Harga dasar top bulat / persegi</b></span><span class="muted">pada Ø ' + ((drivers.filter(function (k) { return k.id === 'dia'; })[0] || {}).ref || 90) + ' cm</span><span></span>' + hpCell(p + 'baseRound', tbl.baseRound, def.baseRound, 'm') + '<span class="muted r">' + rupiah(def.baseRound) + '</span>' + hpReset(p + 'baseRound', tbl.baseRound !== def.baseRound) + '</div>' : '') +
       drivers.map(function (k) {
         var g = s.groups.filter(function (x) { return x.id === k.id; })[0] || {}, range = g.min != null ? g.min + '–' + g.max + ' cm' : '';
+        if (XC.sizeMode && XC.sizeMode(s) === 'ratio') return '<div class="tr tr--hp"><span>' + esc(k.l) + '</span><span class="muted">ref ' + k.ref + ' cm' + (range ? ' · ' + range : '') + '</span><span></span><span class="muted r" style="grid-column:span 3">harga × ukuran / ' + k.ref + '</span></div>';   // sofa: dikali rasio, tanpa tarif per 10 cm
         return '<div class="tr tr--hp"><span>' + esc(k.l) + ' · per ' + k.per + ' cm</span><span class="muted">ref ' + k.ref + ' cm' + (range ? ' · ' + range : '') + '</span><span></span>' + hpCell(p + 'per10|' + k.id, tbl.per10[k.id], def.per10[k.id], 'm') + '<span class="muted r">' + rupiah(def.per10[k.id]) + '</span>' + hpReset(p + 'per10|' + k.id, tbl.per10[k.id] !== def.per10[k.id]) + '</div>';
       }).join('') + '</div>';
     // pilihan per kelompok
@@ -1112,8 +1117,6 @@
     el.body.innerHTML = '<div class="sets">' + PLUG.map(function (p) { return p.setCard ? p.setCard(plugCtx()) : ''; }).join('') +
       '<div class="card set"><h3>Posisi tombol</h3><p>Default di kiri bawah. Tombol juga bisa diseret — ia akan menempel ke sudut terdekat.</p><div class="corners">' +
         [['tl', 'Kiri atas'], ['tr', 'Kanan atas'], ['bl', 'Kiri bawah'], ['br', 'Kanan bawah']].map(function (c) { return '<button type="button" data-act="pos" data-pos="' + c[0] + '"' + (s.position === c[0] ? ' class="is-on"' : '') + '>' + c[1] + '</button>'; }).join('') + '</div></div>' +
-      '<div class="card set"><h3>Tampilan Customize</h3><p>Box 1: semua pilihan di satu kotak kanan. Box 2 (uji): kotak kanan hanya judul &amp; pilihan terpilih — pilihan yang lebih dari 4 muncul di kotak baru sebelah kiri.</p><div class="corners corners--2">' +
-        [['box1', 'Box 1 · satu kotak'], ['box2', 'Box 2 · kotak kiri']].map(function (c) { return '<button type="button" data-act="czlayout" data-v="' + c[0] + '"' + ((s.czLayout || 'box1') === c[0] ? ' class="is-on"' : '') + '>' + c[1] + '</button>'; }).join('') + '</div></div>' +
       '<div class="card set"><h3>Tampilan tombol</h3><p>Sembunyikan tombol melayang. Panel tetap bisa dibuka dengan Ctrl + Shift + D.</p>' +
         '<button class="tg' + (s.hidden ? ' is-on' : '') + '" type="button" data-act="hide"><span class="sw"></span>Sembunyikan tombol</button></div>' +
       '<div class="card set"><h3>Database</h3><p>' + (XVDB.mode() === 'folder' ? 'Tersimpan di folder proyek: <span class="mono">data/products.json</span>, <span class="mono">data/checks.json</span> (ikut online saat dipublish) dan <span class="mono">data/private/customs.json</span> (data pelanggan — tidak pernah online). Cadangan otomatis di <span class="mono">data/history/</span>.' : XVDB.mode() === 'online' ? 'Situs online membaca katalog yang dipublish. Perubahan di sini hanya tersimpan di browser ini — ubah di komputer lokal lalu publish agar tampil untuk semua.' : 'Dibuka langsung dari file, jadi data tersimpan di browser ini. Jalankan <span class="mono">node tools/serve.js</span> agar tersimpan ke folder data/.') + '</p>' +

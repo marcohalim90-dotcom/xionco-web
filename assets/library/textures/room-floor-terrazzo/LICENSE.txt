@@ -1,0 +1,7 @@
+Set      : room-floor-terrazzo
+Asset    : Terrazzo Tiles (terrazzo_tiles)
+Author   : Amal Kumar
+Source   : https://polyhaven.com/a/terrazzo_tiles
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 2000 x 2000 mm
+Processed: 1024 px WebP, warna asli dipertahankan (finishing ruangan). Roughness dinormalkan ke rata-rata 0.8.

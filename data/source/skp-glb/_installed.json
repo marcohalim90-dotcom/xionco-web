@@ -152,7 +152,7 @@
    "KYOKAI 2": "wood",
    "MIDGREY": "fabric"
   },
-  "kb": 1918
+  "kb": 1917
  },
  {
   "slug": "cubix-ac",
@@ -172,7 +172,7 @@
    "MIDGREY": "fabric",
    "SUNGKAI": "wood"
   },
-  "kb": 487
+  "kb": 486
  },
  {
   "slug": "cubix-al",
@@ -192,7 +192,7 @@
    "MIDGREY": "fabric",
    "SUNGKAI": "wood"
   },
-  "kb": 906
+  "kb": 905
  },
  {
   "slug": "cubix-acac",
@@ -212,7 +212,7 @@
    "MIDGREY": "fabric",
    "SUNGKAI": "wood"
   },
-  "kb": 644
+  "kb": 643
  },
  {
   "slug": "cubix-acalac",
@@ -232,7 +232,7 @@
    "MIDGREY": "fabric",
    "SUNGKAI": "wood"
   },
-  "kb": 1928
+  "kb": 1927
  },
  {
   "slug": "cubix-ot",
@@ -252,7 +252,7 @@
    "MIDGREY": "fabric",
    "SUNGKAI": "wood"
   },
-  "kb": 495
+  "kb": 494
  },
  {
   "slug": "cubix-ct",
@@ -272,7 +272,7 @@
    "[Translucent Glass Gray]": "glass",
    "SUNGKAI": "wood"
   },
-  "kb": 39
+  "kb": 38
  },
  {
   "slug": "cubix-ct-gelap",
@@ -312,7 +312,7 @@
    "[Translucent Glass Gray]": "glass",
    "SUNGKAI": "wood"
   },
-  "kb": 40
+  "kb": 39
  },
  {
   "slug": "cubix-st-gelap",
@@ -351,7 +351,7 @@
    "kayu": "wood",
    "MIDGREY": "fabric"
   },
-  "kb": 2803
+  "kb": 2660
  },
  {
   "slug": "gliza",
@@ -371,7 +371,7 @@
    "kayu minsi": "wood",
    "mindi2": "wood"
   },
-  "kb": 300
+  "kb": 303
  },
  {
   "slug": "guise-1-seater",
@@ -487,7 +487,7 @@
    "<auto>": "metal",
    "SUNGKAI": "wood"
   },
-  "kb": 191
+  "kb": 190
  },
  {
   "slug": "kyoukai-60",
@@ -506,7 +506,7 @@
    "<auto>": "metal",
    "SUNGKAI": "wood"
   },
-  "kb": 128
+  "kb": 127
  },
  {
   "slug": "kyrios-1-seater",
@@ -677,7 +677,7 @@
    "kayu": "wood",
    "SUNGKAI": "wood"
   },
-  "kb": 1467
+  "kb": 1466
  },
  {
   "slug": "recta",
@@ -756,7 +756,7 @@
    "MIDGREY": "fabric",
    "SUNGKAI": "wood"
   },
-  "kb": 3420
+  "kb": 3419
  },
  {
   "slug": "syme",
@@ -777,7 +777,7 @@
    "[0111_SlateGray]": "metal",
    "SUNGKAI": "wood"
   },
-  "kb": 16
+  "kb": 17
  },
  {
   "slug": "tesse",
@@ -814,7 +814,7 @@
    "<auto>1": "metal",
    "SUNGKAI": "wood"
   },
-  "kb": 208
+  "kb": 207
  },
  {
   "slug": "uruz",

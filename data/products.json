@@ -1,7 +1,7 @@
 {
   "app": "XIONCO",
   "kind": "products",
-  "updated": 1792017241219,
+  "updated": 1792223369184,
   "items": [
     {
       "status": "aktif",
@@ -194,7 +194,7 @@
       "model": "assets/items/kyrios/model-tiles.glb"
     },
     {
-      "status": "aktif",
+      "status": "arsip",
       "dims": "",
       "leadTime": "",
       "customizable": true,
@@ -278,6 +278,35 @@
       "shopName": "CAPRA DELUXE SERIES",
       "bg": "white",
       "model": "assets/items/capra/model-ai.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "",
+      "id": "capra-deluxe-ottoman",
+      "cat": "seats",
+      "name": "CAPRA DELUXE OTTOMAN",
+      "type": "Ottoman",
+      "price": 2714000,
+      "was": 5202000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1775916590550.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-9-1775916590550.png"
+      ],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "Ottoman seri CAPRA Deluxe — faux leather premium dengan rangka kayu solid.",
+      "url": "https://xionco.shop/products/capra-deluxe-series",
+      "shopId": 85,
+      "shopName": "CAPRA DELUXE SERIES",
+      "bg": "white",
+      "model": "assets/items/capra-deluxe-ottoman/model-ai.glb",
+      "local": true
     },
     {
       "status": "aktif",
@@ -559,7 +588,8 @@
       "url": "https://xionco.shop/products/astral-1-seater",
       "shopId": 24,
       "shopName": "ASTRAL - 1 Seater",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/astral/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -1124,7 +1154,8 @@
       "url": "https://xionco.shop/products/eorde-sofa-sectional-series",
       "shopId": 39,
       "shopName": "EORDE - SOFA SECTIONAL SERIES",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/eorde/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -1229,7 +1260,8 @@
       "url": "https://xionco.shop/products/geom-dining-table",
       "shopId": 60,
       "shopName": "GEOM - Dining Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/geom/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -1442,8 +1474,8 @@
       "note": "",
       "id": "cubixct",
       "cat": "tables",
-      "name": "CUBIX CT",
-      "type": "Coffee table · glass",
+      "name": "CUBIX COFFEE TABLE",
+      "type": "Coffee table · kaca",
       "price": 1120000,
       "was": 1955000,
       "from": false,
@@ -1463,7 +1495,7 @@
           "key": "Terang",
           "label": "Terang",
           "group": "",
-          "fabric": "",
+          "fabric": "Kayu sungkai",
           "hex": null,
           "price": 1120000,
           "was": 2147000,
@@ -1475,7 +1507,7 @@
           "key": "Gelap",
           "label": "Gelap",
           "group": "",
-          "fabric": "",
+          "fabric": "Kayu oak",
           "hex": null,
           "price": 1120000,
           "was": 1955000,
@@ -1486,7 +1518,7 @@
       ],
       "variant": 1,
       "sold": 23,
-      "desc": "Rangka kayu terbuka dengan kaca bening.",
+      "desc": "Coffee table CUBIX: rangka kayu terbuka dengan top kaca.\nRangka kayu terbuka dengan kaca bening.",
       "url": "https://xionco.shop/products/cubix-series-coffee-table",
       "shopId": 49,
       "shopName": "CUBIX SERIES - Coffee Table",
@@ -1494,7 +1526,9 @@
       "model": "assets/items/cubixct/model.glb",
       "vmodels": {
         "Gelap": "assets/items/cubixct/model-gelap.glb"
-      }
+      },
+      "series": "cubix",
+      "vTitle": "Kayu"
     },
     {
       "status": "aktif",
@@ -2266,7 +2300,8 @@
       "url": "https://xionco.shop/products/ashara-34-smart-bed-electrical-adjustable",
       "shopId": 109,
       "shopName": "ASHARA 34 | SMART BED - ELECTRICAL ADJUSTABLE",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/ashara/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -2358,7 +2393,8 @@
       "url": "https://xionco.shop/products/qaztac-bedside-table",
       "shopId": 28,
       "shopName": "QAZTAC - Bedside Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/qaztac/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -2413,7 +2449,8 @@
       "images": [],
       "sold": 0,
       "was": null,
-      "from": false
+      "from": false,
+      "model": "assets/items/regale/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -2828,7 +2865,8 @@
       "url": "https://xionco.shop/products/vazra-series-power-track-socket",
       "shopId": 97,
       "shopName": "VAZRA SERIES - POWER TRACK | SOCKET",
-      "bg": "white"
+      "bg": "white",
+      "model": ""
     },
     {
       "status": "aktif",
@@ -2893,7 +2931,8 @@
       "url": "https://xionco.shop/products/uruz-sofa-bed",
       "shopId": 204,
       "shopName": "URUZ Sofa Bed",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/uruz-sofa-bed/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -2925,7 +2964,8 @@
       "url": "https://xionco.shop/products/azedra",
       "shopId": 228,
       "shopName": "AZEDRA",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/azedra/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -3000,8 +3040,8 @@
       "note": "",
       "id": "cubix-series-ottoman-kayu-terang",
       "cat": "seats",
-      "name": "CUBIX SERIES",
-      "type": "Ottoman · Kayu Terang",
+      "name": "CUBIX OT",
+      "type": "Ottoman",
       "price": 892500,
       "was": 1711000,
       "from": false,
@@ -3022,94 +3062,139 @@
       ],
       "variants": [
         {
-          "key": "Fabric-BLACK",
-          "label": "Black",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#1b1b1b",
+          "key": "Terang",
+          "label": "Terang",
+          "group": "",
+          "fabric": "Kayu sungkai",
+          "hex": null,
           "price": 892500,
           "was": 1711000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754724792913.png",
-          "on": false,
-          "subs": []
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916006537.png",
+          "on": true,
+          "subs": [
+            {
+              "label": "Black",
+              "hex": "#1b1b1b",
+              "price": 892500,
+              "was": 1711000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754724792913.png"
+            },
+            {
+              "label": "Blue",
+              "hex": "#616d7b",
+              "price": 892500,
+              "was": 1711000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754724798262.png"
+            },
+            {
+              "label": "Custard",
+              "hex": "#c8bfb2",
+              "price": 892500,
+              "was": 1711000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754724804657.png"
+            },
+            {
+              "label": "Graphite",
+              "hex": "#7d7d7d",
+              "price": 892500,
+              "was": 1711000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1754724808189.png"
+            },
+            {
+              "label": "Ivory",
+              "hex": "#cdccc6",
+              "price": 892500,
+              "was": 1711000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-10-1754724812653.png"
+            },
+            {
+              "label": "Mid Grey",
+              "hex": "#b5b5b5",
+              "price": 892500,
+              "was": 1711000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-11-1754724816467.png"
+            }
+          ]
         },
         {
-          "key": "Fabric-BLUE",
-          "label": "Blue",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#616d7b",
+          "key": "Gelap",
+          "label": "Gelap",
+          "group": "",
+          "fabric": "Kayu oak",
+          "hex": null,
           "price": 892500,
           "was": 1711000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754724798262.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-CUSTARD",
-          "label": "Custard",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#c8bfb2",
-          "price": 892500,
-          "was": 1711000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754724804657.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-GRAPHITE",
-          "label": "Graphite",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#7d7d7d",
-          "price": 892500,
-          "was": 1711000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1754724808189.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-IVORY",
-          "label": "Ivory",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#cdccc6",
-          "price": 892500,
-          "was": 1711000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-10-1754724812653.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-MID GREY",
-          "label": "Mid Grey",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#b5b5b5",
-          "price": 892500,
-          "was": 1711000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-11-1754724816467.png",
-          "on": false,
-          "subs": []
+          "img": "",
+          "on": true,
+          "subs": [
+            {
+              "label": "Black",
+              "hex": "#1b1b1b",
+              "price": 892500,
+              "was": 1711000,
+              "img": ""
+            },
+            {
+              "label": "Blue",
+              "hex": "#616d7b",
+              "price": 892500,
+              "was": 1711000,
+              "img": ""
+            },
+            {
+              "label": "Custard",
+              "hex": "#c8bfb2",
+              "price": 892500,
+              "was": 1711000,
+              "img": ""
+            },
+            {
+              "label": "Graphite",
+              "hex": "#7d7d7d",
+              "price": 892500,
+              "was": 1711000,
+              "img": ""
+            },
+            {
+              "label": "Ivory",
+              "hex": "#cdccc6",
+              "price": 892500,
+              "was": 1711000,
+              "img": ""
+            },
+            {
+              "label": "Mid Grey",
+              "hex": "#b5b5b5",
+              "price": 892500,
+              "was": 1711000,
+              "img": ""
+            }
+          ],
+          "nophoto": true
         }
       ],
       "variant": 0,
       "sold": 47,
-      "desc": "CUBIX SERIES - Kursi Tamu Sofa Modern Minimalis Ottoman (OT)\nWhat's in the box?\n1 x Sofa Cubix tipe OT",
+      "desc": "Modul ottoman (OT) tanpa sandaran — pijakan kaki atau dudukan tambahan.\nWhat's in the box?\n1 x Sofa Cubix tipe OT",
       "url": "https://xionco.shop/products/cubix-series-ottoman-kayu-terang",
       "shopId": 123,
       "shopName": "CUBIX SERIES - Ottoman | Kayu Terang",
       "bg": "white",
-      "model": "assets/items/cubix-series-ottoman-kayu-terang/model.glb"
+      "model": "assets/items/cubix-series-ottoman-kayu-terang/model.glb",
+      "series": "cubix",
+      "vTitle": "Kayu",
+      "sTitle": "Warna kain",
+      "vmodels": {
+        "Gelap": "assets/items/cubix-series-ottoman-kayu-gelap/model.glb"
+      }
     },
     {
-      "status": "aktif",
+      "status": "arsip",
       "dims": "63 × 63 × 39 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
-      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "note": "Digabung ke cubix-series-ottoman-kayu-terang (varian Gelap)",
       "id": "cubix-series-ottoman-kayu-gelap",
       "cat": "seats",
       "name": "CUBIX SERIES",
@@ -3160,7 +3245,8 @@
       "url": "https://xionco.shop/products/barione-3-seater",
       "shopId": 142,
       "shopName": "BARIONE – 3 Seater",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/barione-3-seater/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -3236,8 +3322,8 @@
       "note": "",
       "id": "cubix-series-3-seaters-ac-al-ac-kayu-terang",
       "cat": "seats",
-      "name": "CUBIX SERIES",
-      "type": "3 Seaters (AC, AL, AC) · Kayu Terang",
+      "name": "CUBIX 3 SEATER",
+      "type": "Sofa · AC-AL-AC",
       "price": 3192000,
       "was": 6118000,
       "from": false,
@@ -3258,94 +3344,139 @@
       ],
       "variants": [
         {
-          "key": "Fabric-BLACK",
-          "label": "Black",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#272523",
+          "key": "Terang",
+          "label": "Terang",
+          "group": "",
+          "fabric": "Kayu sungkai",
+          "hex": null,
           "price": 3192000,
           "was": 6118000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754723478238.png",
-          "on": false,
-          "subs": []
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916033100.png",
+          "on": true,
+          "subs": [
+            {
+              "label": "Black",
+              "hex": "#272523",
+              "price": 3192000,
+              "was": 6118000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754723478238.png"
+            },
+            {
+              "label": "Blue",
+              "hex": "#313f53",
+              "price": 3192000,
+              "was": 6118000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754723481549.png"
+            },
+            {
+              "label": "Custard",
+              "hex": "#b7ac9b",
+              "price": 3192000,
+              "was": 6118000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754723485802.png"
+            },
+            {
+              "label": "Graphite",
+              "hex": "#5f5d5b",
+              "price": 3192000,
+              "was": 6118000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1754723490860.png"
+            },
+            {
+              "label": "Ivory",
+              "hex": "#bfbcb2",
+              "price": 3192000,
+              "was": 6118000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-10-1754723495085.png"
+            },
+            {
+              "label": "Mid Grey",
+              "hex": "#b0b0b0",
+              "price": 3192000,
+              "was": 6118000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-11-1754723499032.png"
+            }
+          ]
         },
         {
-          "key": "Fabric-BLUE",
-          "label": "Blue",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#313f53",
+          "key": "Gelap",
+          "label": "Gelap",
+          "group": "",
+          "fabric": "Kayu oak",
+          "hex": null,
           "price": 3192000,
           "was": 6118000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754723481549.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-CUSTARD",
-          "label": "Custard",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#b7ac9b",
-          "price": 3192000,
-          "was": 6118000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754723485802.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-GRAPHITE",
-          "label": "Graphite",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#5f5d5b",
-          "price": 3192000,
-          "was": 6118000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1754723490860.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-IVORY",
-          "label": "Ivory",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#bfbcb2",
-          "price": 3192000,
-          "was": 6118000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-10-1754723495085.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-MID GREY",
-          "label": "Mid Grey",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#b0b0b0",
-          "price": 3192000,
-          "was": 6118000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-11-1754723499032.png",
-          "on": false,
-          "subs": []
+          "img": "",
+          "on": true,
+          "subs": [
+            {
+              "label": "Black",
+              "hex": "#272523",
+              "price": 3192000,
+              "was": 6118000,
+              "img": ""
+            },
+            {
+              "label": "Blue",
+              "hex": "#313f53",
+              "price": 3192000,
+              "was": 6118000,
+              "img": ""
+            },
+            {
+              "label": "Custard",
+              "hex": "#b7ac9b",
+              "price": 3192000,
+              "was": 6118000,
+              "img": ""
+            },
+            {
+              "label": "Graphite",
+              "hex": "#5f5d5b",
+              "price": 3192000,
+              "was": 6118000,
+              "img": ""
+            },
+            {
+              "label": "Ivory",
+              "hex": "#bfbcb2",
+              "price": 3192000,
+              "was": 6118000,
+              "img": ""
+            },
+            {
+              "label": "Mid Grey",
+              "hex": "#b0b0b0",
+              "price": 3192000,
+              "was": 6118000,
+              "img": ""
+            }
+          ],
+          "nophoto": true
         }
       ],
       "variant": 0,
       "sold": 42,
-      "desc": "CUBIX SERIES - Kursi Tamu Sofa Modern Minimalis (AC,AL,AC)\nWhat's in the box?\n2 x Sofa Cubix tipe AC\n1 x Sofa Cubix tipe AL\n3 x Bantal Besar\n3 x Bantal Kecil",
+      "desc": "Sofa 3 seater CUBIX: susunan bawaan AC-AL-AC.\nWhat's in the box?\n2 x Sofa Cubix tipe AC\n1 x Sofa Cubix tipe AL\n3 x Bantal Besar\n3 x Bantal Kecil",
       "url": "https://xionco.shop/products/cubix-series-3-seaters-ac-al-ac-kayu-terang",
       "shopId": 122,
       "shopName": "CUBIX SERIES - 3 Seaters (AC, AL, AC) | Kayu Terang",
       "bg": "white",
-      "model": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-terang/model.glb"
+      "model": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-terang/model.glb",
+      "series": "cubix",
+      "vTitle": "Kayu",
+      "sTitle": "Warna kain",
+      "vmodels": {
+        "Gelap": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-gelap/model.glb"
+      }
     },
     {
-      "status": "aktif",
+      "status": "arsip",
       "dims": "190 × 64 × 82 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
-      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "note": "Digabung ke cubix-series-3-seaters-ac-al-ac-kayu-terang (varian Gelap)",
       "id": "cubix-series-3-seaters-ac-al-ac-kayu-gelap",
       "cat": "seats",
       "name": "CUBIX SERIES",
@@ -3460,7 +3591,8 @@
       "url": "https://xionco.shop/products/sf3s-048",
       "shopId": 201,
       "shopName": "SF3S 048",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-048/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -3504,7 +3636,7 @@
       "id": "capra-deluxe-2s",
       "cat": "seats",
       "name": "CAPRA DELUXE 2S",
-      "type": "Sofa",
+      "type": "Sofa · 2 seat",
       "price": 4364000,
       "was": 8363000,
       "from": false,
@@ -4079,7 +4211,8 @@
       "url": "https://xionco.shop/products/guise-ottoman",
       "shopId": 149,
       "shopName": "GUISE - Ottoman",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/guise-ottoman/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -5475,7 +5608,7 @@
       "id": "capra-signature-1s",
       "cat": "seats",
       "name": "CAPRA SIGNATURE 1S",
-      "type": "Sofa",
+      "type": "Sofa · 1 seat",
       "price": 2808000,
       "was": 5382000,
       "from": false,
@@ -5491,7 +5624,7 @@
       "variants": [],
       "variant": -1,
       "sold": 19,
-      "desc": "CAPRA SERIES SIGNATURE | 3 Seater Sofa Minimalis | XIONCO\nTermasuk di dalam SIGNATURE 1 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm)",
+      "desc": "CAPRA SERIES SIGNATURE | 1 Seater Sofa Minimalis | XIONCO\nTermasuk di dalam SIGNATURE 1 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm)",
       "url": "https://xionco.shop/products/capra-signature-1s",
       "shopId": 238,
       "shopName": "CAPRA SIGNATURE 1s",
@@ -5538,8 +5671,8 @@
       "note": "",
       "id": "cubix-series-2-seater-ac-ac-kayu-terang",
       "cat": "seats",
-      "name": "CUBIX SERIES",
-      "type": "2 Seater (AC, AC) · Kayu Terang",
+      "name": "CUBIX 2 SEATER",
+      "type": "Sofa · AC-AC",
       "price": 2194500,
       "was": 4207000,
       "from": false,
@@ -5560,94 +5693,139 @@
       ],
       "variants": [
         {
-          "key": "Fabric-BLACK",
-          "label": "Black",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#4a4a4a",
+          "key": "Terang",
+          "label": "Terang",
+          "group": "",
+          "fabric": "Kayu sungkai",
+          "hex": null,
           "price": 2194500,
           "was": 4207000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754721996541.png",
-          "on": false,
-          "subs": []
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916064887.png",
+          "on": true,
+          "subs": [
+            {
+              "label": "Black",
+              "hex": "#4a4a4a",
+              "price": 2194500,
+              "was": 4207000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754721996541.png"
+            },
+            {
+              "label": "Blue",
+              "hex": "#475766",
+              "price": 2194500,
+              "was": 4207000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754722008113.png"
+            },
+            {
+              "label": "Custard",
+              "hex": "#bdb6a9",
+              "price": 2194500,
+              "was": 4207000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754722013800.png"
+            },
+            {
+              "label": "Graphite",
+              "hex": "#656565",
+              "price": 2194500,
+              "was": 4207000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1754722019635.png"
+            },
+            {
+              "label": "Ivory",
+              "hex": "#cdcbc7",
+              "price": 2194500,
+              "was": 4207000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-10-1754722036072.png"
+            },
+            {
+              "label": "Mid Grey",
+              "hex": "#a9a9a9",
+              "price": 2194500,
+              "was": 4207000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-11-1754722046583.png"
+            }
+          ]
         },
         {
-          "key": "Fabric-BLUE",
-          "label": "Blue",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#475766",
+          "key": "Gelap",
+          "label": "Gelap",
+          "group": "",
+          "fabric": "Kayu oak",
+          "hex": null,
           "price": 2194500,
           "was": 4207000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754722008113.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-CUSTARD",
-          "label": "Custard",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#bdb6a9",
-          "price": 2194500,
-          "was": 4207000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754722013800.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-GRAPHITE",
-          "label": "Graphite",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#656565",
-          "price": 2194500,
-          "was": 4207000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1754722019635.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-IVORY",
-          "label": "Ivory",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#cdcbc7",
-          "price": 2194500,
-          "was": 4207000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-10-1754722036072.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-MID GREY",
-          "label": "Mid Grey",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#a9a9a9",
-          "price": 2194500,
-          "was": 4207000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-11-1754722046583.png",
-          "on": false,
-          "subs": []
+          "img": "",
+          "on": true,
+          "subs": [
+            {
+              "label": "Black",
+              "hex": "#4a4a4a",
+              "price": 2194500,
+              "was": 4207000,
+              "img": ""
+            },
+            {
+              "label": "Blue",
+              "hex": "#475766",
+              "price": 2194500,
+              "was": 4207000,
+              "img": ""
+            },
+            {
+              "label": "Custard",
+              "hex": "#bdb6a9",
+              "price": 2194500,
+              "was": 4207000,
+              "img": ""
+            },
+            {
+              "label": "Graphite",
+              "hex": "#656565",
+              "price": 2194500,
+              "was": 4207000,
+              "img": ""
+            },
+            {
+              "label": "Ivory",
+              "hex": "#cdcbc7",
+              "price": 2194500,
+              "was": 4207000,
+              "img": ""
+            },
+            {
+              "label": "Mid Grey",
+              "hex": "#a9a9a9",
+              "price": 2194500,
+              "was": 4207000,
+              "img": ""
+            }
+          ],
+          "nophoto": true
         }
       ],
       "variant": 0,
       "sold": 16,
-      "desc": "CUBIX SERIES - Kursi Tamu Sofa Modern Minimalis (AC,AC)\nWhat's in the box?\n2 x Sofa Cubix tipe AC\n2 x Bantal Besar\n2 x Bantal Kecil",
+      "desc": "Sofa 2 seater CUBIX: susunan bawaan AC-AC.\nWhat's in the box?\n2 x Sofa Cubix tipe AC\n2 x Bantal Besar\n2 x Bantal Kecil",
       "url": "https://xionco.shop/products/cubix-series-2-seater-ac-ac-kayu-terang",
       "shopId": 121,
       "shopName": "CUBIX SERIES - 2 Seater (AC, AC) | Kayu Terang",
       "bg": "white",
-      "model": "assets/items/cubix-series-2-seater-ac-ac-kayu-terang/model.glb"
+      "model": "assets/items/cubix-series-2-seater-ac-ac-kayu-terang/model.glb",
+      "series": "cubix",
+      "vTitle": "Kayu",
+      "sTitle": "Warna kain",
+      "vmodels": {
+        "Gelap": "assets/items/cubix-series-2-seater-ac-ac-kayu-gelap/model.glb"
+      }
     },
     {
-      "status": "aktif",
+      "status": "arsip",
       "dims": "127 × 64 × 80 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
-      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "note": "Digabung ke cubix-series-2-seater-ac-ac-kayu-terang (varian Gelap)",
       "id": "cubix-series-2-seater-ac-ac-kayu-gelap",
       "cat": "seats",
       "name": "CUBIX SERIES",
@@ -5830,7 +6008,9 @@
       "url": "https://xionco.shop/products/delune-series-sw04",
       "shopId": 153,
       "shopName": "DELUNE Series - SW04",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/delune-series-sw04/model-ai.glb",
+      "modelRot": 180
     },
     {
       "status": "aktif",
@@ -5842,7 +6022,7 @@
       "id": "capra-signature-3s",
       "cat": "seats",
       "name": "CAPRA SIGNATURE 3S",
-      "type": "Sofa",
+      "type": "Sofa · 3 seat",
       "price": 4248000,
       "was": 8142000,
       "from": false,
@@ -5862,10 +6042,11 @@
       "url": "https://xionco.shop/products/capra-signature-3s",
       "shopId": 236,
       "shopName": "CAPRA SIGNATURE 3s",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/capra-signature-3s/model-ai.glb"
     },
     {
-      "status": "aktif",
+      "status": "arsip",
       "dims": "",
       "leadTime": "",
       "customizable": true,
@@ -5945,8 +6126,8 @@
       "note": "",
       "id": "cubix-series-1-seater-al-kayu-terang",
       "cat": "seats",
-      "name": "CUBIX SERIES",
-      "type": "1 Seater (AL) · Kayu Terang",
+      "name": "CUBIX AL",
+      "type": "Armless · 1 seat",
       "price": 997500,
       "was": 1912000,
       "from": false,
@@ -5967,94 +6148,139 @@
       ],
       "variants": [
         {
-          "key": "Fabric-BLACK",
-          "label": "Black",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#3f3f3f",
+          "key": "Terang",
+          "label": "Terang",
+          "group": "",
+          "fabric": "Kayu sungkai",
+          "hex": null,
           "price": 997500,
           "was": 1912000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754650778821.png",
-          "on": false,
-          "subs": []
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916079536.png",
+          "on": true,
+          "subs": [
+            {
+              "label": "Black",
+              "hex": "#3f3f3f",
+              "price": 997500,
+              "was": 1912000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754650778821.png"
+            },
+            {
+              "label": "Blue",
+              "hex": "#596674",
+              "price": 997500,
+              "was": 1912000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754650784071.png"
+            },
+            {
+              "label": "Custard",
+              "hex": "#c5bbaf",
+              "price": 997500,
+              "was": 1912000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754650788636.png"
+            },
+            {
+              "label": "Graphite",
+              "hex": "#878787",
+              "price": 997500,
+              "was": 1912000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1754650795765.png"
+            },
+            {
+              "label": "Ivory",
+              "hex": "#ceccc6",
+              "price": 997500,
+              "was": 1912000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-10-1754650803879.png"
+            },
+            {
+              "label": "Mid Grey",
+              "hex": "#c4c4c4",
+              "price": 997500,
+              "was": 1912000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-11-1754650808965.png"
+            }
+          ]
         },
         {
-          "key": "Fabric-BLUE",
-          "label": "Blue",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#596674",
+          "key": "Gelap",
+          "label": "Gelap",
+          "group": "",
+          "fabric": "Kayu oak",
+          "hex": null,
           "price": 997500,
           "was": 1912000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754650784071.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-CUSTARD",
-          "label": "Custard",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#c5bbaf",
-          "price": 997500,
-          "was": 1912000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754650788636.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-GRAPHITE",
-          "label": "Graphite",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#878787",
-          "price": 997500,
-          "was": 1912000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1754650795765.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-IVORY",
-          "label": "Ivory",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#ceccc6",
-          "price": 997500,
-          "was": 1912000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-10-1754650803879.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-MID GREY",
-          "label": "Mid Grey",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#c4c4c4",
-          "price": 997500,
-          "was": 1912000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-11-1754650808965.png",
-          "on": false,
-          "subs": []
+          "img": "",
+          "on": true,
+          "subs": [
+            {
+              "label": "Black",
+              "hex": "#3f3f3f",
+              "price": 997500,
+              "was": 1912000,
+              "img": ""
+            },
+            {
+              "label": "Blue",
+              "hex": "#596674",
+              "price": 997500,
+              "was": 1912000,
+              "img": ""
+            },
+            {
+              "label": "Custard",
+              "hex": "#c5bbaf",
+              "price": 997500,
+              "was": 1912000,
+              "img": ""
+            },
+            {
+              "label": "Graphite",
+              "hex": "#878787",
+              "price": 997500,
+              "was": 1912000,
+              "img": ""
+            },
+            {
+              "label": "Ivory",
+              "hex": "#ceccc6",
+              "price": 997500,
+              "was": 1912000,
+              "img": ""
+            },
+            {
+              "label": "Mid Grey",
+              "hex": "#c4c4c4",
+              "price": 997500,
+              "was": 1912000,
+              "img": ""
+            }
+          ],
+          "nophoto": true
         }
       ],
       "variant": 0,
       "sold": 13,
-      "desc": "CUBIX SERIES - Kursi Tamu Sofa Modern Minimalis (AL)\nWhat's in the box?\n1 x Sofa Cubix tipe AL\n1 x Bantal Besar\n1 x Bantal Kecil",
+      "desc": "Modul armless (AL): satu sandaran seperti palang. Dapat 1 bantal besar dan 1 bantal kecil.\nWhat's in the box?\n1 x Sofa Cubix tipe AL\n1 x Bantal Besar\n1 x Bantal Kecil",
       "url": "https://xionco.shop/products/cubix-series-1-seater-al-kayu-terang",
       "shopId": 103,
       "shopName": "CUBIX SERIES - 1 Seater (AL) |  Kayu Terang",
       "bg": "white",
-      "model": "assets/items/cubix-series-1-seater-al-kayu-terang/model.glb"
+      "model": "assets/items/cubix-series-1-seater-al-kayu-terang/model.glb",
+      "series": "cubix",
+      "vTitle": "Kayu",
+      "sTitle": "Warna kain",
+      "vmodels": {
+        "Gelap": "assets/items/cubix-series-1-seater-al-kayu-gelap/model.glb"
+      }
     },
     {
-      "status": "aktif",
+      "status": "arsip",
       "dims": "65 × 64 × 82 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
-      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "note": "Digabung ke cubix-series-1-seater-al-kayu-terang (varian Gelap)",
       "id": "cubix-series-1-seater-al-kayu-gelap",
       "cat": "seats",
       "name": "CUBIX SERIES",
@@ -6181,8 +6407,8 @@
       "note": "",
       "id": "cubix-series-1-seater-ac-kayu-terang",
       "cat": "seats",
-      "name": "CUBIX SERIES",
-      "type": "1 Seater(AC) · Kayu Terang",
+      "name": "CUBIX AC",
+      "type": "Armchair · 1 seat",
       "price": 1102500,
       "was": 2114000,
       "from": false,
@@ -6203,94 +6429,139 @@
       ],
       "variants": [
         {
-          "key": "Fabric-BLACK",
-          "label": "Black",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#282828",
+          "key": "Terang",
+          "label": "Terang",
+          "group": "",
+          "fabric": "Kayu sungkai",
+          "hex": null,
           "price": 1102500,
           "was": 2114000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754649451310.png",
-          "on": false,
-          "subs": []
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916099693.png",
+          "on": true,
+          "subs": [
+            {
+              "label": "Black",
+              "hex": "#282828",
+              "price": 1102500,
+              "was": 2114000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754649451310.png"
+            },
+            {
+              "label": "Blue",
+              "hex": "#2c3748",
+              "price": 1102500,
+              "was": 2114000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754649457096.png"
+            },
+            {
+              "label": "Custard",
+              "hex": "#b3ac9c",
+              "price": 1102500,
+              "was": 2114000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754649548299.png"
+            },
+            {
+              "label": "Graphite",
+              "hex": "#6d6d6d",
+              "price": 1102500,
+              "was": 2114000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1754649559569.png"
+            },
+            {
+              "label": "Ivory",
+              "hex": "#a6a497",
+              "price": 1102500,
+              "was": 2114000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-10-1754649569922.png"
+            },
+            {
+              "label": "Mid Grey",
+              "hex": "#adadad",
+              "price": 1102500,
+              "was": 2114000,
+              "img": "https://hig3141592653.my.id/assets/pridukimage/img-11-1754649611420.png"
+            }
+          ]
         },
         {
-          "key": "Fabric-BLUE",
-          "label": "Blue",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#2c3748",
+          "key": "Gelap",
+          "label": "Gelap",
+          "group": "",
+          "fabric": "Kayu oak",
+          "hex": null,
           "price": 1102500,
           "was": 2114000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754649457096.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-CUSTARD",
-          "label": "Custard",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#b3ac9c",
-          "price": 1102500,
-          "was": 2114000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754649548299.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-GRAPHITE",
-          "label": "Graphite",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#6d6d6d",
-          "price": 1102500,
-          "was": 2114000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1754649559569.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-IVORY",
-          "label": "Ivory",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#a6a497",
-          "price": 1102500,
-          "was": 2114000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-10-1754649569922.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Fabric-MID GREY",
-          "label": "Mid Grey",
-          "group": "Fabric",
-          "fabric": "",
-          "hex": "#adadad",
-          "price": 1102500,
-          "was": 2114000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-11-1754649611420.png",
-          "on": false,
-          "subs": []
+          "img": "",
+          "on": true,
+          "subs": [
+            {
+              "label": "Black",
+              "hex": "#282828",
+              "price": 1102500,
+              "was": 2114000,
+              "img": ""
+            },
+            {
+              "label": "Blue",
+              "hex": "#2c3748",
+              "price": 1102500,
+              "was": 2114000,
+              "img": ""
+            },
+            {
+              "label": "Custard",
+              "hex": "#b3ac9c",
+              "price": 1102500,
+              "was": 2114000,
+              "img": ""
+            },
+            {
+              "label": "Graphite",
+              "hex": "#6d6d6d",
+              "price": 1102500,
+              "was": 2114000,
+              "img": ""
+            },
+            {
+              "label": "Ivory",
+              "hex": "#a6a497",
+              "price": 1102500,
+              "was": 2114000,
+              "img": ""
+            },
+            {
+              "label": "Mid Grey",
+              "hex": "#adadad",
+              "price": 1102500,
+              "was": 2114000,
+              "img": ""
+            }
+          ],
+          "nophoto": true
         }
       ],
       "variant": 0,
       "sold": 11,
-      "desc": "CUBIX SERIES - Kursi Tamu Sofa Modern Minimalis (AC)\nWhat's in the box?\n1 x Sofa Cubix tipe AC\n1 x Bantal Besar\n1 x Bantal Kecil\n*Untuk estimasi ongkir pengiriman, mohon hubungi Admin via chat",
+      "desc": "Modul armchair (AC): dua sandaran berbentuk siku. Dapat 1 bantal besar dan 1 bantal kecil.\nWhat's in the box?\n1 x Sofa Cubix tipe AC\n1 x Bantal Besar\n1 x Bantal Kecil\n*Untuk estimasi ongkir pengiriman, mohon hubungi Admin via chat",
       "url": "https://xionco.shop/products/cubix-series-1-seater-ac-kayu-terang",
       "shopId": 95,
       "shopName": "CUBIX SERIES - 1 Seater(AC) | KAYU TERANG",
       "bg": "white",
-      "model": "assets/items/cubix-series-1-seater-ac-kayu-terang/model.glb"
+      "model": "assets/items/cubix-series-1-seater-ac-kayu-terang/model.glb",
+      "series": "cubix",
+      "vTitle": "Kayu",
+      "sTitle": "Warna kain",
+      "vmodels": {
+        "Gelap": "assets/items/cubix-series-1-seater-ac-kayu-gelap/model.glb"
+      }
     },
     {
-      "status": "aktif",
+      "status": "arsip",
       "dims": "64 × 64 × 80 cm",
       "leadTime": "",
       "customizable": true,
       "stock": "Ready",
-      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "note": "Digabung ke cubix-series-1-seater-ac-kayu-terang (varian Gelap)",
       "id": "cubix-series-1-seater-ac-kayu-gelap",
       "cat": "seats",
       "name": "CUBIX SERIES",
@@ -6385,7 +6656,7 @@
       "id": "capra-deluxe-3s",
       "cat": "seats",
       "name": "CAPRA DELUXE 3S",
-      "type": "Sofa",
+      "type": "Sofa · 3 seat",
       "price": 5244000,
       "was": 10051000,
       "from": false,
@@ -6405,7 +6676,8 @@
       "url": "https://xionco.shop/products/capra-deluxe-3s",
       "shopId": 233,
       "shopName": "CAPRA DELUXE 3s",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/capra-deluxe-3s/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -6608,8 +6880,8 @@
       "note": "",
       "id": "cubix-series-meja-sudut-side",
       "cat": "tables",
-      "name": "CUBIX SERIES",
-      "type": "Meja Sudut Side",
+      "name": "CUBIX SIDE TABLE",
+      "type": "Side table · kaca",
       "price": 780000,
       "was": 1304000,
       "from": false,
@@ -6629,7 +6901,7 @@
           "key": "Terang",
           "label": "Terang",
           "group": "",
-          "fabric": "",
+          "fabric": "Kayu sungkai",
           "hex": null,
           "price": 780000,
           "was": 1495000,
@@ -6641,7 +6913,7 @@
           "key": "Gelap",
           "label": "Gelap",
           "group": "",
-          "fabric": "",
+          "fabric": "Kayu oak",
           "hex": null,
           "price": 780000,
           "was": 1304000,
@@ -6652,7 +6924,7 @@
       ],
       "variant": 1,
       "sold": 37,
-      "desc": "CUBIX SERIES - Meja Sudut Side Table Modern Minimalis\nWhat's in the box?\n1 x Side Table Cubix\n1 x Tabletop Kaca 5mm",
+      "desc": "Side table CUBIX: rangka kayu terbuka dengan top kaca.\nWhat's in the box?\n1 x Side Table Cubix\n1 x Tabletop Kaca 5mm",
       "url": "https://xionco.shop/products/cubix-series-meja-sudut-side",
       "shopId": 52,
       "shopName": "CUBIX SERIES - Meja Sudut Side",
@@ -6660,7 +6932,9 @@
       "model": "assets/items/cubix-series-meja-sudut-side/model.glb",
       "vmodels": {
         "Gelap": "assets/items/cubix-series-meja-sudut-side/model-gelap.glb"
-      }
+      },
+      "series": "cubix",
+      "vTitle": "Kayu"
     },
     {
       "status": "aktif",
@@ -6851,7 +7125,8 @@
       "url": "https://xionco.shop/products/cruiseo-dining-table",
       "shopId": 224,
       "shopName": "CRUISEO - Dining Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cruiseo-dining-table/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -6883,7 +7158,8 @@
       "url": "https://xionco.shop/products/scandus-dining-table",
       "shopId": 225,
       "shopName": "SCANDUS - Dining Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/scandus-dining-table/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -8433,7 +8709,7 @@
       "shopId": 96,
       "shopName": "VOID SERIES - SKY B9",
       "bg": "white",
-      "model": ""
+      "model": "assets/items/void-series-sky-b9/model.glb"
     },
     {
       "status": "aktif",
@@ -8528,7 +8804,8 @@
       "url": "https://xionco.shop/products/aether-series-cloud-m1",
       "shopId": 79,
       "shopName": "AETHER SERIES - Cloud M1",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-series-cloud-m1/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -10027,7 +10304,7 @@
       "bg": "white"
     },
     {
-      "status": "draft",
+      "status": "arsip",
       "dims": "",
       "leadTime": "",
       "customizable": false,
@@ -10306,16 +10583,16 @@
       "bg": "white"
     },
     {
-      "status": "draft",
+      "status": "aktif",
       "dims": "",
       "leadTime": "",
-      "customizable": false,
+      "customizable": true,
       "stock": "Ready",
       "note": "",
       "id": "capra-deluxe-1s",
-      "cat": "decor",
+      "cat": "seats",
       "name": "CAPRA DELUXE 1S",
-      "type": "",
+      "type": "Sofa · 1 seat",
       "price": 3524000,
       "was": 6755000,
       "from": false,
@@ -10338,16 +10615,16 @@
       "bg": "white"
     },
     {
-      "status": "draft",
+      "status": "aktif",
       "dims": "",
       "leadTime": "",
-      "customizable": false,
+      "customizable": true,
       "stock": "Ready",
       "note": "",
       "id": "capra-signature-2s",
-      "cat": "decor",
+      "cat": "seats",
       "name": "CAPRA SIGNATURE 2S",
-      "type": "",
+      "type": "Sofa · 2 seat",
       "price": 3304000,
       "was": 6333000,
       "from": false,

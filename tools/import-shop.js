@@ -167,6 +167,8 @@ try { (JSON.parse(fs.readFileSync(OUT_DB, 'utf8')).items || []).forEach((p) => {
 out.forEach((p) => KEEP.forEach((k) => { if (prev[p.id] && prev[p.id][k] != null && prev[p.id][k] !== '') p[k] = prev[p.id][k]; }));
 // produk lokal (local: true — mis. dari file SKP, belum ada di xionco.shop) tetap dipertahankan
 Object.values(prev).filter((p) => p.local && !out.some((o) => o.id === p.id)).forEach((p) => out.push(p));
+// susunan katalog sesuai pemilik (CAPRA per ukuran, CUBIX per modul + kayu Terang/Gelap, X-COIN disembunyikan)
+require('./curate').curate(out);
 
 const stamp = new Date().toISOString().slice(0, 10);
 const js = '/* ==========================================================================\n' +

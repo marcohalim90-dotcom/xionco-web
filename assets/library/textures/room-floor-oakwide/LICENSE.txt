@@ -1,0 +1,7 @@
+Set      : room-floor-oakwide
+Asset    : Oak Wood Planks (oak_wood_planks)
+Author   : Dimitrios Savva
+Source   : https://polyhaven.com/a/oak_wood_planks
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1200 x 1200 mm
+Processed: 1024 px WebP, warna asli. Roughness dinormalkan ke rata-rata 0.8.

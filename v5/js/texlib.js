@@ -45,7 +45,13 @@
     'stone-terrazzo': { s: [.6, .6], m: 'ar' },         // Terrazzo013 (ambientCG)
     'stone-slate': { s: [1.2, 1.2], m: 'ar' },          // Marble006 (ambientCG)
     'weave-rattan': { s: [.3, .3], m: 'anr' },          // Wicker001 (ambientCG)
-    'weave-cord': { s: [.25, .25], m: 'anr' }           // Wicker004 (ambientCG)
+    'weave-cord': { s: [.25, .25], m: 'anr' },          // Wicker004 (ambientCG)
+    // finishing ruangan (Poly Haven, CC0) — warna asli dipertahankan
+    'room-floor-oak': { s: [1.7, 1.7], m: 'anr' }, 'room-floor-parquet': { s: [3.4, 3.4], m: 'anr' }, 'room-floor-laminate': { s: [1.7, 1.7], m: 'anr' },
+    'room-floor-marble': { s: [2, 2], m: 'anr' }, 'room-floor-terrazzo': { s: [2, 2], m: 'anr' }, 'room-floor-tiles': { s: [3, 3], m: 'anr' },
+    'room-floor-concrete': { s: [2, 2], m: 'anr' }, 'room-floor-carpet': { s: [.27, .276], m: 'anr' },
+    'room-wall-plaster': { s: [1, 1], m: 'anr' }, 'room-wall-beige': { s: [3, 3], m: 'anr' }, 'room-wall-brick': { s: [2, 2], m: 'anr' }, 'room-wall-marble': { s: [1.5, 1.5], m: 'anr' },
+    'room-floor-oakwide': { s: [1.2, 1.2], m: 'anr' }, 'room-floor-greyoak': { s: [1, 1], m: 'anr' }, 'room-wall-walnut': { s: [1, 1], m: 'anr' }, 'room-wall-limewash': { s: [2, 2], m: 'anr' }
   };
   var FILE = { a: 'albedo', n: 'normal', r: 'rough' }, KEY = { a: 'map', n: 'normalMap', r: 'roughnessMap' };
   var cache = {}, aniso = 8, loader = null;

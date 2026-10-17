@@ -1,0 +1,7 @@
+Set      : room-floor-oak
+Asset    : Wood Floor (wood_floor)
+Author   : Dimitrios Savva
+Source   : https://polyhaven.com/a/wood_floor
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1700 x 1700 mm
+Processed: 1024 px WebP, warna asli dipertahankan (finishing ruangan). Roughness dinormalkan ke rata-rata 0.8.

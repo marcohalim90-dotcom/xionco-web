@@ -1,0 +1,9 @@
+Manikin skala (170 cm) untuk panggung 3D — semua CC0 1.0 (domain publik), dinormalkan ke tinggi 1,70 m, ±14k tris.
+
+pria.glb    — "Body Male - Primitive (Realistic)", Human Base Meshes v1.4.1, Blender Studio
+              https://www.blender.org/download/demo/asset-bundles/  (CC0)
+wanita.glb  — "Body Female - Primitive (Realistic)", Human Base Meshes v1.4.1, Blender Studio  (CC0)
+manikin.glb — "Prototyping Mannequin" oleh burning_barb
+              https://burning-barb.itch.io/mannequin  (Creative Commons Zero v1.0 Universal)
+
+https://creativecommons.org/publicdomain/zero/1.0/

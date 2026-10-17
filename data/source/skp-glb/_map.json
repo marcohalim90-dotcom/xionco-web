@@ -64,8 +64,94 @@
   "id": "cubix-series-meja-sudut-side",
   "variant": "Gelap"
  },
- "eorde": "eorde-sofa-bed-futon-sleeper-minimalis",
- "gliza": "gliza-tv-cabinet-stand",
+ "eorde": {
+  "id": "eorde-sofa-bed-futon-sleeper-minimalis",
+  "motions": [
+   {
+    "id": "back",
+    "sel": [
+     0,
+     1.98,
+     0.66,
+     0.94,
+     0.44,
+     0.8
+    ],
+    "pivot": [
+     0.99,
+     0.917,
+     0.453
+    ],
+    "axis": "x",
+    "amt": -1.4,
+    "move": [
+     0,
+     -0.19,
+     0
+    ],
+    "islands": true
+   }
+  ]
+ },
+ "gliza": {
+  "id": "gliza-tv-cabinet-stand",
+  "motions": [
+   {
+    "id": "flap1",
+    "sel": [
+     0.63,
+     1.25,
+     0,
+     0.025,
+     0.13,
+     0.4
+    ],
+    "pivot": [
+     0.94,
+     0,
+     0.14
+    ],
+    "axis": "x",
+    "amt": 1.45
+   },
+   {
+    "id": "flap2",
+    "sel": [
+     1.25,
+     1.88,
+     0,
+     0.025,
+     0.13,
+     0.4
+    ],
+    "pivot": [
+     1.565,
+     0,
+     0.14
+    ],
+    "axis": "x",
+    "amt": 1.45
+   },
+   {
+    "id": "flap3",
+    "sel": [
+     1.88,
+     2.49,
+     0,
+     0.025,
+     0.13,
+     0.4
+    ],
+    "pivot": [
+     2.185,
+     0,
+     0.14
+    ],
+    "axis": "x",
+    "amt": 1.45
+   }
+  ]
+ },
  "guise-1-seater": "guise-1-seater",
  "guise-2-seater": "guise-2-seater",
  "guise-3-seater": "guise",
@@ -89,7 +175,32 @@
  "rhombio": "rhombio-puff-ottoman",
  "rouled": "rouled",
  "somno": "somno",
- "syme": "syme",
+ "syme": {
+  "id": "syme",
+  "motions": [
+   {
+    "id": "doorL",
+    "sel": [
+     0,
+     1.149,
+     0.02,
+     0.066,
+     -0.01,
+     2.14
+    ],
+    "pivot": [
+     0.57,
+     0.04,
+     1.06
+    ],
+    "move": [
+     1.1,
+     0,
+     0
+    ]
+   }
+  ]
+ },
  "tesse": "tesse-kursi-puff-ottoman",
  "trapezo": "trapezo",
  "uruz": "uruz",
