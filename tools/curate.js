@@ -76,6 +76,7 @@ function curate(items) {
     } else if ((p.variants || []).some((v) => v.label === 'Terang')) {
       p.vTitle = 'Kayu';
       p.variants.forEach((v) => { const w = WOOD.find((x) => x[0] === v.label); if (w) v.fabric = w[1]; });
+      p.variant = p.variants.findIndex((v) => v.label === 'Terang');   // varian awal = Terang, sama dengan foto utama (toko memilih Gelap → model 3D beda dari foto)
     }
   });
 

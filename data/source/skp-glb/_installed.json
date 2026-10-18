@@ -334,25 +334,6 @@
   "kb": 928
  },
  {
-  "slug": "gliza",
-  "id": "gliza-tv-cabinet-stand",
-  "variant": null,
-  "file": "assets/items/gliza-tv-cabinet-stand/model.glb",
-  "scale": 1,
-  "tris": 1350,
-  "tris_out": 1350,
-  "size_cm": [
-   248.7,
-   44.4,
-   39.0
-  ],
-  "roles": {
-   "[Color M07]": "metal",
-   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
-  },
-  "kb": 107
- },
- {
   "slug": "guise-1-seater",
   "id": "guise-1-seater",
   "variant": null,
@@ -429,26 +410,6 @@
   "kb": 85
  },
  {
-  "slug": "hout",
-  "id": "hout",
-  "variant": null,
-  "file": "assets/items/hout/model.glb",
-  "scale": 1,
-  "tris": 1104,
-  "tris_out": 1104,
-  "size_cm": [
-   77.5,
-   77.5,
-   37.2
-  ],
-  "roles": {
-   "<auto>": "paint",
-   "<auto>1": "metal",
-   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
-  },
-  "kb": 81
- },
- {
   "slug": "kyoukai-240",
   "id": "kyoukai",
   "variant": null,
@@ -502,24 +463,6 @@
    "Materiagold": "metal"
   },
   "kb": 2257
- },
- {
-  "slug": "l7",
-  "id": "l7",
-  "variant": null,
-  "file": "assets/items/l7/model.glb",
-  "scale": 1,
-  "tris": 2804,
-  "tris_out": 2804,
-  "size_cm": [
-   113.5,
-   57.4,
-   91.4
-  ],
-  "roles": {
-   "[Color M07]": "metal"
-  },
-  "kb": 56
  },
  {
   "slug": "lucid",
@@ -578,26 +521,6 @@
   "kb": 384
  },
  {
-  "slug": "orycto",
-  "id": "orycto",
-  "variant": null,
-  "file": "assets/items/orycto/model.glb",
-  "scale": 1,
-  "tris": 13719,
-  "tris_out": 13719,
-  "size_cm": [
-   210.6,
-   79.2,
-   57.1
-  ],
-  "roles": {
-   "<auto>5": "metal",
-   "<auto>6": "metal",
-   "orycto": "fabric"
-  },
-  "kb": 1120
- },
- {
   "slug": "pillow",
   "id": "cubix-series-throw-pillow-b",
   "variant": null,
@@ -633,27 +556,6 @@
    "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
   "kb": 138
- },
- {
-  "slug": "poel",
-  "id": "poel",
-  "variant": null,
-  "file": "assets/items/poel/model.glb",
-  "scale": 1,
-  "tris": 15748,
-  "tris_out": 15748,
-  "size_cm": [
-   136.4,
-   174.2,
-   84.1
-  ],
-  "roles": {
-   "<auto>1": "metal",
-   "DefaultMaterial": "paint",
-   "wood-ash #b89a74 x0.65 terang (lib)": "wood",
-   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
-  },
-  "kb": 889
  },
  {
   "slug": "recta",
@@ -712,27 +614,6 @@
    "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
   "kb": 1507
- },
- {
-  "slug": "somno",
-  "id": "somno",
-  "variant": null,
-  "file": "assets/items/somno/model.glb",
-  "scale": 1,
-  "tris": 36572,
-  "tris_out": 36572,
-  "size_cm": [
-   137.0,
-   170.5,
-   81.0
-  ],
-  "roles": {
-   "[Color M00]": "fabric",
-   "MIDGREY": "fabric",
-   "wood-ash #b89a74 x0.65 terang (lib)": "wood",
-   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
-  },
-  "kb": 1484
  },
  {
   "slug": "syme",
@@ -1047,5 +928,121 @@
    "MIDGREY": "fabric"
   },
   "kb": 1896
+ },
+ {
+  "slug": "orycto",
+  "id": "orycto",
+  "variant": null,
+  "file": "assets/items/orycto/model.glb",
+  "scale": 1,
+  "tris": 13719,
+  "tris_out": 13719,
+  "size_cm": [
+   210.6,
+   79.2,
+   57.1
+  ],
+  "roles": {
+   "<auto>6": "metal",
+   "orycto": "fabric",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
+  },
+  "kb": 416
+ },
+ {
+  "slug": "hout",
+  "id": "hout",
+  "variant": null,
+  "file": "assets/items/hout/model.glb",
+  "scale": 1,
+  "tris": 1104,
+  "tris_out": 1104,
+  "size_cm": [
+   77.5,
+   77.5,
+   37.2
+  ],
+  "roles": {
+   "<auto>1": "metal",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
+  },
+  "kb": 81
+ },
+ {
+  "slug": "somno",
+  "id": "somno",
+  "variant": null,
+  "file": "assets/items/somno/model.glb",
+  "scale": 1,
+  "tris": 36572,
+  "tris_out": 36572,
+  "size_cm": [
+   137.0,
+   170.5,
+   81.0
+  ],
+  "roles": {
+   "[Color M00]": "fabric",
+   "MIDGREY": "fabric",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
+  },
+  "kb": 1432
+ },
+ {
+  "slug": "poel",
+  "id": "poel",
+  "variant": null,
+  "file": "assets/items/poel/model.glb",
+  "scale": 1,
+  "tris": 15748,
+  "tris_out": 15748,
+  "size_cm": [
+   136.4,
+   174.2,
+   84.1
+  ],
+  "roles": {
+   "<auto>1": "metal",
+   "DefaultMaterial": "paint",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
+  },
+  "kb": 837
+ },
+ {
+  "slug": "gliza",
+  "id": "gliza-tv-cabinet-stand",
+  "variant": null,
+  "file": "assets/items/gliza-tv-cabinet-stand/model.glb",
+  "scale": 1,
+  "tris": 1350,
+  "tris_out": 1350,
+  "size_cm": [
+   248.7,
+   44.4,
+   39.0
+  ],
+  "roles": {
+   "cat #1d1c1b": "paint",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
+  },
+  "kb": 107
+ },
+ {
+  "slug": "l7",
+  "id": "l7",
+  "variant": null,
+  "file": "assets/items/l7/model.glb",
+  "scale": 1,
+  "tris": 2804,
+  "tris_out": 2804,
+  "size_cm": [
+   113.5,
+   57.4,
+   91.4
+  ],
+  "roles": {
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
+  },
+  "kb": 108
  }
 ]

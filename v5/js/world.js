@@ -418,7 +418,7 @@
      pengaturan global: set tekstur pustaka, warna rata-rata, kontras serat, roughness, relief, skala. Ganti pengaturan →
      semua komponen berlabel di panggung ikut berubah (XW.setWood). Albedo diolah di kanvas: kontras serat lalu warna. */
   var WOOD = {
-    gelap: { set: 'wood-walnut', hex: '#673e2f', ctr: .75, rough: .5, normal: .35, scale: 1 },
+    gelap: { set: 'wood-walnut', hex: '#673e2f', ctr: .75, rough: .8, normal: .35, scale: 1 },
     terang: { set: 'wood-ash', hex: '#b89a74', ctr: .65, rough: .55, normal: .3, scale: 1 },
     natural: { set: 'wood-oak', hex: '#c49a6c', ctr: .8, rough: .55, normal: .3, scale: 1 }
   }, woodCache = {}, WOOD_K = .82;
@@ -455,7 +455,7 @@
       if (o.map) mt.map = o.map;
       if (o.normalMap && mt.normalScale) { mt.normalMap = o.normalMap; mt.normalScale.set(c.normal, c.normal); }
       if (o.roughnessMap) mt.roughnessMap = o.roughnessMap;
-      mt.roughness = (c.rough || .5) / .8; mt.metalness = 0;
+      mt.roughness = (c.rough || .5) / .8; mt.metalness = 0; mt.userData.env0 = c.env != null ? c.env : .3;   // pantulan rendah: daun meja datar tidak memucat merah muda (foto HOUT/HEXTER/QAZTAC)
       mt.userData.col0 = new T.Color(WOOD_K, WOOD_K, WOOD_K); mt.userData.tint = null; mt.color.copy(WB).multiplyScalar(WOOD_K);   // WOOD_K: kayu SKP setara model AI di panggung
       mt.needsUpdate = true;
     }, function () {});

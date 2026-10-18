@@ -6,7 +6,7 @@
       "set": "wood-mahogany",
       "hex": "#673e2f",
       "ctr": 0.65,
-      "rough": 0.5,
+      "rough": 0.8,
       "normal": 0.35,
       "scale": 1
     },
@@ -21,13 +21,13 @@
     },
     "natural": {
       "l": "Natural",
-      "set": "wood-oak",
-      "hex": "#c49a6c",
-      "ctr": 0.8,
+      "set": "wood-walnut",
+      "hex": "#ae7537",
+      "ctr": 0.45,
       "rough": 0.55,
       "normal": 0.3,
       "scale": 1
     }
   },
-  "updated": "2026-10-18T06:47:58.151Z"
+  "updated": "2026-10-18T07:26:24.990Z"
 }

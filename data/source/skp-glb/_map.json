@@ -251,7 +251,10 @@
     "axis": "x",
     "amt": 1.45
    }
-  ]
+  ],
+  "remap": {
+   "[Color M07]": "paint:#1d1c1b"
+  }
  },
  "guise-1-seater": {
   "id": "guise-1-seater",
@@ -285,7 +288,12 @@
   }
  },
  "hexter": "hexter",
- "hout": "hout",
+ "hout": {
+  "id": "hout",
+  "remap": {
+   "<auto>": "lib:wood-walnut#673e2f*0.75@gelap"
+  }
+ },
  "kyoukai-240": {
   "id": "kyoukai",
   "remap": {
@@ -300,11 +308,34 @@
   }
  },
  "kyrios-1-seater": "kyrios-1-seater",
- "l7": "l7",
+ "l7": {
+  "id": "l7",
+  "remap": {
+   "[Color M07]": "lib:wood-walnut#673e2f*0.75@gelap"
+  },
+  "boxTo": [
+   {
+    "sel": [
+     0,
+     1.14,
+     0,
+     0.58,
+     0.71,
+     0.77
+    ],
+    "to": "paint:#1d1c1b"
+   }
+  ]
+ },
  "lucid": "lucid",
  "nora-bs": "nora-bar-stool",
  "nora-dc": "nora",
- "orycto": "orycto",
+ "orycto": {
+  "id": "orycto",
+  "remap": {
+   "<auto>5": "lib:wood-walnut#673e2f*0.75@gelap"
+  }
+ },
  "pillow": "cubix-series-throw-pillow-b",
  "pluq": {
   "id": "pluq",
@@ -312,7 +343,10 @@
    "<auto>": "lib:wood-walnut#673e2f*0.75@gelap"
   }
  },
- "poel": "poel",
+ "poel": {
+  "id": "poel",
+  "woodAs": "gelap"
+ },
  "recta": "recta",
  "rhombio": "rhombio-puff-ottoman",
  "rouled": {
@@ -321,7 +355,10 @@
    "<auto>": "lib:wood-walnut#673e2f*0.75@gelap"
   }
  },
- "somno": "somno",
+ "somno": {
+  "id": "somno",
+  "woodAs": "gelap"
+ },
  "syme": {
   "id": "syme",
   "motions": [

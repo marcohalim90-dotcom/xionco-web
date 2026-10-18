@@ -89,8 +89,8 @@
       '<label class="wd-row"><span>Warna rata-rata</span><input type="color" value="' + c.hex + '" data-plug="' + ID + '" data-wd="hex"><b data-wd-out="hex">' + c.hex + '</b></label>' +
       row('ctr', 'Kontras serat', .2, 1.5, .05) + row('rough', 'Kekasaran (doff)', .2, .9, .01) + row('normal', 'Relief serat', 0, 1, .05) + row('scale', 'Skala serat', .4, 2.5, .05) +
       '<p class="wd-note">Kontras serat kecil = serat halus & bersih; besar = serat tegas. Natural belum dipakai produk mana pun (disiapkan).</p>' +
-      '<div class="card"><p style="margin:0 0 8px"><b>Model 3D AI</b> (tekstur satu lembar, tidak bisa diberi label per komponen) mengikuti warna kelas lewat pewarnaan ulang: LOPHUS, AZEDRA, QAZTAC, ottoman GUISE (gelap) · SF3S, REGALE, CRUISEO, SCANDUS (terang).</p>' +
-      '<button class="btn" type="button" data-act="wd-ai"' + (S.ai && S.ai.run ? ' disabled' : '') + '>' + (S.ai && S.ai.run ? 'Memperbarui model AI…' : 'Perbarui model AI dengan warna tersimpan') + '</button>' +
+      '<div class="card"><p style="margin:0 0 8px"><b>Berlaku untuk semua model</b> — komponen kayu model SketchUp dan model 3D AI (LOPHUS, AZEDRA, QAZTAC, ASTRAL, CAPRA, ottoman GUISE, SF3S, REGALE, CRUISEO, SCANDUS) sama-sama berlabel kelas, jadi ikut pengaturan ini langsung.</p>' +
+      '<button class="btn" type="button" data-act="wd-ai"' + (S.ai && S.ai.run ? ' disabled' : '') + '>' + (S.ai && S.ai.run ? 'Memproses model AI…' : 'Bangun ulang pemisahan kayu model AI') + '</button>' +
       (S.ai && !S.ai.run && S.ai.log ? '<pre style="white-space:pre-wrap;font-size:10.5px;margin:10px 0 0">' + C.esc(S.ai.log.slice(-600)) + '</pre>' : '') + '</div>';
     var top = C.el.body.scrollTop; C.el.body.innerHTML = h; C.el.body.scrollTop = top;
   }
@@ -112,7 +112,7 @@
       });
       return;
     }
-    if (a === 'wd-ai') { if (JSON.stringify(S.cfg) !== JSON.stringify(S.saved)) { C.toast('Simpan dulu, lalu perbarui model AI'); return; } api('POST', 'wood/ai').then(function (r) { S.ai = r; render(C); aiStatus(); }); }
+    if (a === 'wd-ai') { api('POST', 'wood/ai').then(function (r) { S.ai = r; render(C); aiStatus(); }); }
   }
   function input(t, e, ctx) {
     C = ctx; var k = t.dataset.wd; if (!k || !S.cfg) return;

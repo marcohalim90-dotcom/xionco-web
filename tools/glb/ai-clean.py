@@ -48,5 +48,67 @@ if RECOLOR:
         px[:, :3] = np.clip(px[:, :3] * (w @ K), 0, 1)
         im.pixels.foreach_set(px.ravel()); im.update(); im.pack()
         print('RECOLOR', im.name, len(RECOLOR), flush=True)
-bpy.ops.export_scene.gltf(filepath=dst, export_format='GLB', export_apply=True, export_image_format='WEBP')
+# WOODSPLIT (argumen ke-6): {"wood": {"#hex": "gelap"|"terang"|"natural"}, "keep": ["#hex", ...]}
+# Muka yang warna teksturnya (di titik tengah UV) paling dekat ke kluster kayu dipindah ke material kayu berlabel kelas
+# (extras xc_wood) dengan UV kotak dalam meter → di situs ikut pengaturan global Developer Settings › Kayu koleksi,
+# sama seperti komponen kayu model SketchUp. Dua putaran penghalusan tetangga agar tidak berbintik.
+SPLIT = json.loads(argv[5]) if len(argv) > 5 and argv[5] else None
+if SPLIT and SPLIT.get('wood'):
+    import numpy as np, bmesh
+    names = list(SPLIT['wood'].keys()) + list(SPLIT.get('keep', []))
+    lin = lambda h: np.array([int(h[i:i + 2], 16) / 255 for i in (1, 3, 5)], dtype=np.float32) ** 2.2
+    CEN = np.stack([lin(h) for h in names]); CLS = [SPLIT['wood'].get(h) for h in names]   # None = bukan kayu
+    mats = {}
+    def woodmat(cls):
+        if cls in mats: return mats[cls]
+        m = bpy.data.materials.new('kayu ' + cls + ' (AI)'); m.use_nodes = True; b = m.node_tree.nodes['Principled BSDF']
+        h = {'gelap': (.40, .24, .18), 'terang': (.80, .65, .48), 'natural': (.68, .46, .22)}.get(cls, (.5, .35, .25))
+        b.inputs['Base Color'].default_value = tuple(v ** 2.2 for v in h) + (1,); b.inputs['Metallic'].default_value = 0; b.inputs['Roughness'].default_value = .5
+        m['xc_wood'] = cls; m['role'] = 'wood'; mats[cls] = m; return m
+    for o in ms:
+        me = o.data
+        if not me.uv_layers or not me.materials: continue
+        img = None
+        for m in me.materials:
+            if not m or not m.use_nodes: continue
+            b = m.node_tree.nodes.get('Principled BSDF')
+            if b and b.inputs['Base Color'].is_linked and b.inputs['Base Color'].links[0].from_node.type == 'TEX_IMAGE': img = b.inputs['Base Color'].links[0].from_node.image
+        if not img: continue
+        W, H = img.size; px = np.empty(W * H * 4, dtype=np.float32); img.pixels.foreach_get(px); px = px.reshape(H, W, 4)[:, :, :3]
+        uv = me.uv_layers.active.data; nf = len(me.polygons); lab = [None] * nf
+        for p in me.polygons:
+            u = sum(uv[i].uv[0] for i in p.loop_indices) / p.loop_total; v = sum(uv[i].uv[1] for i in p.loop_indices) / p.loop_total
+            x = int((u % 1) * (W - 1)); y = int((v % 1) * (H - 1))
+            c = px[max(0, y - 1):y + 2, max(0, x - 1):x + 2].reshape(-1, 3).mean(0)
+            lab[p.index] = CLS[int(((CEN - c) ** 2).sum(1).argmin())]
+        bm = bmesh.new(); bm.from_mesh(me); bm.faces.ensure_lookup_table()
+        nb = [[g.index for e in f.edges for g in e.link_faces if g.index != f.index] for f in bm.faces]; bm.free()
+        for _ in range(2):   # penghalusan: ikut mayoritas tetangga (sambungan atlas / bintik)
+            new = lab[:]
+            for i in range(nf):
+                if not nb[i]: continue
+                cnt = {}
+                for j in nb[i]: cnt[lab[j]] = cnt.get(lab[j], 0) + 1
+                best = max(cnt, key=cnt.get)
+                if best != lab[i] and cnt[best] >= .66 * len(nb[i]): new[i] = best
+            lab = new
+        idx = {}
+        for i, cls in enumerate(lab):
+            if not cls: continue
+            m = woodmat(cls)
+            if m.name not in [x.name for x in me.materials if x]: me.materials.append(m)
+            idx.setdefault(cls, [k for k, x in enumerate(me.materials) if x and x.name == m.name][0])
+            me.polygons[i].material_index = idx[cls]
+        n = sum(1 for c in lab if c)
+        if n:   # UV kotak 1 m HANYA untuk muka kayu (muka lain tetap memakai UV atlas aslinya)
+            mw = o.matrix_world
+            for p in me.polygons:
+                if not lab[p.index]: continue
+                nrm = (mw.to_3x3() @ p.normal); ax = max(range(3), key=lambda k: abs(nrm[k]))
+                a, b2 = [k for k in range(3) if k != ax]
+                for li in p.loop_indices:
+                    co = mw @ me.vertices[me.loops[li].vertex_index].co
+                    uv[li].uv = (co[a], co[b2])
+        print('WOODSPLIT', o.name, n, 'dari', nf, 'muka kayu', {c: lab.count(c) for c in set(lab) if c}, flush=True)
+bpy.ops.export_scene.gltf(filepath=dst, export_format='GLB', export_apply=True, export_image_format='WEBP', export_extras=True)
 print('AICLEAN', src, '->', dst, sum(len(o.data.polygons) for o in ms))

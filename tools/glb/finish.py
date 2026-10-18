@@ -20,6 +20,7 @@ FABRIC = re.compile(r'(midgrey|kulit|leather|fabric|velvet|boucle|orycto|green|r
 
 def role(m):
     n = m.name
+    if n.startswith('cat '): return 'paint'   # cat doff dari remap/boxTo 'paint:#hex' (bukan logam meski gelap)
     if GLASS.search(n): return 'glass'
     if WOOD.search(n): return 'wood'
     if FABRIC.search(n): return 'fabric'
@@ -107,6 +108,45 @@ def fix_normals(ms):
         bpy.ops.object.select_all(action='DESELECT'); o.select_set(True); bpy.context.view_layer.objects.active = o
         if o.data.has_custom_normals: bpy.ops.mesh.customdata_custom_splitnormals_clear()
         bpy.ops.object.shade_smooth_by_angle(angle=math.radians(SMOOTH_DEG))
+
+def paint_mat(hx):
+    """'paint:#hex' → material cat doff 'cat #hex' (peran paint: tidak mengilap seperti logam)."""
+    name = 'cat ' + hx
+    if name in bpy.data.materials: return bpy.data.materials[name]
+    m = bpy.data.materials.new(name); m.use_nodes = True; b = m.node_tree.nodes['Principled BSDF']
+    b.inputs['Base Color'].default_value = tuple((int(hx[i:i + 2], 16) / 255) ** 2.2 for i in (1, 3, 5)) + (1,); b.inputs['Roughness'].default_value = .55; b.inputs['Metallic'].default_value = 0; m['role'] = 'paint'
+    return m
+
+def box_to(ms, defs):
+    """boxTo: [{sel: [x0,x1,y0,y1,z0,z1] dari sudut min bbox, to: 'nama material' | 'paint:#hex'}] → muka pulau mesh
+    yang >= 60% titiknya di dalam kotak memakai material itu."""
+    mn = mathutils.Vector((1e9,) * 3)
+    for o in ms:
+        for c in o.bound_box: mn = mathutils.Vector(map(min, mn, o.matrix_world @ mathutils.Vector(c)))
+    for d in defs:
+        s = d['sel']; lo = mn + mathutils.Vector((s[0], s[2], s[4])); hi = mn + mathutils.Vector((s[1], s[3], s[5]))
+        to = d['to']
+        if to.startswith('paint:'): to = paint_mat(to[6:]).name
+        mat = bpy.data.materials[to]; n = 0
+        for o in ms:
+            bm = bmesh.new(); bm.from_mesh(o.data); bm.verts.ensure_lookup_table(); mw = o.matrix_world; seen = set()
+            names = [x.name if x else '' for x in o.data.materials]
+            if mat.name not in names: o.data.materials.append(mat); names.append(mat.name)
+            mi = names.index(mat.name)
+            for v0 in bm.verts:
+                if v0.index in seen: continue
+                isl, st = [], [v0]; seen.add(v0.index)
+                while st:
+                    v = st.pop(); isl.append(v)
+                    for e in v.link_edges:
+                        w = e.other_vert(v)
+                        if w.index not in seen: seen.add(w.index); st.append(w)
+                ws = [mw @ v.co for v in isl]
+                if sum(all(lo[i] - .002 <= p[i] <= hi[i] + .002 for i in range(3)) for p in ws) < .6 * len(isl): continue
+                fs = {f for v in isl for f in v.link_faces}
+                for f in fs: f.material_index = mi; n += 1
+            bm.to_mesh(o.data); bm.free(); o.data.update()
+        print('BOXTO', to, n, 'muka', flush=True)
 
 def reshape(ms, defs):
     """reshape: [{sel: kotak [x0,x1,y0,y1,z0,z1] dari sudut min bbox, z: [z0, z1, z0baru, z1baru]}] → pulau mesh yang >= 60% titiknya
@@ -239,13 +279,14 @@ for slug, tgt in MAP.items():
                 im = b.inputs['Base Color'].links[0].from_node.image; px = np.empty(len(im.pixels), dtype=np.float32); im.pixels.foreach_get(px); mean = px.reshape(-1, 4)[:, :3].mean(0)
             else: mean = np.array(b.inputs['Base Color'].default_value[:3])
             lum = float(mean @ np.array([.2126, .7152, .0722]))
-            remap[m.name] = 'lib:' + (WOOD_LIGHTSTD if (lum > .42 if not birch else True) else WOOD_DARK)
+            wa = None if isinstance(tgt, str) else tgt.get('woodAs')
+            remap[m.name] = 'lib:' + (WOOD_DARK if wa == 'gelap' else WOOD_LIGHTSTD if wa == 'terang' else (WOOD_LIGHTSTD if (lum > .42 if not birch else True) else WOOD_DARK))
             print('WOODSTD', m.name, round(lum, 2), '->', remap[m.name], flush=True)
     for k in list(remap):   # rantai: <auto> → SUNGKAI → kayu standar
         v, n = remap[k], 0
         while v in remap and n < 5: v = remap[v]; n += 1
         remap[k] = v
-    remap = {k: (lib_mat(v[4:]).name if str(v).startswith('lib:') else v) for k, v in remap.items()}   # lib:<set> → material pustaka baru
+    remap = {k: (lib_mat(v[4:]).name if str(v).startswith('lib:') else paint_mat(v[6:]).name if str(v).startswith('paint:') else v) for k, v in remap.items()}   # lib:<set> → material pustaka baru
     ms = [o for o in bpy.context.scene.objects if o.type == 'MESH']
     # skala: furnitur > 12 m pasti satuan mm/cm
     mn = mathutils.Vector((1e9,) * 3); mx = -mn
@@ -312,6 +353,7 @@ for slug, tgt in MAP.items():
     if mirror: mirror_mat(ms, mirror)
     fix_normals(ms)
     if not isinstance(tgt, str) and tgt.get('reshape'): reshape(ms, tgt['reshape'])
+    if not isinstance(tgt, str) and tgt.get('boxTo'): box_to(ms, tgt['boxTo'])
     if mots: add_motions(ms, mots)
     tris = sum(sum(len(p.vertices) - 2 for p in o.data.polygons) for o in ms)
     if tris > MAXTRI:
