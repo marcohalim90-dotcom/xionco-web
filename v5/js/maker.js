@@ -185,12 +185,16 @@
     var UPHN = { 'fabric-boucle': 1.1, 'fabric-velvet': .45, 'fabric-linen': .9, 'fabric-chenille': 1, 'fabric-pet': .7, 'fabric-woven': .85 };
     function woodSet(hex) {
       var w = (X.WOOD || []).filter(function (x) { return x.hex.toLowerCase() === String(hex).toLowerCase(); })[0], id = w ? w.id : '';
+      if (w && w.tex) return w.tex;
       return id === 'ebony' ? 'wood-walnut' : XT && XT.sets['wood-' + id] ? 'wood-' + id : lum(hex) < .2 ? 'wood-walnut' : 'wood-oak';
     }
     function fabric(hex, uphId) {
       var u = X.find(X.UPH, uphId) || X.UPH[0];
       return M('fab' + hex + uphId, function () {
         var base = col(hex);
+        // kain koleksi (tekstur yang di-Acc): warna asli tekstur, kilau serat tipis
+        var xc = u.tex && (u.colors || []).filter(function (c) { return c.hex.toLowerCase() === String(hex).toLowerCase(); })[0];
+        if (xc) { var mx = new T.MeshPhysicalMaterial({ color: col('#ffffff').multiplyScalar(.95), roughness: .92, metalness: 0, sheen: .3, sheenRoughness: .7, sheenColor: base.clone().lerp(new T.Color(1, 1, 1), .35), envMapIntensity: .5 }); return TXS(mx, xc.tex, { normal: .85, rough: .92 }); }
         if (u.leather) {
           var lt = TX.leather(T), real = uphId === 'leather';
           // kulit: pori halus dari normal map asli, kilau lembut (clearcoat tipis) — tidak seperti plastik
@@ -209,6 +213,8 @@
     function wood(hex, kind, coat) {
       kind = kind || 'solid';
       return M('wood' + hex + kind + (coat ? 'c' : ''), function () {
+        var wx = (X.WOOD || []).filter(function (x) { return x.tex && x.hex.toLowerCase() === String(hex).toLowerCase(); })[0];
+        if (wx) { var pw = { color: col('#ffffff'), roughness: .5, metalness: 0, envMapIntensity: .7 }, mw; if (coat) { pw.clearcoat = .9; pw.clearcoatRoughness = .08; mw = new T.MeshPhysicalMaterial(pw); } else mw = new T.MeshStandardMaterial(pw); return TXS(mw, wx.tex, { normal: .5, rough: .5 }); }   // kayu koleksi: warna asli
         var o = { color: col(hex).multiplyScalar(1.15), map: kind === 'veneer' ? TX.veneer(T) : TX.grain(T), roughness: kind === 'veneer' ? .42 : .55, metalness: 0, envMapIntensity: .7 }, m;
         if (coat) { o.clearcoat = .9; o.clearcoatRoughness = .08; o.envMapIntensity = .9; m = new T.MeshPhysicalMaterial(o); }
         else m = new T.MeshStandardMaterial(o);
@@ -217,7 +223,7 @@
     }
     // logam: brushed (normal + roughness asli) untuk kuningan, champagne, stainless, gunmetal; powder coat & krom polos
     var BRUSH = /^(brass|champagne|stainless|gunmetal)$/;
-    function metal(o) { o = o || X.METAL[0]; return M('metal' + o.id, function () { var m = new T.MeshStandardMaterial({ color: col(o.hex), roughness: o.rough || .35, metalness: o.id === 'ivory' ? .2 : 1, envMapIntensity: 1.1 }); return BRUSH.test(o.id) ? TXS(m, 'metal-brushed', { normal: .25, rough: m.roughness }) : m; }); }
+    function metal(o) { o = o || X.METAL[0]; return M('metal' + o.id, function () { if (o.tex) return TXS(new T.MeshStandardMaterial({ color: col('#ffffff'), roughness: o.rough || .35, metalness: 1, envMapIntensity: 1.1 }), o.tex, { normal: .4, rough: o.rough || .35 }); var m = new T.MeshStandardMaterial({ color: col(o.hex), roughness: o.rough || .35, metalness: o.id === 'ivory' ? .2 : 1, envMapIntensity: 1.1 }); return BRUSH.test(o.id) ? TXS(m, 'metal-brushed', { normal: .25, rough: m.roughness }) : m; }); }
     // mode: hpl (doff bertekstur) | duco (cat satin) | gloss
     function paint(hex, mode, grain, coat) {
       if (mode === true) mode = 'gloss'; else if (!mode) mode = 'hpl';
@@ -235,7 +241,7 @@
       return M('stone' + o.id + (coat ? 'c' : ''), function () {
         var r = o.id === 'travertine' ? .4 : o.id === 'terrazzo' ? .3 : .2, p = { map: TX.stone(T, o), roughness: r, metalness: 0, envMapIntensity: .9 }, m;
         if (coat) { p.clearcoat = 1; p.clearcoatRoughness = .04; m = new T.MeshPhysicalMaterial(p); } else m = new T.MeshStandardMaterial(p);
-        return STONESET[o.id] ? TXS(m, STONESET[o.id], { rough: r }) : m;
+        return STONESET[o.id] || o.tex ? TXS(m, STONESET[o.id] || o.tex, { rough: r }) : m;
       });
     }
     function glass(coat) { return M('glass' + (coat ? 'c' : ''), function () { return new T.MeshPhysicalMaterial({ color: col(coat ? '#a6bab8' : '#9fb0ad'), roughness: .05, metalness: 0, transparent: true, opacity: .32, envMapIntensity: coat ? 1.6 : 1.2, clearcoat: coat ? 1 : 0, depthWrite: false }); }); }

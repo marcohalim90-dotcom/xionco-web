@@ -1,0 +1,10 @@
+Set      : x-lantai-pebble-embedded-concrete
+Asset    : Pebble Embedded Concrete (ph:pebble_embedded_concrete)
+Author   : Charlotte Baglioni
+Source   : https://polyhaven.com/a/pebble_embedded_concrete
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/pebble_embedded_concrete/pebble_embedded_concrete_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/pebble_embedded_concrete/pebble_embedded_concrete_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/pebble_embedded_concrete/pebble_embedded_concrete_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 2600 x 2600 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

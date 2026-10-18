@@ -1,0 +1,10 @@
+Set      : x-tembok-exterior-wall-cladding-03
+Asset    : Exterior Wall Cladding 03 (ph:exterior_wall_cladding_03)
+Author   : Charlotte Baglioni
+Source   : https://polyhaven.com/a/exterior_wall_cladding_03
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/exterior_wall_cladding_03/exterior_wall_cladding_03_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/exterior_wall_cladding_03/exterior_wall_cladding_03_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/exterior_wall_cladding_03/exterior_wall_cladding_03_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1960 x 1960 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

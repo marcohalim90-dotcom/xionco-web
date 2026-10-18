@@ -1,0 +1,10 @@
+Set      : x-lantai-gravel-floor-03
+Asset    : Gravel Floor 03 (ph:gravel_floor_03)
+Author   : Charlotte Baglioni
+Source   : https://polyhaven.com/a/gravel_floor_03
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/gravel_floor_03/gravel_floor_03_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/gravel_floor_03/gravel_floor_03_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/gravel_floor_03/gravel_floor_03_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 2500 x 2500 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

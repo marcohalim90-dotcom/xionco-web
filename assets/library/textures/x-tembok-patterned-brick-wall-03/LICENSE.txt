@@ -1,0 +1,10 @@
+Set      : x-tembok-patterned-brick-wall-03
+Asset    : Patterned Brick Wall 03 (ph:patterned_brick_wall_03)
+Author   : Charlotte Baglioni
+Source   : https://polyhaven.com/a/patterned_brick_wall_03
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/patterned_brick_wall_03/patterned_brick_wall_03_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/patterned_brick_wall_03/patterned_brick_wall_03_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/patterned_brick_wall_03/patterned_brick_wall_03_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1800 x 1800 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

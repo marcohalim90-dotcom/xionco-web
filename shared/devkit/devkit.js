@@ -4,7 +4,7 @@
    bergeser dari kanan ke kiri. Tidak membuka halaman baru.
    Tab: Versi · Aset · Katalog · Custom · Harga · (tab tambahan) · Pengaturan
    Tab tambahan dari file lain lewat XVDevkit.add({...}) — mis. shared/devkit/ai3d.js (3D katalog, lokal saja),
-   shared/devkit/links.js (Link & penawaran, lokal saja).
+   shared/devkit/links.js (Link & penawaran, lokal saja), shared/devkit/wood.js (Kayu koleksi, lokal saja).
    Gaya mengikuti versi 4 (ivory, garis champagne, Josefin Sans + Inter).
    Komponen terisolasi (Shadow DOM) → aman dipasang di versi mana pun.
    Pintasan: Ctrl + Shift + D
@@ -478,7 +478,7 @@
     var chain = Promise.all(jobs);
     if (needData) chain = chain.then(function () { return loadScript(ROOT + 'v5/js/data.js'); });
     return chain.then(function () { if (!window.XVDB) return loadScript(ROOT + 'shared/db.js'); }).then(function () { return window.XVDB && XVDB.ready; })
-      .then(function (r) { return LOCAL && location.protocol !== 'file:' ? loadScript(ROOT + 'shared/devkit/ai3d.js').then(function () { return loadScript(ROOT + 'shared/devkit/links.js'); }).then(function () { return loadScript(ROOT + 'shared/devkit/materials.js'); }).then(function () { return r; }) : r; });   // 3D AI butuh serve.js
+      .then(function (r) { return LOCAL && location.protocol !== 'file:' ? loadScript(ROOT + 'shared/devkit/ai3d.js').then(function () { return loadScript(ROOT + 'shared/devkit/links.js'); }).then(function () { return loadScript(ROOT + 'shared/devkit/materials.js'); }).then(function () { return loadScript(ROOT + 'shared/devkit/wood.js'); }).then(function () { return r; }) : r; });   // 3D AI butuh serve.js
   }
   function mount() {
     if (!window.XVDB || !window.XV) return;

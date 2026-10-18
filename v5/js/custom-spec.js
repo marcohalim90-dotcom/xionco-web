@@ -55,6 +55,16 @@
     O('nero', 'Marmer Nero Marquina', 'Nero Marquina marble', { hex: '#1f1e1d', vein: '#cfcac0', f: 1.6 }), O('travertine', 'Travertine', 'Travertine', { hex: '#d7c7a9', vein: '#b8a582', f: 1.5 }),
     O('terrazzo', 'Terrazzo', 'Terrazzo', { hex: '#ddd6c9', speck: true, f: 1.35 }), O('slate', 'Sintered stone Dark Slate', 'Sintered stone, dark slate', { hex: '#3a3a3a', vein: '#555352', f: 1.45 })
   ];
+  /* tekstur yang di-Acc (Developer Settings › Aset material) → pilihan tambahan; warna asli tekstur, kartu memakai gambar kecilnya */
+  (window.XTEX_EXTRA || []).forEach(function (x) {
+    var o = O(x.set, x.l, x.l, { hex: x.hex, tex: x.set, f: x.f });
+    if (x.g === 'kayu') WOOD.push(o);
+    else if (x.g === 'batu') { o.vein = x.hex; STONE.push(o); }
+    else if (x.g === 'logam') { o.rough = .35; METAL.push(o); }
+  });
+  var KAIN_X = (window.XTEX_EXTRA || []).filter(function (x) { return x.g === 'kain'; });
+  if (KAIN_X.length) UPH.push(O('koleksi', 'Kain koleksi', 'Collection fabrics', { s: 'Kain koleksi', se: 'Collection', f: 1.1, tex: true,
+    colors: KAIN_X.map(function (x) { return O(x.set, x.l, x.l, { hex: x.hex, tex: x.set, s: x.l }); }) }));
   var PANEL = [   // warna HPL / duco
     O('ivory', 'Ivory', 'Ivory', { hex: '#ebe4d6' }), O('greige', 'Greige', 'Greige', { hex: '#b9ad9c' }), O('sage', 'Sage', 'Sage', { hex: '#8f9b84' }),
     O('navy', 'Navy', 'Navy', { hex: '#26324a' }), O('charcoal', 'Charcoal', 'Charcoal', { hex: '#2b2a29' }), O('terracotta', 'Terracotta', 'Terracotta', { hex: '#a35c43' }),

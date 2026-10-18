@@ -1,11 +1,12 @@
 # VOID SERIES · Sky B9 — lampu gantung linear: batang marmer hijau + list kuningan + diffuser LED, 2 kabel, kanopi kuningan.
-# Ukuran: lampu marmer linear sejenis di pasaran (L 100/120/150 × W 8 × H 6–7 cm) → 120 × 8 × 7 cm, list kuningan 1,2 cm. Wajah ke −Y (glTF +Z).
+# Ukuran dari foto produk xionco.shop (tinggi batang ±4,5% panjang; kanopi ±¼ panjang di tengah, 2 kabel di ujung kanopi):
+# batang 120 × 6 × 5,5 cm (list kuningan 1 cm), kanopi 32 × 6 × 3 cm, kabel ±63 cm. Ukuran resmi belum ada. Wajah ke −Y (glTF +Z).
 import bpy, bmesh, sys, math
 argv = sys.argv[sys.argv.index('--') + 1:]
 marble_png, out_glb, out_png = argv[0], argv[1], argv[2]
 bpy.ops.wm.read_factory_settings(use_empty=True)
-L, D, H, BR = 1.20, .080, .070, .012          # batang: panjang, dalam, tinggi, tebal list kuningan
-DROP, CX = .63, .36                            # panjang kabel, posisi kabel dari tengah
+L, D, H, BR = 1.20, .060, .055, .010          # batang: panjang, dalam, tinggi, tebal list kuningan
+DROP, CX = .63, .12                            # panjang kabel, posisi kabel dari tengah
 CW, CD, CH = .32, .06, .03                     # kanopi
 
 def mat(name, col, metal=0, rough=.5, emit=None, img=None, scale=1):
@@ -46,9 +47,9 @@ parts.append(box('list kuningan', L, D, BR, (0, 0, BR / 2), M_BRASS, .0015))
 parts.append(box('batang marmer', L - .004, D - .004, H - BR, (0, 0, BR + (H - BR) / 2), M_MARBLE, .002, uv=.6))
 parts.append(box('diffuser', L - .03, D - .022, .002, (0, 0, -.0006), M_LED, 0))
 for s in (-1, 1):
-    parts.append(cyl('grip', .008, H, H + .02, s * CX, M_BRASS))
+    parts.append(cyl('grip', .006, H, H + .02, s * CX, M_BRASS))
     parts.append(cyl('kabel', .0011, H + .02, H + DROP, s * CX, M_STEEL, 12))
-for s in (-1, 1): parts.append(cyl('kanopi', .05, H + DROP, H + DROP + .025, s * CX, M_BRASS, 32))   # kanopi bulat per kabel
+parts.append(box('kanopi', CW, CD, CH, (0, 0, H + DROP + CH / 2), M_BRASS, .003))   # satu kanopi panjang di tengah (foto)
 
 bpy.ops.object.select_all(action='DESELECT')
 for o in parts: o.select_set(True)

@@ -1,0 +1,8 @@
+Set      : x-tembok-bricks-105
+Asset    : Bricks 105 (acg:Bricks105)
+Author   : ambientCG (Lennart Demes)
+Source   : https://ambientcg.com/view?id=Bricks105
+Download : https://ambientcg.com/get?file=Bricks105_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 2400 x 1200 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

@@ -1,0 +1,10 @@
+Set      : x-tembok-gravel-embedded-concrete-02
+Asset    : Gravel Embedded Concrete 02 (ph:gravel_embedded_concrete_02)
+Author   : Charlotte Baglioni
+Source   : https://polyhaven.com/a/gravel_embedded_concrete_02
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/gravel_embedded_concrete_02/gravel_embedded_concrete_02_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/gravel_embedded_concrete_02/gravel_embedded_concrete_02_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/gravel_embedded_concrete_02/gravel_embedded_concrete_02_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 2000 x 2000 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

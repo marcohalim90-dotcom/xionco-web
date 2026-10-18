@@ -11,7 +11,102 @@
   "id": "astral-2-seater",
   "mirrorMat": "[Color M00]"
  },
- "cameo": "cameo",
+ "cameo": {
+  "id": "cameo",
+  "reshape": [
+   {
+    "sel": [
+     0.05,
+     1.83,
+     0.53,
+     0.82,
+     0.21,
+     0.66
+    ],
+    "z": [
+     0.22,
+     0.65,
+     0.17,
+     0.8
+    ]
+   }
+  ],
+  "motions": [
+   {
+    "id": "seat",
+    "group": "bed",
+    "sel": [
+     [
+      0,
+      1.9,
+      -0.01,
+      0.55,
+      0.08,
+      0.37
+     ],
+     [
+      0,
+      1.9,
+      0.08,
+      0.16,
+      -0.01,
+      0.16
+     ]
+    ],
+    "islands": true,
+    "selFaces": [
+     [
+      0.15,
+      0.23,
+      0.08,
+      0.16,
+      -0.01,
+      0.16
+     ]
+    ],
+    "pivot": [
+     0.94,
+     0,
+     0.15
+    ],
+    "move": [
+     0,
+     0,
+     0.36
+    ],
+    "until": 0.45,
+    "dur": 2.2
+   },
+   {
+    "id": "back",
+    "group": "bed",
+    "sel": [
+     0.05,
+     1.83,
+     0.53,
+     0.82,
+     0.16,
+     0.81
+    ],
+    "islands": true,
+    "pivot": [
+     0.94,
+     0.54,
+     0.17
+    ],
+    "axis": "x",
+    "amt": -1.5708,
+    "move": [
+     0,
+     0.203,
+     0.358
+    ],
+    "wait": 0.45,
+    "dur": 2.2,
+    "seq": "move-rot"
+   }
+  ]
+ },
  "canis": "canis",
  "cubix-ac": {
   "id": "cubix-series-1-seater-ac-kayu-terang",
@@ -54,12 +149,18 @@
   }
  },
  "cubix-ot": "cubix-series-ottoman-kayu-terang",
- "cubix-ct": "cubixct",
+ "cubix-ct": {
+  "id": "cubixct",
+  "birch": true
+ },
  "cubix-ct-gelap": {
   "id": "cubixct",
   "variant": "Gelap"
  },
- "cubix-st": "cubix-series-meja-sudut-side",
+ "cubix-st": {
+  "id": "cubix-series-meja-sudut-side",
+  "birch": true
+ },
  "cubix-st-gelap": {
   "id": "cubix-series-meja-sudut-side",
   "variant": "Gelap"
@@ -152,15 +253,51 @@
    }
   ]
  },
- "guise-1-seater": "guise-1-seater",
- "guise-2-seater": "guise-2-seater",
- "guise-3-seater": "guise",
+ "guise-1-seater": {
+  "id": "guise-1-seater",
+  "remap": {
+   "[Wood Veneer 01]1": "lib:wood-walnut#673e2f*0.75@gelap"
+  },
+  "lowTo": {
+   "from": "*1",
+   "to": "[Wood Veneer 01]1",
+   "below": 0.15
+  }
+ },
+ "guise-2-seater": {
+  "id": "guise-2-seater",
+  "remap": {
+   "[Wood Veneer 01]1": "lib:wood-walnut#673e2f*0.75@gelap",
+   "DefaultMaterial": "lib:wood-walnut#673e2f*0.75@gelap"
+  },
+  "lowTo": {
+   "from": "*1",
+   "to": "[Wood Veneer 01]1",
+   "below": 0.15
+  }
+ },
+ "guise-3-seater": {
+  "id": "guise",
+  "lowTo": {
+   "from": "*1",
+   "to": "[Wood Veneer 01]",
+   "below": 0.15
+  }
+ },
  "hexter": "hexter",
  "hout": "hout",
- "kyoukai-240": "kyoukai",
+ "kyoukai-240": {
+  "id": "kyoukai",
+  "remap": {
+   "<auto>": "SUNGKAI"
+  }
+ },
  "kyoukai-60": {
   "id": "kyoukai",
-  "variant": "SK060"
+  "variant": "SK060",
+  "remap": {
+   "<auto>": "SUNGKAI"
+  }
  },
  "kyrios-1-seater": "kyrios-1-seater",
  "l7": "l7",
@@ -169,11 +306,21 @@
  "nora-dc": "nora",
  "orycto": "orycto",
  "pillow": "cubix-series-throw-pillow-b",
- "pluq": "pluq",
+ "pluq": {
+  "id": "pluq",
+  "remap": {
+   "<auto>": "lib:wood-walnut#673e2f*0.75@gelap"
+  }
+ },
  "poel": "poel",
  "recta": "recta",
  "rhombio": "rhombio-puff-ottoman",
- "rouled": "rouled",
+ "rouled": {
+  "id": "rouled",
+  "remap": {
+   "<auto>": "lib:wood-walnut#673e2f*0.75@gelap"
+  }
+ },
  "somno": "somno",
  "syme": {
   "id": "syme",

@@ -19,7 +19,8 @@ const fs = require('fs');
 const path = require('path');
 const ai3d = require('./ai3d');
 const quotes = require('./quotes');   // penawaran harga khusus (server tiruan)
-const staging = require('./staging');   // aset material untuk direview (Developer Settings › Aset material)
+const staging = require('./staging');
+const woodApi = require('./wood');   // kayu koleksi (Developer Settings › Kayu koleksi)   // aset material untuk direview (Developer Settings › Aset material)
 
 const ROOT = path.resolve(__dirname, '..');
 const PORT = +process.env.PORT || 5173;
@@ -91,6 +92,7 @@ function api(req, res, p) {
   }
   if (p === '/api/assets' && req.method === 'GET') return send(res, 200, { ok: true, files: listAssets() });
   if (p.indexOf('/api/ai3d/') === 0) return ai3d.handle(req, res, p, send);
+  if (p === '/api/wood' || p.indexOf('/api/wood/') === 0) return woodApi.handle(req, res, p, send);
   if (p === '/api/staging' || p.indexOf('/api/staging/') === 0) return staging.handle(req, res, p, send);   // 3D AI (Tripo via fal.ai)
 
   const m = p.match(/^\/api\/db\/([a-z]+)$/);

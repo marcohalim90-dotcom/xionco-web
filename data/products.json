@@ -589,7 +589,8 @@
       "shopId": 24,
       "shopName": "ASTRAL - 1 Seater",
       "bg": "white",
-      "model": "assets/items/astral/model-ai.glb"
+      "model": "assets/items/astral/model-ai.glb",
+      "modelRot": 180
     },
     {
       "status": "aktif",
@@ -1155,7 +1156,8 @@
       "shopId": 39,
       "shopName": "EORDE - SOFA SECTIONAL SERIES",
       "bg": "white",
-      "model": "assets/items/eorde/model-ai.glb"
+      "model": "assets/items/eorde/model-ai.glb",
+      "modelRot": 180
     },
     {
       "status": "aktif",

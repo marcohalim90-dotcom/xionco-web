@@ -1,0 +1,10 @@
+Set      : x-kayu-smoke-speckled-veneer
+Asset    : Smoke Speckled Veneer (ph:smoke_speckled_veneer)
+Author   : Jenelle van Heerden
+Source   : https://polyhaven.com/a/smoke_speckled_veneer
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/smoke_speckled_veneer/smoke_speckled_veneer_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/smoke_speckled_veneer/smoke_speckled_veneer_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/smoke_speckled_veneer/smoke_speckled_veneer_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1000 x 1000 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

@@ -1,0 +1,10 @@
+Set      : x-tembok-square-pavers
+Asset    : Square Pavers (ph:square_pavers)
+Author   : Dario Barresi
+Source   : https://polyhaven.com/a/square_pavers
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/square_pavers/square_pavers_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/square_pavers/square_pavers_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/square_pavers/square_pavers_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 2200 x 2200 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

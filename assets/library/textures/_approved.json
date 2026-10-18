@@ -1,3 +1,927 @@
 {
- "items": []
+ "items": [
+  {
+   "set": "x-tembok-gravel-embedded-concrete-02",
+   "name": "Gravel Embedded Concrete 02",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    2,
+    2
+   ],
+   "maps": "anr",
+   "at": 1792241063404,
+   "hex": "#7d7264"
+  },
+  {
+   "set": "x-tembok-square-pavers",
+   "name": "Square Pavers",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    2.2,
+    2.2
+   ],
+   "maps": "anr",
+   "at": 1792241074763,
+   "hex": "#5b3c33"
+  },
+  {
+   "set": "x-tembok-white-stucco-02",
+   "name": "White Stucco 02",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    0,
+    1.8
+   ],
+   "maps": "anr",
+   "at": 1792241077594,
+   "hex": "#aeada9"
+  },
+  {
+   "set": "x-tembok-brick-floor-04",
+   "name": "Brick Floor 04",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    1.91,
+    1.91
+   ],
+   "maps": "anr",
+   "at": 1792241088920,
+   "hex": "#4b4239"
+  },
+  {
+   "set": "x-kayu-ash-veneer",
+   "name": "Ash Veneer",
+   "group": "kayu",
+   "src": "Poly Haven",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241092213,
+   "hex": "#ac957d"
+  },
+  {
+   "set": "x-kayu-coated-pine",
+   "name": "Coated Pine",
+   "group": "kayu",
+   "src": "Poly Haven",
+   "size": [
+    0.74,
+    0.74
+   ],
+   "maps": "anr",
+   "at": 1792241096124,
+   "hex": "#683907"
+  },
+  {
+   "set": "x-kayu-grey-lati-veneer",
+   "name": "Grey Lati Veneer",
+   "group": "kayu",
+   "src": "Poly Haven",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241101214,
+   "hex": "#856a54"
+  },
+  {
+   "set": "x-kayu-silver-oak-veneer-01",
+   "name": "Silver Oak Veneer 01",
+   "group": "kayu",
+   "src": "Poly Haven",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241105545,
+   "hex": "#dcbf9f"
+  },
+  {
+   "set": "x-kayu-smoke-speckled-veneer",
+   "name": "Smoke Speckled Veneer",
+   "group": "kayu",
+   "src": "Poly Haven",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241108680,
+   "hex": "#605044"
+  },
+  {
+   "set": "x-tembok-white-stucco",
+   "name": "White Stucco",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    1.998,
+    1.998
+   ],
+   "maps": "anr",
+   "at": 1792241111620,
+   "hex": "#d7d3d0"
+  },
+  {
+   "set": "x-tembok-blue-plaster-wall",
+   "name": "Blue Plaster Wall",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    2,
+    2
+   ],
+   "maps": "anr",
+   "at": 1792241120072,
+   "hex": "#7297aa"
+  },
+  {
+   "set": "x-tembok-exterior-wall-cladding-02",
+   "name": "Exterior Wall Cladding 02",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    1.99,
+    1.99
+   ],
+   "maps": "anr",
+   "at": 1792241125112,
+   "hex": "#5f3a29"
+  },
+  {
+   "set": "x-tembok-exterior-wall-cladding-03",
+   "name": "Exterior Wall Cladding 03",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    1.96,
+    1.96
+   ],
+   "maps": "anr",
+   "at": 1792241127117,
+   "hex": "#aca79b"
+  },
+  {
+   "set": "x-tembok-worn-concrete-floor",
+   "name": "Worn Concrete Floor",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    2,
+    2
+   ],
+   "maps": "anr",
+   "at": 1792241129785,
+   "hex": "#65573d"
+  },
+  {
+   "set": "x-lantai-gravel-floor-03",
+   "name": "Gravel Floor 03",
+   "group": "lantai",
+   "src": "Poly Haven",
+   "size": [
+    2.5,
+    2.5
+   ],
+   "maps": "anr",
+   "at": 1792241139400,
+   "hex": "#726c65"
+  },
+  {
+   "set": "x-lantai-gravel",
+   "name": "Gravel",
+   "group": "lantai",
+   "src": "Poly Haven",
+   "size": [
+    2,
+    2
+   ],
+   "maps": "anr",
+   "at": 1792241142942,
+   "hex": "#503e2b"
+  },
+  {
+   "set": "x-lantai-interior-tiles",
+   "name": "Interior Tiles",
+   "group": "lantai",
+   "src": "Poly Haven",
+   "size": [
+    1.9,
+    1.9
+   ],
+   "maps": "anr",
+   "at": 1792241145489,
+   "hex": "#aa9884"
+  },
+  {
+   "set": "x-lantai-plank-flooring-04",
+   "name": "Plank Flooring 04",
+   "group": "lantai",
+   "src": "Poly Haven",
+   "size": [
+    2,
+    2
+   ],
+   "maps": "anr",
+   "at": 1792241149139,
+   "hex": "#412417"
+  },
+  {
+   "set": "x-lantai-old-linoleum-flooring-01",
+   "name": "Old Linoleum Flooring 01",
+   "group": "lantai",
+   "src": "Poly Haven",
+   "size": [
+    1.99,
+    1.99
+   ],
+   "maps": "anr",
+   "at": 1792241152912,
+   "hex": "#b0844f"
+  },
+  {
+   "set": "x-lantai-pebble-embedded-concrete",
+   "name": "Pebble Embedded Concrete",
+   "group": "lantai",
+   "src": "Poly Haven",
+   "size": [
+    2.6,
+    2.6
+   ],
+   "maps": "anr",
+   "at": 1792241164090,
+   "hex": "#5c5142"
+  },
+  {
+   "set": "x-kain-bi-stretch",
+   "name": "Bi Stretch",
+   "group": "kain",
+   "src": "Poly Haven",
+   "size": [
+    0.265,
+    0.264
+   ],
+   "maps": "anr",
+   "at": 1792241168038,
+   "hex": "#f7ac28"
+  },
+  {
+   "set": "x-kain-caban",
+   "name": "Caban",
+   "group": "kain",
+   "src": "Poly Haven",
+   "size": [
+    0.274,
+    0.273
+   ],
+   "maps": "anr",
+   "at": 1792241171075,
+   "hex": "#ce6605"
+  },
+  {
+   "set": "x-kain-cotton-jersey",
+   "name": "Cotton Jersey",
+   "group": "kain",
+   "src": "Poly Haven",
+   "size": [
+    0.264,
+    0.264
+   ],
+   "maps": "anr",
+   "at": 1792241174159,
+   "hex": "#c2ab9d"
+  },
+  {
+   "set": "x-kain-crepe-georgette",
+   "name": "Crepe Georgette",
+   "group": "kain",
+   "src": "Poly Haven",
+   "size": [
+    0.261,
+    0.266
+   ],
+   "maps": "anr",
+   "at": 1792241177313,
+   "hex": "#86dec9"
+  },
+  {
+   "set": "x-kain-crepe-satin",
+   "name": "Crepe Satin",
+   "group": "kain",
+   "src": "Poly Haven",
+   "size": [
+    0.263,
+    0.268
+   ],
+   "maps": "anr",
+   "at": 1792241180672,
+   "hex": "#daad76"
+  },
+  {
+   "set": "x-kain-denim-fabric-03",
+   "name": "Denim Fabric 03",
+   "group": "kain",
+   "src": "Poly Haven",
+   "size": [
+    0.271,
+    0.271
+   ],
+   "maps": "anr",
+   "at": 1792241186003,
+   "hex": "#3a5877"
+  },
+  {
+   "set": "x-tembok-blue-plaster-weathered",
+   "name": "Blue Plaster Weathered",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    2,
+    2
+   ],
+   "maps": "anr",
+   "at": 1792241191082,
+   "hex": "#87a5a0"
+  },
+  {
+   "set": "x-tembok-rebar-reinforced-concrete",
+   "name": "Rebar Reinforced Concrete",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    2,
+    2
+   ],
+   "maps": "anr",
+   "at": 1792241194673,
+   "hex": "#97695f"
+  },
+  {
+   "set": "x-tembok-patterned-brick-wall-03",
+   "name": "Patterned Brick Wall 03",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    1.8,
+    1.8
+   ],
+   "maps": "anr",
+   "at": 1792241206740,
+   "hex": "#5a554e"
+  },
+  {
+   "set": "x-tembok-concrete-wall-008",
+   "name": "Concrete Wall 008",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    2.71,
+    2.71
+   ],
+   "maps": "anr",
+   "at": 1792241262843,
+   "hex": "#8d8670"
+  },
+  {
+   "set": "x-tembok-brushed-concrete-03",
+   "name": "Brushed Concrete 03",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    2,
+    2
+   ],
+   "maps": "anr",
+   "at": 1792241270489,
+   "hex": "#6b5d4d"
+  },
+  {
+   "set": "x-tembok-stone-tiles",
+   "name": "Stone Tiles",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    3.17,
+    3.17
+   ],
+   "maps": "anr",
+   "at": 1792241278837,
+   "hex": "#525749"
+  },
+  {
+   "set": "x-tembok-dark-brick-wall",
+   "name": "Dark Brick Wall",
+   "group": "tembok",
+   "src": "Poly Haven",
+   "size": [
+    1.05,
+    1.05
+   ],
+   "maps": "anr",
+   "at": 1792241302270,
+   "hex": "#534739"
+  },
+  {
+   "set": "x-kain-fabric-085",
+   "name": "Fabric 085",
+   "group": "kain",
+   "src": "ambientCG",
+   "size": [
+    0.3,
+    0.3
+   ],
+   "maps": "anr",
+   "at": 1792241414335,
+   "hex": "#9f5136"
+  },
+  {
+   "set": "x-tembok-bricks-105",
+   "name": "Bricks 105",
+   "group": "tembok",
+   "src": "ambientCG",
+   "size": [
+    2.4,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241417830,
+   "hex": "#b9946b"
+  },
+  {
+   "set": "x-lantai-tiles-140",
+   "name": "Tiles 140",
+   "group": "lantai",
+   "src": "ambientCG",
+   "size": [
+    2,
+    2
+   ],
+   "maps": "anr",
+   "at": 1792241421689,
+   "hex": "#504c48"
+  },
+  {
+   "set": "x-kayu-wood-095",
+   "name": "Wood 095",
+   "group": "kayu",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241423650,
+   "hex": "#cd9d6e"
+  },
+  {
+   "set": "x-tembok-concrete-047-a",
+   "name": "Concrete 047 A",
+   "group": "tembok",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241427568,
+   "hex": "#918873"
+  },
+  {
+   "set": "x-tembok-bricks-097",
+   "name": "Bricks 097",
+   "group": "tembok",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241429794,
+   "hex": "#856a54"
+  },
+  {
+   "set": "x-logam-metal-048-a",
+   "name": "Metal 048 A",
+   "group": "logam",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241431553,
+   "hex": "#fee49d"
+  },
+  {
+   "set": "x-logam-metal-048-c",
+   "name": "Metal 048 C",
+   "group": "logam",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241434044,
+   "hex": "#f9df98"
+  },
+  {
+   "set": "x-logam-metal-059-a",
+   "name": "Metal 059 A",
+   "group": "logam",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241435935,
+   "hex": "#c3bbb2"
+  },
+  {
+   "set": "x-batu-travertine-009",
+   "name": "Travertine 009",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1.2,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241438454,
+   "hex": "#dfccac"
+  },
+  {
+   "set": "x-batu-travertine-005",
+   "name": "Travertine 005",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1.2,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241441035,
+   "hex": "#605247"
+  },
+  {
+   "set": "x-batu-travertine-004",
+   "name": "Travertine 004",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1.2,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241443238,
+   "hex": "#a39585"
+  },
+  {
+   "set": "x-batu-travertine-003",
+   "name": "Travertine 003",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1.2,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241445269,
+   "hex": "#a18e77"
+  },
+  {
+   "set": "x-batu-travertine-013",
+   "name": "Travertine 013",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1.2,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241447405,
+   "hex": "#8c9fab"
+  },
+  {
+   "set": "x-batu-travertine-001",
+   "name": "Travertine 001",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1.2,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241449466,
+   "hex": "#a59982"
+  },
+  {
+   "set": "x-batu-travertine-002",
+   "name": "Travertine 002",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1.2,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241452193,
+   "hex": "#74767d"
+  },
+  {
+   "set": "x-batu-travertine-007",
+   "name": "Travertine 007",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1.2,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241455812,
+   "hex": "#7a7469"
+  },
+  {
+   "set": "x-batu-travertine-014",
+   "name": "Travertine 014",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1.2,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241460841,
+   "hex": "#949083"
+  },
+  {
+   "set": "x-batu-travertine-010",
+   "name": "Travertine 010",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1.2,
+    1.2
+   ],
+   "maps": "anr",
+   "at": 1792241466438,
+   "hex": "#b96939"
+  },
+  {
+   "set": "x-batu-granite-002-a",
+   "name": "Granite 002 A",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241471430,
+   "hex": "#b5b1ad"
+  },
+  {
+   "set": "x-batu-granite-001-a",
+   "name": "Granite 001 A",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241475777,
+   "hex": "#a99685"
+  },
+  {
+   "set": "x-batu-granite-003-a",
+   "name": "Granite 003 A",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241480835,
+   "hex": "#a29d9c"
+  },
+  {
+   "set": "x-batu-granite-004-a",
+   "name": "Granite 004 A",
+   "group": "batu",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241486535,
+   "hex": "#907e67"
+  },
+  {
+   "set": "x-tembok-wallpaper-001-a",
+   "name": "Wallpaper 001 A",
+   "group": "tembok",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241496227,
+   "hex": "#e0e0dc"
+  },
+  {
+   "set": "x-tembok-wallpaper-002-c",
+   "name": "Wallpaper 002 C",
+   "group": "tembok",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241501445,
+   "hex": "#b3b2a7"
+  },
+  {
+   "set": "x-logam-metal-046-a",
+   "name": "Metal 046 A",
+   "group": "logam",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241504930,
+   "hex": "#5d5c5f"
+  },
+  {
+   "set": "x-kain-carpet-015",
+   "name": "Carpet 015",
+   "group": "kain",
+   "src": "ambientCG",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "maps": "anr",
+   "at": 1792241509653,
+   "hex": "#9d5c45"
+  },
+  {
+   "set": "x-kain-fabric-068",
+   "name": "Fabric 068",
+   "group": "kain",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241515510,
+   "hex": "#d69461"
+  },
+  {
+   "set": "x-kain-fabric-061",
+   "name": "Fabric 061",
+   "group": "kain",
+   "src": "ambientCG",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "maps": "anr",
+   "at": 1792241520338,
+   "hex": "#8d8883"
+  },
+  {
+   "set": "x-kain-fabric-066",
+   "name": "Fabric 066",
+   "group": "kain",
+   "src": "ambientCG",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "maps": "anr",
+   "at": 1792241524677,
+   "hex": "#848274"
+  },
+  {
+   "set": "x-kain-fabric-062",
+   "name": "Fabric 062",
+   "group": "kain",
+   "src": "ambientCG",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "maps": "anr",
+   "at": 1792241528604,
+   "hex": "#c5c0b7"
+  },
+  {
+   "set": "x-kain-fabric-063",
+   "name": "Fabric 063",
+   "group": "kain",
+   "src": "ambientCG",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "maps": "anr",
+   "at": 1792241533103,
+   "hex": "#49463e"
+  },
+  {
+   "set": "x-kain-fabric-064",
+   "name": "Fabric 064",
+   "group": "kain",
+   "src": "ambientCG",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "maps": "anr",
+   "at": 1792241537909,
+   "hex": "#8086c2"
+  },
+  {
+   "set": "x-kain-fabric-059",
+   "name": "Fabric 059",
+   "group": "kain",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241542217,
+   "hex": "#056afc"
+  },
+  {
+   "set": "x-kain-fabric-045",
+   "name": "Fabric 045",
+   "group": "kain",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241546868,
+   "hex": "#c4c3c1"
+  },
+  {
+   "set": "x-logam-metal-036",
+   "name": "Metal 036",
+   "group": "logam",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241549712,
+   "hex": "#4a4641"
+  },
+  {
+   "set": "x-logam-metal-033",
+   "name": "Metal 033",
+   "group": "logam",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241552660,
+   "hex": "#4c555e"
+  },
+  {
+   "set": "x-logam-metal-029",
+   "name": "Metal 029",
+   "group": "logam",
+   "src": "ambientCG",
+   "size": [
+    1,
+    1
+   ],
+   "maps": "anr",
+   "at": 1792241556358,
+   "hex": "#1d2221"
+  }
+ ]
 }

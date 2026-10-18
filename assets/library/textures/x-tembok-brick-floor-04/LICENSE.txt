@@ -1,0 +1,10 @@
+Set      : x-tembok-brick-floor-04
+Asset    : Brick Floor 04 (ph:brick_floor_04)
+Author   : Dimitrios Savva
+Source   : https://polyhaven.com/a/brick_floor_04
+Download : https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brick_floor_04/brick_floor_04_diff_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brick_floor_04/brick_floor_04_nor_gl_1k.jpg
+           https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brick_floor_04/brick_floor_04_rough_1k.jpg
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1910 x 1910 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

@@ -53,6 +53,9 @@
     'room-wall-plaster': { s: [1, 1], m: 'anr' }, 'room-wall-beige': { s: [3, 3], m: 'anr' }, 'room-wall-brick': { s: [2, 2], m: 'anr' }, 'room-wall-marble': { s: [1.5, 1.5], m: 'anr' },
     'room-floor-oakwide': { s: [1.2, 1.2], m: 'anr' }, 'room-floor-greyoak': { s: [1, 1], m: 'anr' }, 'room-wall-walnut': { s: [1, 1], m: 'anr' }, 'room-wall-limewash': { s: [2, 2], m: 'anr' }
   };
+  /* tekstur yang di-Acc di Developer Settings › Aset material (js/texlib-extra.js, dibuat tools/staging.js): warna asli dipakai apa adanya */
+  var EXTRA = window.XTEX_EXTRA || [];
+  EXTRA.forEach(function (x) { SETS[x.set] = { s: x.s, m: x.m, orig: true }; });
   var FILE = { a: 'albedo', n: 'normal', r: 'rough' }, KEY = { a: 'map', n: 'normalMap', r: 'roughnessMap' };
   var cache = {}, aniso = 8, loader = null;
   function load(name) {
@@ -93,7 +96,9 @@
     return mat;
   }
   var XTEX = window.XTEX = {
-    ok: OK, root: ROOT, base: BASE, sets: SETS,
+    ok: OK, root: ROOT, base: BASE, sets: SETS, extra: EXTRA,
+    thumb: function (set) { return BASE + set + '/thumb.webp'; },
+    group: function (g) { return EXTRA.filter(function (x) { return x.g === g; }); },
     load: load, apply: apply,
     setAnisotropy: function (n) { aniso = n || 8; },
     loaded: function (name) { return !!cache[name]; }

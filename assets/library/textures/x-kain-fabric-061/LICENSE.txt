@@ -1,0 +1,8 @@
+Set      : x-kain-fabric-061
+Asset    : Fabric 061 (acg:Fabric061)
+Author   : ambientCG (Lennart Demes)
+Source   : https://ambientcg.com/view?id=Fabric061
+Download : https://ambientcg.com/get?file=Fabric061_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 400 x 400 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

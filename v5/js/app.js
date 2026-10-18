@@ -1191,8 +1191,12 @@
   if (shell && !shell.sty) shell = SHELLS[shell.type] ? shellFrom(shell.type, 'minotti') : null;   // ruangan versi lama → gaya mewah
   if (shell && !shell.opens) { var w0 = shell.win || { z0: -shell.d / 2 + .9, z1: -shell.d / 2 + 3.5 }; shell.opens = [{ id: 'w0', t: 'win', wall: 'L', u: (w0.z0 + w0.z1) / 2, w: w0.z1 - w0.z0, kind: 'full', cur: 1 }]; delete shell.win; }   // jendela lama → bukaan
   var WALL_FIN = [['limewash', 'Limewash'], ['walnut', 'Panel walnut'], ['smoked', 'Walnut smoked'], ['travertine', 'Travertine'], ['calacatta', 'Calacatta'], ['nero', 'Nero marquina'], ['boiserie', 'Boiserie'], ['paint', 'Cat'], ['wallpaper', 'Wallpaper'], ['brick', 'Bata putih']];
+  /* tekstur yang di-Acc: tembok → tembok; lantai & batu → lantai (nilai 'x:<set>', warna asli) */
+  (window.XTEX_EXTRA || []).forEach(function (x) { if (x.g === 'tembok') WALL_FIN.push(['x:' + x.set, x.l]); });
   var WALLL_FIN = WALL_FIN;
+  var texChip = function (v) { return String(v).indexOf('x:') === 0 && window.XTEX ? '<i class="cz-o__c is-tex" style="background-image:url(\'' + XTEX.thumb(String(v).slice(2)) + '\')"></i>' : ''; };
   var FLOOR_FIN = [['oakwide', 'Oak lebar'], ['greyoak', 'Grey oak'], ['oak', 'Oak'], ['walnutdark', 'Walnut'], ['parquet', 'Herringbone'], ['laminate', 'Laminate'], ['marble', 'Marmer'], ['terrazzo', 'Teraso'], ['tiles', 'Keramik'], ['carpet', 'Karpet']];
+  (window.XTEX_EXTRA || []).forEach(function (x) { if (x.g === 'lantai' || x.g === 'batu') FLOOR_FIN.push(['x:' + x.set, x.l]); });
   var WALL_COL = ['#efe9df', '#e9e2d6', '#d8cbb8', '#c9b9a2', '#b8ab95', '#8e8578', '#5c544c', '#3d3832'];
   var RUG_COL = ['#e4dccd', '#d9cfc0', '#cbbfae', '#a99a86', '#6b6158', '#4a423b'];
   var OBJ_WALL = [['art', 'Karya seni'], ['frame', 'Lukisan kecil'], ['mirror', 'Cermin'], ['shelf', 'Rak + buku'], ['fireplace', 'Perapian'], ['walllamp', 'Lampu dinding'], ['tv', 'TV']];
@@ -1265,9 +1269,9 @@
   var shTab = 'tembok';
   function shellTabs() {
     var s = shell, sub = function (t, extra) { return '<p class="og__h og__h--sub"><span>' + T(t) + '</span>' + (extra ? '<b>' + extra + '</b>' : '') + '</p>'; };
-    var chips = function (attr, list, on, k) { return '<div class="og">' + list.map(function (x) { return '<button type="button" class="cz-o' + (String(x[0]) === String(on) ? ' is-on' : '') + '" ' + attr + '="' + x[0] + '"' + (k ? ' data-pk="' + k + '"' : '') + '><span>' + esc(T(x[1])) + '</span></button>'; }).join('') + '</div>'; };
+    var chips = function (attr, list, on, k) { return '<div class="og">' + list.map(function (x) { return '<button type="button" class="cz-o' + (String(x[0]) === String(on) ? ' is-on' : '') + '" ' + attr + '="' + x[0] + '"' + (k ? ' data-pk="' + k + '"' : '') + ' title="' + esc(T(x[1])) + '">' + texChip(x[0]) + '<span>' + esc(T(x[1])) + '</span></button>'; }).join('') + '</div>'; };
     var sws = function (attr, list, on, k) { return '<div class="og">' + list.map(function (c) { return '<button type="button" class="cz-o is-sw' + (c === on ? ' is-on' : '') + '" ' + attr + '="' + c + '"' + (k ? ' data-pk="' + k + '"' : '') + '><i class="cz-o__c" style="--c:' + c + '"></i><span>' + c.slice(1).toUpperCase() + '</span></button>'; }).join('') + colPick(attr, on, list).replace(attr + '-pick', attr + '-pick' + (k ? ' data-pk="' + k + '"' : '')) + '</div>'; };
-    var tint = function (fin) { return !STONE_FIN[fin]; };
+    var tint = function (fin) { return !STONE_FIN[fin] && String(fin).indexOf('x:') !== 0; };
     var h = '<div class="og sh-tabs" style="margin-top:16px">' + [['tembok', 'Tembok'], ['lantai', 'Lantai'], ['jendela', 'Jendela'], ['pintu', 'Pintu']].map(function (x) { return '<button type="button" class="cz-o' + (x[0] === shTab ? ' is-on' : '') + '" data-sh-tab="' + x[0] + '"><span>' + T(x[1]) + '</span></button>'; }).join('') + '</div><div class="sh-tab">';
     if (shTab === 'tembok') {
       [['wall', 'Tembok belakang'], ['wallL', 'Tembok kiri']].forEach(function (x) { var wd = s[x[0]] || s.wall; h += sub(x[1]) + chips('data-pw-fin', WALL_FIN, wd.fin, x[0]) + (tint(wd.fin) ? '<div style="height:8px"></div>' + sws('data-pw-col', WALL_COL, wd.col, x[0]) : ''); });
@@ -1348,7 +1352,7 @@
   function shellEdRender() {
     if (!shEd.at || !shell) return;
     var at = shEd.at, h = '', o = at.oid && shell.objs.filter(function (x) { return x.oid === at.oid; })[0];
-    var opts = function (attr, list, on) { return '<div class="og">' + list.map(function (x) { return '<button type="button" class="cz-o' + (x[0] === on ? ' is-on' : '') + '" ' + attr + '="' + x[0] + '"><span>' + esc(T(x[1])) + '</span></button>'; }).join('') + '</div>'; };
+    var opts = function (attr, list, on) { return '<div class="og">' + list.map(function (x) { return '<button type="button" class="cz-o' + (x[0] === on ? ' is-on' : '') + '" ' + attr + '="' + x[0] + '" title="' + esc(T(x[1])) + '">' + texChip(x[0]) + '<span>' + esc(T(x[1])) + '</span></button>'; }).join('') + '</div>'; };
     var sw = function (attr, list, on) { return '<div class="og">' + list.map(function (c) { return '<button type="button" class="cz-o is-sw' + (c === on ? ' is-on' : '') + '" ' + attr + '="' + c + '" title="' + c + '"><i class="cz-o__c" style="--c:' + c + '"></i><span>' + c.slice(1).toUpperCase() + '</span></button>'; }).join('') + colPick(attr, on, list) + '</div>'; };
     var sec = function (t, body) { return '<div class="cbx-g"><p class="og__h"><span>' + T(t) + '</span></p>' + body + '</div>'; };
     var op = at.open && (shell.opens || []).filter(function (x) { return x.id === at.open; })[0];
@@ -2130,7 +2134,8 @@
     if (gr.id === '_cat') rel = m.jenis[x.id] ? '_jenis/' + x.id : null;
     else if (gr.id === '_sub') rel = m.jenis[cz.cat + '/' + x.id] ? '_jenis/' + cz.cat + '__' + x.id : null;
     else {
-      var s = m.subs[cz.cat + '/' + cz.sub], e = s && s[gr.id + '__' + x.id], ss = cz.sub, as = XC.sub(cz).iconAs;
+      var s = m.subs[cz.cat + '/' + cz.sub], xid = gr.id === 'uph' && x.tex ? 'vienna' : x.id, e = s && s[gr.id + '__' + xid], ss = cz.sub, as = XC.sub(cz).iconAs;   // kain koleksi: pinjam gambar kain tenun
+      x = xid !== x.id ? { id: xid } : x;
       if (e == null && as && m.subs[cz.cat + '/' + as]) { e = m.subs[cz.cat + '/' + as][gr.id + '__' + x.id]; ss = as; }   // sub baru: pinjam gambar sub serupa (spec: iconAs)
       if (e != null) rel = e || cz.cat + '/' + ss + '/' + gr.id + '__' + x.id;
     }
@@ -2144,6 +2149,7 @@
     else if (gr.id === 'metal') k = 'is-metal';
     else if (x.speck) k = 'is-speck';
     else if (x.vein) k = 'is-stone';
+    if (x.tex && window.XTEX) return '<span class="cz-card__f"><i class="cz-sw is-tex" style="--c:' + x.hex + ';background-image:url(\'' + XTEX.thumb(x.tex) + '\')"></i></span>';   // tekstur koleksi: gambar asli
     return '<span class="cz-card__f"><i class="cz-sw ' + k + '" style="--c:' + x.hex + (x.vein ? ';--v:' + x.vein : '') + '"></i></span>';
   }
   /* selisih harga bila pilihan ini dipilih (dihitung dari rancangan sekarang, per unit) */
@@ -3275,6 +3281,8 @@
   if (!gl || !XW.ok) html.classList.add('no-webgl');
   XW.onLost = function () { html.classList.add('no-webgl'); };
   if (XW.ok) { applyLighting(); if (themeNow() === 'light') XW.setTheme('light', 0); applyBg(); applyLook(); }
+  // kayu koleksi global (Developer Settings › Kayu koleksi) — semua komponen berlabel gelap / terang / natural
+  if (XW.ok && XW.setWood) fetch('../data/wood.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) { if (j && j.classes) XW.setWood(j.classes); }).catch(function () {});
   cubixDetail();
   function preload(list, cb) {
     var n = 0;

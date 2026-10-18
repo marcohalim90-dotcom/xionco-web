@@ -951,3 +951,8 @@ html.no-dact .detail__act { display: none !important; }
 .hd__rm { color: var(--t-d3); }
 .hdbar { height: 2px; margin: -1px 0 0; background: var(--hair); overflow: hidden; }
 .hdbar i { display: block; height: 100%; width: 0; background: var(--gold-hi); transition: width .4s; }
+
+/* tekstur koleksi (Aset material yang di-Acc): kartu & chip memakai gambar kecil teksturnya */
+.cz-sw.is-tex { background-color: var(--c); background-size: cover; background-position: center; }
+.cz-sw.is-tex::before, .cz-sw.is-tex::after { display: none; }
+.cz-o__c.is-tex { background-color: var(--hair-2); background-size: cover; background-position: center; }

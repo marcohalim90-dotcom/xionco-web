@@ -1,0 +1,8 @@
+Set      : x-batu-travertine-005
+Asset    : Travertine 005 (acg:Travertine005)
+Author   : ambientCG (Lennart Demes)
+Source   : https://ambientcg.com/view?id=Travertine005
+Download : https://ambientcg.com/get?file=Travertine005_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1200 x 1200 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

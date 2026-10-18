@@ -1,0 +1,8 @@
+Set      : x-kain-fabric-063
+Asset    : Fabric 063 (acg:Fabric063)
+Author   : ambientCG (Lennart Demes)
+Source   : https://ambientcg.com/view?id=Fabric063
+Download : https://ambientcg.com/get?file=Fabric063_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 400 x 400 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

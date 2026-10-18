@@ -70,9 +70,9 @@
   ],
   "roles": {
    "<auto>1": "metal",
-   "kayu": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 714
+  "kb": 245
  },
  {
   "slug": "astral-3-seater",
@@ -90,9 +90,9 @@
   "roles": {
    "*": "fabric",
    "[Color M00]": "fabric",
-   "kayu": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 1581
+  "kb": 827
  },
  {
   "slug": "astral-2-seater",
@@ -110,29 +110,9 @@
   "roles": {
    "*": "fabric",
    "[Color M00]": "fabric",
-   "kayu": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 1581
- },
- {
-  "slug": "cameo",
-  "id": "cameo",
-  "variant": null,
-  "file": "assets/items/cameo/model.glb",
-  "scale": 1,
-  "tris": 20522,
-  "tris_out": 20522,
-  "size_cm": [
-   187.4,
-   90.1,
-   64.6
-  ],
-  "roles": {
-   "<auto>2": "metal",
-   "<auto>5": "metal",
-   "MIDGREY": "fabric"
-  },
-  "kb": 1894
+  "kb": 826
  },
  {
   "slug": "canis",
@@ -149,10 +129,10 @@
   ],
   "roles": {
    "<auto>1": "metal",
-   "KYOKAI 2": "wood",
-   "MIDGREY": "fabric"
+   "MIDGREY": "fabric",
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 1917
+  "kb": 853
  },
  {
   "slug": "cubix-ac",
@@ -170,9 +150,9 @@
   "roles": {
    "<auto>1": "metal",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 486
+  "kb": 536
  },
  {
   "slug": "cubix-al",
@@ -190,9 +170,9 @@
   "roles": {
    "<auto>1": "metal",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 905
+  "kb": 956
  },
  {
   "slug": "cubix-acac",
@@ -210,9 +190,9 @@
   "roles": {
    "<auto>1": "metal",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 643
+  "kb": 694
  },
  {
   "slug": "cubix-acalac",
@@ -230,9 +210,9 @@
   "roles": {
    "<auto>1": "metal",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 1927
+  "kb": 1976
  },
  {
   "slug": "cubix-ot",
@@ -250,9 +230,9 @@
   "roles": {
    "<auto>1": "metal",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 494
+  "kb": 441
  },
  {
   "slug": "cubix-ct",
@@ -270,9 +250,9 @@
   "roles": {
    "<auto>3": "metal",
    "[Translucent Glass Gray]": "glass",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 38
+  "kb": 83
  },
  {
   "slug": "cubix-ct-gelap",
@@ -290,9 +270,9 @@
   "roles": {
    "<auto>3": "metal",
    "[Translucent Glass Gray]": "glass",
-   "SUNGKAI": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 43
+  "kb": 62
  },
  {
   "slug": "cubix-st",
@@ -310,9 +290,9 @@
   "roles": {
    "<auto>3": "metal",
    "[Translucent Glass Gray]": "glass",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 39
+  "kb": 85
  },
  {
   "slug": "cubix-st-gelap",
@@ -330,9 +310,9 @@
   "roles": {
    "<auto>3": "metal",
    "[Translucent Glass Gray]": "glass",
-   "SUNGKAI": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 44
+  "kb": 64
  },
  {
   "slug": "eorde",
@@ -348,10 +328,10 @@
    79.0
   ],
   "roles": {
-   "kayu": "wood",
-   "MIDGREY": "fabric"
+   "MIDGREY": "fabric",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 2660
+  "kb": 928
  },
  {
   "slug": "gliza",
@@ -368,10 +348,9 @@
   ],
   "roles": {
    "[Color M07]": "metal",
-   "kayu minsi": "wood",
-   "mindi2": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 303
+  "kb": 107
  },
  {
   "slug": "guise-1-seater",
@@ -388,9 +367,9 @@
   ],
   "roles": {
    "*1": "fabric",
-   "[Wood Veneer 01]1": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 2301
+  "kb": 1059
  },
  {
   "slug": "guise-2-seater",
@@ -407,10 +386,9 @@
   ],
   "roles": {
    "*1": "fabric",
-   "[Wood Veneer 01]1": "wood",
-   "DefaultMaterial": "paint"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 1969
+  "kb": 922
  },
  {
   "slug": "guise-3-seater",
@@ -427,9 +405,9 @@
   ],
   "roles": {
    "*1": "fabric",
-   "[Wood Veneer 01]": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 9765
+  "kb": 3069
  },
  {
   "slug": "hexter",
@@ -446,9 +424,9 @@
   ],
   "roles": {
    "<auto>1": "metal",
-   "kayu": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 197
+  "kb": 85
  },
  {
   "slug": "hout",
@@ -466,9 +444,9 @@
   "roles": {
    "<auto>": "paint",
    "<auto>1": "metal",
-   "kayu": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 175
+  "kb": 81
  },
  {
   "slug": "kyoukai-240",
@@ -484,10 +462,9 @@
    239.8
   ],
   "roles": {
-   "<auto>": "metal",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 190
+  "kb": 182
  },
  {
   "slug": "kyoukai-60",
@@ -503,10 +480,9 @@
    60.6
   ],
   "roles": {
-   "<auto>": "metal",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 127
+  "kb": 148
  },
  {
   "slug": "kyrios-1-seater",
@@ -653,10 +629,10 @@
    48.2
   ],
   "roles": {
-   "<auto>": "paint",
-   "<auto>2": "paint"
+   "<auto>2": "paint",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 82
+  "kb": 138
  },
  {
   "slug": "poel",
@@ -674,10 +650,10 @@
   "roles": {
    "<auto>1": "metal",
    "DefaultMaterial": "paint",
-   "kayu": "wood",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 1466
+  "kb": 889
  },
  {
   "slug": "recta",
@@ -732,10 +708,10 @@
    45.6
   ],
   "roles": {
-   "<auto>": "paint",
-   "<auto>1": "metal"
+   "<auto>1": "metal",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 1074
+  "kb": 1507
  },
  {
   "slug": "somno",
@@ -752,11 +728,11 @@
   ],
   "roles": {
    "[Color M00]": "fabric",
-   "kayu": "wood",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 3419
+  "kb": 1484
  },
  {
   "slug": "syme",
@@ -775,9 +751,9 @@
    "<auto>": "metal",
    "<auto>1": "paint",
    "[0111_SlateGray]": "metal",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 17
+  "kb": 67
  },
  {
   "slug": "tesse",
@@ -812,9 +788,9 @@
   ],
   "roles": {
    "<auto>1": "metal",
-   "SUNGKAI": "wood"
+   "wood-ash #b89a74 x0.65 terang (lib)": "wood"
   },
-  "kb": 207
+  "kb": 193
  },
  {
   "slug": "uruz",
@@ -850,9 +826,9 @@
   "roles": {
    "<auto>": "paint",
    "<auto>1": "metal",
-   "kayu": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 837
+  "kb": 458
  },
  {
   "slug": "verk-laci",
@@ -871,9 +847,9 @@
    "<auto>": "paint",
    "<auto>1": "metal",
    "<auto>2": "metal",
-   "kayu": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 1296
+  "kb": 671
  },
  {
   "slug": "aether-k40",
@@ -948,9 +924,9 @@
   "roles": {
    "*": "fabric",
    "[Color M00]": "fabric",
-   "kayu": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 1578
+  "kb": 825
  },
  {
   "slug": "cubix-ac-gelap",
@@ -968,9 +944,9 @@
   "roles": {
    "<auto>1": "metal",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 490
+  "kb": 516
  },
  {
   "slug": "cubix-al-gelap",
@@ -988,9 +964,9 @@
   "roles": {
    "<auto>1": "metal",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 910
+  "kb": 936
  },
  {
   "slug": "cubix-acac-gelap",
@@ -1008,9 +984,9 @@
   "roles": {
    "<auto>1": "metal",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 648
+  "kb": 674
  },
  {
   "slug": "cubix-acalac-gelap",
@@ -1028,9 +1004,9 @@
   "roles": {
    "<auto>1": "metal",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 1932
+  "kb": 1955
  },
  {
   "slug": "cubix-ot-gelap",
@@ -1048,8 +1024,28 @@
   "roles": {
    "<auto>1": "metal",
    "MIDGREY": "fabric",
-   "SUNGKAI": "wood"
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
-  "kb": 499
+  "kb": 421
+ },
+ {
+  "slug": "cameo",
+  "id": "cameo",
+  "variant": null,
+  "file": "assets/items/cameo/model.glb",
+  "scale": 1,
+  "tris": 20522,
+  "tris_out": 20522,
+  "size_cm": [
+   187.4,
+   90.1,
+   64.6
+  ],
+  "roles": {
+   "<auto>2": "metal",
+   "<auto>5": "metal",
+   "MIDGREY": "fabric"
+  },
+  "kb": 1896
  }
 ]

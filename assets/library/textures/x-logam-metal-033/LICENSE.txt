@@ -1,0 +1,8 @@
+Set      : x-logam-metal-033
+Asset    : Metal 033 (acg:Metal033)
+Author   : ambientCG (Lennart Demes)
+Source   : https://ambientcg.com/view?id=Metal033
+Download : https://ambientcg.com/get?file=Metal033_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1000 x 1000 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

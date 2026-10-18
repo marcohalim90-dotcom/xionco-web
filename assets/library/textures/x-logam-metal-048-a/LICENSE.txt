@@ -1,0 +1,8 @@
+Set      : x-logam-metal-048-a
+Asset    : Metal 048 A (acg:Metal048A)
+Author   : ambientCG (Lennart Demes)
+Source   : https://ambientcg.com/view?id=Metal048A
+Download : https://ambientcg.com/get?file=Metal048A_1K-JPG.zip
+License  : CC0 1.0 Universal (public domain) - https://creativecommons.org/publicdomain/zero/1.0/
+Real size: 1000 x 1000 mm
+Processed: 1K JPG → WebP 1024 px (albedo warna asli, normal OpenGL, roughness). Disetujui di Developer Settings › Aset material.

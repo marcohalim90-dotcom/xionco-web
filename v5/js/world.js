@@ -413,6 +413,63 @@
     }
     m.userData._tileN = n;
   }
+  /* ---------------------------------------------------------------- KAYU KOLEKSI (data/wood.json · Developer Settings › Kayu koleksi)
+     Komponen GLB berlabel kelas (extras material xc_wood = gelap | terang | natural, dari tools/glb/finish.py) memakai
+     pengaturan global: set tekstur pustaka, warna rata-rata, kontras serat, roughness, relief, skala. Ganti pengaturan →
+     semua komponen berlabel di panggung ikut berubah (XW.setWood). Albedo diolah di kanvas: kontras serat lalu warna. */
+  var WOOD = {
+    gelap: { set: 'wood-walnut', hex: '#673e2f', ctr: .75, rough: .5, normal: .35, scale: 1 },
+    terang: { set: 'wood-ash', hex: '#b89a74', ctr: .65, rough: .55, normal: .3, scale: 1 },
+    natural: { set: 'wood-oak', hex: '#c49a6c', ctr: .8, rough: .55, normal: .3, scale: 1 }
+  }, woodCache = {}, WOOD_K = .82;
+  function woodMaps(c) {
+    if (!c || !window.XTEX || !XTEX.ok || !XTEX.sets[c.set]) return Promise.reject(new Error('set kayu tidak ada'));
+    var key = [c.set, c.hex, c.ctr, c.scale].join('|');
+    if (woodCache[key]) return woodCache[key];
+    woodCache[key] = XTEX.load(c.set).then(function (t) {
+      var S = XTEX.sets[c.set], rx = 1 / (S.s[0] * (c.scale || 1)), ry = 1 / (S.s[1] * (c.scale || 1)), out = {};
+      var an = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      if (t.map && t.map.image) {
+        var im = t.map.image, w = im.width, h = im.height, cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+        var g = cv.getContext('2d'); g.drawImage(im, 0, 0);
+        var d = g.getImageData(0, 0, w, h), px = d.data, n = w * h, m = [0, 0, 0], k, i;
+        for (i = 0; i < px.length; i += 4) { m[0] += px[i]; m[1] += px[i + 1]; m[2] += px[i + 2]; }
+        m = m.map(function (v) { return Math.max(1, v / n); });
+        var tg = [1, 3, 5].map(function (j) { return parseInt(c.hex.slice(j, j + 2), 16); }), ctr = c.ctr == null ? 1 : c.ctr;
+        for (i = 0; i < px.length; i += 4) for (k = 0; k < 3; k++) px[i + k] = Math.max(0, Math.min(255, (m[k] + (px[i + k] - m[k]) * ctr) * tg[k] / m[k]));
+        g.putImageData(d, 0, 0);
+        var ct = new T.CanvasTexture(cv); ct.encoding = T.sRGBEncoding; ct.wrapS = ct.wrapT = T.RepeatWrapping; ct.repeat.set(rx, ry); ct.anisotropy = an;
+        out.map = ct;
+      }
+      ['normalMap', 'roughnessMap'].forEach(function (kk) { if (t[kk]) { var x = t[kk].clone(); x.needsUpdate = true; x.repeat.set(rx, ry); x.anisotropy = an; out[kk] = x; } });
+      return out;
+    });
+    woodCache[key].catch(function () { delete woodCache[key]; });
+    return woodCache[key];
+  }
+  function woodMat(mt, force) {
+    var cls = mt && mt.userData && mt.userData.xc_wood, c = cls && (force && force[cls] || WOOD[cls]); if (!c) return;
+    var tok = mt.userData.woodTok = (mt.userData.woodTok || 0) + 1;
+    woodMaps(c).then(function (o) {
+      if (mt.userData.woodTok !== tok) return;
+      if (o.map) mt.map = o.map;
+      if (o.normalMap && mt.normalScale) { mt.normalMap = o.normalMap; mt.normalScale.set(c.normal, c.normal); }
+      if (o.roughnessMap) mt.roughnessMap = o.roughnessMap;
+      mt.roughness = (c.rough || .5) / .8; mt.metalness = 0;
+      mt.userData.col0 = new T.Color(WOOD_K, WOOD_K, WOOD_K); mt.userData.tint = null; mt.color.copy(WB).multiplyScalar(WOOD_K);   // WOOD_K: kayu SKP setara model AI di panggung
+      mt.needsUpdate = true;
+    }, function () {});
+  }
+  function woodAll(force) { scene.traverse(function (o) { if (!o.isMesh || !o.material) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (mt) { woodMat(mt, force); }); }); }
+  /* cfg = { gelap: {...}, terang: {...}, natural: {...} } — sebagian boleh; preview: true → hanya tampilan (tidak mengubah bawaan) */
+  XW.setWood = function (cfg, preview) {
+    if (!cfg) return WOOD;
+    if (preview) { var f = {}; Object.keys(WOOD).forEach(function (k) { f[k] = Object.assign({}, WOOD[k], cfg[k] || {}); }); woodAll(f); return f; }
+    Object.keys(cfg).forEach(function (k) { if (WOOD[k] || /^(gelap|terang|natural)$/.test(k)) WOOD[k] = Object.assign({}, WOOD[k] || {}, cfg[k]); });
+    woodAll(); return WOOD;
+  };
+  /* pratinjau: semua komponen kayu di panggung memakai satu kelas (mis. coba "gelap" di CUBIX yang aslinya terang) */
+  XW.woodPreviewAs = function (cls, cfg) { var c = Object.assign({}, WOOD[cls] || {}, cfg || {}), f = { gelap: c, terang: c, natural: c }; woodAll(f); };
   function makeModel(srcScene, p) {
     var m = srcScene.clone(true), box = new T.Box3(), size = new T.Vector3(), want = sizeFor(p);
     // bagian bergerak dari pipeline (extras xc_motion: pintu, flap, sandaran sofa bed) → motions (klik / Animate)
@@ -420,7 +477,7 @@
     m.traverse(function (o) {
       var d = o.userData && o.userData.xc_motion; if (!d) return;
       var p0 = o.position.clone(), r0 = o.rotation.clone(), ax = d.axis || 'x';
-      var mo = { id: 'gm-' + d.id, kind: d.amt ? 'rot' : 'slide', t: 0, to: 0, apply: function (v) { if (d.move) o.position.set(p0.x + d.move[0] * v, p0.y + d.move[1] * v, p0.z + d.move[2] * v); if (d.amt) o.rotation[ax] = r0[ax] + d.amt * v; } };   // putar dan/atau geser
+      var mo = { id: 'gm-' + d.id, kind: d.amt ? 'rot' : 'slide', t: 0, to: 0, dur: d.dur, group: d.group, apply: function (v) { if (d.wait || d.until) v = Math.max(0, Math.min(1, (v - (d.wait || 0)) / ((d.until || 1) - (d.wait || 0)))); var vr = v; if (d.seq === 'move-rot') { vr = Math.max(0, v * 2 - 1); v = Math.min(1, v * 2); }   /* seq: geser dulu, baru putar (sandaran sofa bed diangkat lalu direbahkan) */ if (d.move) o.position.set(p0.x + d.move[0] * v, p0.y + d.move[1] * v, p0.z + d.move[2] * v); if (d.amt) o.rotation[ax] = r0[ax] + d.amt * vr; } };   // putar dan/atau geser
       o.traverse(function (q) { q.userData.motion = mo; }); mov.push(mo);
     });
     if (m.userData.xionco_tile) tileArrange(m, m.userData.xionco_tile.n0);
@@ -451,6 +508,7 @@
     g.userData = { bounds: { w: size.x, h: size.y, d: size.z }, spin: spin, mats: list, unit: s };
     if (mov.length) g.userData.built = { motions: mov };
     applyWB(g);
+    list.forEach(function (mt) { woodMat(mt); });   // kayu koleksi berlabel → pengaturan global
     g.userData.dispose = function () { scene.remove(g); blob.geometry.dispose(); blob.material.dispose(); };
     return g;
   }
@@ -975,7 +1033,7 @@
     if (item && item.userData.built && item.userData.built.motions) item.userData.built.motions.forEach(function (m) {
       if (m.lin == null) m.lin = m.t;
       if (Math.abs(m.to - m.lin) < .0005) return;
-      m.lin = m.to > m.lin ? Math.min(m.to, m.lin + dt / .75) : Math.max(m.to, m.lin - dt / .65);
+      m.lin = m.to > m.lin ? Math.min(m.to, m.lin + dt / (m.dur || .75)) : Math.max(m.to, m.lin - dt / (m.dur ? m.dur * .87 : .65));   // dur: gerakan bertahap (sofa bed) lebih lama
       m.t = m.lin; m.apply(ease(m.lin));
     });
     st.map = lerp(st.map, st.mapT, k * .7);
@@ -1519,7 +1577,7 @@
     }
     return null;
   }
-  function toggleMotion(m) { m.to = m.to > .5 ? 0 : 1; motionMem.s[m.id] = m.to; }
+  function toggleMotion(m) { var to = m.to > .5 ? 0 : 1; (m.group ? XW.motions().filter(function (q) { return q.group === m.group; }) : [m]).forEach(function (q) { q.to = to; motionMem.s[q.id] = to; }); }   // group: satu mekanisme (sofa bed) bergerak bersama
   XW.motions = function () { return item && item.userData.built && item.userData.built.motions || []; };
   // Animate (klik kanan): semua bagian bergerak dibuka; sekali lagi → ditutup
   XW.animate = function () { var ms = XW.motions(); if (!ms.length) return null; var open = ms.some(function (m) { return m.to < .5; }); ms.forEach(function (m) { m.to = open ? 1 : 0; motionMem.s[m.id] = m.to; }); return open; };
@@ -1570,6 +1628,7 @@
   }
   // tembok dasar (cat / limewash / wallpaper / bata / marmer); feature (walnut, travertine, boiserie …) = geometri di atasnya
   function baseWallMat(fin, hex) {
+    if (String(fin).indexOf('x:') === 0) return texMat(fin.slice(2), { rough: .85, normal: .8 });   // tekstur yang di-Acc (warna asli)
     if (fin === 'limewash' || fin === 'boiserie' || fin === 'walnut' || fin === 'smoked' || fin === 'travertine' || fin === 'calacatta' || fin === 'nero') return texMat('room-wall-limewash', { col: hex || '#e9e2d6', rough: .95, normal: .9 });
     if (fin === 'paint') return texMat('room-wall-plaster', { col: hex || '#ece6dc', map: false, rough: .9, normal: .35 });
     if (fin === 'wallpaper') { var m = new T.MeshStandardMaterial({ color: col('#ffffff'), roughness: .85 }); m.map = wallpaperTex(hex || '#cdbfa8'); return m; }
@@ -1924,7 +1983,7 @@
     var part = function (mesh, p) { mesh.userData.part = p; mesh.receiveShadow = true; g.add(mesh); return mesh; };
     var shadowWall = function (m) { m.castShadow = true; m.material.shadowSide = T.DoubleSide; return m; };
     // lantai: papan / set bertekstur + dasar gelap (celah papan) + tebal sampai tanah
-    var F = FLOORS[C.floor] || FLOORS.oakwide;
+    var F = String(C.floor).indexOf('x:') === 0 ? [C.floor.slice(2), .6] : FLOORS[C.floor] || FLOORS.oakwide;   // x:<set> = tekstur yang di-Acc (warna asli)
     var base = part(new T.Mesh(new T.PlaneGeometry(W, D), new T.MeshStandardMaterial({ color: col('#1a1410'), roughness: 1 })), 'F'); base.rotation.x = -Math.PI / 2; base.position.y = L0 + .0005;
     if (F[2] === 'planks') part(plankFloor(W, D, L0 + .002, F[0], F[1], F[3]), 'F');
     else { var fl = part(new T.Mesh(meterUV(new T.PlaneGeometry(W, D), W, D), texMat(F[0], { col: F[3], rough: F[1], env: C.floor === 'marble' ? .8 : .5 })), 'F'); fl.rotation.x = -Math.PI / 2; fl.position.y = L0 + .002; }
