@@ -13,24 +13,6 @@
  },
  "cameo": {
   "id": "cameo",
-  "reshape": [
-   {
-    "sel": [
-     0.05,
-     1.83,
-     0.53,
-     0.82,
-     0.21,
-     0.66
-    ],
-    "z": [
-     0.22,
-     0.65,
-     0.17,
-     0.8
-    ]
-   }
-  ],
   "motions": [
    {
     "id": "seat",
@@ -72,7 +54,7 @@
     "move": [
      0,
      0,
-     0.36
+     0.15
     ],
     "until": 0.45,
     "dur": 2.2
@@ -86,26 +68,27 @@
      0.53,
      0.82,
      0.16,
-     0.81
+     0.7
     ],
     "islands": true,
     "pivot": [
      0.94,
-     0.54,
-     0.17
+     0.526,
+     0.254
     ],
     "axis": "x",
-    "amt": -1.5708,
+    "amt": -1.3167,
     "move": [
      0,
-     0.203,
-     0.358
+     0.104,
+     0.134
     ],
     "wait": 0.45,
     "dur": 2.2,
     "seq": "move-rot"
    }
-  ]
+  ],
+  "note": "Sofa bed eurobook dengan ukuran ASLI (tinggi 65 cm, tanpa reshape): dudukan maju 15 cm, sandaran (41,4 × 18,9 cm, miring 14,6°) diangkat lalu direbahkan 75,4° — muka depan di atas, rata dengan atas dudukan (34,8 cm), mengisi celah sampai panel belakang. Disimulasikan 19 Okt (scratchpad cameo_sim2.py)."
  },
  "canis": "canis",
  "cubix-ac": {

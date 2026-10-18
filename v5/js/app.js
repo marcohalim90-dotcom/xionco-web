@@ -51,8 +51,15 @@
   };
   var byId = {};
   XV.PRODUCTS.forEach(function (p) { byId[p.id] = p; });
-  var photoCls = function (p) { return (XV.V3_DARK || []).indexOf(p.id) >= 0 ? 'is-photo' : ''; };
   var catLabel = function (id) { var c = XV.CATEGORIES.filter(function (x) { return x.id === id; })[0]; return T(c ? c.label : id); };
+  /* kategori Koleksi = kategori xionco.shop (urutan & gambar sama seperti toko); p.kats dari tools/import-shop.js */
+  var KATS = [['Sofa', 'sofa'], ['Bed', 'bed'], ['Sofa Bed', 'sofa-bed'], ['Desk', 'desk'], ['Cabinet', 'cabinet'], ['Table', 'table'], ['Chair', 'chair'], ['Ottoman', 'ottoman'], ['Hardware', 'hardware'], ['Lightings', 'lightings'], ['Lifestyle', 'lifestyle'], ['Smart', 'smart'], ['Accent', 'accent']];
+  var katImg = function (k) { return '../assets/kats/' + k + '.webp'; };   // gambar kategori xionco.shop, dikecilkan (tools/kat-img.js)
+  var katsOf = function (p) { return p.kats && p.kats.length ? p.kats : [catLabel(p.cat)]; };
+  // sub-filter jumlah dudukan hanya untuk Sofa (pemilik)
+  var SOFA_SUB = [['1s', '1 Seat', /\b1 ?seat|\b1s\b|single|one seat|\(a[cl]\)|seater ?\(?a[cl]\)?$|armchair|armless/], ['2s', '2 Seat', /\b2 ?seat|\b2s\b|sf2s|two seat|ac,? ?ac/], ['3s', '3 Seat', /\b3 ?seat|\b3s\b|sf3s|three seat|ac,? ?al,? ?ac/], ['set', 'Sectional & set', /sectional|set l|5 seater/]];
+  var subOk = function (p, sub) { var t = (p._ft = p._ft || [p.name, p.type, p.shopName || ''].join(' ').toLowerCase()); return SOFA_SUB.some(function (r) { return r[0] === sub && r[2].test(t); }); };
+  function inKat(p, kat, sub) { return (kat === 'all' || katsOf(p).indexOf(kat) >= 0) && (!sub || subOk(p, sub)); }
   var dateText = function (t) { try { return new Date(t).toLocaleDateString(I18N && I18N.lang() === 'en' ? 'en-GB' : 'id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } };
 
   /* ======================================================================
@@ -79,13 +86,11 @@
   }
   var priceText = function (p, c) { var pr = c ? c.price : p.price; return pr ? (p.from ? T('mulai') + ' ' : '') + rupiah(pr) : T('Melalui penawaran'); };
 
-  /* thumbnail: foto produk apa adanya (latar tidak dipotong — hasil potong kurang rapi) di atas "piring" ivory;
-     latar putih foto menyatu lewat multiply. Foto studio gelap (photoCls) tetap penuh (cover). */
+  /* thumbnail: gambar utama xionco.shop apa adanya — penuh kotak dengan latarnya sendiri, sama seperti di toko */
   function thumbImg(p, u) {
     u = u || src(p.img, 768);
     if (!u) return '<span class="noimg"><svg><use href="#i-frame"/></svg><em>' + esc(T('Foto menyusul')) + '</em></span>';   // produk lokal tanpa foto
-    if (photoCls(p)) return '<img class="is-photo is-ready" src="' + esc(u) + '" alt="' + esc(p.name) + '" loading="lazy" decoding="async">';
-    return '<img data-cut="' + esc(u) + '" alt="' + esc(p.name) + '">';
+    return '<img class="is-photo" data-cut="' + esc(u) + '" alt="' + esc(p.name) + '">';
   }
   var cutQ = [], cutActive = 0;
   var cutIO = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
@@ -98,32 +103,12 @@
       if (cutIO) cutIO.observe(im); else { cutQ.push(im); pumpCut(); }
     });
   }
-  // sudut foto gelap? (salinan kecil terpisah ber-CORS; bila tidak bisa dibaca, anggap latar putih)
-  var darkMemo = {};
-  function darkBg(u, cb) {
-    if (darkMemo[u] != null) { if (darkMemo[u]) cb(); return; }
-    var p = new Image(); p.crossOrigin = 'anonymous';
-    p.onload = function () {
-      try {
-        var c = document.createElement('canvas'); c.width = c.height = 8;
-        var g = c.getContext('2d'); g.drawImage(p, 0, 0, 8, 8);
-        var d = g.getImageData(0, 0, 8, 8).data, lum = 0;
-        [0, 7, 56, 63].forEach(function (i) { lum += (d[i * 4] + d[i * 4 + 1] + d[i * 4 + 2]) / 3; });
-        darkMemo[u] = lum / 4 < 110; if (darkMemo[u]) cb();
-      } catch (e) { darkMemo[u] = false; }
-    };
-    p.src = u;
-  }
   function pumpCut() {
     while (cutActive < 3 && cutQ.length) {
       var im = cutQ.shift(); cutActive++;
       (function (im) {
         var u = im.dataset.cut, done = function () { cutActive--; pumpCut(); };
-        var show = function () { im.classList.add('is-ready'); };
-        // latar putih → di atas "piring" ivory; latar studio gelap (foto varian) → penuh kotak (cover)
-        var dark = function () { im.classList.add('is-photo'); if (im.parentNode) im.parentNode.classList.remove('is-plate'); };
-        if (im.parentNode) im.parentNode.classList.add('is-plate');
-        im.onload = function () { show(); darkBg(u, dark); }; im.src = u; done();
+        im.onload = function () { im.classList.add('is-ready'); }; im.src = u; done();
       })(im);
     }
   }
@@ -391,7 +376,7 @@
     var c = pcCur(p, cur(p)), disc = c.was && c.price ? Math.round((1 - c.price / c.was) * 100) : 0;
     setDetail({
       name: p.name, sub: p.type,
-      cols: [c.label ? [T('Varian'), c.label] : [T('Kategori'), catLabel(p.cat)], [T('Kirim'), T('1–3 hari kerja')]],
+      cols: [c.label ? [T('Varian'), c.label] : [T('Kategori'), T(katsOf(p)[0])], [T('Kirim'), T('1–3 hari kerja')]],
       priceK: c.price ? (p.from ? T('Mulai') : T('Harga')) + (disc ? ' · ' + T('hemat') + ' ' + disc + '%' : '') : T('Harga'),
       price: c.price ? rupiah(c.price) : T('Melalui penawaran'), was: c.was ? rupiah(c.was) : '',
       act: c.price ? { t: T('Beli'), icon: 'i-card', fn: function () { buyNow(p, 1); } } : { t: T('Tanya'), icon: 'i-wa', href: wa(T('Halo XIONCO, saya ingin tahu harga {name} ({type}).', { name: p.name, type: p.type })) }
@@ -417,10 +402,13 @@
   // objek di panggung mengikuti varian: model 3D diwarnai, foto berganti ke foto varian
   // model 3D per varian (mis. VERK Laci / Tanpa Laci) — p.vmodels { label varian: path }
   function modelOf(p, c) { return c && c.v && p.vmodels && p.vmodels[c.v.label] || p.model || ''; }
+  // bagian varian di panggung (mis. VERK Laci = kabinet laci ditempel ke meja, bukan model baru) — p.vparts { label: path }
+  function partOf(p, c) { return c && c.v && p.vparts && p.vparts[c.v.label] || ''; }
+  function stageModelOf(p, c) { return p.vparts ? p.model || '' : modelOf(p, c); }
   function stageShow(p) {
     var s = selOf(p), c = cur(p, s), photo = src(s.touched ? c.img : p.img, 1024);
-    var mdl = modelOf(p, c); furniture.mdl = mdl;
-    if (mdl) { var pr = XW.showModel(p, src(mdl), photo, c.hex); if (pr && pr.then) pr.then(function () { if (pcFor(p)) { if (!pcz.w0) pcInit(p); else pcApply(); } }); }
+    var mdl = stageModelOf(p, c); furniture.mdl = mdl;
+    if (mdl) { var pr = XW.showModel(p, src(mdl), photo, c.hex); if (pr && pr.then) pr.then(function () { var pt = partOf(p, c); if (pt && XW.setPart) XW.setPart(src(pt), false); if (pcFor(p)) { if (!pcz.w0) pcInit(p); else pcApply(); } }); }
     else XW.showProduct(p, photo, src(p.img, 1024));
   }
   function mapDetail(i) {
@@ -642,24 +630,68 @@
     XV.PRODUCTS.forEach(function (p) {
       var t = (p.type || '').toLowerCase();
       var vs = (p.variants || []).map(function (v) { return v.label + ' ' + (v.fabric || ''); }).join(' ');
-      p._q = [p.name, t, p.cat, catLabel(p.cat), ID_CAT[p.cat] || '', p.shopName || '', vs].concat(ID_TYPE.filter(function (r) { return r[0].test(t); }).map(function (r) { return r[1]; })).join(' ').toLowerCase();
+      p._q = [p.name, t, p.cat, catLabel(p.cat), katsOf(p).join(' '), ID_CAT[p.cat] || '', p.shopName || '', vs].concat(ID_TYPE.filter(function (r) { return r[0].test(t); }).map(function (r) { return r[1]; })).join(' ').toLowerCase();
     });
   }
   indexProducts();
-  var kCat = 'all', kList = [], kI = -1, kQty = 1, kReady = false;
+  var kCat = 'all', kSub = '', kList = [], kI = -1, kQty = 1, kReady = false;
   var grid = $('#kGrid'), kSearch = $('#kSearch'), pd = $('#pd');
-  function renderCats() {
-    var cats = [{ id: 'all', label: T('Semua') }].concat(XV.CATEGORIES.map(function (c) { return { id: c.id, label: T(c.label) }; }));
-    $('#kCats').innerHTML = cats.map(function (c) { return '<button type="button" data-cat="' + c.id + '">' + esc(c.label) + '</button>'; }).join('');
-    $$('#kCats button').forEach(function (b) { b.classList.toggle('is-on', b.dataset.cat === kCat); });
+  /* kotak Filter: kartu bergambar kategori xionco.shop + jumlah produk; Sofa punya jenis jumlah dudukan */
+  var fltBox = $('#kFltBox'), fltBtn = $('#kFlt');
+  function fCard(attr, on, label, img, n) {
+    return '<button type="button" class="kfc' + (on ? ' is-on' : '') + '" ' + attr + (n ? '' : ' disabled') + '><span class="kfc__i">' + (img ? '<img src="' + esc(img) + '" alt="" loading="lazy">' : '') + '</span>' +
+      '<span class="kfc__l">' + esc(T(label)) + '</span><em>' + n + '</em></button>';
   }
+  function renderCats() {
+    var all = XV.PRODUCTS, body = $('#kFltBody');
+    var h = '<p class="og__h"><span>' + T('Kategori') + '</span><b>' + esc(kCat === 'all' ? T('Semua') : T(kCat)) + '</b></p><div class="kfg">' +
+      fCard('data-fc="all"', kCat === 'all', 'Semua', '', all.length) +
+      KATS.map(function (k) { return fCard('data-fc="' + k[0] + '"', kCat === k[0], k[0], katImg(k[1]), all.filter(function (p) { return inKat(p, k[0], ''); }).length); }).join('') + '</div>';
+    if (kCat === 'Sofa') {
+      var sofa = all.filter(function (p) { return inKat(p, 'Sofa', ''); });
+      h += '<p class="og__h og__h--sub"><span>' + T('Jumlah dudukan') + '</span><b>' + esc(kSub ? T((SOFA_SUB.filter(function (r) { return r[0] === kSub; })[0] || [0, ''])[1]) : T('Semua')) + '</b></p><div class="kfg">' +
+        SOFA_SUB.map(function (r) { var l = sofa.filter(function (p) { return subOk(p, r[0]); }), ph = l.filter(function (p) { return p.img; }).sort(function (a, b) { return (b.sold || 0) - (a.sold || 0); })[0]; return fCard('data-fs="' + r[0] + '"', kSub === r[0], r[1], ph ? src(ph.img, 240) : '', l.length); }).join('') + '</div>';
+    }
+    if (body && fltBox.classList.contains('is-on')) body.innerHTML = h;   // kotak tertutup: gambar belum diunduh
+    var n = (kCat !== 'all' ? 1 : 0) + (kSub ? 1 : 0), parts = [];
+    $('#kFltN').textContent = n || ''; fltBtn.classList.toggle('is-act', !!n);
+    if (kCat !== 'all') parts.push(T(kCat));
+    if (kSub) parts.push(T((SOFA_SUB.filter(function (r) { return r[0] === kSub; })[0] || [0, ''])[1]));
+    var act = $('#kAct'); act.hidden = !parts.length;
+    act.innerHTML = parts.length ? '<span>' + esc(parts.join(' · ')) + '</span><button type="button" data-fclear aria-label="' + esc(T('Hapus filter')) + '"><svg><use href="#i-close"/></svg></button>' : '';
+  }
+  function fltPlace() {
+    if (!fltBox.classList.contains('is-on')) return;
+    var pr = panel.getBoundingClientRect();
+    fltBox.style.top = pr.top + 'px'; fltBox.style.maxHeight = pr.height + 'px';
+    if (isMobile()) { fltBox.style.left = pr.left + 'px'; fltBox.style.width = pr.width + 'px'; return; }
+    fltBox.style.width = '';
+    fltBox.style.left = (html.classList.contains('lay3') ? pr.right + 14 : pr.left - 14 - fltBox.offsetWidth) + 'px';
+  }
+  function fltOpen(on) {
+    fltBox.classList.toggle('is-on', !!on); fltBox.setAttribute('aria-hidden', on ? 'false' : 'true');
+    fltBtn.setAttribute('aria-expanded', on ? 'true' : 'false'); fltBtn.classList.toggle('is-on', !!on);
+    if (on) renderCats();
+    fltPlace();
+  }
+  function setKat(cat, sub) { kCat = cat; kSub = sub || ''; renderGrid(); renderCats(); fltPlace(); }
+  fltBtn.addEventListener('click', function (e) { e.stopPropagation(); fltOpen(!fltBox.classList.contains('is-on')); });
+  fltBox.addEventListener('click', function (e) {
+    var c = e.target.closest('[data-fc]'), sb = e.target.closest('[data-fs]');
+    if (c) setKat(c.dataset.fc === kCat && kCat !== 'all' ? 'all' : c.dataset.fc);
+    else if (sb) setKat(kCat, sb.dataset.fs === kSub ? '' : sb.dataset.fs);
+  });
+  $('#kFltReset').addEventListener('click', function () { setKat('all'); });
+  $('#kAct').addEventListener('click', function (e) { if (e.target.closest('[data-fclear]')) setKat('all'); });
+  document.addEventListener('pointerdown', function (e) { if (fltBox.classList.contains('is-on') && !fltBox.contains(e.target) && !fltBtn.contains(e.target)) fltOpen(false); });
+  addEventListener('resize', fltPlace);
   renderCats();
   function renderGrid() {
     var q = kSearch.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    kList = XV.PRODUCTS.filter(function (p) { return (kCat === 'all' || p.cat === kCat) && q.every(function (w) { return p._q.indexOf(w) >= 0; }); });
+    kList = XV.PRODUCTS.filter(function (p) { return inKat(p, kCat, kSub) && q.every(function (w) { return p._q.indexOf(w) >= 0; }); });
     var selId = furniture.kind === 'product' ? furniture.p.id : furniture.kind === 'cubix' ? 'cubix' : null;
     grid.innerHTML = kList.map(function (p, i) {
-      var dots = (p.variants || []).filter(function (v) { return v.hex; }).slice(0, 6).map(function (v) { return '<i style="--c:' + v.hex + '"></i>'; }).join('');
+      var hx = (p.variants || []).filter(function (v) { return v.hex; }), dots = hx.slice(0, 6).map(function (v) { return '<i style="--c:' + v.hex + '"></i>'; }).join('') + (hx.length > 6 ? '<b>+' + (hx.length - 6) + '</b>' : '');   // seperti xionco.shop: 6 warna, sisanya "+n"
       return '<button class="tile' + (p.id === selId ? ' is-on' : '') + '" type="button" data-i="' + i + '">' +
         '<span class="tile__img">' + thumbImg(p) + '</span>' +
         '<span class="tile__n">' + esc(p.name) + '</span><span class="tile__t">' + esc(p.type) + '</span>' +
@@ -670,7 +702,6 @@
     $('#kEmpty').classList.toggle('is-on', !kList.length);
     pfObserve();
     $('#kCount').textContent = kList.length;
-    $$('#kCats button').forEach(function (b) { b.classList.toggle('is-on', b.dataset.cat === kCat); });
   }
   /* ---------- prefetch model (Q1): kartu Koleksi yang terlihat ≥ 0,7 dtk / disorot → antre, maks 2 unduhan sekaligus, saat browser idle.
      Tidak jalan bila hemat data aktif atau Grafis = Ringan. */
@@ -697,13 +728,16 @@
     $$('.tile', grid).forEach(function (t) { pfIO.observe(t); });
   }
   grid.addEventListener('pointerover', function (e) { var t = e.target.closest('.tile'); if (t) pfAdd(pfUrl(kList[+t.dataset.i]), true); });
-  $('#kCats').addEventListener('click', function (e) { var b = e.target.closest('[data-cat]'); if (!b) return; kCat = b.dataset.cat; renderGrid(); });
   var sT = 0;
   kSearch.addEventListener('input', function () { clearTimeout(sT); sT = setTimeout(renderGrid, 120); });
+  // cari & filter menempel: pita solid di atasnya saat menempel
+  var kBar = $('#kBar'), kol = $('#kolList');
+  kol.addEventListener('scroll', function () { kBar.classList.toggle('is-stuck', kBar.getBoundingClientRect().top - kol.getBoundingClientRect().top <= 65); }, { passive: true });
   grid.addEventListener('click', function (e) { var t = e.target.closest('.tile'); if (t) pick(+t.dataset.i); });
   function pick(i) {
     kI = (i + kList.length) % kList.length;
     var p = kList[kI];
+    advOpen(false);
     showProduct(p);
     $$('.tile', grid).forEach(function (t, k) { t.classList.toggle('is-on', k === kI); });
     fillPd(p, true);
@@ -714,7 +748,7 @@
   function openProduct(p) {
     if (!kReady) { kReady = true; renderGrid(); }
     var i = kList.indexOf(p);
-    if (i < 0) { kCat = 'all'; kSearch.value = ''; renderGrid(); i = kList.indexOf(p); }
+    if (i < 0) { kCat = 'all'; kSub = ''; kSearch.value = ''; renderGrid(); renderCats(); i = kList.indexOf(p); }
     if (i < 0) return;
     kI = i;
     if (current !== 'koleksi') go('koleksi');
@@ -726,18 +760,13 @@
   function fillPd(p, anim) {
     if (pcz && pcz.pid !== p.id) pcz = null;
     var c = pcCur(p, cur(p)), disc = c.was && c.price ? Math.round((1 - c.price / c.was) * 100) : 0;
-    $('#pdCat').textContent = catLabel(p.cat) + (p.sold ? ' · ' + T('{n} terjual', { n: p.sold }) : '');
+    $('#pdCat').textContent = T(katsOf(p)[0]) + (p.sold ? ' · ' + T('{n} terjual', { n: p.sold }) : '');
     $('#pdName').textContent = p.name;
     $('#pdType').textContent = p.type;
     $('#pdPrice').innerHTML = c.price ? '<b>' + priceText(p, c) + '</b>' + (c.was ? '<s>' + rupiah(c.was) + '</s><span class="tag tag--gold">' + T('Hemat') + ' ' + disc + '%</span>' : '') : '<b>' + T('Melalui penawaran') + '</b>';
     renderVariants(p);
     renderPhoto(p, c);
-    $('#pdDesc').textContent = p.desc || '';
-    var spec = [[T('Garansi'), T('3 tahun')], [T('Pengiriman'), T('1–3 hari kerja')]];
-    if (c.v && c.v.fabric) spec.unshift([T('Material'), c.v.fabric]);
-    if (p.dims) spec.unshift([T('Dimensi'), p.dims]);
-    $('#pdSpec').innerHTML = spec.map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +
-      (p.id === 'cubix' ? '<dt>Customize</dt><dd><a href="#/customize" data-go="customize">' + T('Rancang komposisi Anda →') + '</a></dd>' : '');
+    renderInfo(p, c, anim);
     var canBuy = !!c.price && p.id !== 'cubix';
     $('#pdFoot').style.display = canBuy ? '' : 'none';
     $('#pdCustom').style.display = p.customizable || p.id === 'cubix' || p.model ? '' : 'none';
@@ -746,11 +775,10 @@
     kQty = 1; $('#pdQty').textContent = 1;
     $('#pdWa').href = wa(T('Halo XIONCO, saya ingin tahu lebih lanjut tentang {name} ({type}).', { name: p.name, type: p.type + (c.label ? ' · ' + c.label : '') }));
     $('#pdWaText').textContent = c.price ? T('Tanya') : T('Tanya harga');
-    $('#pdLink').href = p.url || XV.SHOP;
-    $('#pdLink span').textContent = /xionco\.shop/.test(p.url || '') ? T('Lihat di xionco.shop') : T('Detail di xionco.com');
     $('#pdN').textContent = String(kI + 1).padStart(2, '0') + ' / ' + kList.length;
     if (ANIM && anim) G.fromTo($$('#pd > *').slice(1, 7), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .7, ease: 'expo.out', stagger: .04, clearProps: 'transform' });
   }
+  var vMore = {};   // produk → semua varian dibuka
   function renderVariants(p) {
     var vs = p.variants || [], s = selOf(p), c = cur(p, s);
     var box = $('#pdVar'), sub = $('#pdSub');
@@ -759,28 +787,90 @@
     var lab = function (v) { return [v.group ? T(v.group) : '', v.label].filter(Boolean).join(' · '); };
     var groups = [], dOf = function (i) { var x = cur(p, { v: i, s: subDef(vs[i]) }); return x.price && c.price ? x.price - c.price : 0; }, anyD = false;
     vs.forEach(function (v, i) { var g = v.group || ''; var gg = groups.filter(function (x) { return x.g === g; })[0]; if (!gg) groups.push(gg = { g: g, i: [] }); gg.i.push(i); if (i !== s.v && dOf(i)) anyD = true; });
+    var order = [].concat.apply([], groups.map(function (gg) { return gg.i; })), more = order.length > 6 && !vMore[p.id] && order.indexOf(s.v) < 6;   // 6 pertama tampil
     var btn = function (i) {
-      var v = vs[i], name = v.label.length > 15 ? v.label.slice(0, 14) + '…' : v.label, d = i === s.v ? 0 : dOf(i);
-      return '<button type="button" class="cz-o' + (i === s.v ? ' is-on' : '') + '" data-v="' + i + '" title="' + esc(lab(v)) + '">' +
+      var v = vs[i], name = v.label.length > 15 ? v.label.slice(0, 14) + '…' : v.label, d = i === s.v ? 0 : dOf(i), hid = more && order.indexOf(i) >= 6;
+      return '<button type="button" class="cz-o' + (i === s.v ? ' is-on' : '') + '" data-v="' + i + '" title="' + esc(lab(v)) + '"' + (hid ? ' hidden' : '') + '>' +
         (v.hex ? '<i class="cz-o__c' + (/faux|leather/i.test(v.group) ? ' is-leather' : '') + '" style="--c:' + v.hex + '"></i>' : '') + '<span>' + esc(name) + '</span>' + (anyD ? '<em class="cz-o__d' + (d < 0 ? ' is-neg' : '') + '">' + (d ? (d > 0 ? '+' : '−') + 'Rp ' + short(Math.abs(d)) : '') + '</em>' : '') + '</button>';
     };
     box.innerHTML = '<p class="og__h"><span>' + T(p.vTitle || (vs[0].group ? 'Warna & material' : 'Varian')) + '</span><b>' + esc(c.v ? lab(c.v) : '') + '</b></p>' +
-      groups.map(function (gg) { return (groups.length > 1 && gg.g ? '<p class="og__g">' + esc(T(gg.g)) + ' <i>' + gg.i.length + '</i></p>' : '') + '<div class="og' + (anyD ? ' og--d' : '') + '">' + gg.i.map(btn).join('') + '</div>'; }).join('');
+      groups.map(function (gg) {
+        var vis = !more || gg.i.some(function (i) { return order.indexOf(i) < 6; });
+        return vis ? (groups.length > 1 && gg.g ? '<p class="og__g">' + esc(T(gg.g)) + ' <i>' + gg.i.length + '</i></p>' : '') + '<div class="og' + (anyD ? ' og--d' : '') + '">' + gg.i.map(btn).join('') + '</div>' : '';
+      }).join('') +
+      (order.length > 6 ? '<button type="button" class="vmore" data-vmore>' + (more ? T('More variants') + ' <i>+' + (order.length - 6) + '</i>' : T('Lebih sedikit')) + '<svg><use href="#i-arrow"/></svg></button>' : '');
     var subs = c.v && c.v.subs || [];
     sub.hidden = !subs.length;
     sub.innerHTML = subs.length ? '<p class="og__h"><span>' + T(p.sTitle || 'Ukuran & opsi') + '</span><b>' + esc(c.sub ? c.sub.label : '') + '</b></p><div class="og">' +
       subs.map(function (x, i) { return '<button type="button" class="cz-o' + (i === s.s ? ' is-on' : '') + '" data-s="' + i + '" title="' + esc(x.label) + '">' + (x.hex ? '<i class="cz-o__c" style="--c:' + x.hex + '"></i>' : '') + '<span>' + esc(x.label.length > 15 ? x.label.slice(0, 14) + '…' : x.label) + '</span></button>'; }).join('') + '</div>' : '';
   }
-  // foto varian (seperti galeri xionco.shop) — hanya untuk produk bervarian
+  /* ---------- informasi produk: Overview & Specification (seperti xionco.shop) ----------
+     data/specs.json (tools/spec/fill.js + Developer Settings › Ukuran & material): baris ukuran per produk/varian,
+     material, detail ukuran, overview (cerita produk), isi paket, perawatan. Dimuat saat halaman produk pertama dibuka. */
+  var SPECS = null, specsP = null, pdTab = 'ov', pdMore = false;
+  function loadSpecs() {
+    if (specsP) return specsP;
+    specsP = fetch('../data/specs.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) { SPECS = j.items || {}; }, function () { SPECS = {}; })
+      .then(function () { var p = kList[kI]; if (p && pd.classList.contains('is-on')) renderInfo(p, pcCur(p, cur(p)), false); });
+    return specsP;
+  }
+  var MATL = [['frame', 'Rangka'], ['uph', 'Pelapis'], ['finish', 'Finishing'], ['legs', 'Kaki / base']];
+  var dimTxt = function (r) { return [r.w, r.d, r.h].filter(function (x) { return x; }).map(function (x) { return String(x).replace('.', ','); }).join(' × ') + ' cm'; };
+  function renderInfo(p, c, anim) {
+    if (!SPECS) loadSpecs();
+    var sp = SPECS && SPECS[p.id] || {}, rows = (sp.rows || []).filter(function (r) { return r.w || r.d || r.h; });
+    var picked = [c.v && c.v.label, c.sub && c.sub.label].filter(Boolean);
+    var main = rows.filter(function (r) { return picked.indexOf(r.k) >= 0; })[0] || rows.filter(function (r) { return r.k === 'Utama'; })[0] || rows[0];
+    var base = (sp.rows || [])[0] || {};
+    if (anim) { pdTab = 'ov'; pdMore = false; }
+    // Overview: ringkas (dimensi · material · garansi · kirim) + cerita produk + isi paket
+    var kv = [[T('Garansi'), T('3 tahun')], [T('Pengiriman'), T('1–3 hari kerja')]];
+    if (c.v && c.v.fabric) kv.unshift([T('Material'), c.v.fabric]); else if (base.uph || base.frame) kv.unshift([T('Material'), String(base.uph || base.frame).split(' · ')[0]]);
+    if (main) kv.unshift([T('Dimensi'), dimTxt(main)]); else if (p.dims) kv.unshift([T('Dimensi'), p.dims]);
+    $('#pdSpec').innerHTML = kv.map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +
+      (p.id === 'cubix' ? '<dt>Customize</dt><dd><a href="#/customize" data-go="customize">' + T('Rancang komposisi Anda →') + '</a></dd>' : '');
+    var ov = sp.overview || p.desc || '', d = $('#pdDesc'), long = ov.length > 280 || ov.split('\n').length > 4;
+    d.textContent = ov; d.classList.toggle('is-clamp', long && !pdMore);
+    $('#pdMore').hidden = !long; $('#pdMore span').textContent = pdMore ? T('Lebih sedikit') : T('More details'); $('#pdMore').classList.toggle('is-open', pdMore);
+    var bx = $('#pdBox'); bx.hidden = !(sp.box && sp.box.length);
+    bx.innerHTML = sp.box && sp.box.length ? '<p class="og__h"><span>' + T('Isi paket') + '</span></p><ul>' + sp.box.map(function (l) { return '<li' + (/^termasuk/i.test(l) ? ' class="is-h"' : '') + '>' + esc(l) + '</li>'; }).join('') + '</ul>' : '';
+    // Specification: Measurements · Materials · Manuals · Description (bagian kosong disembunyikan)
+    var acc = function (id, title, body, open) { return body ? '<details class="acc" data-acc="' + id + '"' + (open ? ' open' : '') + '><summary>' + T(title) + '<svg><use href="#i-arrow"/></svg></summary><div class="acc__b">' + body + '</div></details>' : ''; };
+    var extras = String(base.other || '').split(' · ').filter(function (x) { return x && !/^ukuran /i.test(x); });
+    var meas = rows.length ? '<dl class="kv kv--dim">' + rows.map(function (r) { return '<dt' + (r === main ? ' class="is-on"' : '') + '>' + esc(r.k === 'Utama' ? (rows.length > 1 ? ((String(r.other || '').match(/ukuran ([^·]+)/) || [])[1] || T('Standar')).trim() : T('Ukuran keseluruhan')) : r.k) + '</dt><dd' + (r === main ? ' class="is-on"' : '') + '>' + esc(dimTxt(r)) + '</dd>'; }).join('') + '</dl>' +
+      '<p class="acc__n">' + T('P × L × T (panjang × lebar/dalam × tinggi)') + '</p>' : (p.dims ? '<dl class="kv kv--dim"><dt>' + T('Ukuran keseluruhan') + '</dt><dd>' + esc(p.dims) + '</dd></dl>' : '');
+    if (extras.length) meas += '<ul class="acc__l">' + extras.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+    var mats = MATL.filter(function (m) { return base[m[0]]; }).map(function (m) { return '<dt>' + T(m[1]) + '</dt><dd>' + esc(base[m[0]]) + '</dd>'; }).join('');
+    if (!mats && c.v && c.v.fabric) mats = '<dt>' + T('Pelapis') + '</dt><dd>' + esc(c.v.fabric) + '</dd>';
+    var care = sp.care && sp.care.length ? '<ul class="acc__l">' + sp.care.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '';
+    var desc = p.desc && sp.overview && sp.overview.indexOf(p.desc.slice(0, 40)) < 0 ? '<p class="txt">' + esc(p.desc) + '</p>' : '';
+    var spHtml = acc('m', 'Measurements', meas, true) + acc('t', 'Materials', mats ? '<dl class="kv">' + mats + '</dl>' : '', true) + acc('c', 'Manuals', care, false) + acc('d', 'Description', desc, false);
+    $('#pdSp').innerHTML = spHtml || '<p class="txt acc__n">' + T('Belum ada data.') + '</p>';
+    setPdTab(pdTab);
+  }
+  function setPdTab(t) {
+    pdTab = t;
+    $$('#pdTabs [data-pt]').forEach(function (b) { var on = b.dataset.pt === t; b.classList.toggle('is-on', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
+    $$('#pdTabs [data-pp]').forEach(function (x) { x.hidden = x.dataset.pp !== t; });
+  }
+  $('#pdTabs').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pt]'); if (b) { setPdTab(b.dataset.pt); return; }
+    if (e.target.closest('#pdMore')) { pdMore = !pdMore; var p = kList[kI]; if (p) renderInfo(p, pcCur(p, cur(p)), false); }
+  });
+  // galeri foto seperti xionco.shop: gambar utama lalu foto lainnya (geser), titik penanda; varian dipilih → foto varian
   function renderPhoto(p, c) {
-    var box = $('#pdPhoto'), u = c.v && !(c.v.nophoto && !(c.sub && c.sub.img)) ? src(c.img, 768) : '';   // nophoto: varian tanpa foto sendiri (mis. CUBIX kayu Gelap)
-    box.hidden = !u;
-    if (!u) { box.innerHTML = ''; box.dataset.u = ''; return; }
-    if (box.dataset.u === u) return;
-    box.dataset.u = u;
-    box.classList.remove('is-plate');
-    box.innerHTML = thumbImg(p, u).replace('<img ', '<img data-max="520" ');
-    cutThumbs(box);
+    var box = $('#pdPhoto'), list = [p.img].concat(p.images || [], (p.variants || []).map(function (v) { return v.img; })).filter(function (u, i, a) { return u && a.indexOf(u) === i; });
+    box.hidden = !list.length;
+    if (!list.length) { box.innerHTML = ''; box.dataset.pid = ''; return; }
+    if (box.dataset.pid !== p.id) {
+      box.dataset.pid = p.id;
+      box.innerHTML = '<div class="gal__s">' + list.map(function (u, i) { return '<span class="gal__i" data-gi="' + i + '"><img src="' + esc(src(u, 768)) + '" alt="' + esc(p.name) + '"' + (i ? ' loading="lazy"' : '') + ' decoding="async"></span>'; }).join('') + '</div>' +
+        (list.length > 1 ? '<div class="gal__d">' + list.map(function (u, i) { return '<i class="' + (i ? '' : 'is-on') + '"></i>'; }).join('') + '</div>' : '');
+      box.dataset.list = JSON.stringify(list);
+      var s = box.firstChild; s.addEventListener('scroll', function () { var k = Math.round(s.scrollLeft / Math.max(1, s.clientWidth)); $$('.gal__d i', box).forEach(function (d, j) { d.classList.toggle('is-on', j === k); }); }, { passive: true });
+    }
+    var want = c && c.v && !(c.v.nophoto && !(c.sub && c.sub.img)) && selOf(p).touched ? c.img : null, k = want ? JSON.parse(box.dataset.list).indexOf(want) : -1;
+    if (k >= 0) box.firstChild.scrollTo({ left: k * box.firstChild.clientWidth, behavior: 'smooth' });
   }
   function setVariant(p, patch) {
     var s = selOf(p);
@@ -794,14 +884,19 @@
     productDetail(p);
     if (!XW.ok || !(furniture.kind === 'product' && furniture.p === p)) return;
     var c = cur(p, s);
-    if (p.vmodels && modelOf(p, c) !== (furniture.mdl || p.model)) { furniture.mdl = modelOf(p, c); stageShow(p); }
+    if (p.vparts && XW.setPart) { var pt = partOf(p, c); XW.setPart(pt ? src(pt) : null); if (p.model) XW.setTint(c.hex); }   // bagian varian: hanya bagian itu yang muncul / hilang
+    else if (p.vmodels && modelOf(p, c) !== (furniture.mdl || p.model)) { furniture.mdl = modelOf(p, c); stageShow(p); }
     else if (p.model) XW.setTint(c.hex);
     else XW.showProduct(p, src(c.img, 1024), src(p.img, 1024));
   }
-  $('#pdVar').addEventListener('click', function (e) { var b = e.target.closest('[data-v]'); if (b && kList[kI]) setVariant(kList[kI], { v: +b.dataset.v }); });
+  $('#pdVar').addEventListener('click', function (e) {
+    var p = kList[kI]; if (!p) return;
+    if (e.target.closest('[data-vmore]')) { vMore[p.id] = !vMore[p.id]; renderVariants(p); return; }
+    var b = e.target.closest('[data-v]'); if (b) setVariant(p, { v: +b.dataset.v });
+  });
   $('#pdSub').addEventListener('click', function (e) { var b = e.target.closest('[data-s]'); if (b && kList[kI]) setVariant(kList[kI], { s: +b.dataset.s }); });
   panel.addEventListener('scroll', function (e) { var t = e.target; if (t.classList && t.classList.contains('pane__scroll')) t.classList.toggle('is-sc', t.scrollTop > 6); }, { capture: true, passive: true });
-  function closePd() { pd.classList.remove('is-on'); pd.setAttribute('aria-hidden', 'true'); detailMode(); }
+  function closePd() { advOpen(false); pd.classList.remove('is-on'); pd.setAttribute('aria-hidden', 'true'); detailMode(); }
   $('#pdBack').addEventListener('click', closePd);
   $('#pdPrev').addEventListener('click', function () { pick(kI - 1); });
   $('#pdNext').addEventListener('click', function () { pick(kI + 1); });
@@ -809,6 +904,31 @@
   $('#pdPlus').addEventListener('click', function () { kQty = Math.min(20, kQty + 1); $('#pdQty').textContent = kQty; });
   $('#pdAdd').addEventListener('click', function () { addToBag(kList[kI], kQty); });
   $('#pdNow').addEventListener('click', function () { buyNow(kList[kI], kQty); });
+  /* Advance: Ke ruang & Tanya di kotak samping panel (menggantikan tautan xionco.shop) */
+  var advBox = $('#pdAdvBox'), advBtn = $('#pdAdv');
+  function advPlace() {
+    if (!advBox.classList.contains('is-on')) return;
+    var br = advBtn.getBoundingClientRect(), pr = panel.getBoundingClientRect(), h = advBox.offsetHeight, w = advBox.offsetWidth;
+    if (isMobile()) { advBox.style.left = pr.left + 'px'; advBox.style.width = pr.width + 'px'; advBox.style.top = Math.max(70, br.top - h - 10) + 'px'; return; }
+    advBox.style.width = '';
+    advBox.style.top = clamp(br.top + br.height / 2 - h / 2, pr.top, innerHeight - h - 16) + 'px';
+    advBox.style.left = (html.classList.contains('lay3') ? pr.right + 14 : pr.left - 14 - w) + 'px';
+  }
+  function advOpen(on) {
+    advBox.classList.toggle('is-on', !!on); advBox.setAttribute('aria-hidden', on ? 'false' : 'true');
+    advBtn.setAttribute('aria-expanded', on ? 'true' : 'false'); advBtn.classList.toggle('is-on', !!on);
+    advPlace();
+  }
+  advBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var on = !advBox.classList.contains('is-on');
+    if (on && isMobile()) { advBtn.scrollIntoView({ block: 'center', behavior: 'smooth' }); setTimeout(advPlace, 450); }   // ponsel: kotak muncul di atas tombol, tombol harus terlihat
+    advOpen(on);
+  });
+  document.addEventListener('pointerdown', function (e) { if (advBox.classList.contains('is-on') && !advBox.contains(e.target) && !advBtn.contains(e.target)) advOpen(false); });
+  pd.addEventListener('scroll', advPlace, { passive: true });
+  addEventListener('resize', advPlace);
+  $('#pdWa').addEventListener('click', function () { setTimeout(function () { advOpen(false); }, 0); });
   /* ---- Sesuaikan produk katalog (model 3D asli): ukuran & warna kaki/base ----
      Yang diubah adalah item itu sendiri (GLB), bukan rancangan Customize baru.
      Harga = harga varian × (lebar/lebar asli) × (dalam/dalam asli) × faktor finishing (aturan pemilik: dikali rasio tiap ukuran)
@@ -1451,7 +1571,7 @@
     $('#roomAddBtn') && $('#roomAddBtn').classList.toggle('is-on', on); insets();
   }
   function renderRoomAdd() {
-    var cats = [{ id: 'all', label: T('Semua') }, { id: 'acc', label: T('Aksesoris') }].concat(XV.CATEGORIES.map(function (c) { return { id: c.id, label: T(c.label) }; }), [{ id: 'mine', label: T('Rancangan saya') }]);
+    var cats = [{ id: 'all', label: T('Semua') }, { id: 'acc', label: T('Aksesoris') }].concat(KATS.map(function (k) { return { id: k[0], label: T(k[0]) }; }), [{ id: 'mine', label: T('Rancangan saya') }]);
     $('#raCats').innerHTML = cats.map(function (c) { return '<button type="button" class="' + (c.id === raCat ? 'is-on' : '') + '" data-ra-cat="' + c.id + '">' + esc(c.label) + '</button>'; }).join('');
     var q = $('#raSearch').value.trim().toLowerCase().split(/\s+/).filter(Boolean), h = '';
     if (raCat === 'acc') {
@@ -1463,7 +1583,7 @@
       h = ds.map(function (d) { return '<button class="tile" type="button" data-ra-d="' + d.id + '"><span class="tile__img is-plate">' + (d.img ? '<img class="is-ready" src="' + esc(d.img) + '" alt="">' : '<svg><use href="#i-ruler"/></svg>') + '</span><span class="tile__n">' + esc(d.title) + '</span><span class="tile__t">' + esc(d.sub || '') + '</span><span class="tile__p">' + rupiah(customUnit(d.cfg, d.price)) + '</span></button>'; }).join('');
       $('#raEmpty').textContent = T('Belum ada rancangan. Simpan rancangan di Customize.');
     } else {
-      var ps = XV.PRODUCTS.filter(function (p) { return (raCat === 'all' || p.cat === raCat) && q.every(function (x) { return p._q.indexOf(x) >= 0; }); });
+      var ps = XV.PRODUCTS.filter(function (p) { return inKat(p, raCat, '') && q.every(function (x) { return p._q.indexOf(x) >= 0; }); });
       ps = ps.filter(function (p) { return modelOf(p, cur(p)); }).concat(ps.filter(function (p) { return !modelOf(p, cur(p)); }));   // ber-model 3D lebih dulu
       h = ps.map(function (p) { return '<button class="tile" type="button" data-ra-p="' + p.id + '"><span class="tile__img">' + thumbImg(p) + '</span><span class="tile__n">' + esc(p.name) + '</span><span class="tile__t">' + esc(p.type) + '</span><span class="tile__p">' + priceText(p) + '</span></button>'; }).join('');
       $('#raEmpty').textContent = T('Tidak ada yang cocok.');
@@ -2116,7 +2236,7 @@
     else if (e.target.closest('[data-cz-add]')) czAddToBag();
     else if (e.target.closest('[data-cz-room]')) { var en = czEntry(); roomAdd({ kind: 'custom', title: en.title, sub: en.sub, mat: en.mat, cfg: en.cfg, price: en.price, img: en.img }); }
   });
-  $('#pdRoom').addEventListener('click', function () { var p = kList[kI]; if (!p) return; var s = selOf(p), c = cur(p, s), pc = pcFor(p), e = { kind: 'product', pid: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, title: p.name, sub: c.label || p.type, img: src(c.img || p.img, 400) }; if (pcChanged(pc)) e.pc = { w: pc.w, d: pc.d, w0: pc.w0, d0: pc.d0, metal: pc.metal, metal0: pc.metal0 }; roomAdd(e); });
+  $('#pdRoom').addEventListener('click', function () { advOpen(false); var p = kList[kI]; if (!p) return; var s = selOf(p), c = cur(p, s), pc = pcFor(p), e = { kind: 'product', pid: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, title: p.name, sub: c.label || p.type, img: src(c.img || p.img, 400) }; if (pcChanged(pc)) e.pc = { w: pc.w, d: pc.d, w0: pc.w0, d0: pc.d0, metal: pc.metal, metal0: pc.metal0 }; roomAdd(e); });
 
   /* ---------- kartu pilihan 3:4 — atas 1:1 gambar garis (atau contoh warna/bahan), bawah label
      Gambar garis: assets/cz-icons (dibuat oleh tools/icons/build.js), tampil lewat CSS mask sehingga

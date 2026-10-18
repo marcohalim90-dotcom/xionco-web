@@ -48,6 +48,7 @@
   <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 19.5s-7-4.3-7-9.4A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.1c0 5.1-7 9.4-7 9.4z"/></symbol>
   <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3.5 7.5h10v9h-10zM13.5 10.5h4l3 3v3h-7z"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
   <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4.5 19.5l1.1-3.6A8 8 0 1 1 8.4 18.6z"/><path d="M9 8.6c.2-.5.6-.6.9-.6h.4c.2 0 .4.1.5.4l.6 1.5c.1.3 0 .5-.1.7l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.2.5-.2.7-.1l1.5.6c.3.1.4.3.4.5v.4c0 .3-.1.7-.6.9-.6.3-1.6.4-3.1-.3a8.3 8.3 0 0 1-3.6-3.6c-.7-1.5-.6-2.5-.3-3.1z"/></symbol>
 </svg>
 
@@ -153,8 +154,14 @@
   <section class="pane" data-pane="koleksi" aria-label="Koleksi">
     <div class="pane__scroll" id="kolList">
       <header class="ph"><span class="ph__n">01</span><div><p class="ph__e">Koleksi</p><h2 class="ph__t">Semua karya <em id="kCount">0</em></h2></div></header>
-      <label class="srch"><svg><use href="#i-search"/></svg><input id="kSearch" type="search" placeholder="Cari sofa, meja, lampu…" autocomplete="off" aria-label="Cari di koleksi"></label>
-      <div class="chips" id="kCats"></div>
+      <!-- cari & filter (kategori xionco.shop) — menempel saat daftar digulir -->
+      <div class="kbar" id="kBar">
+        <div class="kbar__row">
+          <label class="srch"><svg><use href="#i-search"/></svg><input id="kSearch" type="search" placeholder="Cari sofa, meja, lampu…" autocomplete="off" aria-label="Cari di koleksi"></label>
+          <button class="kflt" type="button" id="kFlt" aria-expanded="false" aria-controls="kFltBox"><svg><use href="#i-filter"/></svg><span>Filter</span><em id="kFltN"></em></button>
+        </div>
+        <div class="kact" id="kAct" hidden></div>
+      </div>
       <div class="tiles" id="kGrid"></div>
       <p class="empty" id="kEmpty">Tidak ada karya yang cocok.</p>
     </div>
@@ -171,13 +178,20 @@
       <div class="btns btns--3">
         <button class="btn btn--ghost" type="button" id="pdCustom"><svg><use href="#i-ruler"/></svg><span>Customize</span></button>
         <button class="btn btn--ghost" type="button" id="pdCfg" hidden><svg><use href="#i-cube"/></svg><span>Konfigurasi</span></button>
-        <button class="btn btn--ghost" type="button" id="pdRoom"><svg><use href="#i-room"/></svg><span>Ke ruang</span></button>
-        <a class="btn btn--ghost" id="pdWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span id="pdWaText">Tanya</span></a>
       </div>
       <div class="pc" id="pdPc" hidden></div>
-      <dl class="kv" id="pdSpec"></dl>
-      <p class="txt pd__desc" id="pdDesc"></p>
-      <a class="lnk" id="pdLink" href="#" target="_blank" rel="noopener"><span>Lihat di xionco.shop</span><svg><use href="#i-arrow"/></svg></a>
+      <!-- informasi produk seperti xionco.shop: Overview · Specification (data/specs.json) -->
+      <div class="pdt" id="pdTabs">
+        <div class="pdt__b" role="tablist"><button type="button" role="tab" class="is-on" data-pt="ov" aria-selected="true">Overview</button><button type="button" role="tab" data-pt="sp" aria-selected="false">Specification</button></div>
+        <div class="pdt__p" data-pp="ov">
+          <dl class="kv" id="pdSpec"></dl>
+          <p class="txt pd__desc" id="pdDesc"></p>
+          <button type="button" class="vmore pd__more" id="pdMore" hidden><span>More details</span><svg><use href="#i-arrow"/></svg></button>
+          <div class="pd__box" id="pdBox" hidden></div>
+        </div>
+        <div class="pdt__p" data-pp="sp" id="pdSp" hidden></div>
+      </div>
+      <button class="lnk pd__adv" type="button" id="pdAdv" aria-expanded="false" aria-controls="pdAdvBox"><span>Advance</span><svg><use href="#i-arrow"/></svg></button>
       <!-- aksi beli selalu terlihat (menempel di bawah panel) -->
       <div class="foot pd__foot" id="pdFoot">
         <div class="buy" id="pdBuy">
@@ -360,6 +374,19 @@
       <div id="pfBody"></div>
     </div>
   </section>
+</aside>
+
+<!-- Filter Koleksi: kategori xionco.shop bergambar di kotak samping panel -->
+<aside class="adv kfb" id="kFltBox" aria-hidden="true">
+  <div class="kfb__h"><p class="eyebrow">Filter</p><button type="button" class="kfb__reset" id="kFltReset">Reset</button></div>
+  <div id="kFltBody"></div>
+</aside>
+
+<!-- Advance (halaman produk): Ke ruang & Tanya di kotak samping panel -->
+<aside class="adv" id="pdAdvBox" aria-hidden="true">
+  <p class="eyebrow">Advance</p>
+  <button class="adv__o" type="button" id="pdRoom"><svg><use href="#i-room"/></svg><span><b>Ke ruang</b><em>Tata di ruangan Anda</em></span></button>
+  <a class="adv__o" id="pdWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span><b id="pdWaText">Tanya</b><em>Chat WhatsApp XIONCO</em></span></a>
 </aside>
 
 <!-- Customize Box 2: pilihan lebih dari 4 tampil di kotak kiri panel -->

@@ -910,26 +910,6 @@
   "kb": 421
  },
  {
-  "slug": "cameo",
-  "id": "cameo",
-  "variant": null,
-  "file": "assets/items/cameo/model.glb",
-  "scale": 1,
-  "tris": 20522,
-  "tris_out": 20522,
-  "size_cm": [
-   187.4,
-   90.1,
-   64.6
-  ],
-  "roles": {
-   "<auto>2": "metal",
-   "<auto>5": "metal",
-   "MIDGREY": "fabric"
-  },
-  "kb": 1896
- },
- {
   "slug": "orycto",
   "id": "orycto",
   "variant": null,
@@ -1044,5 +1024,25 @@
    "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
   },
   "kb": 108
+ },
+ {
+  "slug": "cameo",
+  "id": "cameo",
+  "variant": null,
+  "file": "assets/items/cameo/model.glb",
+  "scale": 1,
+  "tris": 20522,
+  "tris_out": 20522,
+  "size_cm": [
+   187.4,
+   90.1,
+   64.6
+  ],
+  "roles": {
+   "<auto>2": "metal",
+   "<auto>5": "metal",
+   "MIDGREY": "fabric"
+  },
+  "kb": 1896
  }
 ]

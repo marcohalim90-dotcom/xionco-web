@@ -1,0 +1,438 @@
+{
+ "note": "Ukuran model 3D katalog (cm) — dibuat tools/spec/measure.js; dibandingkan dengan data/specs.json di Developer Settings › Ukuran & material",
+ "measured": "2026-10-18T21:13:55.321Z",
+ "models": {
+  "assets/items/kyrios/model-tiles.glb": {
+   "w": 220,
+   "d": 92.2,
+   "h": 68.9,
+   "unit": "m"
+  },
+  "assets/items/guise/model.glb": {
+   "w": 198.2,
+   "d": 82.1,
+   "h": 71.3,
+   "unit": "m"
+  },
+  "assets/items/cameo/model.glb": {
+   "w": 187.4,
+   "d": 90.1,
+   "h": 64.6,
+   "unit": "m"
+  },
+  "assets/items/astral/model-ai.glb": {
+   "w": 112.2,
+   "d": 107.1,
+   "h": 85,
+   "unit": "m"
+  },
+  "assets/items/orycto/model.glb": {
+   "w": 210.6,
+   "d": 79.2,
+   "h": 57.1,
+   "unit": "m"
+  },
+  "assets/items/canis/model.glb": {
+   "w": 294.1,
+   "d": 144.3,
+   "h": 93.1,
+   "unit": "m"
+  },
+  "assets/items/eorde/model-ai.glb": {
+   "w": 266.4,
+   "d": 276,
+   "h": 90,
+   "unit": "m"
+  },
+  "assets/items/nora/model.glb": {
+   "w": 49.5,
+   "d": 61.7,
+   "h": 84.2,
+   "unit": "m"
+  },
+  "assets/items/geom/model-ai.glb": {
+   "w": 160.3,
+   "d": 85.3,
+   "h": 75,
+   "unit": "m"
+  },
+  "assets/items/verk/model.glb": {
+   "w": 134.9,
+   "d": 61.4,
+   "h": 148.2,
+   "unit": "m"
+  },
+  "assets/items/verk/model-laci.glb": {
+   "w": 174,
+   "d": 63.8,
+   "h": 148.5,
+   "unit": "m"
+  },
+  "assets/items/hout/model.glb": {
+   "w": 77.5,
+   "d": 77.5,
+   "h": 37.2,
+   "unit": "m"
+  },
+  "assets/items/trapezo/model.glb": {
+   "w": 132.2,
+   "d": 57.4,
+   "h": 73.7,
+   "unit": "m"
+  },
+  "assets/items/rouled/model.glb": {
+   "w": 140.5,
+   "d": 98.8,
+   "h": 45.6,
+   "unit": "m"
+  },
+  "assets/items/cubixct/model.glb": {
+   "w": 93.9,
+   "d": 63.3,
+   "h": 39.4,
+   "unit": "m"
+  },
+  "assets/items/cubixct/model-gelap.glb": {
+   "w": 93.9,
+   "d": 63.3,
+   "h": 39.4,
+   "unit": "m"
+  },
+  "assets/items/arze/model.glb": {
+   "w": 81.3,
+   "d": 51.3,
+   "h": 92.9,
+   "unit": "m"
+  },
+  "assets/items/l7/model.glb": {
+   "w": 113.5,
+   "d": 57.4,
+   "h": 91.4,
+   "unit": "m"
+  },
+  "assets/items/recta/model.glb": {
+   "w": 108.9,
+   "d": 59.4,
+   "h": 41.4,
+   "unit": "m"
+  },
+  "assets/items/pluq/model.glb": {
+   "w": 126.2,
+   "d": 74.2,
+   "h": 48.2,
+   "unit": "m"
+  },
+  "assets/items/hexter/model.glb": {
+   "w": 68,
+   "d": 59,
+   "h": 40.6,
+   "unit": "m"
+  },
+  "assets/items/somno/model.glb": {
+   "w": 137,
+   "d": 170.5,
+   "h": 81,
+   "unit": "m"
+  },
+  "assets/items/poel/model.glb": {
+   "w": 136.4,
+   "d": 174.2,
+   "h": 84.1,
+   "unit": "m"
+  },
+  "assets/items/ashara/model-ai.glb": {
+   "w": 265.3,
+   "d": 238.1,
+   "h": 120,
+   "unit": "m"
+  },
+  "assets/items/syme/model.glb": {
+   "w": 228.3,
+   "d": 63.3,
+   "h": 212.8,
+   "unit": "m"
+  },
+  "assets/items/qaztac/model-ai.glb": {
+   "w": 48.4,
+   "d": 73.7,
+   "h": 65,
+   "unit": "m"
+  },
+  "assets/items/lucid/model.glb": {
+   "w": 81.1,
+   "d": 40.5,
+   "h": 180.9,
+   "unit": "m"
+  },
+  "assets/items/aether-k60/model.glb": {
+   "w": 6.7,
+   "d": 10.4,
+   "h": 60.9,
+   "unit": "m"
+  },
+  "assets/items/uruz/model.glb": {
+   "w": 60.5,
+   "d": 20.2,
+   "h": 86,
+   "unit": "m"
+  },
+  "assets/items/kyoukai/model.glb": {
+   "w": 60.2,
+   "d": 2.3,
+   "h": 239.8,
+   "unit": "m"
+  },
+  "assets/items/kyoukai/model-sk060.glb": {
+   "w": 60.3,
+   "d": 2.3,
+   "h": 60.6,
+   "unit": "m"
+  },
+  "assets/items/lophus-bar-stool/model-ai.glb": {
+   "w": 43,
+   "d": 45,
+   "h": 85.5,
+   "unit": "m"
+  },
+  "assets/items/uruz-sofa-bed/model-ai.glb": {
+   "w": 264.7,
+   "d": 129.2,
+   "h": 85,
+   "unit": "m"
+  },
+  "assets/items/azedra/model-ai.glb": {
+   "w": 198.1,
+   "d": 90,
+   "h": 75,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-ottoman-kayu-terang/model.glb": {
+   "w": 62.8,
+   "d": 62.8,
+   "h": 39.4,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-ottoman-kayu-gelap/model.glb": {
+   "w": 62.8,
+   "d": 62.8,
+   "h": 39.4,
+   "unit": "m"
+  },
+  "assets/items/barione-3-seater/model-ai.glb": {
+   "w": 204.8,
+   "d": 94.7,
+   "h": 88,
+   "unit": "m"
+  },
+  "assets/items/astral-3-seater/model.glb": {
+   "w": 190.3,
+   "d": 81.3,
+   "h": 69.2,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-terang/model.glb": {
+   "w": 189.5,
+   "d": 64.3,
+   "h": 81.5,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-gelap/model.glb": {
+   "w": 189.5,
+   "d": 64.3,
+   "h": 81.5,
+   "unit": "m"
+  },
+  "assets/items/sf3s-048/model-ai.glb": {
+   "w": 192.7,
+   "d": 88.5,
+   "h": 78,
+   "unit": "m"
+  },
+  "assets/items/tesse-kursi-puff-ottoman/model.glb": {
+   "w": 29.1,
+   "d": 30.5,
+   "h": 29.8,
+   "unit": "m"
+  },
+  "assets/items/guise-ottoman/model-ai.glb": {
+   "w": 73.5,
+   "d": 73.4,
+   "h": 45,
+   "unit": "m"
+  },
+  "assets/items/astral-2-seater/model.glb": {
+   "w": 134.6,
+   "d": 81.3,
+   "h": 69.2,
+   "unit": "m"
+  },
+  "assets/items/rhombio-puff-ottoman/model.glb": {
+   "w": 109.3,
+   "d": 107.4,
+   "h": 55,
+   "unit": "m"
+  },
+  "assets/items/kyrios-1-seater/model.glb": {
+   "w": 84.3,
+   "d": 81.9,
+   "h": 61.5,
+   "unit": "m"
+  },
+  "assets/items/guise-2-seater/model.glb": {
+   "w": 122.3,
+   "d": 72,
+   "h": 69.4,
+   "unit": "m"
+  },
+  "assets/items/guise-1-seater/model.glb": {
+   "w": 80.2,
+   "d": 80.6,
+   "h": 69.6,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-2-seater-ac-ac-kayu-terang/model.glb": {
+   "w": 126.6,
+   "d": 64.2,
+   "h": 79.6,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-2-seater-ac-ac-kayu-gelap/model.glb": {
+   "w": 126.6,
+   "d": 64.2,
+   "h": 79.6,
+   "unit": "m"
+  },
+  "assets/items/eorde-sofa-bed-futon-sleeper-minimalis/model.glb": {
+   "w": 197.7,
+   "d": 93.2,
+   "h": 79,
+   "unit": "m"
+  },
+  "assets/items/delune-series-sw04/model-ai.glb": {
+   "w": 98.4,
+   "d": 92,
+   "h": 85,
+   "unit": "m"
+  },
+  "assets/items/capra-signature-3s/model-ai.glb": {
+   "w": 210,
+   "d": 86.7,
+   "h": 80.1,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-1-seater-al-kayu-terang/model.glb": {
+   "w": 64.5,
+   "d": 64.2,
+   "h": 81.5,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-1-seater-al-kayu-gelap/model.glb": {
+   "w": 64.5,
+   "d": 64.2,
+   "h": 81.5,
+   "unit": "m"
+  },
+  "assets/items/nora-bar-stool/model.glb": {
+   "w": 48.5,
+   "d": 64.6,
+   "h": 104.7,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-1-seater-ac-kayu-terang/model.glb": {
+   "w": 63.8,
+   "d": 64,
+   "h": 79.6,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-1-seater-ac-kayu-gelap/model.glb": {
+   "w": 63.8,
+   "d": 64,
+   "h": 79.6,
+   "unit": "m"
+  },
+  "assets/items/capra-deluxe-3s/model-ai.glb": {
+   "w": 226.8,
+   "d": 97.8,
+   "h": 75,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-meja-sudut-side/model.glb": {
+   "w": 63.3,
+   "d": 62.9,
+   "h": 39.4,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-meja-sudut-side/model-gelap.glb": {
+   "w": 63.3,
+   "d": 62.9,
+   "h": 39.4,
+   "unit": "m"
+  },
+  "assets/items/cruiseo-dining-table/model-ai.glb": {
+   "w": 221.7,
+   "d": 80.8,
+   "h": 75,
+   "unit": "m"
+  },
+  "assets/items/scandus-dining-table/model-ai.glb": {
+   "w": 221.8,
+   "d": 101.2,
+   "h": 75,
+   "unit": "m"
+  },
+  "assets/items/gliza-tv-cabinet-stand/model.glb": {
+   "w": 248.7,
+   "d": 44.4,
+   "h": 39,
+   "unit": "m"
+  },
+  "assets/items/aether-standing-side-floor-lamp/model.glb": {
+   "w": 21.3,
+   "d": 21.3,
+   "h": 163.2,
+   "unit": "m"
+  },
+  "assets/items/void-series-sky-b9/model.glb": {
+   "w": 120,
+   "d": 6,
+   "h": 71.7,
+   "unit": "m"
+  },
+  "assets/items/aether-series-cloud-m1/model-ai.glb": {
+   "w": 6.8,
+   "d": 40,
+   "h": 40,
+   "unit": "m"
+  },
+  "assets/items/aether/model.glb": {
+   "w": 6.6,
+   "d": 10.5,
+   "h": 102,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-throw-pillow-b/model.glb": {
+   "w": 48.8,
+   "d": 24.6,
+   "h": 45.7,
+   "unit": "m"
+  },
+  "assets/items/capra-deluxe-ottoman/model-ai.glb": {
+   "w": 93.8,
+   "d": 96.6,
+   "h": 45,
+   "unit": "m"
+  },
+  "assets/items/aether-k40/model.glb": {
+   "w": 13.1,
+   "d": 13.1,
+   "h": 40.5,
+   "unit": "m"
+  },
+  "assets/items/aether-sky/model.glb": {
+   "w": 40.3,
+   "d": 40.3,
+   "h": 111.6,
+   "unit": "m"
+  }
+ }
+}

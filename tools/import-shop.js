@@ -24,6 +24,20 @@ const OUT_DB = path.join(ROOT, 'data/products.json');
 const SHOP = 'https://xionco.shop/products/';
 
 const src = JSON.parse(fs.readFileSync(SRC, 'utf8'));
+// data terbaru langsung dari xionco.shop (node tools/fetch-shop.js → data/source/xionco-shop-live.json):
+// gambar utama (main_img_display) + urutan foto, varian, harga, terjual, kategori, deskripsi & spesifikasi seperti di toko
+try {
+  const live = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/source/xionco-shop-live.json'), 'utf8')).rows;
+  const txt = (h) => String(h || '').replace(/<br\b[^>]*>/gi, '\n').replace(/<\/(p|div|li)>/gi, '\n').replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+    .replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+  src.rows = src.rows.map((r) => {
+    const L = live[r.id]; if (!L) return r;
+    const imgs = [L.main_img_display || (L.imageurl || [])[0]].concat(L.imageurl || []).filter((u, i, a) => u && a.indexOf(u) === i);
+    return Object.assign({}, r, { katagori: L.katagori, main_produk: L.main_produk, main_price: L.main_price, price_coret: L.price_coret, totalterjual: L.totalterjual,
+      tipevariant: L.tipevariant, listvariant: L.listvariant, imageurl: imgs, deskripsi: txt(L.diskripsi) || r.deskripsi, spesifikasi: L.spesifikasi || r.spesifikasi, videoUrl: L.videoUrl || r.videoUrl });
+  });
+} catch (e) { console.log('(tanpa data live xionco.shop — jalankan node tools/fetch-shop.js)'); }
 const IMG = src.imageBase || 'https://hig3141592653.my.id';
 
 // produk v5 lama (urutan kurasi, nama & deskripsi yang sudah ditulis rapi)
@@ -73,7 +87,8 @@ const full = (u) => !u ? '' : /^https?:/.test(u) ? u : IMG + (u[0] === '/' ? '' 
 const num = (v) => { const n = +v; return isFinite(n) && n > 0 ? n : null; };
 const hex = (h) => /^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(String(h || '').trim()) ? String(h).trim().toLowerCase() : null;
 const title = (s) => String(s || '').trim().replace(/\s+/g, ' ').replace(/\S+/g, (w) => /^[A-Z0-9.&]+$/.test(w) && w.length > 1 && !/\d/.test(w) ? w[0] + w.slice(1).toLowerCase() : w);
-const slug = (s) => String(s).toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const slug = (s) => String(s).toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');   // id produk (jangan diubah: aset per id)
+const shopSlug = (s) => String(s).toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/[\s-]+/g, '-');   // alamat xionco.shop: karakter khusus dibuang
 const fabricName = (c) => title(String(c || '').split('|')[0].replace(/^\s*FABRIC\s+/i, ''));
 
 function splitName(n, cat0) {
@@ -140,7 +155,8 @@ const shopItems = src.rows.map((row) => {
     variant: v.def,
     sold: row.totalterjual || 0,
     desc: (lg && lg.desc) || cleanDesc(row.deskripsi),
-    url: SHOP + slug(row.namaproduk),
+    url: SHOP + shopSlug(row.namaproduk),
+    kats: k.slice(),   // kategori xionco.shop (filter Koleksi)
     shopId: row.id,
     shopName: row.namaproduk,
     bg: 'white',

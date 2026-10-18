@@ -13,7 +13,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const HIDE = ['x-coin', 'capra', 'capra-signature-series'];   // diarsip (data tetap ada)
+const HIDE = ['x-coin', 'capra', 'capra-signature-series',
+  'astral-1-seater', 'aether-k60'];   // diarsip (data tetap ada) — dua terakhir: duplikat lokal SKP tanpa foto/harga dari ASTRAL 1 Seater & AETHER K60
+// kategori xionco.shop untuk produk lokal (tanpa halaman toko) / produk yang kategorinya kosong di toko
+const KATS_OF = { seats: ['Sofa'], tables: ['Table'], bedframe: ['Bed'], cabinet: ['Cabinet'], lighting: ['Lightings'], decor: ['Accent'], smart: ['Smart'] };
 
 const CAPRA = {
   'capra-signature-1s': ['CAPRA SIGNATURE 1S', 'Sofa · 1 seat', 1], 'capra-signature-2s': ['CAPRA SIGNATURE 2S', 'Sofa · 2 seat', 2],
@@ -82,6 +85,18 @@ function curate(items) {
 
   Object.keys(MODEL).forEach((id) => { if (byId[id]) fill(byId[id], 'model', MODEL[id]); });
   HIDE.forEach((id) => { if (byId[id]) byId[id].status = 'arsip'; });
+  // AETHER: xionco.shop 83 = CLOUD K60 (60 cm), 82 = CLOUD K100 (100 cm). Model 102 cm lama (item aether) milik K100;
+  // model K60 (61 cm) ada di item lokal aether-k60 (arsip, duplikat tanpa foto/harga)
+  if (byId.aether && byId.aether.shopId === 83) {
+    Object.assign(byId.aether, { name: 'AETHER CLOUD', type: 'K60 · Wall light', model: 'assets/items/aether-k60/model.glb', dims: '7 × 10 × 61 cm' });
+    if (byId['aether-cloud-k100']) Object.assign(byId['aether-cloud-k100'], { name: 'AETHER CLOUD', type: 'K100 · Wall light', model: 'assets/items/aether/model.glb', dims: '7 × 11 × 102 cm' });
+  }
+  // VERK: varian Laci = meja yang sama + kabinet laci → di panggung hanya kabinetnya yang ditambahkan (tools/glb/part-diff.py)
+  if (byId.verk && fs.existsSync(path.resolve(__dirname, '..', 'assets/items/verk/part-laci.glb'))) byId.verk.vparts = { Laci: 'assets/items/verk/part-laci.glb' };
+  // ASTRAL lama = xionco.shop 'ASTRAL - 1 Seater' (dulu bernama Signature 1–3 seater)
+  if (byId.astral && byId.astral.shopId === 24) Object.assign(byId.astral, { name: 'ASTRAL', type: '1 Seater' });
+  // kategori Koleksi = kategori xionco.shop (p.kats dari impor); kosong → dari kategori internal
+  items.forEach((p) => { if (!p.kats || !p.kats.length) p.kats = (KATS_OF[p.cat] || ['Accent']).concat(p.cat === 'seats' && /ottoman/i.test(p.name + ' ' + p.type) ? ['Ottoman'] : []); });
   return items;
 }
 module.exports = { curate };

@@ -1,7 +1,7 @@
 {
   "app": "XIONCO",
   "kind": "products",
-  "updated": 1792223369184,
+  "updated": null,
   "items": [
     {
       "status": "aktif",
@@ -188,6 +188,9 @@
       "sold": 7,
       "desc": "Velvet tufted dengan base berlapis kuningan. Seri GUISE KYRIOS: tegas, dalam, dan hangat.",
       "url": "https://xionco.shop/products/kyrios-3-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 17,
       "shopName": "Kyrios - 3 Seater",
       "bg": "white",
@@ -274,39 +277,13 @@
       "sold": 23,
       "desc": "Sofa kulit minimalis dengan rangka kayu solid. Tersedia 1, 2 dan 3 seater.",
       "url": "https://xionco.shop/products/capra-deluxe-series",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 85,
       "shopName": "CAPRA DELUXE SERIES",
       "bg": "white",
       "model": "assets/items/capra/model-ai.glb"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": true,
-      "stock": "Ready",
-      "note": "",
-      "id": "capra-deluxe-ottoman",
-      "cat": "seats",
-      "name": "CAPRA DELUXE OTTOMAN",
-      "type": "Ottoman",
-      "price": 2714000,
-      "was": 5202000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1775916590550.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-9-1775916590550.png"
-      ],
-      "variants": [],
-      "variant": -1,
-      "sold": 0,
-      "desc": "Ottoman seri CAPRA Deluxe — faux leather premium dengan rangka kayu solid.",
-      "url": "https://xionco.shop/products/capra-deluxe-series",
-      "shopId": 85,
-      "shopName": "CAPRA DELUXE SERIES",
-      "bg": "white",
-      "model": "assets/items/capra-deluxe-ottoman/model-ai.glb",
-      "local": true
     },
     {
       "status": "aktif",
@@ -493,6 +470,9 @@
       "sold": 29,
       "desc": "Proporsi rendah, jahitan tufting presisi, kaki kayu tapered.",
       "url": "https://xionco.shop/products/guise-3-seater-sofa-minimalis",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 71,
       "shopName": "Guise - 3 Seater Sofa Minimalis",
       "bg": "white",
@@ -553,6 +533,10 @@
       "sold": 31,
       "desc": "Garis bersih, dudukan dalam, kaki baja ramping. Diam, tapi tidak membosankan.",
       "url": "https://xionco.shop/products/cameo-sofa-bed",
+      "kats": [
+        "Sofa",
+        "Sofa Bed"
+      ],
       "shopId": 66,
       "shopName": "CAMEO - Sofa Bed",
       "bg": "white",
@@ -567,8 +551,8 @@
       "note": "",
       "id": "astral",
       "cat": "seats",
-      "name": "ASTRAL Signature",
-      "type": "Sofa · 1–3 seater",
+      "name": "ASTRAL",
+      "type": "1 Seater",
       "price": 2200000,
       "was": 4217000,
       "from": false,
@@ -586,6 +570,9 @@
       "sold": 43,
       "desc": "Silhouette hitam dengan piping kontras. Salah satu seri terlaris XIONCO.",
       "url": "https://xionco.shop/products/astral-1-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 24,
       "shopName": "ASTRAL - 1 Seater",
       "bg": "white",
@@ -698,6 +685,9 @@
       "sold": 18,
       "desc": "Lengan kulit, bantalan lebar, nyaman untuk ruang keluarga.",
       "url": "https://xionco.shop/products/orycto-3-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 54,
       "shopName": "ORYCTO - 3 Seater",
       "bg": "white",
@@ -784,6 +774,9 @@
       "sold": 42,
       "desc": "Panel kayu di sandaran berfungsi sebagai meja kerja, rak display, dan penyimpanan.",
       "url": "https://xionco.shop/products/canis-3-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 115,
       "shopName": "CANIS - 3 Seater",
       "bg": "white",
@@ -810,8 +803,10 @@
       "variant": -1,
       "images": [],
       "sold": 0,
-      "was": null,
-      "from": false
+      "kats": [
+        "Sofa",
+        "Ottoman"
+      ]
     },
     {
       "status": "aktif",
@@ -1153,6 +1148,9 @@
       "sold": 26,
       "desc": "Sectional dengan dua dudukan elektrik dan meja tersembunyi. Flagship XIONCO.",
       "url": "https://xionco.shop/products/eorde-sofa-sectional-series",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 39,
       "shopName": "EORDE - SOFA SECTIONAL SERIES",
       "bg": "white",
@@ -1187,6 +1185,9 @@
       "sold": 26,
       "desc": "Rangka baja hitam dengan dudukan empuk. Pasangan meja GEOM.",
       "url": "https://xionco.shop/products/nora-dining-chair",
+      "kats": [
+        "Chair"
+      ],
       "shopId": 104,
       "shopName": "NORA - Dining Chair",
       "bg": "white",
@@ -1260,6 +1261,9 @@
       "sold": 13,
       "desc": "Kaki geometris dari baja; daun meja HPL putih tulang.",
       "url": "https://xionco.shop/products/geom-dining-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 60,
       "shopName": "GEOM - Dining Table",
       "bg": "white",
@@ -1320,12 +1324,19 @@
       "sold": 6,
       "desc": "Meja kerja dengan rak terintegrasi. Satu bidang, semua kebutuhan.",
       "url": "https://xionco.shop/products/verk-desk",
+      "kats": [
+        "Desk",
+        "Table"
+      ],
       "shopId": 32,
       "shopName": "VERK - Desk",
       "bg": "white",
       "model": "assets/items/verk/model.glb",
       "vmodels": {
         "Laci": "assets/items/verk/model-laci.glb"
+      },
+      "vparts": {
+        "Laci": "assets/items/verk/part-laci.glb"
       }
     },
     {
@@ -1356,6 +1367,9 @@
       "sold": 19,
       "desc": "Kayu hangat di atas rangka baja tipis.",
       "url": "https://xionco.shop/products/hout-coffee-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 45,
       "shopName": "HOUT - Coffee Table",
       "bg": "white",
@@ -1389,6 +1403,10 @@
       "sold": 38,
       "desc": "Bentuk trapesium untuk ruang kerja kolaboratif.",
       "url": "https://xionco.shop/products/trapezo-collaborative-office-desk-table",
+      "kats": [
+        "Table",
+        "Desk"
+      ],
       "shopId": 35,
       "shopName": "TRAPEZO - Collaborative Office Desk Table",
       "bg": "white",
@@ -1462,6 +1480,9 @@
       "sold": 37,
       "desc": "Dua meja bulat yang saling bersarang.",
       "url": "https://xionco.shop/products/rouled-nested-coffee-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 26,
       "shopName": "ROULED - Nested Coffee Table",
       "bg": "white",
@@ -1522,6 +1543,9 @@
       "sold": 23,
       "desc": "Coffee table CUBIX: rangka kayu terbuka dengan top kaca.\nRangka kayu terbuka dengan kaca bening.",
       "url": "https://xionco.shop/products/cubix-series-coffee-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 49,
       "shopName": "CUBIX SERIES - Coffee Table",
       "bg": "white",
@@ -1560,6 +1584,10 @@
       "sold": 37,
       "desc": "Meja kerja ringkas dengan rak atas.",
       "url": "https://xionco.shop/products/arze-desk",
+      "kats": [
+        "Desk",
+        "Table"
+      ],
       "shopId": 29,
       "shopName": "ARZE - Desk",
       "bg": "white",
@@ -1593,6 +1621,10 @@
       "sold": 13,
       "desc": "Siluet miring yang ringan, untuk sudut kerja di rumah.",
       "url": "https://xionco.shop/products/l7-desk",
+      "kats": [
+        "Desk",
+        "Table"
+      ],
       "shopId": 30,
       "shopName": "L7 - Desk",
       "bg": "white",
@@ -1666,6 +1698,9 @@
       "sold": 39,
       "desc": "Kaca dan baja hitam. Hampir tidak terlihat.",
       "url": "https://xionco.shop/products/recta-coffee-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 34,
       "shopName": "RECTA - Coffee Table",
       "bg": "white",
@@ -1739,6 +1774,9 @@
       "sold": 18,
       "desc": "Daun meja organik di atas kaki kayu gelap.",
       "url": "https://xionco.shop/products/pluq-coffee-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 33,
       "shopName": "PLUQ - Coffee Table",
       "bg": "white",
@@ -1811,6 +1849,9 @@
       "sold": 13,
       "desc": "Heksagonal, bisa disusun berdampingan.",
       "url": "https://xionco.shop/products/hexter-modular-side-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 36,
       "shopName": "HEXTER - Modular Side Table",
       "bg": "white",
@@ -2168,6 +2209,9 @@
       "sold": 19,
       "desc": "Headboard berlapis kain, platform rendah.",
       "url": "https://xionco.shop/products/somno-platform-bed",
+      "kats": [
+        "Bed"
+      ],
       "shopId": 78,
       "shopName": "SOMNO - Platform Bed",
       "bg": "white",
@@ -2267,6 +2311,9 @@
       "sold": 11,
       "desc": "Rangka baja dengan headboard kayu.",
       "url": "https://xionco.shop/products/poel-platform-bed",
+      "kats": [
+        "Bed"
+      ],
       "shopId": 25,
       "shopName": "POEL - Platform Bed",
       "bg": "white",
@@ -2300,6 +2347,9 @@
       "sold": 6,
       "desc": "Sandaran elektrik yang bisa diatur. Tidur, membaca, bekerja.",
       "url": "https://xionco.shop/products/ashara-34-smart-bed-electrical-adjustable",
+      "kats": [
+        "Bed"
+      ],
       "shopId": 109,
       "shopName": "ASHARA 34 | SMART BED - ELECTRICAL ADJUSTABLE",
       "bg": "white",
@@ -2360,6 +2410,9 @@
       "sold": 40,
       "desc": "Pintu geser gelap dengan aksen kuningan.",
       "url": "https://xionco.shop/products/syme-sliding-wardrobe",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 55,
       "shopName": "SYME - Sliding Wardrobe",
       "bg": "white",
@@ -2393,6 +2446,9 @@
       "sold": 23,
       "desc": "Laci kayu dalam rangka baja hitam.",
       "url": "https://xionco.shop/products/qaztac-bedside-table",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 28,
       "shopName": "QAZTAC - Bedside Table",
       "bg": "white",
@@ -2426,6 +2482,9 @@
       "sold": 2,
       "desc": "Rangka terbuka, ringan secara visual.",
       "url": "https://xionco.shop/products/lucid-hanger-wardrobe",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 57,
       "shopName": "LUCID - Hanger Wardrobe",
       "bg": "white",
@@ -2450,21 +2509,22 @@
       "variant": -1,
       "images": [],
       "sold": 0,
-      "was": null,
-      "from": false,
-      "model": "assets/items/regale/model-ai.glb"
+      "model": "assets/items/regale/model-ai.glb",
+      "kats": [
+        "Cabinet"
+      ]
     },
     {
       "status": "aktif",
-      "dims": "7 × 11 × 102 cm",
+      "dims": "7 × 10 × 61 cm",
       "leadTime": "",
       "customizable": false,
       "stock": "Ready",
       "note": "",
       "id": "aether",
       "cat": "lighting",
-      "name": "AETHER Cloud K100",
-      "type": "Wall light",
+      "name": "AETHER CLOUD",
+      "type": "K60 · Wall light",
       "price": 354000,
       "was": 590000,
       "from": false,
@@ -2482,10 +2542,13 @@
       "sold": 3,
       "desc": "Garis cahaya vertikal. Seri AETHER: Cloud, Hill, Sky, Terra.",
       "url": "https://xionco.shop/products/aether-cloud-k60",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 83,
       "shopName": "AETHER - CLOUD K60",
       "bg": "white",
-      "model": "assets/items/aether/model.glb"
+      "model": "assets/items/aether-k60/model.glb"
     },
     {
       "status": "draft",
@@ -2506,90 +2569,10 @@
       "variant": -1,
       "images": [],
       "sold": 0,
-      "was": null,
-      "from": false,
-      "model": "assets/items/aetherk80/model.glb"
-    },
-    {
-      "status": "aktif",
-      "dims": "13 × 13 × 41 cm",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "Lokal (dari SKP) · foto & harga menyusul",
-      "id": "aether-k40",
-      "cat": "lighting",
-      "name": "AETHER",
-      "type": "K40",
-      "price": null,
-      "was": null,
-      "from": false,
-      "img": "",
-      "images": [],
-      "variants": [],
-      "variant": -1,
-      "sold": 0,
-      "desc": "",
-      "url": "",
-      "shopId": null,
-      "shopName": "",
-      "bg": "white",
-      "local": true,
-      "model": "assets/items/aether-k40/model.glb"
-    },
-    {
-      "status": "aktif",
-      "dims": "7 × 10 × 61 cm",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "Lokal (dari SKP) · foto & harga menyusul",
-      "id": "aether-k60",
-      "cat": "lighting",
-      "name": "AETHER",
-      "type": "K60",
-      "price": null,
-      "was": null,
-      "from": false,
-      "img": "",
-      "images": [],
-      "variants": [],
-      "variant": -1,
-      "sold": 0,
-      "desc": "",
-      "url": "",
-      "shopId": null,
-      "shopName": "",
-      "bg": "white",
-      "local": true,
-      "model": "assets/items/aether-k60/model.glb"
-    },
-    {
-      "status": "aktif",
-      "dims": "40 × 40 × 112 cm",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "Lokal (dari SKP) · foto & harga menyusul",
-      "id": "aether-sky",
-      "cat": "lighting",
-      "name": "AETHER SKY",
-      "type": "Pendant",
-      "price": null,
-      "was": null,
-      "from": false,
-      "img": "",
-      "images": [],
-      "variants": [],
-      "variant": -1,
-      "sold": 0,
-      "desc": "",
-      "url": "",
-      "shopId": null,
-      "shopName": "",
-      "bg": "white",
-      "local": true,
-      "model": "assets/items/aether-sky/model.glb"
+      "model": "assets/items/aetherk80/model.glb",
+      "kats": [
+        "Accent"
+      ]
     },
     {
       "status": "aktif",
@@ -2618,6 +2601,9 @@
       "sold": 8,
       "desc": "Baja hitam, garis minimal.",
       "url": "https://xionco.shop/products/uruz-ii-steel",
+      "kats": [
+        "Accent"
+      ],
       "shopId": 42,
       "shopName": "URUZ II Steel",
       "bg": "white",
@@ -2691,6 +2677,9 @@
       "sold": 21,
       "desc": "Panel kisi kayu untuk dinding dan partisi.",
       "url": "https://xionco.shop/products/kyoukai-wood-slat-wall",
+      "kats": [
+        "Hardware"
+      ],
       "shopId": 40,
       "shopName": "KYOUKAI - Wood Slat Wall",
       "bg": "white",
@@ -2780,6 +2769,10 @@
       "sold": 24,
       "desc": "Saklar dan stop kontak modular berdesain monolitik.",
       "url": "https://xionco.shop/products/vazra-power-switch-and-outlet",
+      "kats": [
+        "Smart",
+        "Hardware"
+      ],
       "shopId": 92,
       "shopName": "VAZRA - Power Switch and Outlet",
       "bg": "white"
@@ -2865,10 +2858,13 @@
       "sold": 47,
       "desc": "Rel listrik untuk meja meeting: geser, pasang, selesai.",
       "url": "https://xionco.shop/products/vazra-series-power-track-socket",
+      "kats": [
+        "Smart",
+        "Hardware"
+      ],
       "shopId": 97,
       "shopName": "VAZRA SERIES - POWER TRACK | SOCKET",
-      "bg": "white",
-      "model": ""
+      "bg": "white"
     },
     {
       "status": "aktif",
@@ -2898,6 +2894,9 @@
       "sold": 50,
       "desc": "LOPHUS - Bar Stool / Kursi Bar Cafe | XIONCO\nTermasuk di dalam : 1 Buah Kursi Bar",
       "url": "https://xionco.shop/products/lophus-bar-stool",
+      "kats": [
+        "Chair"
+      ],
       "shopId": 144,
       "shopName": "LOPHUS - Bar Stool",
       "bg": "white",
@@ -2931,6 +2930,9 @@
       "sold": 50,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 220 x 100 x 70\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Aurora Fabric 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/uruz-sofa-bed",
+      "kats": [
+        "Sofa Bed"
+      ],
       "shopId": 204,
       "shopName": "URUZ Sofa Bed",
       "bg": "white",
@@ -2964,6 +2966,9 @@
       "sold": 50,
       "desc": "AZEDRA - 3 Seater Sofa | XIONCO\nTermasuk di dalam DELUXE 1 seater :\n1 x sofa AZEDRA",
       "url": "https://xionco.shop/products/azedra",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 228,
       "shopName": "AZEDRA",
       "bg": "white",
@@ -2997,6 +3002,9 @@
       "sold": 49,
       "desc": "BARIONE – 1 Seater Sofa Minimalis\nTermasuk di dalam:1 Sofa 1 Dudukan",
       "url": "https://xionco.shop/products/barione-1-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 143,
       "shopName": "BARIONE – 1 Seater",
       "bg": "white"
@@ -3029,6 +3037,9 @@
       "sold": 48,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 160 x 80 x 70\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf2s-x58",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 194,
       "shopName": "SF2S X58",
       "bg": "white"
@@ -3072,6 +3083,7 @@
           "price": 892500,
           "was": 1711000,
           "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916006537.png",
+          "nophoto": false,
           "on": true,
           "subs": [
             {
@@ -3127,6 +3139,7 @@
           "price": 892500,
           "was": 1711000,
           "img": "",
+          "nophoto": true,
           "on": true,
           "subs": [
             {
@@ -3171,51 +3184,27 @@
               "was": 1711000,
               "img": ""
             }
-          ],
-          "nophoto": true
+          ]
         }
       ],
       "variant": 0,
       "sold": 47,
       "desc": "Modul ottoman (OT) tanpa sandaran — pijakan kaki atau dudukan tambahan.\nWhat's in the box?\n1 x Sofa Cubix tipe OT",
       "url": "https://xionco.shop/products/cubix-series-ottoman-kayu-terang",
+      "kats": [
+        "Sofa",
+        "Ottoman"
+      ],
       "shopId": 123,
       "shopName": "CUBIX SERIES - Ottoman | Kayu Terang",
       "bg": "white",
       "model": "assets/items/cubix-series-ottoman-kayu-terang/model.glb",
-      "series": "cubix",
-      "vTitle": "Kayu",
-      "sTitle": "Warna kain",
       "vmodels": {
         "Gelap": "assets/items/cubix-series-ottoman-kayu-gelap/model.glb"
-      }
-    },
-    {
-      "status": "arsip",
-      "dims": "63 × 63 × 39 cm",
-      "leadTime": "",
-      "customizable": true,
-      "stock": "Ready",
-      "note": "Digabung ke cubix-series-ottoman-kayu-terang (varian Gelap)",
-      "id": "cubix-series-ottoman-kayu-gelap",
-      "cat": "seats",
-      "name": "CUBIX SERIES",
-      "type": "Ottoman · Kayu Gelap",
-      "price": null,
-      "was": null,
-      "from": false,
-      "img": "",
-      "images": [],
-      "variants": [],
-      "variant": -1,
-      "sold": 0,
-      "desc": "",
-      "url": "",
-      "shopId": null,
-      "shopName": "",
-      "bg": "white",
-      "local": true,
-      "model": "assets/items/cubix-series-ottoman-kayu-gelap/model.glb"
+      },
+      "series": "cubix",
+      "vTitle": "Kayu",
+      "sTitle": "Warna kain"
     },
     {
       "status": "aktif",
@@ -3245,6 +3234,9 @@
       "sold": 44,
       "desc": "BARIONE - 3 Seater Sofa Minimalis\nTermasuk di dalam:\n1 Sofa 3 Dudukan",
       "url": "https://xionco.shop/products/barione-3-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 142,
       "shopName": "BARIONE – 3 Seater",
       "bg": "white",
@@ -3278,6 +3270,9 @@
       "sold": 43,
       "desc": "ASTRAL - 3 Seater Sofa Minimalis\nTermasuk di dalam:\n1 x Sofa 3 Dudukan",
       "url": "https://xionco.shop/products/astral-3-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 22,
       "shopName": "ASTRAL -  3 Seater",
       "bg": "white",
@@ -3311,6 +3306,9 @@
       "sold": 43,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 190 x 80 x 85\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf3s-024",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 198,
       "shopName": "SF3s 024",
       "bg": "white"
@@ -3354,6 +3352,7 @@
           "price": 3192000,
           "was": 6118000,
           "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916033100.png",
+          "nophoto": false,
           "on": true,
           "subs": [
             {
@@ -3409,6 +3408,7 @@
           "price": 3192000,
           "was": 6118000,
           "img": "",
+          "nophoto": true,
           "on": true,
           "subs": [
             {
@@ -3453,51 +3453,26 @@
               "was": 6118000,
               "img": ""
             }
-          ],
-          "nophoto": true
+          ]
         }
       ],
       "variant": 0,
       "sold": 42,
       "desc": "Sofa 3 seater CUBIX: susunan bawaan AC-AL-AC.\nWhat's in the box?\n2 x Sofa Cubix tipe AC\n1 x Sofa Cubix tipe AL\n3 x Bantal Besar\n3 x Bantal Kecil",
       "url": "https://xionco.shop/products/cubix-series-3-seaters-ac-al-ac-kayu-terang",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 122,
       "shopName": "CUBIX SERIES - 3 Seaters (AC, AL, AC) | Kayu Terang",
       "bg": "white",
       "model": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-terang/model.glb",
-      "series": "cubix",
-      "vTitle": "Kayu",
-      "sTitle": "Warna kain",
       "vmodels": {
         "Gelap": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-gelap/model.glb"
-      }
-    },
-    {
-      "status": "arsip",
-      "dims": "190 × 64 × 82 cm",
-      "leadTime": "",
-      "customizable": true,
-      "stock": "Ready",
-      "note": "Digabung ke cubix-series-3-seaters-ac-al-ac-kayu-terang (varian Gelap)",
-      "id": "cubix-series-3-seaters-ac-al-ac-kayu-gelap",
-      "cat": "seats",
-      "name": "CUBIX SERIES",
-      "type": "3 Seaters (AC, AL, AC) · Kayu Gelap",
-      "price": null,
-      "was": null,
-      "from": false,
-      "img": "",
-      "images": [],
-      "variants": [],
-      "variant": -1,
-      "sold": 0,
-      "desc": "",
-      "url": "",
-      "shopId": null,
-      "shopName": "",
-      "bg": "white",
-      "local": true,
-      "model": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-gelap/model.glb"
+      },
+      "series": "cubix",
+      "vTitle": "Kayu",
+      "sTitle": "Warna kain"
     },
     {
       "status": "aktif",
@@ -3527,6 +3502,9 @@
       "sold": 42,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 337 x 78 x 65\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Scandinavian",
       "url": "https://xionco.shop/products/sf3s-101-3-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 210,
       "shopName": "SF3S 101 - 3 SEATER",
       "bg": "white"
@@ -3559,6 +3537,9 @@
       "sold": 39,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 210 x 85 x 70\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf3s-142",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 205,
       "shopName": "SF3S 142",
       "bg": "white"
@@ -3591,6 +3572,9 @@
       "sold": 38,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 220 x 80 x 75\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf3s-048",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 201,
       "shopName": "SF3S 048",
       "bg": "white",
@@ -3624,6 +3608,9 @@
       "sold": 37,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 200 x 100 x 70\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf3s-124",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 203,
       "shopName": "SF3S 124",
       "bg": "white"
@@ -3656,6 +3643,9 @@
       "sold": 36,
       "desc": "CAPRA SERIES DELUXE| 2 Seater Sofa Minimalis | XIONCO\nTermasuk di dalam DELUXE 2 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm) + 1 x Bantal Kotak khaki (40x40 cm) + 1 x Bantal Saddle kotak (40x40cm)",
       "url": "https://xionco.shop/products/capra-deluxe-2s",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 234,
       "shopName": "CAPRA DELUXE 2s",
       "bg": "white"
@@ -3989,6 +3979,10 @@
       "sold": 35,
       "desc": "TESSE - Kursi Puff Ottoman Minimalis | XIONCO\nTermasuk di dalam:\n1 Kursi Puff",
       "url": "https://xionco.shop/products/tesse-kursi-puff-ottoman",
+      "kats": [
+        "Ottoman",
+        "Chair"
+      ],
       "shopId": 124,
       "shopName": "TESSE - Kursi Puff Ottoman",
       "bg": "white",
@@ -4022,9 +4016,87 @@
       "sold": 35,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 195 x 80 x 80\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf3s-042",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 199,
       "shopName": "SF3S 042",
       "bg": "white"
+    },
+    {
+      "status": "arsip",
+      "dims": "",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "",
+      "id": "capra-signature-series",
+      "cat": "seats",
+      "name": "CAPRA SIGNATURE SERIES",
+      "type": "Sofa",
+      "price": 4248000,
+      "was": 8142000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916733465.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916733465.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1776330720245.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754641476635.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754641481669.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754641490425.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-6-1775916744171.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-7-1775916746569.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-8-1775916748741.png"
+      ],
+      "variants": [
+        {
+          "key": "Sign • 1 Seater",
+          "label": "Sign • 1 Seater",
+          "group": "",
+          "fabric": "",
+          "hex": null,
+          "price": 2808000,
+          "was": 5382000,
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1775916744171.png",
+          "on": false,
+          "subs": []
+        },
+        {
+          "key": "Sign • 2 Seater",
+          "label": "Sign • 2 Seater",
+          "group": "",
+          "fabric": "",
+          "hex": null,
+          "price": 3304000,
+          "was": 6333000,
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1775916746569.png",
+          "on": false,
+          "subs": []
+        },
+        {
+          "key": "Sign • 3 Seater",
+          "label": "Sign • 3 Seater",
+          "group": "",
+          "fabric": "",
+          "hex": null,
+          "price": 4248000,
+          "was": 8142000,
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1775916748741.png",
+          "on": true,
+          "subs": []
+        }
+      ],
+      "variant": 2,
+      "sold": 34,
+      "desc": "CAPRA SERIES SIGNATURE | 3 Seater Sofa Minimalis | XIONCO\nTermasuk di dalam SIGNATURE 1 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm)\nTermasuk di dalam SIGNATURE 2 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm) + 1 x Bantal Kotak khaki (40x40 cm) + 1 x Bantal Saddle kotak (40x40cm)\nTermasuk di dalam SIGNATURE 3 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm) + 2 x Bantal Kotak khaki…",
+      "url": "https://xionco.shop/products/capra-signature-series",
+      "kats": [
+        "Sofa"
+      ],
+      "shopId": 69,
+      "shopName": "CAPRA SIGNATURE SERIES",
+      "bg": "white",
+      "model": "assets/items/capra-signature-series/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -4211,6 +4283,10 @@
       "sold": 34,
       "desc": "GUISE - Ottoman Minimalis\nTermasuk di dalam:\n1 Guise Ottoman",
       "url": "https://xionco.shop/products/guise-ottoman",
+      "kats": [
+        "Sofa",
+        "Ottoman"
+      ],
       "shopId": 149,
       "shopName": "GUISE - Ottoman",
       "bg": "white",
@@ -4244,6 +4320,9 @@
       "sold": 33,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 195 x 80 x 80\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf3s-027",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 200,
       "shopName": "SF3S 027",
       "bg": "white"
@@ -4276,6 +4355,9 @@
       "sold": 32,
       "desc": "AIERU - Wood Dining Stool / Kursi Bangku Kayu Makan Cafe \\ BERSENI\nIncludes :\n1 x AIERU Stool\n1 x AIERU Detachable Wood Stretcher",
       "url": "https://xionco.shop/products/aieru-wood-dining-stool",
+      "kats": [
+        "Chair"
+      ],
       "shopId": 102,
       "shopName": "AIERU - Wood Dining Stool",
       "bg": "white"
@@ -4308,6 +4390,9 @@
       "sold": 32,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 185 x 80 x 81\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf3s-074",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 202,
       "shopName": "SF3S 074",
       "bg": "white"
@@ -4497,6 +4582,9 @@
       "sold": 31,
       "desc": "GUISE - Storage Bench\nTermasuk di dalam:\n1 Guise Storage Bench",
       "url": "https://xionco.shop/products/guise-storage-bench",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 150,
       "shopName": "GUISE - Storage Bench",
       "bg": "white"
@@ -4529,6 +4617,9 @@
       "sold": 30,
       "desc": "LOPHUS - Dining Chair / Kursi Makan | XIONCO\nTermasuk di dalam : 1 Buah Kursi Makan",
       "url": "https://xionco.shop/products/lophus-dining-chair",
+      "kats": [
+        "Chair"
+      ],
       "shopId": 145,
       "shopName": "LOPHUS - Dining Chair",
       "bg": "white"
@@ -4561,6 +4652,9 @@
       "sold": 29,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 175 x 80 x 80\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf2s-084",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 193,
       "shopName": "SF2S 084",
       "bg": "white"
@@ -4593,37 +4687,13 @@
       "sold": 28,
       "desc": "ASTRAL - 2 Seater Sofa Minimalis\nTermasuk di dalam:\n1 x Sofa 2 Dudukan",
       "url": "https://xionco.shop/products/astral-2-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 23,
       "shopName": "ASTRAL -  2 Seater",
       "bg": "white",
       "model": "assets/items/astral-2-seater/model.glb"
-    },
-    {
-      "status": "aktif",
-      "dims": "83 × 81 × 69 cm",
-      "leadTime": "",
-      "customizable": true,
-      "stock": "Ready",
-      "note": "Lokal (dari SKP) · foto & harga menyusul",
-      "id": "astral-1-seater",
-      "cat": "seats",
-      "name": "ASTRAL",
-      "type": "1 Seater",
-      "price": null,
-      "was": null,
-      "from": false,
-      "img": "",
-      "images": [],
-      "variants": [],
-      "variant": -1,
-      "sold": 0,
-      "desc": "",
-      "url": "",
-      "shopId": null,
-      "shopName": "",
-      "bg": "white",
-      "local": true,
-      "model": "assets/items/astral-1-seater/model.glb"
     },
     {
       "status": "aktif",
@@ -4653,6 +4723,9 @@
       "sold": 23,
       "desc": "LOPHUS - Dining Chair / Kursi Makan | XIONCO\nTermasuk di dalam : 1 Buah Kursi Makan",
       "url": "https://xionco.shop/products/oxima-side-chair",
+      "kats": [
+        "Chair"
+      ],
       "shopId": 221,
       "shopName": "OXIMA - Side Chair",
       "bg": "white"
@@ -4685,6 +4758,9 @@
       "sold": 22,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 168 x 80 x 81\nBahan Material\n* Frame : certified plywood and meranti wood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Modern Minimalist",
       "url": "https://xionco.shop/products/sf3s-x74",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 214,
       "shopName": "SF3S X74",
       "bg": "white"
@@ -4870,6 +4946,10 @@
       "sold": 21,
       "desc": "RHOMBIO - Kursi Tamu Sofa Modular Minimalis Puff Ottoman | XIONCO\nTermasuk di dalam:\n1 Puff",
       "url": "https://xionco.shop/products/rhombio-puff-ottoman",
+      "kats": [
+        "Ottoman",
+        "Sofa"
+      ],
       "shopId": 88,
       "shopName": "RHOMBIO - Puff Ottoman",
       "bg": "white",
@@ -4903,6 +4983,9 @@
       "sold": 21,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : P 225 x L 85 x T 65\nBahan Material\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Scandinavian",
       "url": "https://xionco.shop/products/sf3s-x07",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 212,
       "shopName": "SF3S X07",
       "bg": "white"
@@ -4962,6 +5045,9 @@
       "sold": 20,
       "desc": "STAX Minimalis Stackable Chair\nSPECIFICATION\nOverall Dimension : P 45 x L 45 x T 73 cm\nSeat Height : T 43 cm\nFrame Size : 4 x 2 cm\nFrame Material : Light wood (sungkai)\nProcess : Handrafted\nstyle : Minimalist zen",
       "url": "https://xionco.shop/products/stax-minimalis-stackable-chair",
+      "kats": [
+        "Chair"
+      ],
       "shopId": 192,
       "shopName": "STAX Minimalis Stackable Chair",
       "bg": "white"
@@ -5151,6 +5237,9 @@
       "sold": 19,
       "desc": "Guise - KYRIOS Single Seater Sofa Minimalis\nTermasuk di dalam :\n1 unit sofa 1 dudukan",
       "url": "https://xionco.shop/products/kyrios-1-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 27,
       "shopName": "KYRIOS - 1 Seater",
       "bg": "white",
@@ -5341,6 +5430,9 @@
       "sold": 19,
       "desc": "GUISE - 2 Seater Sofa Minimalis\nTermasuk di dalam:\n1 Sofa 2 Dudukan",
       "url": "https://xionco.shop/products/guise-2-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 76,
       "shopName": "Guise - 2 Seater",
       "bg": "white",
@@ -5531,6 +5623,9 @@
       "sold": 19,
       "desc": "Guise - Single Seater Sofa Minimalis\nTermasuk di dalam: 1 Sofa 1 Dudukan",
       "url": "https://xionco.shop/products/guise-1-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 84,
       "shopName": "Guise - 1 Seater",
       "bg": "white",
@@ -5564,6 +5659,9 @@
       "sold": 19,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 160 x 80 x 70\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Scandinavian",
       "url": "https://xionco.shop/products/sf2s-158",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 207,
       "shopName": "SF2S 158",
       "bg": "white"
@@ -5596,6 +5694,9 @@
       "sold": 19,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 220 x 90 x 65\nBahan Material\n* Frame : black hollow steel\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Scandinavian",
       "url": "https://xionco.shop/products/sf3s-x27",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 211,
       "shopName": "SF3S X27",
       "bg": "white"
@@ -5628,6 +5729,9 @@
       "sold": 19,
       "desc": "CAPRA SERIES SIGNATURE | 1 Seater Sofa Minimalis | XIONCO\nTermasuk di dalam SIGNATURE 1 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm)",
       "url": "https://xionco.shop/products/capra-signature-1s",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 238,
       "shopName": "CAPRA SIGNATURE 1s",
       "bg": "white"
@@ -5660,6 +5764,9 @@
       "sold": 18,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 112.5 x 78 x 65\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Scandinavian",
       "url": "https://xionco.shop/products/sf3s-101-1-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 208,
       "shopName": "SF3S 101 - 1 SEATER",
       "bg": "white"
@@ -5703,6 +5810,7 @@
           "price": 2194500,
           "was": 4207000,
           "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916064887.png",
+          "nophoto": false,
           "on": true,
           "subs": [
             {
@@ -5758,6 +5866,7 @@
           "price": 2194500,
           "was": 4207000,
           "img": "",
+          "nophoto": true,
           "on": true,
           "subs": [
             {
@@ -5802,51 +5911,26 @@
               "was": 4207000,
               "img": ""
             }
-          ],
-          "nophoto": true
+          ]
         }
       ],
       "variant": 0,
       "sold": 16,
       "desc": "Sofa 2 seater CUBIX: susunan bawaan AC-AC.\nWhat's in the box?\n2 x Sofa Cubix tipe AC\n2 x Bantal Besar\n2 x Bantal Kecil",
       "url": "https://xionco.shop/products/cubix-series-2-seater-ac-ac-kayu-terang",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 121,
       "shopName": "CUBIX SERIES - 2 Seater (AC, AC) | Kayu Terang",
       "bg": "white",
       "model": "assets/items/cubix-series-2-seater-ac-ac-kayu-terang/model.glb",
-      "series": "cubix",
-      "vTitle": "Kayu",
-      "sTitle": "Warna kain",
       "vmodels": {
         "Gelap": "assets/items/cubix-series-2-seater-ac-ac-kayu-gelap/model.glb"
-      }
-    },
-    {
-      "status": "arsip",
-      "dims": "127 × 64 × 80 cm",
-      "leadTime": "",
-      "customizable": true,
-      "stock": "Ready",
-      "note": "Digabung ke cubix-series-2-seater-ac-ac-kayu-terang (varian Gelap)",
-      "id": "cubix-series-2-seater-ac-ac-kayu-gelap",
-      "cat": "seats",
-      "name": "CUBIX SERIES",
-      "type": "2 Seater (AC, AC) · Kayu Gelap",
-      "price": null,
-      "was": null,
-      "from": false,
-      "img": "",
-      "images": [],
-      "variants": [],
-      "variant": -1,
-      "sold": 0,
-      "desc": "",
-      "url": "",
-      "shopId": null,
-      "shopName": "",
-      "bg": "white",
-      "local": true,
-      "model": "assets/items/cubix-series-2-seater-ac-ac-kayu-gelap/model.glb"
+      },
+      "series": "cubix",
+      "vTitle": "Kayu",
+      "sTitle": "Warna kain"
     },
     {
       "status": "aktif",
@@ -5915,7 +5999,10 @@
       "variant": 2,
       "sold": 16,
       "desc": "GUISE - Sofa Set L Minimalis\nTermasuk di dalam:\n1 Guise - 3 Seater Sofa Minimalist\n1 Guise - 2 Seater Sofa Minimalis",
-      "url": "https://xionco.shop/products/guise-sofa-set-l-3-2",
+      "url": "https://xionco.shop/products/guise-sofa-set-l-32",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 125,
       "shopName": "Guise - Sofa Set L 3+2",
       "bg": "white"
@@ -5975,6 +6062,10 @@
       "sold": 15,
       "desc": "EORDE - Sofa Bed / Futon Sleeper | XIONCO\nTermasuk di dalam:\n1 Sofa Bed\n2 Bantal Sandaran",
       "url": "https://xionco.shop/products/eorde-sofa-bed-futon-sleeper-minimalis",
+      "kats": [
+        "Sofa",
+        "Sofa Bed"
+      ],
       "shopId": 53,
       "shopName": "EORDE - Sofa Bed / Futon Sleeper Minimalis",
       "bg": "white",
@@ -6008,6 +6099,9 @@
       "sold": 15,
       "desc": "DE LUNE Series - SW04\nTermasuk di dalam:\n1 unit sofa 1 dudukan\nSWIVEL (engsel putar)",
       "url": "https://xionco.shop/products/delune-series-sw04",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 153,
       "shopName": "DELUNE Series - SW04",
       "bg": "white",
@@ -6042,82 +6136,13 @@
       "sold": 15,
       "desc": "CAPRA SERIES SIGNATURE | 3 Seater Sofa Minimalis | XIONCO\nTermasuk di dalam SIGNATURE 3 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm) + 2 x Bantal Kotak khaki (40x40 cm) + 1 x Bantal Saddle kotak (40x40cm)",
       "url": "https://xionco.shop/products/capra-signature-3s",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 236,
       "shopName": "CAPRA SIGNATURE 3s",
       "bg": "white",
       "model": "assets/items/capra-signature-3s/model-ai.glb"
-    },
-    {
-      "status": "arsip",
-      "dims": "",
-      "leadTime": "",
-      "customizable": true,
-      "stock": "Ready",
-      "note": "",
-      "id": "capra-signature-series",
-      "cat": "seats",
-      "name": "CAPRA SIGNATURE SERIES",
-      "type": "Sofa",
-      "price": 2808000,
-      "was": 5382000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916733465.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916733465.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1776330720245.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754641476635.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754641481669.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754641490425.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-6-1775916744171.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-7-1775916746569.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-8-1775916748741.png"
-      ],
-      "variants": [
-        {
-          "key": "Sign • 1 Seater",
-          "label": "Sign • 1 Seater",
-          "group": "",
-          "fabric": "",
-          "hex": null,
-          "price": 2808000,
-          "was": 5382000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1775916744171.png",
-          "on": true,
-          "subs": []
-        },
-        {
-          "key": "Sign • 2 Seater",
-          "label": "Sign • 2 Seater",
-          "group": "",
-          "fabric": "",
-          "hex": null,
-          "price": 3304000,
-          "was": 6333000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1775916746569.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Sign • 3 Seater",
-          "label": "Sign • 3 Seater",
-          "group": "",
-          "fabric": "",
-          "hex": null,
-          "price": 4248000,
-          "was": 8142000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1775916748741.png",
-          "on": false,
-          "subs": []
-        }
-      ],
-      "variant": 0,
-      "sold": 14,
-      "desc": "CAPRA SERIES SIGNATURE | 3 Seater Sofa Minimalis | XIONCO\nTermasuk di dalam SIGNATURE 1 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm)\nTermasuk di dalam SIGNATURE 2 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm) + 1 x Bantal Kotak khaki (40x40 cm) + 1 x Bantal Saddle kotak (40x40cm)\nTermasuk di dalam SIGNATURE 3 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm) + 2 x Bantal Kotak khaki…",
-      "url": "https://xionco.shop/products/capra-signature-series",
-      "shopId": 69,
-      "shopName": "CAPRA SIGNATURE SERIES",
-      "bg": "white",
-      "model": "assets/items/capra-signature-series/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -6158,6 +6183,7 @@
           "price": 997500,
           "was": 1912000,
           "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916079536.png",
+          "nophoto": false,
           "on": true,
           "subs": [
             {
@@ -6213,6 +6239,7 @@
           "price": 997500,
           "was": 1912000,
           "img": "",
+          "nophoto": true,
           "on": true,
           "subs": [
             {
@@ -6257,51 +6284,26 @@
               "was": 1912000,
               "img": ""
             }
-          ],
-          "nophoto": true
+          ]
         }
       ],
       "variant": 0,
       "sold": 13,
       "desc": "Modul armless (AL): satu sandaran seperti palang. Dapat 1 bantal besar dan 1 bantal kecil.\nWhat's in the box?\n1 x Sofa Cubix tipe AL\n1 x Bantal Besar\n1 x Bantal Kecil",
       "url": "https://xionco.shop/products/cubix-series-1-seater-al-kayu-terang",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 103,
       "shopName": "CUBIX SERIES - 1 Seater (AL) |  Kayu Terang",
       "bg": "white",
       "model": "assets/items/cubix-series-1-seater-al-kayu-terang/model.glb",
-      "series": "cubix",
-      "vTitle": "Kayu",
-      "sTitle": "Warna kain",
       "vmodels": {
         "Gelap": "assets/items/cubix-series-1-seater-al-kayu-gelap/model.glb"
-      }
-    },
-    {
-      "status": "arsip",
-      "dims": "65 × 64 × 82 cm",
-      "leadTime": "",
-      "customizable": true,
-      "stock": "Ready",
-      "note": "Digabung ke cubix-series-1-seater-al-kayu-terang (varian Gelap)",
-      "id": "cubix-series-1-seater-al-kayu-gelap",
-      "cat": "seats",
-      "name": "CUBIX SERIES",
-      "type": "1 Seater (AL) · Kayu Gelap",
-      "price": null,
-      "was": null,
-      "from": false,
-      "img": "",
-      "images": [],
-      "variants": [],
-      "variant": -1,
-      "sold": 0,
-      "desc": "",
-      "url": "",
-      "shopId": null,
-      "shopName": "",
-      "bg": "white",
-      "local": true,
-      "model": "assets/items/cubix-series-1-seater-al-kayu-gelap/model.glb"
+      },
+      "series": "cubix",
+      "vTitle": "Kayu",
+      "sTitle": "Warna kain"
     },
     {
       "status": "aktif",
@@ -6331,6 +6333,9 @@
       "sold": 13,
       "desc": "NORA - Bar Stool / Kursi Bar Cafe | XIONCO\nTermasuk di dalam : 1 Buah Kursi Bar",
       "url": "https://xionco.shop/products/nora-bar-stool",
+      "kats": [
+        "Chair"
+      ],
       "shopId": 105,
       "shopName": "NORA - Bar Stool",
       "bg": "white",
@@ -6364,6 +6369,9 @@
       "sold": 13,
       "desc": "GUISE - Dining Chair / Kursi Makan | XIONCO\nTermasuk di dalam : 1 Buah Kursi Makan",
       "url": "https://xionco.shop/products/guise-side-chair",
+      "kats": [
+        "Chair"
+      ],
       "shopId": 217,
       "shopName": "GUISE Side Chair",
       "bg": "white"
@@ -6396,6 +6404,9 @@
       "sold": 12,
       "desc": "GUISE - Dining Chair / Kursi Makan | XIONCO\nTermasuk di dalam : 1 Buah Kursi Makan",
       "url": "https://xionco.shop/products/upslope-side-chair",
+      "kats": [
+        "Chair"
+      ],
       "shopId": 218,
       "shopName": "UPSLOPE Side Chair",
       "bg": "white"
@@ -6439,6 +6450,7 @@
           "price": 1102500,
           "was": 2114000,
           "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775916099693.png",
+          "nophoto": false,
           "on": true,
           "subs": [
             {
@@ -6494,6 +6506,7 @@
           "price": 1102500,
           "was": 2114000,
           "img": "",
+          "nophoto": true,
           "on": true,
           "subs": [
             {
@@ -6538,51 +6551,26 @@
               "was": 2114000,
               "img": ""
             }
-          ],
-          "nophoto": true
+          ]
         }
       ],
       "variant": 0,
       "sold": 11,
       "desc": "Modul armchair (AC): dua sandaran berbentuk siku. Dapat 1 bantal besar dan 1 bantal kecil.\nWhat's in the box?\n1 x Sofa Cubix tipe AC\n1 x Bantal Besar\n1 x Bantal Kecil\n*Untuk estimasi ongkir pengiriman, mohon hubungi Admin via chat",
-      "url": "https://xionco.shop/products/cubix-series-1-seater-ac-kayu-terang",
+      "url": "https://xionco.shop/products/cubix-series-1-seaterac-kayu-terang",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 95,
       "shopName": "CUBIX SERIES - 1 Seater(AC) | KAYU TERANG",
       "bg": "white",
       "model": "assets/items/cubix-series-1-seater-ac-kayu-terang/model.glb",
-      "series": "cubix",
-      "vTitle": "Kayu",
-      "sTitle": "Warna kain",
       "vmodels": {
         "Gelap": "assets/items/cubix-series-1-seater-ac-kayu-gelap/model.glb"
-      }
-    },
-    {
-      "status": "arsip",
-      "dims": "64 × 64 × 80 cm",
-      "leadTime": "",
-      "customizable": true,
-      "stock": "Ready",
-      "note": "Digabung ke cubix-series-1-seater-ac-kayu-terang (varian Gelap)",
-      "id": "cubix-series-1-seater-ac-kayu-gelap",
-      "cat": "seats",
-      "name": "CUBIX SERIES",
-      "type": "1 Seater (AC) · Kayu Gelap",
-      "price": null,
-      "was": null,
-      "from": false,
-      "img": "",
-      "images": [],
-      "variants": [],
-      "variant": -1,
-      "sold": 0,
-      "desc": "",
-      "url": "",
-      "shopId": null,
-      "shopName": "",
-      "bg": "white",
-      "local": true,
-      "model": "assets/items/cubix-series-1-seater-ac-kayu-gelap/model.glb"
+      },
+      "series": "cubix",
+      "vTitle": "Kayu",
+      "sTitle": "Warna kain"
     },
     {
       "status": "aktif",
@@ -6612,6 +6600,9 @@
       "sold": 11,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 195 x 80 x 80\nBahan Material\n* Frame : certified Mindi Wood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Modern Minimalist",
       "url": "https://xionco.shop/products/sf3s-x42",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 213,
       "shopName": "SF3S X42",
       "bg": "white"
@@ -6644,6 +6635,10 @@
       "sold": 8,
       "desc": "ASTRAL - Ottoman Minimalis\nTermasuk di dalamnya:\n1 x Ottoman",
       "url": "https://xionco.shop/products/astral-ottoman",
+      "kats": [
+        "Sofa",
+        "Ottoman"
+      ],
       "shopId": 148,
       "shopName": "ASTRAL - Ottoman",
       "bg": "white"
@@ -6676,6 +6671,9 @@
       "sold": 7,
       "desc": "CAPRA SERIES DELUXE| 3 Seater Sofa Minimalis | XIONCO\nTermasuk di dalam DELUXE 3 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm) + 2 x Bantal Kotak khaki (40x40 cm) + 1 x Bantal Saddle kotak (40x40cm)",
       "url": "https://xionco.shop/products/capra-deluxe-3s",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 233,
       "shopName": "CAPRA DELUXE 3s",
       "bg": "white",
@@ -6709,6 +6707,9 @@
       "sold": 6,
       "desc": "DE LUNE Series - SW14\nTermasuk di dalam:\n1 unit sofa 1 dudukan",
       "url": "https://xionco.shop/products/delune-series-sw14",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 154,
       "shopName": "DELUNE Series - SW14",
       "bg": "white"
@@ -6741,6 +6742,9 @@
       "sold": 6,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 200 x 80 x 84\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf3s-174",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 206,
       "shopName": "SF3S 174",
       "bg": "white"
@@ -6773,6 +6777,9 @@
       "sold": 5,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : 225 x 78 x 65\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Scandinavian",
       "url": "https://xionco.shop/products/sf3s-101-2-seater",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 209,
       "shopName": "SF3S 101 - 2 SEATER",
       "bg": "white"
@@ -6805,6 +6812,9 @@
       "sold": 3,
       "desc": "NORA Bludot - Dining Chair / Kursi Makan | XIONCO\nTermasuk di dalam : 1 Buah Kursi Makan",
       "url": "https://xionco.shop/products/nora-bludot",
+      "kats": [
+        "Chair"
+      ],
       "shopId": 216,
       "shopName": "Nora Bludot",
       "bg": "white"
@@ -6837,6 +6847,9 @@
       "sold": 1,
       "desc": "SPESIFIKASI PRODUK\nDimension\nOverall dimension : P 200 cm x L 100 cm x T 70 cm\nBahan Material\n* Frame : Certified Solid Meranti, Plywood\n* Cushion : Super Premium Yellow 32, Firm Rebounded 4\n* Upholstery : Vienna Linen 54% polyester, 26% cotton, 20% linen\n*Process : Handcrafted\n*Style : Minimalist Modern",
       "url": "https://xionco.shop/products/sf3s-x24",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 191,
       "shopName": "SF3S X24",
       "bg": "white"
@@ -6867,8 +6880,11 @@
       "variants": [],
       "variant": -1,
       "sold": 44,
-      "desc": "Material\nFrame : Black Iron\nShelves : HMR\nDimensi :\n50 x 50 x 50\nFinishing :\nRangka (Cat Ducco)\nAmbalan (Ducco)",
+      "desc": "Material\nFrame : Black Iron\nShelves :  HMR\nDimensi :\n50 x 50 x 50\nFinishing :\nRangka (Cat Ducco)\nAmbalan (Ducco)",
       "url": "https://xionco.shop/products/recta-st62022",
+      "kats": [
+        "Table"
+      ],
       "shopId": 196,
       "shopName": "RECTA ST62022",
       "bg": "white"
@@ -6928,6 +6944,9 @@
       "sold": 37,
       "desc": "Side table CUBIX: rangka kayu terbuka dengan top kaca.\nWhat's in the box?\n1 x Side Table Cubix\n1 x Tabletop Kaca 5mm",
       "url": "https://xionco.shop/products/cubix-series-meja-sudut-side",
+      "kats": [
+        "Table"
+      ],
       "shopId": 52,
       "shopName": "CUBIX SERIES - Meja Sudut Side",
       "bg": "white",
@@ -6937,6 +6956,81 @@
       },
       "series": "cubix",
       "vTitle": "Kayu"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "",
+      "id": "rouled-nested-coffee-table",
+      "cat": "tables",
+      "name": "ROULED",
+      "type": "Nested Coffee Table",
+      "price": 1075000,
+      "was": 2061000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775917341605.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1775917341605.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1776495915379.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1781343739999.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754624821829.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1781343431395.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1-1781343464691.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-6-1754625002950.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-7-1754625008513.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-8-1754625014557.png"
+      ],
+      "variants": [
+        {
+          "key": "Diameter 70",
+          "label": "Diameter 70",
+          "group": "",
+          "fabric": "",
+          "hex": null,
+          "price": 1075000,
+          "was": 2061000,
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754625002950.png",
+          "on": true,
+          "subs": []
+        },
+        {
+          "key": "Diameter 55",
+          "label": "Diameter 55",
+          "group": "",
+          "fabric": "",
+          "hex": null,
+          "price": 825000,
+          "was": 1582000,
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754625008513.png",
+          "on": false,
+          "subs": []
+        },
+        {
+          "key": "Complete Set",
+          "label": "Complete Set",
+          "group": "",
+          "fabric": "",
+          "hex": null,
+          "price": 1900000,
+          "was": 3642000,
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1754625014557.png",
+          "on": false,
+          "subs": []
+        }
+      ],
+      "variant": 0,
+      "sold": 37,
+      "desc": "ROULED - Nested Coffee Table / Meja Tamu Tumpuk Minimalis | XIONCO\nWhat's in the box?\nDiameter 70 1 x Meja Tamu ø70\nDiameter 55 1 x Meja Tamu ø55\nComplete Set 1 x Meja Tamu ø55 1 x Meja Tamu ø70",
+      "url": "https://xionco.shop/products/rouled-nested-coffee-table",
+      "kats": [
+        "Table"
+      ],
+      "shopId": 141,
+      "shopName": "ROULED - Nested Coffee Table",
+      "bg": "white"
     },
     {
       "status": "aktif",
@@ -6966,6 +7060,9 @@
       "sold": 37,
       "desc": "VAVA DINING TABLE – Meja Tamu Modern Minimalist | XIONCO\nWhat's in the box?\n1 x Meja",
       "url": "https://xionco.shop/products/vava-dining-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 222,
       "shopName": "VAVA - Dining Table",
       "bg": "white"
@@ -6997,6 +7094,9 @@
       "sold": 33,
       "desc": "HALVED DINING TABLE – Meja Tamu Modern Minimalis | XIONCO\nWhat's in the box?\n1 x Meja",
       "url": "https://xionco.shop/products/halved-dining-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 156,
       "shopName": "HALVED - Dining Table",
       "bg": "white"
@@ -7029,6 +7129,9 @@
       "sold": 31,
       "desc": "RECTA | CT-62021 | Console Table / Rak Cabinet industrial | XIONCO\nTermasuk di dalamnya :\n1 Unit Solid Steel Frame",
       "url": "https://xionco.shop/products/recta-ct62021",
+      "kats": [
+        "Table"
+      ],
       "shopId": 195,
       "shopName": "RECTA CT62021",
       "bg": "white"
@@ -7059,8 +7162,11 @@
       "variants": [],
       "variant": -1,
       "sold": 30,
-      "desc": "Material\nFrame : Black Iron\nShelves : HMR\nDimensi :\n35 x 35 x 100\nFinishing :\nRangka (Cat Ducco)\nShelves (Ducco)",
+      "desc": "Material\nFrame : Black Iron\nShelves :  HMR\nDimensi :\n35 x 35 x 100\nFinishing :\nRangka (Cat Ducco)\nShelves (Ducco)",
       "url": "https://xionco.shop/products/recta-st62020",
+      "kats": [
+        "Table"
+      ],
       "shopId": 190,
       "shopName": "RECTA ST62020",
       "bg": "white"
@@ -7093,6 +7199,9 @@
       "sold": 23,
       "desc": "EORDE | Coffee Table | Meja Tamu Industrial | XIONCO\nTermasuk di dalam:\n1 unit Meja Tamu",
       "url": "https://xionco.shop/products/eorde-coffee-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 38,
       "shopName": "EORDE - Coffee Table",
       "bg": "white"
@@ -7125,6 +7234,9 @@
       "sold": 18,
       "desc": "CRUISEO DINING TABLE – Meja Tamu Scandinavian | XIONCO\nWhat's in the box?\n1 x Meja",
       "url": "https://xionco.shop/products/cruiseo-dining-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 224,
       "shopName": "CRUISEO - Dining Table",
       "bg": "white",
@@ -7158,6 +7270,9 @@
       "sold": 18,
       "desc": "SCANDUS DINING TABLE – Meja Tamu Industrial | XIONCO\nWhat's in the box?\n1 x Meja",
       "url": "https://xionco.shop/products/scandus-dining-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 225,
       "shopName": "SCANDUS - Dining Table",
       "bg": "white",
@@ -7191,6 +7306,9 @@
       "sold": 13,
       "desc": "ASHARA 54 -Nightstand / Meja Tempat Tidur Nakas Minimalis | XIONCO\nTermasuk di dalam :\n1 unit Bedside Table ASHARA 54\nSilakan hubungi admin untuk Pengiriman ke luar JABODETABEK menggunakan jasa ekspedisi cargo nantinya akan ditagihkan biaya\nongkir dan packing\nSPECIFICATION\n* Dimension : P 120 cm x L 60 cm x T 75 cm\n* Tray Table : 58 cm x 28 cm x 2 cm\n* Table Top Thickness : 2 cm\n* Drawer Height : 19 cm\n* Hidden…",
       "url": "https://xionco.shop/products/ashara-54-nightstand",
+      "kats": [
+        "Table"
+      ],
       "shopId": 108,
       "shopName": "ASHARA 54 - Nightstand",
       "bg": "white"
@@ -7223,6 +7341,9 @@
       "sold": 13,
       "desc": "ROULED - Nested Coffee Table / Meja Tamu Tumpuk Minimalis/ Industrial Coffee Table | XIONCO\nWhat's in the box?\nDiameter 70 1 x Meja Tamu ø70\nTinggi 47 cm",
       "url": "https://xionco.shop/products/ct62024-coffee-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 220,
       "shopName": "CT62024 - Coffee Table",
       "bg": "white"
@@ -7255,79 +7376,11 @@
       "sold": 12,
       "desc": "NORA | Dining Table | Meja Makan Minimalis | XIONCO\nTermasuk di dalam:\n1 Buah Meja Makan",
       "url": "https://xionco.shop/products/nora-dining-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 43,
       "shopName": "NORA | Dining Table",
-      "bg": "white"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": true,
-      "stock": "Ready",
-      "note": "",
-      "id": "rouled-nested-coffee-table",
-      "cat": "tables",
-      "name": "ROULED",
-      "type": "Nested Coffee Table",
-      "price": 825000,
-      "was": 1582000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1775917327809.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1775917327809.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1776495891590.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1757497415729.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1757497420383.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1757497447499.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-6-1757497784467.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-7-1757497788935.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-8-1757497796287.png"
-      ],
-      "variants": [
-        {
-          "key": "Diameter 55",
-          "label": "Diameter 55",
-          "group": "",
-          "fabric": "",
-          "hex": null,
-          "price": 825000,
-          "was": 1582000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1757497784467.png",
-          "on": true,
-          "subs": []
-        },
-        {
-          "key": "Diameter 70",
-          "label": "Diameter 70",
-          "group": "",
-          "fabric": "",
-          "hex": null,
-          "price": 1075000,
-          "was": 2061000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1757497788935.png",
-          "on": false,
-          "subs": []
-        },
-        {
-          "key": "Complete Set",
-          "label": "Complete Set",
-          "group": "",
-          "fabric": "",
-          "hex": null,
-          "price": 1900000,
-          "was": 3642000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-8-1757497796287.png",
-          "on": false,
-          "subs": []
-        }
-      ],
-      "variant": 0,
-      "sold": 12,
-      "desc": "ROULED - Nested Coffee Table / Meja Tamu Tumpuk Minimalis/ Industrial Coffee Table | XIONCO\nWhat's in the box?\nDiameter 70 1 x Meja Tamu ø70\nDiameter 55 1 x Meja Tamu ø55\nComplete Set 1 x Meja Tamu ø55 1 x Meja Tamu ø70",
-      "url": "https://xionco.shop/products/rouled-nested-coffee-table",
-      "shopId": 141,
-      "shopName": "ROULED - Nested Coffee Table",
       "bg": "white"
     },
     {
@@ -7356,8 +7409,11 @@
       "variants": [],
       "variant": -1,
       "sold": 12,
-      "desc": "Material\nFrame : Black Iron\nShelves : HMR\nDimensi :\n40 x 40 x 60\nFinishing :\nRangka (Cat Ducco)\nAmbalan (Ducco)",
+      "desc": "Material\nFrame : Black Iron\nShelves :  HMR\nDimensi :\n40 x 40 x 60\nFinishing :\nRangka (Cat Ducco)\nAmbalan (Ducco)",
       "url": "https://xionco.shop/products/recta-st62019",
+      "kats": [
+        "Table"
+      ],
       "shopId": 189,
       "shopName": "RECTA ST62019",
       "bg": "white"
@@ -7390,6 +7446,9 @@
       "sold": 9,
       "desc": "UAS 45 DINING TABLE – Meja Tamu Modern Minimalist | XIONCO\nWhat's in the box?\n1 x Meja",
       "url": "https://xionco.shop/products/uas-45-dining-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 223,
       "shopName": "UAS 45 - Dining Table",
       "bg": "white"
@@ -7422,6 +7481,9 @@
       "sold": 5,
       "desc": "Meja IETEI - Coffee Table / Meja Tamu Industrial | XIONCO\nTermasuk di dalam:\n1 Meja Tamu",
       "url": "https://xionco.shop/products/ietei-coffee-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 135,
       "shopName": "IETEI - Coffee Table",
       "bg": "white"
@@ -7454,6 +7516,9 @@
       "sold": 2,
       "desc": "HOUT | Portable Coffee Table | Meja Kerja Makan Mini Selip Sofa Tempat Tidur | XIONCO\nTermasuk di dalam:\n1 x HOUT Portable Coffee Table\n==\n*Silakan hubungi admin untuk detail ongkir luar kota\nSPESIFIKASI PRODUK Dimension:\n* Overall Dimension : P 46 cm x L 30 cm x T 60 cm\nBahan Material:\n* Material : Mindi Wood\n* Frame Material : Metal 20x20mm\n* Finishing : Matte\n* Finishing Method: Sprayed\n* Coating : Melamine\n*…",
       "url": "https://xionco.shop/products/hout-portable-coffee-table",
+      "kats": [
+        "Table"
+      ],
       "shopId": 140,
       "shopName": "HOUT - Portable Coffee Table",
       "bg": "white"
@@ -7552,6 +7617,9 @@
       "sold": 41,
       "desc": "POEL - Platform Bed / Tempat Tidur Divan Minimalis\nTermasuk di dalam:\n1 x Tempat Tidur\n1 x Set Papan Ambalan\n==\nNotes : POEL adalah sebuah Divan Kasur/ Rangka Kasur / Platform Bed. Produk tidak termasuk Kasur / Springbed dan lainnya.\n==\nSPESIFIKASI PRODUK Dimension:\n* Overall Dimension : P (92 / 122 / 162 /182 / 202 cm) x L 207cm x T 22cm\n* Ketinggian dari lantai ke rangka : 22cm\n* Ketebalan Besi Rangka : 1,2mm…",
       "url": "https://xionco.shop/products/poel-platform-bed-no-headrest",
+      "kats": [
+        "Bed"
+      ],
       "shopId": 197,
       "shopName": "POEL - Platform Bed (No Headrest)",
       "bg": "white"
@@ -7584,6 +7652,9 @@
       "sold": 49,
       "desc": "SHUSIO W3 | Console Table / Rak Cabinet | XIONCO\nTermasuk di dalamnya :\n1 Unit Cabinet",
       "url": "https://xionco.shop/products/shusio-w3-console-table",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 231,
       "shopName": "SHUSIO W3 - Console Table",
       "bg": "white"
@@ -7615,6 +7686,9 @@
       "sold": 48,
       "desc": "Material\nFrame : Black Iron\nShelves : HMR\nDimension:\n100 x 36 x 168\nFinishing :\nRangka (Duco)\nShelves (Cat Duco)",
       "url": "https://xionco.shop/products/recta-cb62018",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 188,
       "shopName": "RECTA CB62018",
       "bg": "white"
@@ -7647,6 +7721,9 @@
       "sold": 29,
       "desc": "RECTA W Series | CT- 62012 | Console Table / Rak Cabinet industrial | XIONCO\nTermasuk di dalamnya :\n1 Unit Solid Steel Frame\n1 Unit Cabinet",
       "url": "https://xionco.shop/products/recta-w-series-ct-62012-console-table-rak-cabinet-industrial-xionco",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 165,
       "shopName": "RECTA W Series | CT- 62012 | Console Table / Rak Cabinet industrial | XIONCO",
       "bg": "white"
@@ -7679,6 +7756,9 @@
       "sold": 27,
       "desc": "EORDE | TV Cabinet | Curio TV Cabinet | XIONCO\nTermasuk di dalam :\n1 unit Meja Kabinet TV",
       "url": "https://xionco.shop/products/eorde-curio-tv-cabinet",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 37,
       "shopName": "EORDE - CURIO TV CABINET",
       "bg": "white"
@@ -7749,8 +7829,11 @@
       ],
       "variant": 0,
       "sold": 25,
-      "desc": "POEL | MODULAR Wardrobe | Lemari Rak Pakaian Minimalis Industrial | XIONCO\nTermasuk di dalam:\n1 x POEL Modular Wardrobe - Shelves\nor\n1 x POEL Modular Wardrobe - Drawer\nor\n1 x POEL Modular Wardrobe - Door\n==\n*Silakan hubungi admin untuk detail ongkir.\n==\nSPESIFIKASI PRODUK Dimension:\n* Overall Dimension : P 84cm x L 45 cm x T 201 cm\nBahan Material:\n* Material : Mindi Wood\n* Frame Size : 12 x 12mmFrame Material\n*…",
+      "desc": "POEL | MODULAR Wardrobe | Lemari Rak Pakaian Minimalis Industrial | XIONCO\nTermasuk di dalam:\n1 x POEL  Modular Wardrobe - Shelves\nor\n1 x POEL  Modular Wardrobe - Drawer\nor\n1 x POEL  Modular Wardrobe - Door\n==\n*Silakan hubungi admin untuk detail ongkir.\n==\nSPESIFIKASI PRODUK Dimension:\n* Overall Dimension : P 84cm  x  L 45 cm x T 201 cm\nBahan Material:\n* Material : Mindi Wood\n* Frame Size : 12 x 12mmFrame Material\n*…",
       "url": "https://xionco.shop/products/poel-modular-wardrobe",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 132,
       "shopName": "POEL | MODULAR Wardrobe",
       "bg": "white"
@@ -7782,6 +7865,9 @@
       "sold": 22,
       "desc": "SHUSIO 5 - Shoe Storage Bench Minimalis\nTermasuk di dalam:\n1 Dudukan dan Tempat Penyimpanan",
       "url": "https://xionco.shop/products/shusio-5-shoe-storage-bench-minimalis",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 164,
       "shopName": "SHUSIO 5 - Shoe Storage Bench Minimalis",
       "bg": "white"
@@ -7854,6 +7940,9 @@
       "sold": 15,
       "desc": "POEL | MODULAR Cabinet | Lemari Rak Pakaian Minimalis Industrial | XIONCO\nTermasuk di dalam:\n1 x POEL Modular Cabinet - Shelves\nor\n1 x POEL Modular Cabinet - Drawer\nor\n1 x POEL Modular Cabinet - Door\n==\n*Silakan hubungi admin untuk detail ongkir.\n==\nSPESIFIKASI PRODUK Dimension:\n* Overall Dimension : P 84cm x L 45 cm x T 201 cm\nBahan Material:\n* Material : Mindi Wood\n* Frame Size : 12 x 12mmFrame Material\n* Solid…",
       "url": "https://xionco.shop/products/poel-modular-cabinet",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 131,
       "shopName": "POEL | MODULAR Cabinet",
       "bg": "white"
@@ -7951,7 +8040,10 @@
       "variant": 0,
       "sold": 10,
       "desc": "AOBO – BOUNDARY OF ENTROPY - \"Disorder, randomness, or uncertainty.\"\nLife is busy, filled with dynamics, changes, and unpredictability. We move from one space to another, from one phase of life to the next. In the whirlwind of constant motion, we seek something steady—something that adapts without restricting movement.\nAOBO stands as the boundary between order and chaos. A system that is neither rigid nor formless.…",
-      "url": "https://xionco.shop/products/aobo-cabinet-and-wardrobe",
+      "url": "https://xionco.shop/products/aobo-cabinet-wardrobe",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 67,
       "shopName": "AOBO - Cabinet & Wardrobe",
       "bg": "white"
@@ -8011,6 +8103,9 @@
       "sold": 7,
       "desc": "GLIZA - TV Stand Cabinet / Meja TV Minimalis | XIONCO\nTermasuk di dalam:\n1 x Meja Kabinet TV",
       "url": "https://xionco.shop/products/gliza-tv-cabinet-stand",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 31,
       "shopName": "GLIZA - TV Cabinet Stand",
       "bg": "white",
@@ -8044,6 +8139,9 @@
       "sold": 3,
       "desc": "RECTA W Series | SB- 62011 | Sideboard Buffet / Lemari Cabinet industrial | XIONCO\nTermasuk di dalamnya :\n1 Unit Solid Steel Frame\n1 Unit 3 Doors Cabinet",
       "url": "https://xionco.shop/products/recta-w-series-sb-62011-sideboard-buffet-lemari-cabinet-industrial-xionco",
+      "kats": [
+        "Cabinet"
+      ],
       "shopId": 163,
       "shopName": "RECTA W Series | SB- 62011 | Sideboard Buffet / Lemari Cabinet industrial | XIONCO",
       "bg": "white"
@@ -8076,6 +8174,9 @@
       "sold": 49,
       "desc": "AETHER - Standing Side Floor Lamp / Lampu Stand Sudut Lantai Minimalis\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nAETHER menggunakan bahan Aluminium Alloy\nAETHER Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x AETHER Lamp Base\n1 x AETHER Lamp Body\n1 x Power Adapter\n1 x Manual & Guarantee card",
       "url": "https://xionco.shop/products/aether-standing-side-floor-lamp",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 120,
       "shopName": "AETHER - Standing Side Floor Lamp",
       "bg": "white",
@@ -8108,6 +8209,9 @@
       "sold": 46,
       "desc": "** AETHER SKY B083 **\nMinimalism meets sophistication in Aether Sky B803, where sharp geometry and ambient warmth come together to elevate contemporary interiors. Designed for those who appreciate clean lines and subtle elegance, it’s more than just lighting—it’s a quiet statement.",
       "url": "https://xionco.shop/products/aether-series-sky-b83",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 72,
       "shopName": "AETHER SERIES - Sky B83",
       "bg": "white"
@@ -8167,6 +8271,10 @@
       "sold": 46,
       "desc": "VOID TERRA - S88\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Aluminium\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body\n1 x Manual & Guarantee card",
       "url": "https://xionco.shop/products/void-terra-s88",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 176,
       "shopName": "VOID TERRA - S88",
       "bg": "white"
@@ -8199,6 +8307,10 @@
       "sold": 46,
       "desc": "VOID SKY - S7\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Metal dan Glass\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-sky-s7",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 179,
       "shopName": "VOID SKY - S7",
       "bg": "white"
@@ -8231,6 +8343,10 @@
       "sold": 45,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nAETHER menggunakan bahan Aluminium Alloy\nAETHER Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x AETHER Lamp Body",
       "url": "https://xionco.shop/products/aether-cloud-sq2",
+      "kats": [
+        "Lightings",
+        "Lifestyle"
+      ],
       "shopId": 181,
       "shopName": "AETHER CLOUD - SQ2",
       "bg": "white"
@@ -8290,6 +8406,9 @@
       "sold": 43,
       "desc": "** AETHER Cloud R7 **\nAETHER Cloud R7 is where minimalism meets endurance. The bold linear design, paired with a warm ambient glow, elevates any exterior with effortless sophistication. Built to withstand all weather conditions, it ensures beauty and performance through every season. A seamless blend of architectural style and outdoor resilience.",
       "url": "https://xionco.shop/products/aether-series-cloud-r7",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 80,
       "shopName": "AETHER SERIES - Cloud R7",
       "bg": "white"
@@ -8518,6 +8637,10 @@
       "sold": 43,
       "desc": "MAGNETIC LAMP | TRACK | POWER SUPPLY | CONNECTOR",
       "url": "https://xionco.shop/products/aether-series-magnetic-track-light",
+      "kats": [
+        "Lightings",
+        "Hardware"
+      ],
       "shopId": 91,
       "shopName": "AETHER SERIES - MAGNETIC TRACK LIGHT",
       "bg": "white"
@@ -8549,6 +8672,9 @@
       "sold": 40,
       "desc": "** AETHER Sky Z1 **\nSleek, sculptural, and futuristic—AETHER Sky Z1 redefines how lighting can influence mood and design. Its dynamic zig-zag form evokes motion and bold creativity, ideal for those who want to make a striking impression in modern interiors. The integrated LED line casts a warm, continuous glow, perfectly diffused to illuminate dining areas, kitchens, or creative workspaces with refined drama..",
       "url": "https://xionco.shop/products/aether-series-sky-z1",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 74,
       "shopName": "AETHER SERIES - Sky Z1",
       "bg": "white"
@@ -8581,6 +8707,10 @@
       "sold": 40,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Metal dan Crystall Ball\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-sky-s8",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 177,
       "shopName": "VOID SKY - S8",
       "bg": "white"
@@ -8613,6 +8743,10 @@
       "sold": 39,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Wall Lamp Body",
       "url": "https://xionco.shop/products/void-cloud-gk-100",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 167,
       "shopName": "VOID CLOUD - GK 100",
       "bg": "white"
@@ -8644,6 +8778,10 @@
       "sold": 37,
       "desc": "AETHER SKY R150 - Pendant Lamp LED / Lampu Gantung Minimalis - XIONCO\nWhat's in the box?\n1 x Black Linear Pendant Lamp\n1 x Manual & Guarantee card",
       "url": "https://xionco.shop/products/aether-sky-r150",
+      "kats": [
+        "Lightings",
+        "Lifestyle"
+      ],
       "shopId": 157,
       "shopName": "AETHER SKY - R150",
       "bg": "white"
@@ -8676,6 +8814,10 @@
       "sold": 34,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nAETHER menggunakan bahan Aluminium dan Acrylic\nAETHER Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x AETHER Lamp Body",
       "url": "https://xionco.shop/products/aether-cloud-ae2",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 183,
       "shopName": "AETHER CLOUD - AE2",
       "bg": "white"
@@ -8708,6 +8850,9 @@
       "sold": 33,
       "desc": "** AETHER SKY B9 **\nCrafted to perfection, and blends natural elegance with contemporary minimalism. The deep green marble, accented with warm golden details, breathes life into any modern space. Designed to illuminate with subtle sophistication, it creates a timeless ambiance. More than just lighting — it's a bold expression of refined taste.",
       "url": "https://xionco.shop/products/void-series-sky-b9",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 96,
       "shopName": "VOID SERIES - SKY B9",
       "bg": "white",
@@ -8741,6 +8886,9 @@
       "sold": 33,
       "desc": "** VOID Sky B29 **\nElevate your atmosphere with Luxurious Lifter — a chandelier where simplicity meets grandeur. The brushed gold finish exudes quiet power, while the minimalist silhouette whispers sophistication. Designed for those who value understated prestige, this piece transforms any room into a statement of timeless elegance.",
       "url": "https://xionco.shop/products/void-series-sky-b29",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 98,
       "shopName": "VOID SERIES - Sky B29",
       "bg": "white"
@@ -8773,6 +8921,10 @@
       "sold": 33,
       "desc": "VOID SKY - S9\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nAETHER menggunakan bahan Metal dan Glass\nAETHER Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-sky-s9",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 178,
       "shopName": "VOID SKY - S9",
       "bg": "white"
@@ -8804,6 +8956,9 @@
       "sold": 31,
       "desc": "** AETHER Cloud M1 **\nElevate your living space with a harmonious blend of modern elegance and organic charm. Aether Cloud M1, with its sleek vertical design and golden antler accent, brings a warm, ambient glow that transforms any room into a refined sanctuary. Perfectly paired with contemporary textures and earthy tones, it's not just lighting — it's a statement.",
       "url": "https://xionco.shop/products/aether-series-cloud-m1",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 79,
       "shopName": "AETHER SERIES - Cloud M1",
       "bg": "white",
@@ -8837,6 +8992,9 @@
       "sold": 28,
       "desc": "VOID Sky GW21\nThe sky arched in silence. As it swallowed the day and whispered light back into the dark. The ”VOID SKY - W21\" hangs above with neither boast nor blaze, merely presence. A gold of distant stars. A black of shadow that touched by time.\nNot here to shine the brightest. Only a reminder of silence within source of light.",
       "url": "https://xionco.shop/products/void-series-sky-w21",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 101,
       "shopName": "VOID SERIES - Sky W21",
       "bg": "white"
@@ -8869,6 +9027,10 @@
       "sold": 25,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Metal dan Iron\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-cloud-bg7",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 175,
       "shopName": "VOID CLOUD - BG7",
       "bg": "white"
@@ -8928,6 +9090,10 @@
       "sold": 25,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nAETHER menggunakan bahan Cement dan Glass\nAETHER Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x AETHER Lamp Body",
       "url": "https://xionco.shop/products/aether-cloud-ae8",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 184,
       "shopName": "AETHER CLOUD - AE8",
       "bg": "white"
@@ -8960,6 +9126,10 @@
       "sold": 25,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nAETHER menggunakan bahan Iron\nAETHER Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x AETHER Lamp Base",
       "url": "https://xionco.shop/products/aether-sky-v3",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 186,
       "shopName": "AETHER SKY - V3",
       "bg": "white"
@@ -8992,6 +9162,9 @@
       "sold": 24,
       "desc": "** VOID SERIES | Lamp | Sky B10 **\nCreate a luxurious and artistic ambiance in your space with the Marble Linear Pendant Lamp – Emerald Gold Series. The elegant combination of deep green marble and gold accents makes it the perfect choice to enhance dining areas, kitchen islands, workspaces, or exclusive commercial interiors.",
       "url": "https://xionco.shop/products/void-series-sky-b10",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 110,
       "shopName": "VOID SERIES - Sky B10",
       "bg": "white"
@@ -9024,6 +9197,9 @@
       "sold": 22,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Iron dan Kaca\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VAOID Lamp Base",
       "url": "https://xionco.shop/products/void-sky-vx1",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 232,
       "shopName": "VOID SKY VX1",
       "bg": "white"
@@ -9056,6 +9232,10 @@
       "sold": 20,
       "desc": "VOID CLOUD - G8\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Metal\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-cloud-g8",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 173,
       "shopName": "VOID CLOUD - G8",
       "bg": "white"
@@ -9088,6 +9268,10 @@
       "sold": 20,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nAETHER menggunakan bahan Iron, Wood, dan Akrilik\nAETHER Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x AETHER Lamp Body",
       "url": "https://xionco.shop/products/aether-cloud-b83",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 182,
       "shopName": "AETHER CLOUD - B83",
       "bg": "white"
@@ -9120,6 +9304,10 @@
       "sold": 20,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nAETHER menggunakan bahan Metal\nAETHER Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x AETHER Lamp Body",
       "url": "https://xionco.shop/products/aether-terra-x3",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 185,
       "shopName": "AETHER TERRA - X3",
       "bg": "white"
@@ -9152,6 +9340,10 @@
       "sold": 19,
       "desc": "VOID CLOUD - SG1\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Aluminium Alloy\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-cloud-sg1",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 169,
       "shopName": "VOID CLOUD  - SG1",
       "bg": "white"
@@ -9184,6 +9376,10 @@
       "sold": 15,
       "desc": "VOID SKY - VG1\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Brass (kuningan)\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-sky-vg1",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 171,
       "shopName": "VOID SKY - VG1",
       "bg": "white"
@@ -9243,6 +9439,9 @@
       "sold": 14,
       "desc": "OZ - Standing Side Floor Lamp / Lampu Stand Sudut Lantai Minimalis \\ BERSENI\nIncludes :\n1 x OZ Lamp Wood Frame\n1 x OZ Lamp Shade\n1 x Power & Dimmer\n1 x Manual & Guarantee card",
       "url": "https://xionco.shop/products/berseni-oz-floor-lamp-stand",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 99,
       "shopName": "BERSENI • OZ | Floor Lamp Stand",
       "bg": "white"
@@ -9275,6 +9474,10 @@
       "sold": 14,
       "desc": "VOID CLOUD - CL03\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Glass dan Metal\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-cloud-cl03",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 172,
       "shopName": "VOID CLOUD - CL03",
       "bg": "white"
@@ -9320,6 +9523,9 @@
       "sold": 11,
       "desc": "** AETHER Cloud RX7 **\n\"AETHER Cloud RX7 is where minimalism meets endurance. The bold linear design, paired with a warm ambient glow, elevates any exterior with effortless sophistication. Built to withstand all weather conditions, it ensures beauty and performance through every season. A seamless blend of architectural style and outdoor resilience.",
       "url": "https://xionco.shop/products/aether-series-cloud-rx7",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 75,
       "shopName": "AETHER SERIES - Cloud RX7",
       "bg": "white"
@@ -9352,6 +9558,10 @@
       "sold": 6,
       "desc": "VOID SKY - V4\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Metal\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-sky-v4",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 168,
       "shopName": "VOID SKY - V4",
       "bg": "white"
@@ -9384,6 +9594,10 @@
       "sold": 6,
       "desc": "VOID CLOUD - AZ8\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Iron dan Glass\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-cloud-az8",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 174,
       "shopName": "VOID CLOUD - AZ8",
       "bg": "white"
@@ -9442,6 +9656,9 @@
       "sold": 5,
       "desc": "**VOID SERIES | Sky B8 | 4 & 3 Lamps**\nModern Minimalist 4 Head Chandelier - Elegant Gold\nAdd a touch of elegance and modernity to your space with this Minimalist 4-Head Chandelier. Designed with a luxurious gold-coloured look and sleek design, this lamp is suitable for dining rooms, kitchens, workspaces, or commercial areas such as cafes and restaurants.",
       "url": "https://xionco.shop/products/void-series-sky-b8",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 94,
       "shopName": "VOID SERIES - Sky B8",
       "bg": "white"
@@ -9474,6 +9691,10 @@
       "sold": 5,
       "desc": "VOID CLOUD - G2\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nVOID menggunakan bahan Metal\nVOID Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x VOID Lamp Body",
       "url": "https://xionco.shop/products/void-cloud-g2",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 170,
       "shopName": "VOID CLOUD - G2",
       "bg": "white"
@@ -9506,6 +9727,9 @@
       "sold": 4,
       "desc": "**VOID Cloud G1 **\nSculpted with elegance, the VOID Cloud C1 brings a bold statement to any space. Its hourglass silhouette and brushed gold finish radiate modern luxury. Perfect for hallways, bedrooms, or artistic corners seeking a refined glow. Crafted to illuminate with warmth while elevating the aesthetic of your home.",
       "url": "https://xionco.shop/products/void-series-cloud-g1",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 100,
       "shopName": "VOID SERIES - Cloud G1",
       "bg": "white"
@@ -9538,6 +9762,9 @@
       "sold": 4,
       "desc": "AETHER SKY V1 - Ceiling Lamp / Lampu Gantung Minimalis\nWhat's in the box?\n1 x Fabric Rounded Lamp Shade\n1 x Golden Lamp Frame\n1 x Electrical Cable\n1 x Lamp Cap\n1 x Lamp Neck\n1 x Bulb Fitting\n1 x Manual & Guarantee card",
       "url": "https://xionco.shop/products/aether-sky-v1-ceiling-lamp",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 119,
       "shopName": "AETHER SKY V1 - Ceiling Lamp",
       "bg": "white"
@@ -9570,21 +9797,25 @@
       "sold": 4,
       "desc": "AETHER SKY R100 - Pendant Lamp LED / Lampu Gantung Minimalis - XIONCO\nWhat's in the box?\n1 x Black Linear Pendant Lamp\n1 x Manual & Guarantee card",
       "url": "https://xionco.shop/products/aether-sky-r100",
+      "kats": [
+        "Lightings",
+        "Lifestyle"
+      ],
       "shopId": 158,
       "shopName": "AETHER SKY - R100",
       "bg": "white"
     },
     {
       "status": "aktif",
-      "dims": "",
+      "dims": "7 × 11 × 102 cm",
       "leadTime": "",
       "customizable": false,
       "stock": "Ready",
       "note": "",
       "id": "aether-cloud-k100",
       "cat": "lighting",
-      "name": "AETHER",
-      "type": "Cloud K100",
+      "name": "AETHER CLOUD",
+      "type": "K100 · Wall light",
       "price": 516000,
       "was": 860000,
       "from": false,
@@ -9602,9 +9833,13 @@
       "sold": 3,
       "desc": "AETHER CLOUD K100 - Wall LED Lamp / Lampu Dinding Minimalis - XIONCO\nWhat's in the box?\n1 x Black Linier Frame\n1 x Manual & Guarantee card",
       "url": "https://xionco.shop/products/aether-cloud-k100",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 82,
       "shopName": "AETHER - CLOUD K100",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether/model.glb"
     },
     {
       "status": "aktif",
@@ -9634,6 +9869,9 @@
       "sold": 3,
       "desc": "** AETHER Sky V2 **\nSculpted with elegance, the AETHER Sky V2 brings a bold statement to any space. Its hourglass silhouette and brushed gold finish radiate modern luxury. Perfect for hallways, bedrooms, or artistic corners seeking a refined glow. Crafted to illuminate with warmth while elevating the aesthetic of your home.",
       "url": "https://xionco.shop/products/aether-series-sky-v2",
+      "kats": [
+        "Lightings"
+      ],
       "shopId": 155,
       "shopName": "AETHER SERIES - Sky V2",
       "bg": "white"
@@ -9666,6 +9904,10 @@
       "sold": 2,
       "desc": "PERINGATAN :\nHati-hati dengan barang IMITASI !\nAETHER menggunakan bahan Iron\nAETHER Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x AETHER Lamp Body",
       "url": "https://xionco.shop/products/aether-terra-x4",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 166,
       "shopName": "AETHER TERRA - X4",
       "bg": "white"
@@ -9698,6 +9940,10 @@
       "sold": 2,
       "desc": "AETHER CLOUD - Q1\nPERINGATAN :\nHati-hati dengan barang IMITASI !\nAETHER menggunakan bahan Iron\nAETHER Berkualitas TInggi dan Bergaransi Resmi\nWhat's in the box?\n1 x AETHER Lamp Body",
       "url": "https://xionco.shop/products/aether-cloud-q1",
+      "kats": [
+        "Lifestyle",
+        "Lightings"
+      ],
       "shopId": 180,
       "shopName": "AETHER CLOUD - Q1",
       "bg": "white"
@@ -9730,6 +9976,9 @@
       "sold": 52,
       "desc": "EACH’s Product Benchmark | 95 / 100 - Excellent\nScoring Factor :\nFunction & Effectiveness : 30 / 30\nMaterial & Durability : 28 / 30\nValue for Money : 17 / 20\nUser Experience : 10 / 10\nDesign & Aesthetic : 10 / 10",
       "url": "https://xionco.shop/products/trash-bin-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 127,
       "shopName": "TRASH BIN | EACH",
       "bg": "white"
@@ -9762,6 +10011,9 @@
       "sold": 50,
       "desc": "EACH’s Product Benchmark | 94 / 100 - Excellent\nScoring Factor :\nFunction & Effectiveness : 28.5 / 30\nMaterial & Durability : 30 / 30\nValue for Money : 19 / 20\nUser Experience : 9 / 10\nDesign & Aesthetic : 9.5 / 10",
       "url": "https://xionco.shop/products/clothes-hanger-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 48,
       "shopName": "CLOTHES HANGER | EACH",
       "bg": "white"
@@ -9831,8 +10083,11 @@
       ],
       "variant": 0,
       "sold": 49,
-      "desc": "• Kondisi: Baru\n• Waktu Preorder:3 Hari\n• Min. Pemesanan:1 Buah\nSOMNO BED PILLOW | STANDARD | Bantal Tidur | XIONCO\nTermasuk di Dalam SOMNO Bed Pillow Standar Lite :\n1 unit Bantal Standar Lite 700 g\nTermasuk di Dalam SOMNO Bed Pillow Standar :\n1 unit Bantal Standar 900 g\nTermasuk di Dalam SOMNO Bed Pillow Standar Plus :\n1 unit Bantal Standar Plus 1,000 g\nGRATIS Ongkir untuk seluruh wilayah KOTA Jabodetabek Saja…",
+      "desc": "Kondisi: Baru\nWaktu Preorder:3 Hari\nMin. Pemesanan:1 Buah\nSOMNO BED PILLOW | STANDARD | Bantal Tidur | XIONCO\nTermasuk di Dalam SOMNO Bed Pillow Standar Lite :\n1 unit Bantal Standar Lite 700 g\nTermasuk di Dalam SOMNO Bed Pillow Standar :\n1 unit Bantal Standar 900 g\nTermasuk di Dalam SOMNO Bed Pillow Standar Plus :\n1 unit Bantal Standar Plus 1,000 g\nGRATIS Ongkir untuk seluruh wilayah KOTA Jabodetabek Saja\n(Untuk…",
       "url": "https://xionco.shop/products/somno-bed-pillow",
+      "kats": [
+        "Accent"
+      ],
       "shopId": 51,
       "shopName": "SOMNO BED PILLOW",
       "bg": "white"
@@ -9993,8 +10248,11 @@
       ],
       "variant": 2,
       "sold": 48,
-      "desc": "• Kondisi: Baru\n• Waktu Preorder: 5 Hari\n• Min. Pemesanan: 1 Buah\nCUBIX SERIES - Throw Pillow (B)\nTermasuk di dalamnya :\n1 Bantal Besar",
+      "desc": "Kondisi:  Baru\nWaktu Preorder:  5 Hari\nMin. Pemesanan:  1 Buah\nCUBIX SERIES - Throw Pillow (B)\nTermasuk di dalamnya :\n1 Bantal Besar",
       "url": "https://xionco.shop/products/cubix-series-throw-pillow-b",
+      "kats": [
+        "Accent"
+      ],
       "shopId": 65,
       "shopName": "CUBIX SERIES - Throw Pillow (B)",
       "bg": "white",
@@ -10027,6 +10285,9 @@
       "sold": 47,
       "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
       "url": "https://xionco.shop/products/acrylic-mirror-emerald-jade-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
       "shopId": 114,
       "shopName": "ACRYLIC MIRROR | Emerald Jade | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
       "bg": "white"
@@ -10058,6 +10319,9 @@
       "sold": 47,
       "desc": "ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
       "url": "https://xionco.shop/products/acrylic-mirror-inferno-red-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
       "shopId": 116,
       "shopName": "ACRYLIC MIRROR | Inferno Red | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
       "bg": "white"
@@ -10090,6 +10354,9 @@
       "sold": 46,
       "desc": "EACH • Essential | POWERBANK | 20.000 mAh - Powerbank, Kabel Data USB Type C\nScoring Factor :\nFunction & Effectiveness : 30 / 30\nMaterial & Durability : 30 / 30\nValue for Money : 19 / 20\nUser Experience : 9 / 10\nDesign & Aesthetic : 10 / 10\nCara Memilih Powerbank yang Tepat:\nPerhatikan kapasitas yang realistis\nJangan langsung percaya pada klaim kapasitas yang terlalu besar dengan harga murah. Kapasitas efektif…",
       "url": "https://xionco.shop/products/powerbank-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 139,
       "shopName": "POWERBANK | EACH",
       "bg": "white"
@@ -10149,6 +10416,9 @@
       "sold": 45,
       "desc": "What's inside the box?\n1 Unit • EACH Ramen Bowl\nOverall Dimension | W • D • H : 445 • 220 • 12 mm\nMaterial : Premium Glazed Ceramic (Food Grade)l\nColor : Pure White\nMicrowave Safe : Yes\nDishwasher Safe : Yes\nWeight : 250 gr\nFinishing: Glossy Glazed\nGenerous Capacity for Hearty Appetites: The large bowls boasts a substantial 38-ounce capacity, making them perfect for serving large, satisfying portions of ramen, pho,…",
       "url": "https://xionco.shop/products/ramen-bowl-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 44,
       "shopName": "RAMEN BOWL | EACH",
       "bg": "white"
@@ -10207,6 +10477,9 @@
       "sold": 44,
       "desc": "ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
       "url": "https://xionco.shop/products/acrylic-mirror-blessing-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
       "shopId": 106,
       "shopName": "ACRYLIC MIRROR | Blessing Gold | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
       "bg": "white"
@@ -10238,6 +10511,9 @@
       "sold": 40,
       "desc": "ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
       "url": "https://xionco.shop/products/acrylic-mirror-bronze-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
       "shopId": 111,
       "shopName": "ACRYLIC MIRROR | Bronze | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
       "bg": "white"
@@ -10269,6 +10545,10 @@
       "sold": 37,
       "desc": "EESENTIAL - BED PILLOW | Bantal tidur / Sleeping Pillow | | | EACH by XIONCO\nPERINGATAN :\nHati-hati dengan barang IMITASI!\nWhat's in the box?\n1 x EESENTIAL - BED PILLOW 50 x 70 cm\n1 x EESENTIAL - BED PILLOW COVER 50 x 70 cm",
       "url": "https://xionco.shop/products/bed-pillow-each",
+      "kats": [
+        "Lifestyle",
+        "Accent"
+      ],
       "shopId": 41,
       "shopName": "BED PILLOW | EACH",
       "bg": "white"
@@ -10301,6 +10581,9 @@
       "sold": 33,
       "desc": "PUFF X - Kursi Puff Ottoman Minimalis | XIONCO\nTermasuk di dalam:\n1 Kursi Puff",
       "url": "https://xionco.shop/products/puff-x",
+      "kats": [
+        "Accent"
+      ],
       "shopId": 229,
       "shopName": "PUFF X",
       "bg": "white"
@@ -10332,6 +10615,9 @@
       "sold": 31,
       "desc": "PENTING | X-Coin Bukanlah sebuah produk fisik.\nPENTING | Hubungi kami untuk berkonsultasi sebelum melakukan pemesanan X-coin\nX - COIN adalah sebuah token yang digunakan sebagai penambah nilai pada transaksi. Penambahan nilai seperti namun tidak terbatas dari kekurangan selisih biaya packing, kekurangan selisih biaya pengiriman, penambahan biaya perubahan bahan atau varian, pembelian produk diluar daftar yang…",
       "url": "https://xionco.shop/products/x-coin",
+      "kats": [
+        "Accent"
+      ],
       "shopId": 133,
       "shopName": "X-COIN",
       "bg": "white"
@@ -10363,6 +10649,9 @@
       "sold": 30,
       "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
       "url": "https://xionco.shop/products/acrylic-mirror-ocean-blue-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
       "shopId": 113,
       "shopName": "ACRYLIC MIRROR | Ocean Blue | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
       "bg": "white"
@@ -10395,6 +10684,9 @@
       "sold": 30,
       "desc": "EACH’s Product Benchmark | 95 / 100 - Excellent\nScoring Factor :\nFunction & Effectiveness : 29 / 30\nMaterial & Durability : 29 / 3.0\nValue for Money : 19 / 2.0\nUser Experience : 9 / 1.0\nDesign & Aesthetic : 9 / 1.0",
       "url": "https://xionco.shop/products/bidet-spray-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 126,
       "shopName": "BIDET SPRAY | EACH",
       "bg": "white"
@@ -10427,6 +10719,9 @@
       "sold": 27,
       "desc": "EACH’s Product Benchmark | 99 / 100 - Excellent\nScoring Factor :\nFunction & Effectiveness : 30 / 30\nMaterial & Durability : 30 / 30\nValue for Money : 19 / 20\nUser Experience : 10 / 10\nDesign & Aesthetic : 10 / 10\nCara Memilih Smart Bottle yang Tepat:\n01. Pilih botol dengan fitur utama seperti UVC Sterilizer yang mampu mensterilkan bagian dalam botol secara otomatis dan cepat, untuk menjamin kebersihan setiap…",
       "url": "https://xionco.shop/products/botol-minum-pintar-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 56,
       "shopName": "Botol Minum Pintar | EACH",
       "bg": "white"
@@ -10459,6 +10754,9 @@
       "sold": 25,
       "desc": "EACH’s Product Benchmark | 95 / 100 - Excellent\nScoring Factor :\nFunction & Effectiveness : 30 / 30\nMaterial & Durability : 28 / 30\nValue for Money : 17 / 20\nUser Experience : 10 / 10\nDesign & Aesthetic : 10 / 10\nCara Memilih Plate yang Tepat:\nMaterial Premium: Pilih piring yang terbuat dari material berkualitas tinggi, food-grade, aman untuk berbagai jenis makanan.\nUkuran Ideal: Utamakan ukuran yang serbaguna,…",
       "url": "https://xionco.shop/products/plate-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 47,
       "shopName": "PLATE | EACH",
       "bg": "white"
@@ -10491,6 +10789,9 @@
       "sold": 24,
       "desc": "EACH’s Product Benchmark\n\"93\" / 100 - Excellent\nScoring Factor :\nFunction & Effectiveness : 28 / 30\nMaterial & Durability : 28 / 30\nValue for Money : 19 / 20\nUser Experience : 9 / 10\nDesign & Aesthetic : 9.5 / 10",
       "url": "https://xionco.shop/products/tissue-box-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 59,
       "shopName": "TISSUE BOX | EACH",
       "bg": "white"
@@ -10522,6 +10823,9 @@
       "sold": 21,
       "desc": "EACH’s Product Benchmark | 98 / 100 – Excellent\nScoring Factor :\nFunction & Effectiveness : 30 / 30\nMaterial & Durability : 30 / 30\nValue for Money : 19 / 20\nUser Experience : 9 / 10\nDesign & Aesthetic : 10 / 10",
       "url": "https://xionco.shop/products/charger-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 63,
       "shopName": "CHARGER | EACH",
       "bg": "white"
@@ -10580,6 +10884,9 @@
       "sold": 21,
       "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
       "url": "https://xionco.shop/products/acrylic-mirror-silver-122-x-244-cm-thickness-1-or-2-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
       "shopId": 112,
       "shopName": "ACRYLIC MIRROR | Silver | 122 x 244 cm • Thickness 1 or 2 mm - Akrilik Cermin",
       "bg": "white"
@@ -10612,6 +10919,9 @@
       "sold": 20,
       "desc": "CAPRA SERIES DELUXE| 1 Seater Sofa Minimalis | XIONCO\nTermasuk di dalam DELUXE 1 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm)",
       "url": "https://xionco.shop/products/capra-deluxe-1s",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 235,
       "shopName": "CAPRA DELUXE 1s",
       "bg": "white"
@@ -10644,6 +10954,9 @@
       "sold": 20,
       "desc": "CAPRA SERIES SIGNATURE | 2 Seater Sofa Minimalis | XIONCO\nTermasuk di dalam SIGNATURE 2 seater :\n1 x sofa + 2 x bantal panjang khaki ( 60x30 cm) + 1 x Bantal Kotak khaki (40x40 cm) + 1 x Bantal Saddle kotak (40x40cm)",
       "url": "https://xionco.shop/products/capra-signature-2s",
+      "kats": [
+        "Sofa"
+      ],
       "shopId": 237,
       "shopName": "CAPRA SIGNATURE 2s",
       "bg": "white"
@@ -10675,6 +10988,9 @@
       "sold": 17,
       "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
       "url": "https://xionco.shop/products/acrylic-mirror-rose-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
       "shopId": 118,
       "shopName": "ACRYLIC MIRROR | Rose Gold | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
       "bg": "white"
@@ -10707,6 +11023,9 @@
       "sold": 16,
       "desc": "EACH’s Product Benchmark | 95 / 100 - Excellent\nScoring Factor :\nFunction & Effectiveness : 30 / 30\nMaterial & Durability : 28 / 30\nValue for Money : 17 / 20\nUser Experience : 10 / 10\nDesign & Aesthetic : 10 / 10\nCara Memilih Payung yang Tepat:\n01. Pilih bahan kanopi payung yang waterproof dengan perlindungan UV tinggi untuk perlindungan optimal terhadap cuaca.\n02. Utamakan payung dengan struktur rangka kuat yang…",
       "url": "https://xionco.shop/products/folding-umbrella-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 128,
       "shopName": "FOLDING UMBRELLA | EACH",
       "bg": "white"
@@ -10766,6 +11085,9 @@
       "sold": 16,
       "desc": "- Bedside Table / Meja Tempat Tidur Nakas Minimalis | XIONCO\nWhat's in the box?\n1 x Bedside Table",
       "url": "https://xionco.shop/products/side-table-new",
+      "kats": [
+        "Accent"
+      ],
       "shopId": 239,
       "shopName": "SIDE TABLE NEW",
       "bg": "white"
@@ -10838,6 +11160,9 @@
       "sold": 8,
       "desc": "EACH’s Product Benchmark | 94 / 100 - Excellent\nScoring Factor :\nFunction & Effectiveness | 28 / 30\nMaterial & Durability | 29 / 30\nValue for Money | 19 / 20\nUser Experience | 09 / 10\nDesign & Aesthetic | 09 / 10",
       "url": "https://xionco.shop/products/storage-tray-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 58,
       "shopName": "STORAGE TRAY | EACH",
       "bg": "white"
@@ -10870,6 +11195,9 @@
       "sold": 8,
       "desc": "EACH’s Product Benchmark | 93 / 100 - Excellent\nScoring Factor :\nFunction & Effectiveness : 30 / 30\nMaterial & Durability : 28 / 30\nValue for Money : 17 / 20\nUser Experience : 9 / 10\nDesign & Aesthetic : 9 / 10",
       "url": "https://xionco.shop/products/drinking-glass-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 151,
       "shopName": "DRINKING GLASS | EACH",
       "bg": "white"
@@ -11029,9 +11357,12 @@
         }
       ],
       "variant": 2,
-      "sold": 6,
-      "desc": "• Kondisi: Baru\n• Min. Pemesanan: 1 Buah\nCUBIX SERIES - Throw Pillow Set\nTermasuk di dalamnya :\n1 Bantal Besar\n1 Bantal Kecil",
+      "sold": 7,
+      "desc": "Kondisi:  Baru\nMin. Pemesanan: 1 Buah\nCUBIX SERIES - Throw Pillow Set\nTermasuk di dalamnya :\n1 Bantal Besar\n1 Bantal Kecil",
       "url": "https://xionco.shop/products/cubix-series-throw-pillow-set",
+      "kats": [
+        "Accent"
+      ],
       "shopId": 73,
       "shopName": "CUBIX SERIES - Throw Pillow Set",
       "bg": "white"
@@ -11064,6 +11395,9 @@
       "sold": 5,
       "desc": "EACH’s Product Benchmark | 96 / 100 – ExcellentScoring Factor :\nFunction & Effectiveness : 29 / 30\nMaterial & Durability : 28 / 30\nValue for Money : 20 / 20\nUser Experience : 9 / 10\nDesign & Aesthetic : 10 / 10",
       "url": "https://xionco.shop/products/earphone-each",
+      "kats": [
+        "Lifestyle"
+      ],
       "shopId": 61,
       "shopName": "EARPHONE | EACH",
       "bg": "white"
@@ -11096,6 +11430,9 @@
       "sold": 4,
       "desc": "MIERU - Round Wall Mirror | XIONCO\nTermasuk di dalam : 1 Buah Cermin Dinding",
       "url": "https://xionco.shop/products/mieru-round-wall-mirror",
+      "kats": [
+        "Accent"
+      ],
       "shopId": 230,
       "shopName": "MIERU - Round Wall Mirror",
       "bg": "white"
@@ -11127,6 +11464,9 @@
       "sold": 3,
       "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
       "url": "https://xionco.shop/products/acrylic-mirror-black-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
       "shopId": 107,
       "shopName": "ACRYLIC MIRROR | Black | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
       "bg": "white"
@@ -11158,6 +11498,9 @@
       "sold": 2,
       "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
       "url": "https://xionco.shop/products/acrylic-mirror-natural-brown-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
       "shopId": 117,
       "shopName": "ACRYLIC MIRROR | Natural Brown | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
       "bg": "white"
@@ -11227,8 +11570,11 @@
       ],
       "variant": 1,
       "sold": 1,
-      "desc": "• Kondisi: Baru\n• Waktu Preorder: 3 Hari\n• Min. Pemesanan: 1 Buah\nADA | Koleksi Bantal RAJA | Bantal Tidur | XIONCO\nTermasuk di Dalam SOMNO Bed Pillow King Lite :\n1 unit Bantal King Lite 2,000 g\nTermasuk di Dalam SOMNO Bed Pillow King :\n1 unit Bantal King 2,100 g\nTermasuk di Dalam SOMNO Bed Pillow King Plus :\n1 unit Bantal King Plus 2,300 g\nSilakan hubungi admin atau chat untuk detail ongkir.",
+      "desc": "Kondisi:  Baru\nWaktu Preorder:  3 Hari\nMin. Pemesanan:  1 Buah\nADA | Koleksi Bantal RAJA | Bantal Tidur | XIONCO\nTermasuk di Dalam SOMNO Bed Pillow King Lite :\n1 unit Bantal King Lite 2,000 g\nTermasuk di Dalam SOMNO Bed Pillow King :\n1 unit Bantal King 2,100 g\nTermasuk di Dalam SOMNO Bed Pillow King Plus :\n1 unit Bantal King Plus 2,300 g\nSilakan hubungi admin atau chat untuk detail ongkir.",
       "url": "https://xionco.shop/products/somno-bed-pillow-king-size",
+      "kats": [
+        "Accent"
+      ],
       "shopId": 46,
       "shopName": "SOMNO BED PILLOW | King Size",
       "bg": "white"
@@ -11288,6 +11634,10 @@
       "sold": 36,
       "desc": "VAZRA - Rechargeable USB Type C AAA Battery / Baterai | XIONCO\nWhat's in the box?\n2 x VAZRA Rechargeable Batteries or\n4 x VAZRA Rechargeable Batteries",
       "url": "https://xionco.shop/products/vazra-rechargeable-usb-type-c-aaa-battery-baterai",
+      "kats": [
+        "Smart",
+        "Hardware"
+      ],
       "shopId": 89,
       "shopName": "VAZRA - Rechargeable USB Type C AAA Battery / Baterai",
       "bg": "white"
@@ -11347,9 +11697,317 @@
       "sold": 20,
       "desc": "VAZRA - Rechargeable USB Type C AA Battery / Baterai | XIONCO\nWhat's in the box?\n2 x VAZRA Rechargeable Batteries\nor\n4 x VAZRA Rechargeable Batteries",
       "url": "https://xionco.shop/products/vazra-rechargeable-usb-type-c-aa-battery-baterai",
+      "kats": [
+        "Smart",
+        "Hardware"
+      ],
       "shopId": 90,
       "shopName": "VAZRA -Rechargeable USB Type C AA Battery / Baterai",
       "bg": "white"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "",
+      "id": "capra-deluxe-ottoman",
+      "cat": "seats",
+      "name": "CAPRA DELUXE OTTOMAN",
+      "type": "Ottoman",
+      "price": 2714000,
+      "was": 5202000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-9-1775916590550.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-9-1775916590550.png"
+      ],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "Ottoman seri CAPRA Deluxe — faux leather premium dengan rangka kayu solid.",
+      "url": "https://xionco.shop/products/capra-deluxe-series",
+      "shopId": 85,
+      "shopName": "CAPRA DELUXE SERIES",
+      "bg": "white",
+      "model": "assets/items/capra-deluxe-ottoman/model-ai.glb",
+      "local": true,
+      "kats": [
+        "Sofa",
+        "Ottoman"
+      ]
+    },
+    {
+      "status": "aktif",
+      "dims": "13 × 13 × 41 cm",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "aether-k40",
+      "cat": "lighting",
+      "name": "AETHER",
+      "type": "K40",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/aether-k40/model.glb",
+      "kats": [
+        "Lightings"
+      ]
+    },
+    {
+      "status": "arsip",
+      "dims": "7 × 10 × 61 cm",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "aether-k60",
+      "cat": "lighting",
+      "name": "AETHER",
+      "type": "K60",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/aether-k60/model.glb",
+      "kats": [
+        "Lightings"
+      ]
+    },
+    {
+      "status": "aktif",
+      "dims": "40 × 40 × 112 cm",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "aether-sky",
+      "cat": "lighting",
+      "name": "AETHER SKY",
+      "type": "Pendant",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/aether-sky/model.glb",
+      "kats": [
+        "Lightings"
+      ]
+    },
+    {
+      "status": "arsip",
+      "dims": "63 × 63 × 39 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Digabung ke cubix-series-ottoman-kayu-terang (varian Gelap)",
+      "id": "cubix-series-ottoman-kayu-gelap",
+      "cat": "seats",
+      "name": "CUBIX SERIES",
+      "type": "Ottoman · Kayu Gelap",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/cubix-series-ottoman-kayu-gelap/model.glb",
+      "kats": [
+        "Sofa",
+        "Ottoman"
+      ]
+    },
+    {
+      "status": "arsip",
+      "dims": "190 × 64 × 82 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Digabung ke cubix-series-3-seaters-ac-al-ac-kayu-terang (varian Gelap)",
+      "id": "cubix-series-3-seaters-ac-al-ac-kayu-gelap",
+      "cat": "seats",
+      "name": "CUBIX SERIES",
+      "type": "3 Seaters (AC, AL, AC) · Kayu Gelap",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-gelap/model.glb",
+      "kats": [
+        "Sofa"
+      ]
+    },
+    {
+      "status": "arsip",
+      "dims": "83 × 81 × 69 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Lokal (dari SKP) · foto & harga menyusul",
+      "id": "astral-1-seater",
+      "cat": "seats",
+      "name": "ASTRAL",
+      "type": "1 Seater",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/astral-1-seater/model.glb",
+      "kats": [
+        "Sofa"
+      ]
+    },
+    {
+      "status": "arsip",
+      "dims": "127 × 64 × 80 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Digabung ke cubix-series-2-seater-ac-ac-kayu-terang (varian Gelap)",
+      "id": "cubix-series-2-seater-ac-ac-kayu-gelap",
+      "cat": "seats",
+      "name": "CUBIX SERIES",
+      "type": "2 Seater (AC, AC) · Kayu Gelap",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/cubix-series-2-seater-ac-ac-kayu-gelap/model.glb",
+      "kats": [
+        "Sofa"
+      ]
+    },
+    {
+      "status": "arsip",
+      "dims": "65 × 64 × 82 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Digabung ke cubix-series-1-seater-al-kayu-terang (varian Gelap)",
+      "id": "cubix-series-1-seater-al-kayu-gelap",
+      "cat": "seats",
+      "name": "CUBIX SERIES",
+      "type": "1 Seater (AL) · Kayu Gelap",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/cubix-series-1-seater-al-kayu-gelap/model.glb",
+      "kats": [
+        "Sofa"
+      ]
+    },
+    {
+      "status": "arsip",
+      "dims": "64 × 64 × 80 cm",
+      "leadTime": "",
+      "customizable": true,
+      "stock": "Ready",
+      "note": "Digabung ke cubix-series-1-seater-ac-kayu-terang (varian Gelap)",
+      "id": "cubix-series-1-seater-ac-kayu-gelap",
+      "cat": "seats",
+      "name": "CUBIX SERIES",
+      "type": "1 Seater (AC) · Kayu Gelap",
+      "price": null,
+      "was": null,
+      "from": false,
+      "img": "",
+      "images": [],
+      "variants": [],
+      "variant": -1,
+      "sold": 0,
+      "desc": "",
+      "url": "",
+      "shopId": null,
+      "shopName": "",
+      "bg": "white",
+      "local": true,
+      "model": "assets/items/cubix-series-1-seater-ac-kayu-gelap/model.glb",
+      "kats": [
+        "Sofa"
+      ]
     }
   ]
 }
