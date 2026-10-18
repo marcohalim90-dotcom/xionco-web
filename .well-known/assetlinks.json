@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.xionco.maison",
+    "sha256_cert_fingerprints": ["D8:A1:DE:B2:94:B9:76:08:DA:96:36:3D:A0:AF:B6:16:CF:DB:FC:7C:E8:1D:B2:C9:AC:E8:55:F1:C7:CA:74:7C"]
+  }
+}]

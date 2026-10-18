@@ -1,0 +1,40 @@
+plugins { id 'com.android.application' }
+
+// alamat situs yang dibuka aplikasi — ganti ke domain resmi nanti (lalu perbarui assetlinks.json di domain itu)
+def TWA = [host: 'xionco-web.marcohalim90.workers.dev', start: '/v5/', name: 'XIONCO']
+
+// kunci tanda tangan: data/private/android/ (HANYA lokal, tidak ikut git) — wajib sama untuk semua pembaruan di Google Play
+def keyProps = new Properties()
+def keyFile = rootProject.file('../../data/private/android/keystore.properties')
+if (keyFile.exists()) keyFile.withInputStream { keyProps.load(it) }
+
+android {
+  namespace 'com.xionco.maison'
+  compileSdk 36
+  defaultConfig {
+    applicationId 'com.xionco.maison'
+    minSdk 23
+    targetSdk 36
+    versionCode 1
+    versionName '1.0.0'
+    manifestPlaceholders = [hostName: TWA.host, defaultUrl: 'https://' + TWA.host + TWA.start, launcherName: TWA.name]
+    resValue 'string', 'appName', TWA.name
+    // JSON di resource Android: tanda kutip wajib di-escape (\") — kalau tidak, hilang & verifikasi domain gagal
+    def stmt = '[{"relation": ["delegate_permission/common.handle_all_urls"], "target": {"namespace": "web", "site": "https://' + TWA.host + '"}}]'
+    resValue 'string', 'assetStatements', stmt.replace('"', '\\"')
+  }
+  signingConfigs {
+    release {
+      if (keyFile.exists()) {
+        storeFile rootProject.file('../../data/private/android/' + keyProps['storeFile'])
+        storePassword keyProps['storePassword']; keyAlias keyProps['keyAlias']; keyPassword keyProps['keyPassword']
+      }
+    }
+  }
+  buildTypes {
+    release { minifyEnabled false; signingConfig signingConfigs.release }
+  }
+  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+
+dependencies { implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0' }

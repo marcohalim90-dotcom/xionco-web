@@ -16,3 +16,5 @@ output
 # HDRI 2K hanya untuk render Blender lokal
 assets/library/hdri/*_2k.hdr
 TASKS.md
+# proyek aplikasi Android (sumber, tidak ditayangkan)
+apps
