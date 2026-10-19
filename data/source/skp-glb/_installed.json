@@ -1031,8 +1031,8 @@
   "variant": null,
   "file": "assets/items/cameo/model.glb",
   "scale": 1,
-  "tris": 20522,
-  "tris_out": 20522,
+  "tris": 20568,
+  "tris_out": 20568,
   "size_cm": [
    187.4,
    90.1,
@@ -1043,6 +1043,6 @@
    "<auto>5": "metal",
    "MIDGREY": "fabric"
   },
-  "kb": 1896
+  "kb": 1899
  }
 ]

@@ -1,11 +1,11 @@
 {
  "note": "Ukuran model 3D katalog (cm) — dibuat tools/spec/measure.js; dibandingkan dengan data/specs.json di Developer Settings › Ukuran & material",
- "measured": "2026-10-18T21:13:55.321Z",
+ "measured": "2026-10-19T18:00:26.383Z",
  "models": {
   "assets/items/kyrios/model-tiles.glb": {
-   "w": 220,
-   "d": 92.2,
-   "h": 68.9,
+   "w": 195,
+   "d": 85,
+   "h": 73,
    "unit": "m"
   },
   "assets/items/guise/model.glb": {
@@ -15,27 +15,27 @@
    "unit": "m"
   },
   "assets/items/cameo/model.glb": {
-   "w": 187.4,
-   "d": 90.1,
-   "h": 64.6,
+   "w": 200,
+   "d": 86,
+   "h": 74,
    "unit": "m"
   },
-  "assets/items/astral/model-ai.glb": {
-   "w": 112.2,
-   "d": 107.1,
-   "h": 85,
+  "assets/items/astral-1-seater/model.glb": {
+   "w": 80,
+   "d": 80,
+   "h": 70,
    "unit": "m"
   },
   "assets/items/orycto/model.glb": {
-   "w": 210.6,
-   "d": 79.2,
-   "h": 57.1,
+   "w": 213,
+   "d": 90,
+   "h": 73,
    "unit": "m"
   },
   "assets/items/canis/model.glb": {
-   "w": 294.1,
-   "d": 144.3,
-   "h": 93.1,
+   "w": 210,
+   "d": 87,
+   "h": 67,
    "unit": "m"
   },
   "assets/items/eorde/model-ai.glb": {
@@ -50,10 +50,22 @@
    "h": 84.2,
    "unit": "m"
   },
-  "assets/items/geom/model-ai.glb": {
-   "w": 160.3,
-   "d": 85.3,
-   "h": 75,
+  "assets/items/geom/model.glb": {
+   "w": 160,
+   "d": 80,
+   "h": 75.6,
+   "unit": "m"
+  },
+  "assets/items/geom/model-hitam.glb": {
+   "w": 160,
+   "d": 80,
+   "h": 75.6,
+   "unit": "m"
+  },
+  "assets/items/geom/model-abu-abu.glb": {
+   "w": 160,
+   "d": 80,
+   "h": 75.6,
    "unit": "m"
   },
   "assets/items/verk/model.glb": {
@@ -69,21 +81,33 @@
    "unit": "m"
   },
   "assets/items/hout/model.glb": {
-   "w": 77.5,
-   "d": 77.5,
-   "h": 37.2,
+   "w": 81,
+   "d": 81,
+   "h": 38,
    "unit": "m"
   },
   "assets/items/trapezo/model.glb": {
-   "w": 132.2,
-   "d": 57.4,
-   "h": 73.7,
+   "w": 120,
+   "d": 60,
+   "h": 75,
+   "unit": "m"
+  },
+  "assets/items/rouled/model-70.glb": {
+   "w": 70,
+   "d": 70,
+   "h": 44,
+   "unit": "m"
+  },
+  "assets/items/rouled/model-55.glb": {
+   "w": 55,
+   "d": 55,
+   "h": 40,
    "unit": "m"
   },
   "assets/items/rouled/model.glb": {
-   "w": 140.5,
-   "d": 98.8,
-   "h": 45.6,
+   "w": 99.5,
+   "d": 70,
+   "h": 44,
    "unit": "m"
   },
   "assets/items/cubixct/model.glb": {
@@ -99,15 +123,15 @@
    "unit": "m"
   },
   "assets/items/arze/model.glb": {
-   "w": 81.3,
-   "d": 51.3,
-   "h": 92.9,
+   "w": 80,
+   "d": 50,
+   "h": 90,
    "unit": "m"
   },
   "assets/items/l7/model.glb": {
-   "w": 113.5,
-   "d": 57.4,
-   "h": 91.4,
+   "w": 110,
+   "d": 57,
+   "h": 90,
    "unit": "m"
   },
   "assets/items/recta/model.glb": {
@@ -117,9 +141,9 @@
    "unit": "m"
   },
   "assets/items/pluq/model.glb": {
-   "w": 126.2,
-   "d": 74.2,
-   "h": 48.2,
+   "w": 120,
+   "d": 70,
+   "h": 38,
    "unit": "m"
   },
   "assets/items/hexter/model.glb": {
@@ -135,9 +159,33 @@
    "unit": "m"
   },
   "assets/items/poel/model.glb": {
-   "w": 136.4,
-   "d": 174.2,
-   "h": 84.1,
+   "w": 92,
+   "d": 207,
+   "h": 100,
+   "unit": "m"
+  },
+  "assets/items/poel/model-120cm.glb": {
+   "w": 122,
+   "d": 207,
+   "h": 100,
+   "unit": "m"
+  },
+  "assets/items/poel/model-160cm.glb": {
+   "w": 162,
+   "d": 207,
+   "h": 100,
+   "unit": "m"
+  },
+  "assets/items/poel/model-180cm.glb": {
+   "w": 182,
+   "d": 207,
+   "h": 100,
+   "unit": "m"
+  },
+  "assets/items/poel/model-200cm.glb": {
+   "w": 202,
+   "d": 207,
+   "h": 100,
    "unit": "m"
   },
   "assets/items/ashara/model-ai.glb": {
@@ -147,21 +195,21 @@
    "unit": "m"
   },
   "assets/items/syme/model.glb": {
-   "w": 228.3,
-   "d": 63.3,
-   "h": 212.8,
+   "w": 225,
+   "d": 60,
+   "h": 210,
    "unit": "m"
   },
   "assets/items/qaztac/model-ai.glb": {
-   "w": 48.4,
-   "d": 73.7,
-   "h": 65,
+   "w": 55,
+   "d": 40,
+   "h": 50,
    "unit": "m"
   },
   "assets/items/lucid/model.glb": {
-   "w": 81.1,
-   "d": 40.5,
-   "h": 180.9,
+   "w": 80,
+   "d": 40,
+   "h": 160,
    "unit": "m"
   },
   "assets/items/aether-k60/model.glb": {
@@ -188,22 +236,82 @@
    "h": 60.6,
    "unit": "m"
   },
+  "assets/items/vazra/model.glb": {
+   "w": 8.6,
+   "d": 1.6,
+   "h": 8.6,
+   "unit": "m"
+  },
+  "assets/items/vazra/model-2-gang-1-way.glb": {
+   "w": 8.6,
+   "d": 1.6,
+   "h": 8.6,
+   "unit": "m"
+  },
+  "assets/items/vazra/model-3-gang-1-way.glb": {
+   "w": 8.6,
+   "d": 1.6,
+   "h": 8.6,
+   "unit": "m"
+  },
+  "assets/items/vazra/model-european-outlet.glb": {
+   "w": 8.6,
+   "d": 2.2,
+   "h": 8.6,
+   "unit": "m"
+  },
+  "assets/items/vazratrack/model.glb": {
+   "w": 100,
+   "d": 8.6,
+   "h": 4.1,
+   "unit": "m"
+  },
+  "assets/items/vazratrack/model-pw-50-cm.glb": {
+   "w": 50,
+   "d": 8.6,
+   "h": 4.1,
+   "unit": "m"
+  },
+  "assets/items/vazratrack/model-pws-usb.glb": {
+   "w": 6,
+   "d": 6,
+   "h": 1.9,
+   "unit": "m"
+  },
+  "assets/items/vazratrack/model-pws-eu.glb": {
+   "w": 6,
+   "d": 6,
+   "h": 1.9,
+   "unit": "m"
+  },
   "assets/items/lophus-bar-stool/model-ai.glb": {
-   "w": 43,
+   "w": 47,
    "d": 45,
-   "h": 85.5,
+   "h": 94,
    "unit": "m"
   },
   "assets/items/uruz-sofa-bed/model-ai.glb": {
-   "w": 264.7,
-   "d": 129.2,
-   "h": 85,
+   "w": 220,
+   "d": 100,
+   "h": 70,
    "unit": "m"
   },
   "assets/items/azedra/model-ai.glb": {
-   "w": 198.1,
+   "w": 210,
    "d": 90,
-   "h": 75,
+   "h": 80,
+   "unit": "m"
+  },
+  "assets/items/barione-1-seater/model-ai.glb": {
+   "w": 80,
+   "d": 80,
+   "h": 82,
+   "unit": "m"
+  },
+  "assets/items/sf2s-x58/model-ai.glb": {
+   "w": 160,
+   "d": 80,
+   "h": 70,
    "unit": "m"
   },
   "assets/items/cubix-series-ottoman-kayu-terang/model.glb": {
@@ -219,15 +327,21 @@
    "unit": "m"
   },
   "assets/items/barione-3-seater/model-ai.glb": {
-   "w": 204.8,
-   "d": 94.7,
-   "h": 88,
+   "w": 190,
+   "d": 80,
+   "h": 82,
    "unit": "m"
   },
   "assets/items/astral-3-seater/model.glb": {
    "w": 190.3,
    "d": 81.3,
    "h": 69.2,
+   "unit": "m"
+  },
+  "assets/items/sf3s-024/model-ai.glb": {
+   "w": 190,
+   "d": 80,
+   "h": 85,
    "unit": "m"
   },
   "assets/items/cubix-series-3-seaters-ac-al-ac-kayu-terang/model.glb": {
@@ -242,22 +356,88 @@
    "h": 81.5,
    "unit": "m"
   },
+  "assets/items/sf3s-101-3-seater/model.glb": {
+   "w": 336.3,
+   "d": 77,
+   "h": 65,
+   "unit": "m"
+  },
+  "assets/items/sf3s-142/model-ai.glb": {
+   "w": 210,
+   "d": 85,
+   "h": 70,
+   "unit": "m"
+  },
   "assets/items/sf3s-048/model-ai.glb": {
-   "w": 192.7,
-   "d": 88.5,
-   "h": 78,
+   "w": 220,
+   "d": 80,
+   "h": 75,
+   "unit": "m"
+  },
+  "assets/items/sf3s-124/model-ai.glb": {
+   "w": 200,
+   "d": 100,
+   "h": 70,
+   "unit": "m"
+  },
+  "assets/items/capra-deluxe-2s/model-ai.glb": {
+   "w": 144,
+   "d": 90,
+   "h": 70,
    "unit": "m"
   },
   "assets/items/tesse-kursi-puff-ottoman/model.glb": {
-   "w": 29.1,
-   "d": 30.5,
-   "h": 29.8,
+   "w": 40,
+   "d": 40,
+   "h": 40,
+   "unit": "m"
+  },
+  "assets/items/sf3s-042/model-ai.glb": {
+   "w": 195,
+   "d": 80,
+   "h": 80,
    "unit": "m"
   },
   "assets/items/guise-ottoman/model-ai.glb": {
-   "w": 73.5,
-   "d": 73.4,
+   "w": 55,
+   "d": 55,
+   "h": 43,
+   "unit": "m"
+  },
+  "assets/items/sf3s-027/model-ai.glb": {
+   "w": 195,
+   "d": 80,
+   "h": 80,
+   "unit": "m"
+  },
+  "assets/items/aieru-wood-dining-stool/model-ai.glb": {
+   "w": 50,
+   "d": 30,
    "h": 45,
+   "unit": "m"
+  },
+  "assets/items/sf3s-074/model-ai.glb": {
+   "w": 185,
+   "d": 80,
+   "h": 81,
+   "unit": "m"
+  },
+  "assets/items/guise-storage-bench/model-ai.glb": {
+   "w": 120,
+   "d": 60,
+   "h": 43,
+   "unit": "m"
+  },
+  "assets/items/lophus-dining-chair/model-ai.glb": {
+   "w": 47,
+   "d": 48,
+   "h": 80,
+   "unit": "m"
+  },
+  "assets/items/sf2s-084/model-ai.glb": {
+   "w": 175,
+   "d": 80,
+   "h": 80,
    "unit": "m"
   },
   "assets/items/astral-2-seater/model.glb": {
@@ -266,16 +446,40 @@
    "h": 69.2,
    "unit": "m"
   },
+  "assets/items/oxima-side-chair/model-ai.glb": {
+   "w": 47,
+   "d": 48,
+   "h": 80,
+   "unit": "m"
+  },
+  "assets/items/sf3s-x74/model-ai.glb": {
+   "w": 168,
+   "d": 80,
+   "h": 81,
+   "unit": "m"
+  },
   "assets/items/rhombio-puff-ottoman/model.glb": {
-   "w": 109.3,
-   "d": 107.4,
-   "h": 55,
+   "w": 82,
+   "d": 82,
+   "h": 46,
+   "unit": "m"
+  },
+  "assets/items/sf3s-x07/model-ai.glb": {
+   "w": 225,
+   "d": 85,
+   "h": 65,
+   "unit": "m"
+  },
+  "assets/items/stax-minimalis-stackable-chair/model-ai.glb": {
+   "w": 45,
+   "d": 45,
+   "h": 73,
    "unit": "m"
   },
   "assets/items/kyrios-1-seater/model.glb": {
-   "w": 84.3,
-   "d": 81.9,
-   "h": 61.5,
+   "w": 100,
+   "d": 85,
+   "h": 73,
    "unit": "m"
   },
   "assets/items/guise-2-seater/model.glb": {
@@ -285,9 +489,33 @@
    "unit": "m"
   },
   "assets/items/guise-1-seater/model.glb": {
-   "w": 80.2,
-   "d": 80.6,
-   "h": 69.6,
+   "w": 85,
+   "d": 80,
+   "h": 70,
+   "unit": "m"
+  },
+  "assets/items/sf2s-158/model-ai.glb": {
+   "w": 160,
+   "d": 80,
+   "h": 70,
+   "unit": "m"
+  },
+  "assets/items/sf3s-x27/model-ai.glb": {
+   "w": 220,
+   "d": 90,
+   "h": 65,
+   "unit": "m"
+  },
+  "assets/items/capra-signature-1s/model-ai.glb": {
+   "w": 80,
+   "d": 80,
+   "h": 70,
+   "unit": "m"
+  },
+  "assets/items/sf3s-101-1-seater/model.glb": {
+   "w": 111.3,
+   "d": 77,
+   "h": 65,
    "unit": "m"
   },
   "assets/items/cubix-series-2-seater-ac-ac-kayu-terang/model.glb": {
@@ -302,22 +530,28 @@
    "h": 79.6,
    "unit": "m"
   },
+  "assets/items/guise-sofa-set-l-3-2/model.glb": {
+   "w": 195,
+   "d": 200,
+   "h": 70,
+   "unit": "m"
+  },
   "assets/items/eorde-sofa-bed-futon-sleeper-minimalis/model.glb": {
-   "w": 197.7,
-   "d": 93.2,
-   "h": 79,
+   "w": 180,
+   "d": 80,
+   "h": 72,
    "unit": "m"
   },
   "assets/items/delune-series-sw04/model-ai.glb": {
-   "w": 98.4,
-   "d": 92,
-   "h": 85,
+   "w": 75,
+   "d": 70,
+   "h": 80,
    "unit": "m"
   },
   "assets/items/capra-signature-3s/model-ai.glb": {
-   "w": 210,
-   "d": 86.7,
-   "h": 80.1,
+   "w": 195,
+   "d": 80,
+   "h": 70,
    "unit": "m"
   },
   "assets/items/cubix-series-1-seater-al-kayu-terang/model.glb": {
@@ -333,9 +567,21 @@
    "unit": "m"
   },
   "assets/items/nora-bar-stool/model.glb": {
-   "w": 48.5,
-   "d": 64.6,
-   "h": 104.7,
+   "w": 42,
+   "d": 55,
+   "h": 95,
+   "unit": "m"
+  },
+  "assets/items/guise-side-chair/model-ai.glb": {
+   "w": 48,
+   "d": 60,
+   "h": 82,
+   "unit": "m"
+  },
+  "assets/items/upslope-side-chair/model-ai.glb": {
+   "w": 48,
+   "d": 60,
+   "h": 82,
    "unit": "m"
   },
   "assets/items/cubix-series-1-seater-ac-kayu-terang/model.glb": {
@@ -350,10 +596,58 @@
    "h": 79.6,
    "unit": "m"
   },
+  "assets/items/sf3s-x42/model-ai.glb": {
+   "w": 195,
+   "d": 80,
+   "h": 80,
+   "unit": "m"
+  },
+  "assets/items/astral-ottoman/model.glb": {
+   "w": 56.3,
+   "d": 56.3,
+   "h": 40,
+   "unit": "m"
+  },
   "assets/items/capra-deluxe-3s/model-ai.glb": {
-   "w": 226.8,
-   "d": 97.8,
-   "h": 75,
+   "w": 211,
+   "d": 90,
+   "h": 70,
+   "unit": "m"
+  },
+  "assets/items/delune-series-sw14/model-ai.glb": {
+   "w": 85,
+   "d": 85,
+   "h": 73,
+   "unit": "m"
+  },
+  "assets/items/sf3s-174/model-ai.glb": {
+   "w": 200,
+   "d": 80,
+   "h": 84,
+   "unit": "m"
+  },
+  "assets/items/sf3s-101-2-seater/model.glb": {
+   "w": 223.8,
+   "d": 77,
+   "h": 65,
+   "unit": "m"
+  },
+  "assets/items/nora-bludot/model-ai.glb": {
+   "w": 48,
+   "d": 60,
+   "h": 82,
+   "unit": "m"
+  },
+  "assets/items/sf3s-x24/model-ai.glb": {
+   "w": 200,
+   "d": 100,
+   "h": 70,
+   "unit": "m"
+  },
+  "assets/items/recta-st62022/model.glb": {
+   "w": 50,
+   "d": 50,
+   "h": 50,
    "unit": "m"
   },
   "assets/items/cubix-series-meja-sudut-side/model.glb": {
@@ -368,16 +662,214 @@
    "h": 39.4,
    "unit": "m"
   },
-  "assets/items/cruiseo-dining-table/model-ai.glb": {
-   "w": 221.7,
-   "d": 80.8,
+  "assets/items/vava-dining-table/model.glb": {
+   "w": 180,
+   "d": 90,
+   "h": 74.9,
+   "unit": "m"
+  },
+  "assets/items/halved-dining-table/model.glb": {
+   "w": 200,
+   "d": 100,
    "h": 75,
    "unit": "m"
   },
-  "assets/items/scandus-dining-table/model-ai.glb": {
-   "w": 221.8,
-   "d": 101.2,
+  "assets/items/recta-ct62021/model.glb": {
+   "w": 100,
+   "d": 36,
+   "h": 73,
+   "unit": "m"
+  },
+  "assets/items/recta-st62020/model.glb": {
+   "w": 35,
+   "d": 35,
+   "h": 100,
+   "unit": "m"
+  },
+  "assets/items/eorde-coffee-table/model.glb": {
+   "w": 112,
+   "d": 112.2,
+   "h": 36,
+   "unit": "m"
+  },
+  "assets/items/cruiseo-dining-table/model-ai.glb": {
+   "w": 240,
+   "d": 90,
    "h": 75,
+   "unit": "m"
+  },
+  "assets/items/scandus-dining-table/model.glb": {
+   "w": 180,
+   "d": 90,
+   "h": 75,
+   "unit": "m"
+  },
+  "assets/items/ashara-54-nightstand/model.glb": {
+   "w": 60.1,
+   "d": 45.2,
+   "h": 50,
+   "unit": "m"
+  },
+  "assets/items/ct62024-coffee-table/model.glb": {
+   "w": 70,
+   "d": 70,
+   "h": 44,
+   "unit": "m"
+  },
+  "assets/items/nora-dining-table/model.glb": {
+   "w": 186,
+   "d": 86,
+   "h": 75.1,
+   "unit": "m"
+  },
+  "assets/items/recta-st62019/model.glb": {
+   "w": 40,
+   "d": 40,
+   "h": 60,
+   "unit": "m"
+  },
+  "assets/items/uas-45-dining-table/model.glb": {
+   "w": 186,
+   "d": 86,
+   "h": 75,
+   "unit": "m"
+  },
+  "assets/items/ietei-coffee-table/model.glb": {
+   "w": 115,
+   "d": 60,
+   "h": 43.3,
+   "unit": "m"
+  },
+  "assets/items/hout-portable-coffee-table/model.glb": {
+   "w": 46,
+   "d": 30,
+   "h": 60,
+   "unit": "m"
+  },
+  "assets/items/poel-platform-bed-no-headrest/model.glb": {
+   "w": 92,
+   "d": 207,
+   "h": 64.7,
+   "unit": "m"
+  },
+  "assets/items/poel-platform-bed-no-headrest/model-120cm.glb": {
+   "w": 122,
+   "d": 207,
+   "h": 64.7,
+   "unit": "m"
+  },
+  "assets/items/poel-platform-bed-no-headrest/model-160cm.glb": {
+   "w": 162,
+   "d": 207,
+   "h": 64.7,
+   "unit": "m"
+  },
+  "assets/items/poel-platform-bed-no-headrest/model-180cm.glb": {
+   "w": 182,
+   "d": 207,
+   "h": 64.7,
+   "unit": "m"
+  },
+  "assets/items/poel-platform-bed-no-headrest/model-200cm.glb": {
+   "w": 202,
+   "d": 207,
+   "h": 64.7,
+   "unit": "m"
+  },
+  "assets/items/shusio-w3-console-table/model.glb": {
+   "w": 150,
+   "d": 40,
+   "h": 85,
+   "unit": "m"
+  },
+  "assets/items/recta-cb62018/model.glb": {
+   "w": 100,
+   "d": 36,
+   "h": 168,
+   "unit": "m"
+  },
+  "assets/items/recta-w-series-ct-62012-console-table-rak-cabinet-industrial-xionco/model.glb": {
+   "w": 150,
+   "d": 40,
+   "h": 85,
+   "unit": "m"
+  },
+  "assets/items/eorde-curio-tv-cabinet/model.glb": {
+   "w": 183,
+   "d": 39.2,
+   "h": 28,
+   "unit": "m"
+  },
+  "assets/items/poel-modular-wardrobe/model.glb": {
+   "w": 84,
+   "d": 45,
+   "h": 201,
+   "unit": "m"
+  },
+  "assets/items/poel-modular-wardrobe/model-drawer.glb": {
+   "w": 84,
+   "d": 45,
+   "h": 201,
+   "unit": "m"
+  },
+  "assets/items/poel-modular-wardrobe/model-shelves.glb": {
+   "w": 84,
+   "d": 45,
+   "h": 201,
+   "unit": "m"
+  },
+  "assets/items/shusio-5-shoe-storage-bench-minimalis/model.glb": {
+   "w": 150,
+   "d": 50,
+   "h": 43,
+   "unit": "m"
+  },
+  "assets/items/poel-modular-cabinet/model.glb": {
+   "w": 84,
+   "d": 45,
+   "h": 201,
+   "unit": "m"
+  },
+  "assets/items/poel-modular-cabinet/model-door.glb": {
+   "w": 84,
+   "d": 45,
+   "h": 201,
+   "unit": "m"
+  },
+  "assets/items/poel-modular-cabinet/model-drawer.glb": {
+   "w": 84,
+   "d": 45,
+   "h": 201,
+   "unit": "m"
+  },
+  "assets/items/aobo-cabinet-and-wardrobe/model.glb": {
+   "w": 40,
+   "d": 31.6,
+   "h": 80,
+   "unit": "m"
+  },
+  "assets/items/aobo-cabinet-and-wardrobe/model-a1.glb": {
+   "w": 40,
+   "d": 30,
+   "h": 40,
+   "unit": "m"
+  },
+  "assets/items/aobo-cabinet-and-wardrobe/model-a3.glb": {
+   "w": 40,
+   "d": 30,
+   "h": 40,
+   "unit": "m"
+  },
+  "assets/items/aobo-cabinet-and-wardrobe/model-a4.glb": {
+   "w": 80,
+   "d": 31.6,
+   "h": 40,
+   "unit": "m"
+  },
+  "assets/items/aobo-cabinet-and-wardrobe/model-c2.glb": {
+   "w": 160,
+   "d": 31.6,
+   "h": 200,
    "unit": "m"
   },
   "assets/items/gliza-tv-cabinet-stand/model.glb": {
@@ -386,10 +878,88 @@
    "h": 39,
    "unit": "m"
   },
+  "assets/items/recta-w-series-sb-62011-sideboard-buffet-lemari-cabinet-industrial-xionco/model.glb": {
+   "w": 150,
+   "d": 40,
+   "h": 85,
+   "unit": "m"
+  },
   "assets/items/aether-standing-side-floor-lamp/model.glb": {
    "w": 21.3,
    "d": 21.3,
    "h": 163.2,
+   "unit": "m"
+  },
+  "assets/items/aether-series-sky-b83/model.glb": {
+   "w": 180,
+   "d": 4.1,
+   "h": 67.2,
+   "unit": "m"
+  },
+  "assets/items/void-terra-s88/model.glb": {
+   "w": 25,
+   "d": 25,
+   "h": 135.5,
+   "unit": "m"
+  },
+  "assets/items/void-sky-s7/model.glb": {
+   "w": 10,
+   "d": 10,
+   "h": 58.5,
+   "unit": "m"
+  },
+  "assets/items/aether-cloud-sq2/model.glb": {
+   "w": 13.3,
+   "d": 14.2,
+   "h": 14.2,
+   "unit": "m"
+  },
+  "assets/items/aether-series-cloud-r7/model.glb": {
+   "w": 5,
+   "d": 4,
+   "h": 170,
+   "unit": "m"
+  },
+  "assets/items/aether-series-cloud-r7/model-100cm.glb": {
+   "w": 5,
+   "d": 4,
+   "h": 100,
+   "unit": "m"
+  },
+  "assets/items/aether-series-magnetic-track-light/model.glb": {
+   "w": 100,
+   "d": 4.4,
+   "h": 45.7,
+   "unit": "m"
+  },
+  "assets/items/aether-series-sky-z1/model.glb": {
+   "w": 141.2,
+   "d": 5,
+   "h": 79.1,
+   "unit": "m"
+  },
+  "assets/items/void-sky-s8/model.glb": {
+   "w": 10,
+   "d": 10,
+   "h": 79,
+   "unit": "m"
+  },
+  "assets/items/void-cloud-gk-100/model.glb": {
+   "w": 8.5,
+   "d": 7,
+   "h": 81,
+   "unit": "m"
+  },
+  "assets/items/aether-sky-r150/model.glb": {
+   "w": 120,
+   "d": 15,
+   "h": 67.7,
+   "unit": "m"
+  },
+  "assets/items/aether-cloud-ae2/model.glb": {
+   "w": 20.1,
+   "d": 10.4,
+   "h": 18.5,
    "unit": "m"
   },
   "assets/items/void-series-sky-b9/model.glb": {
@@ -398,10 +968,160 @@
    "h": 71.7,
    "unit": "m"
   },
-  "assets/items/aether-series-cloud-m1/model-ai.glb": {
-   "w": 6.8,
-   "d": 40,
-   "h": 40,
+  "assets/items/void-series-sky-b29/model.glb": {
+   "w": 140,
+   "d": 6,
+   "h": 72.2,
+   "unit": "m"
+  },
+  "assets/items/void-sky-s9/model.glb": {
+   "w": 27,
+   "d": 13,
+   "h": 119,
+   "unit": "m"
+  },
+  "assets/items/aether-series-cloud-m1/model.glb": {
+   "w": 13.1,
+   "d": 5,
+   "h": 100.5,
+   "unit": "m"
+  },
+  "assets/items/void-series-sky-w21/model.glb": {
+   "w": 7.5,
+   "d": 7.5,
+   "h": 69.2,
+   "unit": "m"
+  },
+  "assets/items/void-cloud-bg7/model.glb": {
+   "w": 10.4,
+   "d": 8.8,
+   "h": 48,
+   "unit": "m"
+  },
+  "assets/items/aether-cloud-ae8/model.glb": {
+   "w": 19.5,
+   "d": 15.5,
+   "h": 16,
+   "unit": "m"
+  },
+  "assets/items/aether-sky-v3/model.glb": {
+   "w": 30,
+   "d": 30,
+   "h": 56.7,
+   "unit": "m"
+  },
+  "assets/items/void-series-sky-b10/model.glb": {
+   "w": 150,
+   "d": 8,
+   "h": 64.4,
+   "unit": "m"
+  },
+  "assets/items/void-sky-vx1/model.glb": {
+   "w": 20.3,
+   "d": 15.3,
+   "h": 60.5,
+   "unit": "m"
+  },
+  "assets/items/void-cloud-g8/model.glb": {
+   "w": 16.1,
+   "d": 16.6,
+   "h": 40.1,
+   "unit": "m"
+  },
+  "assets/items/aether-cloud-b83/model.glb": {
+   "w": 31.3,
+   "d": 12.4,
+   "h": 20.9,
+   "unit": "m"
+  },
+  "assets/items/aether-terra-x3/model.glb": {
+   "w": 20,
+   "d": 20,
+   "h": 135,
+   "unit": "m"
+  },
+  "assets/items/void-cloud-sg1/model.glb": {
+   "w": 11,
+   "d": 10.8,
+   "h": 9.4,
+   "unit": "m"
+  },
+  "assets/items/void-sky-vg1/model.glb": {
+   "w": 20.2,
+   "d": 20.3,
+   "h": 58,
+   "unit": "m"
+  },
+  "assets/items/oz-floor-lamp-stand/model.glb": {
+   "w": 45.3,
+   "d": 45.3,
+   "h": 150,
+   "unit": "m"
+  },
+  "assets/items/oz-floor-lamp-stand/model-black.glb": {
+   "w": 45.3,
+   "d": 45.3,
+   "h": 150,
+   "unit": "m"
+  },
+  "assets/items/void-cloud-cl03/model.glb": {
+   "w": 10,
+   "d": 12,
+   "h": 34,
+   "unit": "m"
+  },
+  "assets/items/aether-series-cloud-rx7/model.glb": {
+   "w": 8,
+   "d": 4,
+   "h": 100,
+   "unit": "m"
+  },
+  "assets/items/void-sky-v4/model.glb": {
+   "w": 8,
+   "d": 8,
+   "h": 77.7,
+   "unit": "m"
+  },
+  "assets/items/void-cloud-az8/model.glb": {
+   "w": 27,
+   "d": 10,
+   "h": 49,
+   "unit": "m"
+  },
+  "assets/items/void-series-sky-b8/model.glb": {
+   "w": 140,
+   "d": 8.5,
+   "h": 71.2,
+   "unit": "m"
+  },
+  "assets/items/void-series-sky-b8/model-4.glb": {
+   "w": 180,
+   "d": 8.5,
+   "h": 71.2,
+   "unit": "m"
+  },
+  "assets/items/void-cloud-g2/model.glb": {
+   "w": 10.6,
+   "d": 8.8,
+   "h": 37,
+   "unit": "m"
+  },
+  "assets/items/void-series-cloud-g1/model.glb": {
+   "w": 6,
+   "d": 6.5,
+   "h": 35.8,
+   "unit": "m"
+  },
+  "assets/items/aether-sky-v1-ceiling-lamp/model.glb": {
+   "w": 45.3,
+   "d": 45.3,
+   "h": 68,
+   "unit": "m"
+  },
+  "assets/items/aether-sky-r100/model.glb": {
+   "w": 120,
+   "d": 10,
+   "h": 66.2,
    "unit": "m"
   },
   "assets/items/aether/model.glb": {
@@ -410,16 +1130,244 @@
    "h": 102,
    "unit": "m"
   },
+  "assets/items/aether-series-sky-v2/model.glb": {
+   "w": 35,
+   "d": 35,
+   "h": 57.2,
+   "unit": "m"
+  },
+  "assets/items/aether-terra-x4/model.glb": {
+   "w": 114.2,
+   "d": 32.3,
+   "h": 180.7,
+   "unit": "m"
+  },
+  "assets/items/aether-cloud-q1/model.glb": {
+   "w": 8.9,
+   "d": 8,
+   "h": 81.7,
+   "unit": "m"
+  },
+  "assets/items/trash-bin-each/model.glb": {
+   "w": 24.4,
+   "d": 24.4,
+   "h": 28,
+   "unit": "m"
+  },
+  "assets/items/clothes-hanger-each/model.glb": {
+   "w": 44.9,
+   "d": 1.6,
+   "h": 21.9,
+   "unit": "m"
+  },
+  "assets/items/somno-bed-pillow/model.glb": {
+   "w": 71,
+   "d": 51,
+   "h": 15,
+   "unit": "m"
+  },
   "assets/items/cubix-series-throw-pillow-b/model.glb": {
    "w": 48.8,
    "d": 24.6,
    "h": 45.7,
    "unit": "m"
   },
+  "assets/items/acrylic-mirror-emerald-jade-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb": {
+   "w": 122,
+   "d": 17.2,
+   "h": 243.4,
+   "unit": "m"
+  },
+  "assets/items/acrylic-mirror-inferno-red-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb": {
+   "w": 122,
+   "d": 17.2,
+   "h": 243.4,
+   "unit": "m"
+  },
+  "assets/items/powerbank-each/model.glb": {
+   "w": 7,
+   "d": 2.8,
+   "h": 17.8,
+   "unit": "m"
+  },
+  "assets/items/ramen-bowl-each/model.glb": {
+   "w": 20.4,
+   "d": 20.4,
+   "h": 9,
+   "unit": "m"
+  },
+  "assets/items/acrylic-mirror-blessing-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb": {
+   "w": 122,
+   "d": 17.2,
+   "h": 243.4,
+   "unit": "m"
+  },
+  "assets/items/acrylic-mirror-bronze-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb": {
+   "w": 122,
+   "d": 17.2,
+   "h": 243.4,
+   "unit": "m"
+  },
+  "assets/items/bed-pillow-each/model.glb": {
+   "w": 69.8,
+   "d": 49.7,
+   "h": 8,
+   "unit": "m"
+  },
+  "assets/items/acrylic-mirror-ocean-blue-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb": {
+   "w": 122,
+   "d": 17.2,
+   "h": 243.4,
+   "unit": "m"
+  },
+  "assets/items/bidet-spray-each/model.glb": {
+   "w": 7.4,
+   "d": 4.4,
+   "h": 31.3,
+   "unit": "m"
+  },
+  "assets/items/botol-minum-pintar-each/model.glb": {
+   "w": 7.4,
+   "d": 7.4,
+   "h": 26.2,
+   "unit": "m"
+  },
+  "assets/items/plate-each/model.glb": {
+   "w": 27,
+   "d": 27,
+   "h": 2.4,
+   "unit": "m"
+  },
+  "assets/items/tissue-box-each/model.glb": {
+   "w": 23.5,
+   "d": 13.5,
+   "h": 10,
+   "unit": "m"
+  },
+  "assets/items/charger-each/model.glb": {
+   "w": 6,
+   "d": 4.5,
+   "h": 6.5,
+   "unit": "m"
+  },
+  "assets/items/acrylic-mirror-silver-122-x-244-cm-thickness-1-or-2-mm-akrilik-cermin/model.glb": {
+   "w": 122,
+   "d": 17.2,
+   "h": 243.4,
+   "unit": "m"
+  },
+  "assets/items/capra-deluxe-1s/model-ai.glb": {
+   "w": 85,
+   "d": 90,
+   "h": 70,
+   "unit": "m"
+  },
+  "assets/items/capra-signature-2s/model-ai.glb": {
+   "w": 130,
+   "d": 80,
+   "h": 70,
+   "unit": "m"
+  },
+  "assets/items/acrylic-mirror-rose-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb": {
+   "w": 122,
+   "d": 17.2,
+   "h": 243.4,
+   "unit": "m"
+  },
+  "assets/items/folding-umbrella-each/model.glb": {
+   "w": 5.2,
+   "d": 5.2,
+   "h": 37,
+   "unit": "m"
+  },
+  "assets/items/storage-tray-each/model.glb": {
+   "w": 25,
+   "d": 17,
+   "h": 11,
+   "unit": "m"
+  },
+  "assets/items/storage-tray-each/model-m.glb": {
+   "w": 25,
+   "d": 17,
+   "h": 15,
+   "unit": "m"
+  },
+  "assets/items/storage-tray-each/model-l.glb": {
+   "w": 35,
+   "d": 25,
+   "h": 22,
+   "unit": "m"
+  },
+  "assets/items/drinking-glass-each/model.glb": {
+   "w": 8.6,
+   "d": 8.6,
+   "h": 12,
+   "unit": "m"
+  },
+  "assets/items/cubix-series-throw-pillow-set/model.glb": {
+   "w": 57,
+   "d": 37.9,
+   "h": 48,
+   "unit": "m"
+  },
+  "assets/items/earphone-each/model.glb": {
+   "w": 13.3,
+   "d": 12.3,
+   "h": 5.9,
+   "unit": "m"
+  },
+  "assets/items/mieru-round-wall-mirror/model.glb": {
+   "w": 80,
+   "d": 2,
+   "h": 80,
+   "unit": "m"
+  },
+  "assets/items/acrylic-mirror-black-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb": {
+   "w": 122,
+   "d": 17.2,
+   "h": 243.4,
+   "unit": "m"
+  },
+  "assets/items/acrylic-mirror-natural-brown-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb": {
+   "w": 122,
+   "d": 17.2,
+   "h": 243.4,
+   "unit": "m"
+  },
+  "assets/items/somno-bed-pillow-king-size/model.glb": {
+   "w": 91,
+   "d": 61,
+   "h": 17,
+   "unit": "m"
+  },
+  "assets/items/vazra-rechargeable-usb-type-c-aaa-battery-baterai/model.glb": {
+   "w": 2.2,
+   "d": 1,
+   "h": 4.6,
+   "unit": "m"
+  },
+  "assets/items/vazra-rechargeable-usb-type-c-aaa-battery-baterai/model-4-pcs.glb": {
+   "w": 4.5,
+   "d": 1,
+   "h": 4.6,
+   "unit": "m"
+  },
+  "assets/items/vazra-rechargeable-usb-type-c-aa-battery-baterai/model.glb": {
+   "w": 3,
+   "d": 1.4,
+   "h": 5.2,
+   "unit": "m"
+  },
+  "assets/items/vazra-rechargeable-usb-type-c-aa-battery-baterai/model-4-pcs.glb": {
+   "w": 6.2,
+   "d": 1.4,
+   "h": 5.2,
+   "unit": "m"
+  },
   "assets/items/capra-deluxe-ottoman/model-ai.glb": {
-   "w": 93.8,
-   "d": 96.6,
-   "h": 45,
+   "w": 72,
+   "d": 72,
+   "h": 40,
    "unit": "m"
   },
   "assets/items/aether-k40/model.glb": {

@@ -7,6 +7,9 @@
                common  3/4 depan, skala sama untuk semua pilihan (ukuran / kapasitas terbaca)
                region  detail: sudut kaki, lengan, sandaran, dudukan, tepi meja, headboard
                diff    dibingkai pada bagian yang berubah (tambahan, isi dalam, handle)
+               part    hanya bagian yang dijelaskan (mis. base meja tanpa top, kaki kursi tanpa dudukan)
+               new     bagian yang berbeda dari pilihan pembanding digambar tegas, sisanya samar (konteks),
+                       kamera fokus ke bagian itu (storage, sandaran, laci, rel, tangga, handle …)
      • SYM — simbol garis (symbols.js) untuk pilihan abstrak: kain, isian, kekerasan, jahitan,
              material, finishing, badan kabinet, aksesori kecil.
    ========================================================================== */
@@ -31,6 +34,8 @@
   function union(a, b) { return !a ? b.slice() : [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.min(a[2], b[2]), Math.max(a[3], b[3]), Math.max(a[4], b[4]), Math.max(a[5], b[5])]; }
   function union2(a, b) { return !a ? b.slice() : [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[2], b[2]), Math.max(a[3], b[3])]; }
 
+  // tinggi dudukan (m): kursi = seatH, stool = h (tinggi dudukan)
+  function seatY(c) { return (+c.seatH || +c.h || 44) / 100; }
   /* ---------------- daerah detail (koordinat dunia; depan = +Z, kamera di kanan depan) */
   var REG = {
     // sudut kaki depan kanan
@@ -64,7 +69,24 @@
     // headboard (belakang tempat tidur)
     head: function (b) { var D = b[5] - b[2]; return [b[0], b[1], b[2], b[3], b[4], b[2] + Math.min(.6, D * .35)]; },
     // bagian bawah (base, rok, pijakan)
-    low: function (b, c) { var H = b[4] - b[1]; return [b[0], b[1], b[2], b[3], b[1] + Math.max(.25, Math.min(.55, H * .45)), b[5]]; }
+    low: function (b, c) { var H = b[4] - b[1]; return [b[0], b[1], b[2], b[3], b[1] + Math.max(.25, Math.min(.55, H * .45)), b[5]]; },
+    // sudut bawah depan kanan (dudukan kabinet / ranjang: kaki, plinth, melayang, roda)
+    lowR: function (b) { var W = b[3] - b[0], H = b[4] - b[1], s = Math.max(.3, Math.min(.6, W * .4)); return [b[3] - s, b[1], b[5] - Math.min(.5, (b[5] - b[2]) * .6), b[3], b[1] + Math.max(.22, Math.min(.42, H * .4)), b[5]]; },
+    // sudut kanan seluruh tinggi (rangka sofa / ranjang, lengan + kaki)
+    corner: function (b) { var W = b[3] - b[0], s = Math.min(.8, W * .42); return [b[3] - s, b[1], b[2], b[3], b[4], b[5]]; },
+    // bagian atas di atas dudukan (sandaran kursi makan / bangku), maks. 0,9 m dari kanan
+    upper: function (b, c) { var sh = seatY(c); return [Math.max(b[0], b[3] - .9), Math.min(b[4] - .12, sh - .04), b[2], b[3], b[4], b[5]]; },
+    // pita dudukan kursi kecil (bantalan, bentuk dudukan)
+    band: function (b, c) { var sh = seatY(c); return [b[0], sh - .14, b[2], b[3], Math.min(b[4], sh + .1), b[5]]; },
+    // sudut atas kanan (top kabinet)
+    topR: function (b) { var W = b[3] - b[0], H = b[4] - b[1], s = Math.min(.55, W * .4); return [b[3] - s, b[4] - Math.max(.1, Math.min(.28, H * .22)), b[2], b[3], b[4], b[5]]; }
+  };
+  /* ---------------- penyaring bagian (mode part) — kotak bagian, kotak penuh, cfg → true = disembunyikan */
+  var HIDE = {
+    // top meja disembunyikan → hanya base / kaki / pedestal
+    under: function (mb, B, c) { var y = (+c.h || 75) / 100 - (+c.thick || 3) / 100; return mb[4] > y + .012; },
+    // hanya bagian bawah (titik tengah bagian di bawah fraksi tinggi)
+    lo: function (f) { return function (mb, B) { return (mb[1] + mb[4]) / 2 > B[1] + (B[4] - B[1]) * f; }; }
   };
 
   /* ---------------- aturan per kelompok  { m: mode, v: view, r: region, open: fn, svg: true } */
@@ -73,56 +95,68 @@
     var k = cat + '/' + sub;
     var R = {
       // bentuk keseluruhan
-      shape: { m: 'full' }, form: { m: 'full' }, frame: { m: 'full' }, frameStyle: { m: 'full' }, construction: { m: 'full' },
+      shape: { m: 'full' }, form: { m: 'full' }, frame: { m: 'region', r: 'corner', v: { az: 34, el: 12 } }, frameStyle: { m: 'region', r: 'corner', v: { az: 34, el: 12 } }, construction: { m: 'full' },
       seats: { m: 'common', v: cat === 'meja' ? { el: 38 } : null }, height: { m: 'common' }, mattress: { m: 'common', v: { az: 28, el: 34 } },
       hbW: { m: 'common', v: { az: 14, el: 14 } },
-      back: { m: 'full', v: cat === 'kursi' && sub !== 'dining' ? { az: 26, el: 12 } : null },
-      backrest: { m: 'full' }, backStyle: { m: 'full', v: { az: 22, el: 12 } }, backS: { m: 'full' },
-      arm: { m: 'region', r: 'arm', v: { az: 30, el: 14 } }, armStyle: { m: 'full' },
-      backTuft: { m: sub === 'dining' ? 'full' : 'region', r: 'back', v: { az: 12, el: 10 } },
-      seatC: { m: 'full', v: { el: 26 } }, seatTuft: { m: 'region', r: 'seat', v: { az: 20, el: 34 } },
-      top: { m: sub === 'chaise' ? 'full' : 'full', v: { el: 30 } }, topTuft: { m: 'full', v: { el: 30 } }, tuft: { m: 'full', v: { el: 32 } }, sides: { m: 'full', v: { el: 10 } },
-      cushion: { m: 'full', v: { el: 24 } }, seatShape: { m: 'full', v: { el: 36 } }, ends: { m: 'full' }, storage: { m: 'full', v: sub === 'divan' ? { az: 40, el: 18 } : { el: 20 } },
-      headrest: { m: 'full' }, pillowType: { m: 'region', r: 'pillow', v: { az: 14, el: 12 } },
-      base: { m: 'full', v: cat === 'meja' ? { el: 14 } : null }, stretcher: { m: 'full', v: { el: 10 } }, footrest: { m: 'full' },
-      leg: { m: SMALL.test(sub) && cat === 'kursi' ? 'full' : 'region', r: 'leg', v: { az: 34, el: 12 } },
+      back: SMALL.test(sub) ? { m: 'region', r: 'upper', v: { az: 26, el: 12 } } : { m: 'region', r: 'back', v: { az: 26, el: 12 } },
+      backrest: { m: 'new', v: { az: 30, el: 14 }, fb: { m: 'region', r: 'upper' } }, backStyle: { m: 'new', v: { az: 26, el: 12 }, fb: { m: 'region', r: 'upper' } },
+      backS: { m: 'new', v: { az: 30, el: 14 }, fb: { m: 'region', r: 'upper' } },
+      arm: { m: 'region', r: 'arm', v: { az: 30, el: 14 } }, armStyle: { m: 'region', r: 'upper', v: { az: 30, el: 14 } },
+      backTuft: SMALL.test(sub) ? { m: 'region', r: 'upper', v: { az: 16, el: 10 } } : { m: 'region', r: 'back', v: { az: 12, el: 10 } },
+      seatC: { m: 'region', r: 'seat', v: { az: 20, el: 30 } }, seatTuft: { m: 'region', r: 'seat', v: { az: 20, el: 34 } },
+      top: cat === 'kabinet' ? { m: 'region', r: 'topR', v: { az: 30, el: 22 } } : { m: 'region', r: 'seat', v: { az: 20, el: 32 } },
+      topTuft: { m: 'region', r: 'seat', v: { az: 20, el: 32 } }, tuft: { m: 'full', v: { el: 32 } }, sides: { m: 'full', v: { el: 10 } },
+      cushion: SMALL.test(sub) ? { m: 'region', r: 'band', v: { az: 28, el: 26 } } : { m: 'new', v: { az: 28, el: 24 }, fb: { m: 'region', r: 'seat', v: { az: 20, el: 30 } } },
+      seatShape: { m: 'region', r: 'band', v: { az: 28, el: 34 } },
+      ends: { m: 'new', v: { az: 32, el: 14 }, fb: { m: 'region', r: 'arm', v: { az: 30, el: 14 } } },
+      storage: { m: 'new', rev: true, open: 'all', v: { az: 36, el: 16 }, fb: { m: 'region', r: 'lowR', v: { az: 36, el: 14 } } },
+      headrest: { m: 'new', v: { az: 30, el: 14 } }, pillowType: { m: 'region', r: 'pillow', v: { az: 14, el: 12 } },
+      base: cat === 'meja' ? { m: 'part', hide: 'under', v: { az: 30, el: 12 } } : { m: 'part', hide: sub === 'stool' ? .5 : .24, v: { az: 30, el: 12 } },
+      stretcher: { m: 'part', hide: .42, v: { az: 30, el: 14 } }, footrest: { m: 'new', v: { az: 30, el: 14 } },
+      leg: SMALL.test(sub) && cat === 'kursi' ? { m: 'part', hide: .42, v: { az: 32, el: 12 } } : { m: 'region', r: 'leg', v: { az: 34, el: 12 } },
       skirt: { m: 'region', r: 'leg', v: { az: 34, el: 12 } },
-      mount: { m: 'full', v: { el: 10 } },
+      mount: { m: 'region', r: 'lowR', v: { az: 32, el: 10 } },
       topShape: { m: 'full', v: { el: 40 } }, edge: { m: 'region', r: 'edge', v: { az: 18, el: 9 } },
       headboard: { m: 'region', r: 'head', v: { az: 16, el: 12 } },
       lowerDoors: { m: 'full' },
       doorType: { m: 'full', v: { az: 24, el: 12 }, open: 'one' },
       // kabinet (spec-kabinet.js): model pintu, jenis kaca, batu top, model & panel kabinet gantung
       doorStyle: { m: 'full', v: { az: 24, el: 12 }, open: 'one' }, glassType: { m: 'region', r: 'frontR', v: { az: 14, el: 8 } },
-      topStone: { m: 'full', v: { el: 30 } }, wallType: { m: 'full', v: { az: 26, el: 10 } }, wallPanel: { m: 'full', v: { az: 26, el: 10 } },
-      handle: { m: 'region', r: 'frontR', v: { az: 18, el: 10 } },
+      topStone: { m: 'region', r: 'topR', v: { az: 30, el: 22 } }, wallType: { m: 'full', v: { az: 26, el: 10 } }, wallPanel: { m: 'new', v: { az: 26, el: 10 } },
+      handle: { m: 'new', rev: true, one: true, v: { az: 18, el: 10 }, fb: { m: 'region', r: 'frontR', v: { az: 18, el: 10 } } },
       interior: { m: 'diff', open: 'all', v: { az: 18, el: 12 } },
       trim: { m: 'diff', anchor: 'right' }, extras: { m: 'diff', anchor: 'right' }, swivel: { m: 'diff' }
     };
     var r = R[gid] || { m: 'full' };
-    if (k === 'kursi/armchair' && gid === 'arm') r = { m: 'full', v: { az: 30, el: 14 } };
-    if (k === 'kursi/chaise' && gid === 'base') r = { m: 'full', v: { el: 12 } };
+    if (k === 'kursi/dining' && gid === 'frame') r = { m: 'part', hide: .42, v: { az: 30, el: 12 } };
+    if (k === 'kursi/stool' && gid === 'frame') r = { m: 'part', hide: .5, v: { az: 30, el: 12 } };
+    if (k === 'kursi/chaise' && gid === 'back') r = { m: 'new', v: { az: 30, el: 14 }, fb: { m: 'region', r: 'back', v: { az: 26, el: 12 } } };
+    if (k === 'kursi/chaise' && gid === 'base') r = { m: 'part', hide: .26, v: { az: 30, el: 10 } };
+    if (k === 'kursi/ottoman' && gid === 'tuft') r = { m: 'region', r: 'topR', v: { az: 26, el: 36 } };
     if (k === 'kursi/bench' && gid === 'leg') r = { m: 'region', r: 'leg', v: { az: 34, el: 12 } };
     if (k === 'kursi/ottoman' && gid === 'leg') r = { m: 'full', v: { az: 30, el: 8 } };
     // divan & ranjang (spec-divan.js): susun / loft / sorong / daybed / kanopi / anak
     if (cat === 'divan') {
       var DV = { layout: { m: 'full', v: { az: 30, el: 16 } }, access: { m: 'full', v: { az: 34, el: 12 } }, rail: { m: 'full', v: { az: 26, el: 18 } },
-        under: { m: 'region', r: 'low', v: { az: 24, el: 12 } }, trundle: { m: 'region', r: 'low', v: { az: 24, el: 12 }, open: 'all' }, below: { m: 'full', v: { az: 26, el: 8 } },
+        under: { m: 'region', r: 'lowR', open: 'all', v: { az: 30, el: 12 } }, trundle: { m: 'region', r: 'low', v: { az: 24, el: 12 }, open: 'all' }, below: { m: 'full', v: { az: 26, el: 8 } },
         bottom: { m: 'common', v: { az: 28, el: 34 } }, post: { m: 'full', v: { az: 30, el: 10 } }, canopy: { m: 'full', v: { az: 30, el: 14 } }, drape: { m: 'full', v: { az: 30, el: 12 } },
-        roof: { m: 'full', v: { az: 30, el: 12 } }, sides: { m: 'full', v: { az: 28, el: 16 } }, infill: { m: 'full', v: { az: 24, el: 12 } }, foot: { m: 'full', v: { az: 30, el: 14 } } };
+        roof: { m: 'full', v: { az: 30, el: 12 } }, sides: { m: 'full', v: { az: 28, el: 16 } }, infill: { m: 'region', r: 'corner', v: { az: 30, el: 12 } }, foot: { m: 'full', v: { az: 30, el: 14 } } };
       if (DV[gid]) r = DV[gid];
-      if (gid === 'style' || gid === 'frame') r = { m: 'full', v: { az: 30, el: 14 } };
+      if (gid === 'style') r = { m: 'full', v: { az: 30, el: 14 } };
+      if (gid === 'frame') r = { m: 'region', r: 'corner', v: { az: 32, el: 12 } };
+      if (/^(access|rail)$/.test(gid)) r = { m: 'new', one: gid === 'rail', v: { az: 30, el: 14 } };
       if (gid === 'arm' && /^(trundle|daybed)$/.test(sub)) r = { m: 'region', r: 'arm', v: { az: 30, el: 14 } };
     }
     // meja (spec-meja.js): tata letak dilihat dari atas, kaki / pijakan dari samping, panel depan rendah
     if (cat === 'meja') {
       var MJ = { layout: { m: 'full', v: { az: 30, el: 34 } }, plan: { m: 'full', v: { az: 30, el: 30 } }, form: { m: 'full', v: { az: 30, el: 22 } }, side: { m: 'full', v: { az: 30, el: 34 } },
-        pieces: { m: 'full', v: { el: 24 } }, legStyle: { m: 'region', r: 'leg', v: { az: 34, el: 12 } }, footrest: { m: 'full', v: { el: 8 } }, frame: { m: 'full', v: { el: 14 } }, mount: { m: 'full', v: { el: 12 } },
-        pedestal: { m: 'full', v: { az: 26, el: 14 } }, pedType: { m: 'full', v: { az: 26, el: 12 } }, pedDrawers: { m: 'full', v: { az: 24, el: 10 } }, islandBody: { m: 'full', v: { az: 22, el: 10 } },
-        hutch: { m: 'full', v: { el: 14 } }, tower: { m: 'full', v: { el: 14 } }, face: { m: 'full', v: { az: 18, el: 8 } }, front: { m: 'full', v: { az: 16, el: 8 } }, screen: { m: 'full', v: { el: 16 } },
-        mped: { m: 'full', v: { el: 14 } }, ada: { m: 'full', v: { el: 12 } }, plinth: { m: 'region', r: 'low', v: { az: 24, el: 8 } }, mirror: { m: 'full', v: { az: 24, el: 10 } }, stool: { m: 'full', v: { el: 14 } },
+        pieces: { m: 'full', v: { el: 24 } }, legStyle: { m: 'region', r: 'leg', v: { az: 34, el: 12 } }, footrest: { m: 'new', v: { az: 30, el: 10 } }, frame: { m: 'part', hide: 'under', v: { az: 30, el: 12 } }, mount: { m: 'region', r: 'lowR', v: { az: 30, el: 10 } },
+        pedestal: { m: 'new', v: { az: 28, el: 14 }, fb: { m: 'part', hide: 'under', v: { az: 30, el: 12 } } }, pedType: { m: 'new', v: { az: 28, el: 12 } }, pedDrawers: { m: 'new', v: { az: 24, el: 10 } },
+        islandBody: { m: 'new', v: { az: 22, el: 10 } }, hutch: { m: 'new', v: { az: 28, el: 14 } }, tower: { m: 'new', v: { az: 28, el: 14 } }, face: { m: 'full', v: { az: 18, el: 8 } }, front: { m: 'full', v: { az: 16, el: 8 } }, screen: { m: 'full', v: { el: 16 } },
+        mped: { m: 'new', v: { az: 28, el: 14 } }, ada: { m: 'new', v: { az: 28, el: 12 } }, plinth: { m: 'region', r: 'low', v: { az: 24, el: 8 } }, mirror: { m: 'new', v: { az: 24, el: 10 } }, stool: { m: 'new', v: { az: 28, el: 14 } },
         inlay: { m: 'full', v: { el: 40 } }, tableware: { m: 'full', v: { el: 40 } } };
       if (MJ[gid]) r = MJ[gid];
+      if (sub === 'vanity' && gid === 'mount') r = { m: 'part', hide: 'under', v: { az: 30, el: 12 }, set: { stool: 'none' } };
       if (gid === 'seats') r.set = { tableware: 'mats' };
     }
     // tanpa bantal hias agar permukaan / bentuk sandaran terlihat
@@ -206,6 +240,7 @@
       if (!f) return { o: o, skip: true, note: 'unreachable' };   // pilihan tidak pernah tampil di sub ini
       if (SYM_GROUPS.test(gr.id) || (sk && (SYM[sk].force || SYM[sk].prefer))) return { o: o, sym: sk || null, note: sk ? '' : 'no symbol' };
       var cfg = f.cfg, ro = optRule(cat, sub, gr.id, o.id, ru) || ru;
+      if (ro.fb) ro = Object.assign({}, ro, { fb: Object.assign({ v: ro.v, open: ro.open }, ro.fb) });
       if (ro.set) { cfg = clone(cfg); for (var q in ro.set) if (cfg[q] !== undefined) XC.apply(cfg, q, ro.set[q]); }
       return { o: o, cfg: cfg, note: f.via ? 'via ' + f.via : '', sym: sk, ru: ro };
     });
@@ -224,6 +259,50 @@
     three.forEach(function (j) { if (ru.m !== 'common') one(j); });
     function one(j) {
       var ru = j.ru, v = ru.v, open = openFn(ru.open);
+      // bagian tegas, sisanya samar → kamera fokus pada bagian tegas (min. 30 % bingkai penuh, konteks tetap terbaca)
+      function focus(info, swap) {
+        var sp = camFor(info.box, v); ICON.cam(sp);
+        var g = ICON.snap(), fa = ICON.footprint(g), fs = ICON.footSolid(g);
+        if (!fa.n) return false;
+        var fullC = square(fa.box, 1.12), fh = (fullC[2] - fullC[0]) / 2, tb = fs.n ? fs.box : fa.box;
+        if (ru.one && info.parts.length > 1) {   // satu contoh saja (handle, rel): bagian paling kanan-depan
+          var pick = info.parts.slice().sort(function (a, b) { return (b[3] + b[5]) - (a[3] + a[5]); })[0];
+          tb = ICON.project(pick);
+        }
+        var c = square(tb, ru.one ? 1.5 : 1.3, fh * (ru.one ? .2 : .32)), hc = (c[2] - c[0]) / 2;
+        if (ru.cut && hc >= fh * .6 && (tb[3] - tb[1]) < (fa.box[3] - fa.box[1]) * .5) {   // bagian lebar tapi rendah (laci kolong): potong sisi kanan
+          hc = fh * .62; var cx = Math.min((tb[0] + tb[2]) / 2, tb[2] - hc * .85), cy = (tb[1] + tb[3]) / 2;
+          c = [cx - hc, cy - hc, cx + hc, cy + hc];
+        }
+        if (swap) swap();   // model lain digambar dengan bingkai yang sama
+        if ((c[2] - c[0]) / 2 >= fh * .86) { sp.crop = fullC; j.a = ICON.draw(sp); }
+        else { sp.crop = c; j.a = fade(ICON.draw(sp), 16); j.detail = true; }
+        return true;
+      }
+      if (ru.m === 'part') {
+        // hanya bagian yang dijelaskan tegas (base meja, kaki kursi), sisanya samar; penyaring gagal → seluruh benda
+        var hf = typeof ru.hide === 'number' ? HIDE.lo(ru.hide) : HIDE[ru.hide], cfg0 = j.cfg;
+        var pi = ICON.build(cfg0, open, { dim: function (mb, B) { return hf(mb, B, cfg0); } });
+        if (!pi.solid || pi.solid === pi.total || !focus(pi)) j.a = shotFull(cfg0, v, open);
+        return;
+      }
+      if (ru.m === 'new') {
+        // pembanding: tanpa pilihan ini (multi) atau pilihan acuan / pertama (chips)
+        var rf;
+        if (gr.type === 'multi') { rf = clone(j.cfg); XC.apply(rf, gr.id, (rf[gr.id] || []).filter(function (x) { return x !== j.o.id; })); }
+        else { var rid2 = ru.ref && ru.ref !== j.o.id ? ru.ref : opts[0].id === j.o.id ? (opts[1] || opts[0]).id : opts[0].id; rf = clone(j.cfg); XC.apply(rf, gr.id, rid2); }
+        var ri = ICON.build(rf, open), cnt = {}; ri.sigs.forEach(function (g) { cnt[g] = (cnt[g] || 0) + 1; });
+        var ni = ICON.build(j.cfg, open, { faint: cnt });
+        if (!ni.solid && ru.rev) {
+          // pilihan "tanpa" (push, tanpa storage): bingkai = letak bagian pada pembanding, digambar tanpa bagian itu
+          var me = {}; ICON.build(j.cfg, open).sigs.forEach(function (g) { me[g] = (me[g] || 0) + 1; });
+          var rv = ICON.build(rf, open, { faint: me });
+          if (rv.solid && focus(rv, function () { ICON.build(j.cfg, open); })) return;
+        }
+        if (!ni.solid) { if (ru.fb) { j.ru = ru.fb; one(j); } else j.a = shotFull(j.cfg, v, open); return; }
+        if (!focus(ni)) j.a = shotFull(j.cfg, v, open);
+        return;
+      }
       if (ru.m === 'region') {
         var info = ICON.build(j.cfg, open), sp = camFor(info.box, v); ICON.cam(sp);
         var rb = ICON.project(REG[ru.r](info.box, j.cfg)), fp = ICON.footprint(ICON.snap());

@@ -20,6 +20,7 @@ const path = require('path');
 const ai3d = require('./ai3d');
 const quotes = require('./quotes');   // penawaran harga khusus (server tiruan)
 const staging = require('./staging');
+const shopImg = require('./shopimg');   // foto referensi xionco.shop (Developer Settings › Foto referensi)
 const specsApi = require('./specs');   // ukuran & material produk (Developer Settings › Ukuran & material)
 const woodApi = require('./wood');   // kayu koleksi (Developer Settings › Kayu koleksi)   // aset material untuk direview (Developer Settings › Aset material)
 
@@ -95,6 +96,7 @@ function api(req, res, p) {
   if (p.indexOf('/api/ai3d/') === 0) return ai3d.handle(req, res, p, send);
   if (p === '/api/wood' || p.indexOf('/api/wood/') === 0) return woodApi.handle(req, res, p, send);
   if (p === '/api/specs' || p.indexOf('/api/specs/') === 0) return specsApi.handle(req, res, p, send);
+  if (p === '/api/shopimg' || p.indexOf('/api/shopimg/') === 0) return shopImg.handle(req, res, p, send);
   if (p === '/api/staging' || p.indexOf('/api/staging/') === 0) return staging.handle(req, res, p, send);   // 3D AI (Tripo via fal.ai)
 
   const m = p.match(/^\/api\/db\/([a-z]+)$/);

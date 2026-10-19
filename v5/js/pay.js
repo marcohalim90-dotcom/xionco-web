@@ -22,12 +22,25 @@
     provider: null,
     // pilihan yang ditampilkan di panel; provider nanti bisa menyaring sesuai yang aktif
     methods: [
-      { id: 'va', label: 'Virtual account', note: 'BCA · Mandiri · BNI · BRI' },
-      { id: 'qris', label: 'QRIS', note: 'Semua e-wallet & m-banking' },
-      { id: 'card', label: 'Kartu kredit / debit', note: 'Visa · Mastercard · JCB' },
-      { id: 'ewallet', label: 'E-wallet', note: 'GoPay · OVO · DANA · ShopeePay' },
-      { id: 'installment', label: 'Cicilan 0%', note: 'Kartu kredit & paylater' }
+      { id: 'va', label: 'Virtual account', note: 'BCA · Mandiri · BNI · BRI', logos: ['bca', 'mandiri', 'bni', 'bri'] },
+      { id: 'qris', label: 'QRIS', note: 'Semua e-wallet & m-banking', logos: ['qris'], hint: true },
+      { id: 'card', label: 'Kartu kredit / debit', note: 'Visa · Mastercard · JCB', logos: ['visa', 'mastercard', 'jcb'] },
+      { id: 'ewallet', label: 'E-wallet', note: 'GoPay · OVO · DANA · ShopeePay', logos: ['gopay', 'ovo', 'dana', 'shopeepay'] },
+      { id: 'installment', label: 'Cicilan 0%', note: 'Kartu kredit & paylater', logos: ['visa', 'mastercard'], hint: true }
     ],
+    /* Kode promo — CONTOH (dicek di browser). Versi live: kode & potongan divalidasi server / gateway.
+       pct = persen (max = batas potongan), off = potongan rupiah, min = minimal belanja */
+    promos: [
+      { code: 'XIONCO10', pct: 10, max: 1500000, label: 'Diskon 10% (maks. Rp 1,5 jt)' },
+      { code: 'WELCOME500', off: 500000, min: 5000000, label: 'Potongan Rp 500 rb (min. belanja Rp 5 jt)' }
+    ],
+    promo: function (code, sub) {
+      var c = String(code || '').trim().toUpperCase(), p = this.promos.filter(function (x) { return x.code === c; })[0];
+      if (!p) return { ok: false, err: 'unknown' };
+      if (p.min && sub < p.min) return { ok: false, err: 'min', min: p.min, p: p };
+      var d = p.pct ? Math.round(sub * p.pct / 100) : p.off || 0; if (p.max) d = Math.min(d, p.max);
+      return { ok: true, code: p.code, disc: Math.min(d, sub), label: p.label };
+    },
     ready: function () { return !!this.provider; },
     /* Pengiriman — tarif CONTOH per wilayah (ubah sesuai tarif resmi). cost null = dikonfirmasi tim.
        days = perkiraan hari kirim setelah barang siap. Produk ready: siap 1–2 hari; custom: produksi 14–21 hari. */

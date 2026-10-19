@@ -16,12 +16,13 @@ for (const id of Object.keys(map)) {
   const m = map[id], src = path.join(ROOT, 'data/source/glb-orig/items', id, 'model-ai.glb'), dst = path.join(ROOT, 'assets/items', id, 'model-ai.glb');
   if (!fs.existsSync(src)) { console.log('lewati', id, '(asli tidak ada)'); continue; }
   // koreksi warna bukan kayu: semua kluster lain (keep + kayu) jadi jangkar agar tidak ikut bergeser sebelum pemisahan
-  const fixed = (m.fixed || []).concat((m.keep || []).concat(Object.keys(m.wood || {})).filter((h) => !(m.fixed || []).some((f) => f[0] === h)).map((h) => [h, h]));
+  const fixed = (m.fixed || []).concat((m.keep || []).concat(Object.keys(m.wood || {}), (m.fabric && m.fabric.fab) || []).filter((h) => !(m.fixed || []).some((f) => f[0] === h)).map((h) => [h, h]));
   const split = { wood: m.wood || {}, keep: m.keep || [] };
+  if (m.fabric) split.fabric = Object.assign({ root: ROOT }, m.fabric);   // Z1: kain pustaka menggantikan tekstur kain AI
   try {
     const out = execFileSync(BLENDER, ['-b', '--factory-startup', '--python', path.join(ROOT, 'tools/glb/ai-clean.py'), '--', src, dst, '0', '0', (m.fixed || []).length ? JSON.stringify(fixed) : '', JSON.stringify(split)], { encoding: 'utf8', timeout: 600000, maxBuffer: 1 << 26 });
-    const w = (/WOODSPLIT .* (\d+) dari (\d+)/.exec(out) || []);
-    n++; console.log('kayu', id.padEnd(24), w[1] ? w[1] + '/' + w[2] + ' muka → ' + Object.values(m.wood || {}).filter((v, i, a) => a.indexOf(v) === i).join('/') : '(tidak ada muka kayu?)');
+    const w = (/WOODSPLIT .* (\d+) dari (\d+)/.exec(out) || []), fb = /'FAB': (\d+)/.exec(out);
+    n++; console.log('kayu', id.padEnd(24), w[1] ? w[1] + '/' + w[2] + ' muka → ' + Object.values(m.wood || {}).concat(m.fabric ? ['kain ' + m.fabric.set + (fb ? ' ' + fb[1] : '')] : []).filter((v, i, a) => a.indexOf(v) === i).join('/') : '(tidak ada muka kayu?)');
   } catch (e) { console.log('GAGAL', id, String(e.stderr || e.message).slice(-200)); }
 }
 try { execFileSync(process.execPath, [path.join(ROOT, 'tools/compress/compress.js')], { stdio: 'ignore', timeout: 900000 }); } catch (e) { console.log('kompres gagal', e.message.slice(0, 120)); }

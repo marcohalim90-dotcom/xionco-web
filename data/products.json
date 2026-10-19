@@ -576,8 +576,7 @@
       "shopId": 24,
       "shopName": "ASTRAL - 1 Seater",
       "bg": "white",
-      "model": "assets/items/astral/model-ai.glb",
-      "modelRot": 180
+      "model": "assets/items/astral-1-seater/model.glb"
     },
     {
       "status": "aktif",
@@ -1267,7 +1266,11 @@
       "shopId": 60,
       "shopName": "GEOM - Dining Table",
       "bg": "white",
-      "model": "assets/items/geom/model-ai.glb"
+      "model": "assets/items/geom/model.glb",
+      "vmodels": {
+        "Hitam": "assets/items/geom/model-hitam.glb",
+        "Abu-abu": "assets/items/geom/model-abu-abu.glb"
+      }
     },
     {
       "status": "aktif",
@@ -1486,7 +1489,11 @@
       "shopId": 26,
       "shopName": "ROULED - Nested Coffee Table",
       "bg": "white",
-      "model": "assets/items/rouled/model.glb"
+      "model": "assets/items/rouled/model-70.glb",
+      "vmodels": {
+        "Diameter 55": "assets/items/rouled/model-55.glb",
+        "Complete Set": "assets/items/rouled/model.glb"
+      }
     },
     {
       "status": "aktif",
@@ -2317,7 +2324,13 @@
       "shopId": 25,
       "shopName": "POEL - Platform Bed",
       "bg": "white",
-      "model": "assets/items/poel/model.glb"
+      "model": "assets/items/poel/model.glb",
+      "vmodels": {
+        "120cm": "assets/items/poel/model-120cm.glb",
+        "160cm": "assets/items/poel/model-160cm.glb",
+        "180cm": "assets/items/poel/model-180cm.glb",
+        "200cm": "assets/items/poel/model-200cm.glb"
+      }
     },
     {
       "status": "aktif",
@@ -2775,7 +2788,13 @@
       ],
       "shopId": 92,
       "shopName": "VAZRA - Power Switch and Outlet",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/vazra/model.glb",
+      "vmodels": {
+        "2 Gang 1 Way": "assets/items/vazra/model-2-gang-1-way.glb",
+        "3 Gang 1 Way": "assets/items/vazra/model-3-gang-1-way.glb",
+        "European Outlet": "assets/items/vazra/model-european-outlet.glb"
+      }
     },
     {
       "status": "aktif",
@@ -2864,7 +2883,13 @@
       ],
       "shopId": 97,
       "shopName": "VAZRA SERIES - POWER TRACK | SOCKET",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/vazratrack/model.glb",
+      "vmodels": {
+        "Pw 50 cm": "assets/items/vazratrack/model-pw-50-cm.glb",
+        "PWS• Usb": "assets/items/vazratrack/model-pws-usb.glb",
+        "PWS• Eu": "assets/items/vazratrack/model-pws-eu.glb"
+      }
     },
     {
       "status": "aktif",
@@ -3007,7 +3032,8 @@
       ],
       "shopId": 143,
       "shopName": "BARIONE – 1 Seater",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/barione-1-seater/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -3042,7 +3068,8 @@
       ],
       "shopId": 194,
       "shopName": "SF2S X58",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf2s-x58/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -3311,7 +3338,8 @@
       ],
       "shopId": 198,
       "shopName": "SF3s 024",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-024/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -3507,7 +3535,8 @@
       ],
       "shopId": 210,
       "shopName": "SF3S 101 - 3 SEATER",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-101-3-seater/model.glb"
     },
     {
       "status": "aktif",
@@ -3542,7 +3571,8 @@
       ],
       "shopId": 205,
       "shopName": "SF3S 142",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-142/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -3613,7 +3643,8 @@
       ],
       "shopId": 203,
       "shopName": "SF3S 124",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-124/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -3648,7 +3679,9 @@
       ],
       "shopId": 234,
       "shopName": "CAPRA DELUXE 2s",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/capra-deluxe-2s/model-ai.glb",
+      "modelRot": 180
     },
     {
       "status": "aktif",
@@ -4021,7 +4054,8 @@
       ],
       "shopId": 199,
       "shopName": "SF3S 042",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-042/model-ai.glb"
     },
     {
       "status": "arsip",
@@ -4325,7 +4359,8 @@
       ],
       "shopId": 200,
       "shopName": "SF3S 027",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-027/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -4353,14 +4388,16 @@
       "variants": [],
       "variant": -1,
       "sold": 32,
-      "desc": "AIERU - Wood Dining Stool / Kursi Bangku Kayu Makan Cafe \\ BERSENI\nIncludes :\n1 x AIERU Stool\n1 x AIERU Detachable Wood Stretcher",
+      "desc": "AIERU - Wood Dining Stool / Kursi Bangku Kayu Makan Cafe\nIncludes :\n1 x AIERU Stool\n1 x AIERU Detachable Wood Stretcher",
       "url": "https://xionco.shop/products/aieru-wood-dining-stool",
       "kats": [
         "Chair"
       ],
       "shopId": 102,
       "shopName": "AIERU - Wood Dining Stool",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aieru-wood-dining-stool/model-ai.glb",
+      "modelRot": 90
     },
     {
       "status": "aktif",
@@ -4395,7 +4432,8 @@
       ],
       "shopId": 202,
       "shopName": "SF3S 074",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-074/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -4587,7 +4625,8 @@
       ],
       "shopId": 150,
       "shopName": "GUISE - Storage Bench",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/guise-storage-bench/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -4622,7 +4661,8 @@
       ],
       "shopId": 145,
       "shopName": "LOPHUS - Dining Chair",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/lophus-dining-chair/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -4657,7 +4697,8 @@
       ],
       "shopId": 193,
       "shopName": "SF2S 084",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf2s-084/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -4728,7 +4769,8 @@
       ],
       "shopId": 221,
       "shopName": "OXIMA - Side Chair",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/oxima-side-chair/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -4763,7 +4805,8 @@
       ],
       "shopId": 214,
       "shopName": "SF3S X74",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-x74/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -4988,7 +5031,8 @@
       ],
       "shopId": 212,
       "shopName": "SF3S X07",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-x07/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -5050,7 +5094,8 @@
       ],
       "shopId": 192,
       "shopName": "STAX Minimalis Stackable Chair",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/stax-minimalis-stackable-chair/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -5664,7 +5709,8 @@
       ],
       "shopId": 207,
       "shopName": "SF2S 158",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf2s-158/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -5699,7 +5745,8 @@
       ],
       "shopId": 211,
       "shopName": "SF3S X27",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-x27/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -5734,7 +5781,9 @@
       ],
       "shopId": 238,
       "shopName": "CAPRA SIGNATURE 1s",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/capra-signature-1s/model-ai.glb",
+      "modelRot": -90
     },
     {
       "status": "aktif",
@@ -5769,7 +5818,8 @@
       ],
       "shopId": 208,
       "shopName": "SF3S 101 - 1 SEATER",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-101-1-seater/model.glb"
     },
     {
       "status": "aktif",
@@ -6005,7 +6055,8 @@
       ],
       "shopId": 125,
       "shopName": "Guise - Sofa Set L 3+2",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/guise-sofa-set-l-3-2/model.glb"
     },
     {
       "status": "aktif",
@@ -6374,7 +6425,8 @@
       ],
       "shopId": 217,
       "shopName": "GUISE Side Chair",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/guise-side-chair/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -6409,7 +6461,8 @@
       ],
       "shopId": 218,
       "shopName": "UPSLOPE Side Chair",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/upslope-side-chair/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -6605,7 +6658,8 @@
       ],
       "shopId": 213,
       "shopName": "SF3S X42",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-x42/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -6641,7 +6695,8 @@
       ],
       "shopId": 148,
       "shopName": "ASTRAL - Ottoman",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/astral-ottoman/model.glb"
     },
     {
       "status": "aktif",
@@ -6712,7 +6767,9 @@
       ],
       "shopId": 154,
       "shopName": "DELUNE Series - SW14",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/delune-series-sw14/model-ai.glb",
+      "modelRot": -90
     },
     {
       "status": "aktif",
@@ -6747,7 +6804,8 @@
       ],
       "shopId": 206,
       "shopName": "SF3S 174",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-174/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -6782,7 +6840,8 @@
       ],
       "shopId": 209,
       "shopName": "SF3S 101 - 2 SEATER",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-101-2-seater/model.glb"
     },
     {
       "status": "aktif",
@@ -6817,7 +6876,8 @@
       ],
       "shopId": 216,
       "shopName": "Nora Bludot",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/nora-bludot/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -6852,7 +6912,8 @@
       ],
       "shopId": 191,
       "shopName": "SF3S X24",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/sf3s-x24/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -6887,7 +6948,8 @@
       ],
       "shopId": 196,
       "shopName": "RECTA ST62022",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/recta-st62022/model.glb"
     },
     {
       "status": "aktif",
@@ -7030,7 +7092,12 @@
       ],
       "shopId": 141,
       "shopName": "ROULED - Nested Coffee Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/rouled/model-70.glb",
+      "vmodels": {
+        "Diameter 55": "assets/items/rouled/model-55.glb",
+        "Complete Set": "assets/items/rouled/model.glb"
+      }
     },
     {
       "status": "aktif",
@@ -7065,7 +7132,8 @@
       ],
       "shopId": 222,
       "shopName": "VAVA - Dining Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/vava-dining-table/model.glb"
     },
     {
       "status": "aktif",
@@ -7099,7 +7167,8 @@
       ],
       "shopId": 156,
       "shopName": "HALVED - Dining Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/halved-dining-table/model.glb"
     },
     {
       "status": "aktif",
@@ -7134,7 +7203,8 @@
       ],
       "shopId": 195,
       "shopName": "RECTA CT62021",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/recta-ct62021/model.glb"
     },
     {
       "status": "aktif",
@@ -7169,7 +7239,8 @@
       ],
       "shopId": 190,
       "shopName": "RECTA ST62020",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/recta-st62020/model.glb"
     },
     {
       "status": "aktif",
@@ -7204,7 +7275,8 @@
       ],
       "shopId": 38,
       "shopName": "EORDE - Coffee Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/eorde-coffee-table/model.glb"
     },
     {
       "status": "aktif",
@@ -7276,7 +7348,7 @@
       "shopId": 225,
       "shopName": "SCANDUS - Dining Table",
       "bg": "white",
-      "model": "assets/items/scandus-dining-table/model-ai.glb"
+      "model": "assets/items/scandus-dining-table/model.glb"
     },
     {
       "status": "aktif",
@@ -7311,7 +7383,8 @@
       ],
       "shopId": 108,
       "shopName": "ASHARA 54 - Nightstand",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/ashara-54-nightstand/model.glb"
     },
     {
       "status": "aktif",
@@ -7346,7 +7419,8 @@
       ],
       "shopId": 220,
       "shopName": "CT62024 - Coffee Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/ct62024-coffee-table/model.glb"
     },
     {
       "status": "aktif",
@@ -7381,7 +7455,8 @@
       ],
       "shopId": 43,
       "shopName": "NORA | Dining Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/nora-dining-table/model.glb"
     },
     {
       "status": "aktif",
@@ -7416,7 +7491,8 @@
       ],
       "shopId": 189,
       "shopName": "RECTA ST62019",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/recta-st62019/model.glb"
     },
     {
       "status": "aktif",
@@ -7451,7 +7527,8 @@
       ],
       "shopId": 223,
       "shopName": "UAS 45 - Dining Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/uas-45-dining-table/model.glb"
     },
     {
       "status": "aktif",
@@ -7486,7 +7563,8 @@
       ],
       "shopId": 135,
       "shopName": "IETEI - Coffee Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/ietei-coffee-table/model.glb"
     },
     {
       "status": "aktif",
@@ -7521,7 +7599,8 @@
       ],
       "shopId": 140,
       "shopName": "HOUT - Portable Coffee Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/hout-portable-coffee-table/model.glb"
     },
     {
       "status": "aktif",
@@ -7622,7 +7701,14 @@
       ],
       "shopId": 197,
       "shopName": "POEL - Platform Bed (No Headrest)",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/poel-platform-bed-no-headrest/model.glb",
+      "vmodels": {
+        "120 cm": "assets/items/poel-platform-bed-no-headrest/model-120cm.glb",
+        "160 cm": "assets/items/poel-platform-bed-no-headrest/model-160cm.glb",
+        "180 cm": "assets/items/poel-platform-bed-no-headrest/model-180cm.glb",
+        "200 cm": "assets/items/poel-platform-bed-no-headrest/model-200cm.glb"
+      }
     },
     {
       "status": "aktif",
@@ -7657,7 +7743,8 @@
       ],
       "shopId": 231,
       "shopName": "SHUSIO W3 - Console Table",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/shusio-w3-console-table/model.glb"
     },
     {
       "status": "aktif",
@@ -7691,7 +7778,8 @@
       ],
       "shopId": 188,
       "shopName": "RECTA CB62018",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/recta-cb62018/model.glb"
     },
     {
       "status": "aktif",
@@ -7726,7 +7814,8 @@
       ],
       "shopId": 165,
       "shopName": "RECTA W Series | CT- 62012 | Console Table / Rak Cabinet industrial | XIONCO",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/recta-w-series-ct-62012-console-table-rak-cabinet-industrial-xionco/model.glb"
     },
     {
       "status": "aktif",
@@ -7761,7 +7850,8 @@
       ],
       "shopId": 37,
       "shopName": "EORDE - CURIO TV CABINET",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/eorde-curio-tv-cabinet/model.glb"
     },
     {
       "status": "aktif",
@@ -7836,7 +7926,12 @@
       ],
       "shopId": 132,
       "shopName": "POEL | MODULAR Wardrobe",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/poel-modular-wardrobe/model.glb",
+      "vmodels": {
+        "Drawer": "assets/items/poel-modular-wardrobe/model-drawer.glb",
+        "Shelves": "assets/items/poel-modular-wardrobe/model-shelves.glb"
+      }
     },
     {
       "status": "aktif",
@@ -7870,7 +7965,8 @@
       ],
       "shopId": 164,
       "shopName": "SHUSIO 5 - Shoe Storage Bench Minimalis",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/shusio-5-shoe-storage-bench-minimalis/model.glb"
     },
     {
       "status": "aktif",
@@ -7945,7 +8041,12 @@
       ],
       "shopId": 131,
       "shopName": "POEL | MODULAR Cabinet",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/poel-modular-cabinet/model.glb",
+      "vmodels": {
+        "Door": "assets/items/poel-modular-cabinet/model-door.glb",
+        "Drawer": "assets/items/poel-modular-cabinet/model-drawer.glb"
+      }
     },
     {
       "status": "aktif",
@@ -8046,7 +8147,14 @@
       ],
       "shopId": 67,
       "shopName": "AOBO - Cabinet & Wardrobe",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aobo-cabinet-and-wardrobe/model.glb",
+      "vmodels": {
+        "A1": "assets/items/aobo-cabinet-and-wardrobe/model-a1.glb",
+        "A3": "assets/items/aobo-cabinet-and-wardrobe/model-a3.glb",
+        "A4": "assets/items/aobo-cabinet-and-wardrobe/model-a4.glb",
+        "C2": "assets/items/aobo-cabinet-and-wardrobe/model-c2.glb"
+      }
     },
     {
       "status": "aktif",
@@ -8144,7 +8252,8 @@
       ],
       "shopId": 163,
       "shopName": "RECTA W Series | SB- 62011 | Sideboard Buffet / Lemari Cabinet industrial | XIONCO",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/recta-w-series-sb-62011-sideboard-buffet-lemari-cabinet-industrial-xionco/model.glb"
     },
     {
       "status": "aktif",
@@ -8214,7 +8323,8 @@
       ],
       "shopId": 72,
       "shopName": "AETHER SERIES - Sky B83",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-series-sky-b83/model.glb"
     },
     {
       "status": "aktif",
@@ -8277,7 +8387,8 @@
       ],
       "shopId": 176,
       "shopName": "VOID TERRA - S88",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-terra-s88/model.glb"
     },
     {
       "status": "aktif",
@@ -8313,7 +8424,8 @@
       ],
       "shopId": 179,
       "shopName": "VOID SKY - S7",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-sky-s7/model.glb"
     },
     {
       "status": "aktif",
@@ -8349,7 +8461,8 @@
       ],
       "shopId": 181,
       "shopName": "AETHER CLOUD - SQ2",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-cloud-sq2/model.glb"
     },
     {
       "status": "aktif",
@@ -8411,7 +8524,11 @@
       ],
       "shopId": 80,
       "shopName": "AETHER SERIES - Cloud R7",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-series-cloud-r7/model.glb",
+      "vmodels": {
+        "100cm": "assets/items/aether-series-cloud-r7/model-100cm.glb"
+      }
     },
     {
       "status": "aktif",
@@ -8643,7 +8760,9 @@
       ],
       "shopId": 91,
       "shopName": "AETHER SERIES - MAGNETIC TRACK LIGHT",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-series-magnetic-track-light/model.glb",
+      "mount": "ceiling"
     },
     {
       "status": "aktif",
@@ -8677,7 +8796,8 @@
       ],
       "shopId": 74,
       "shopName": "AETHER SERIES - Sky Z1",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-series-sky-z1/model.glb"
     },
     {
       "status": "aktif",
@@ -8713,7 +8833,8 @@
       ],
       "shopId": 177,
       "shopName": "VOID SKY - S8",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-sky-s8/model.glb"
     },
     {
       "status": "aktif",
@@ -8749,7 +8870,8 @@
       ],
       "shopId": 167,
       "shopName": "VOID CLOUD - GK 100",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-cloud-gk-100/model.glb"
     },
     {
       "status": "aktif",
@@ -8784,7 +8906,8 @@
       ],
       "shopId": 157,
       "shopName": "AETHER SKY - R150",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-sky-r150/model.glb"
     },
     {
       "status": "aktif",
@@ -8820,7 +8943,8 @@
       ],
       "shopId": 183,
       "shopName": "AETHER CLOUD - AE2",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-cloud-ae2/model.glb"
     },
     {
       "status": "aktif",
@@ -8891,7 +9015,8 @@
       ],
       "shopId": 98,
       "shopName": "VOID SERIES - Sky B29",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-series-sky-b29/model.glb"
     },
     {
       "status": "aktif",
@@ -8927,7 +9052,8 @@
       ],
       "shopId": 178,
       "shopName": "VOID SKY - S9",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-sky-s9/model.glb"
     },
     {
       "status": "aktif",
@@ -8962,7 +9088,7 @@
       "shopId": 79,
       "shopName": "AETHER SERIES - Cloud M1",
       "bg": "white",
-      "model": "assets/items/aether-series-cloud-m1/model-ai.glb"
+      "model": "assets/items/aether-series-cloud-m1/model.glb"
     },
     {
       "status": "aktif",
@@ -8997,7 +9123,8 @@
       ],
       "shopId": 101,
       "shopName": "VOID SERIES - Sky W21",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-series-sky-w21/model.glb"
     },
     {
       "status": "aktif",
@@ -9033,7 +9160,8 @@
       ],
       "shopId": 175,
       "shopName": "VOID CLOUD - BG7",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-cloud-bg7/model.glb"
     },
     {
       "status": "aktif",
@@ -9096,7 +9224,8 @@
       ],
       "shopId": 184,
       "shopName": "AETHER CLOUD - AE8",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-cloud-ae8/model.glb"
     },
     {
       "status": "aktif",
@@ -9132,7 +9261,8 @@
       ],
       "shopId": 186,
       "shopName": "AETHER SKY - V3",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-sky-v3/model.glb"
     },
     {
       "status": "aktif",
@@ -9167,7 +9297,8 @@
       ],
       "shopId": 110,
       "shopName": "VOID SERIES - Sky B10",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-series-sky-b10/model.glb"
     },
     {
       "status": "aktif",
@@ -9202,7 +9333,8 @@
       ],
       "shopId": 232,
       "shopName": "VOID SKY VX1",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-sky-vx1/model.glb"
     },
     {
       "status": "aktif",
@@ -9238,7 +9370,8 @@
       ],
       "shopId": 173,
       "shopName": "VOID CLOUD - G8",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-cloud-g8/model.glb"
     },
     {
       "status": "aktif",
@@ -9274,7 +9407,8 @@
       ],
       "shopId": 182,
       "shopName": "AETHER CLOUD - B83",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-cloud-b83/model.glb"
     },
     {
       "status": "aktif",
@@ -9310,7 +9444,8 @@
       ],
       "shopId": 185,
       "shopName": "AETHER TERRA - X3",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-terra-x3/model.glb"
     },
     {
       "status": "aktif",
@@ -9346,7 +9481,8 @@
       ],
       "shopId": 169,
       "shopName": "VOID CLOUD  - SG1",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-cloud-sg1/model.glb"
     },
     {
       "status": "aktif",
@@ -9382,7 +9518,8 @@
       ],
       "shopId": 171,
       "shopName": "VOID SKY - VG1",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-sky-vg1/model.glb"
     },
     {
       "status": "aktif",
@@ -9391,10 +9528,10 @@
       "customizable": false,
       "stock": "Ready",
       "note": "",
-      "id": "berseni-oz-floor-lamp-stand",
+      "id": "oz-floor-lamp-stand",
       "cat": "lighting",
-      "name": "BERSENI",
-      "type": "Oz · Floor Lamp Stand",
+      "name": "OZ",
+      "type": "Floor Lamp Stand",
       "price": 936000,
       "was": 1794000,
       "from": false,
@@ -9437,14 +9574,18 @@
       ],
       "variant": 0,
       "sold": 14,
-      "desc": "OZ - Standing Side Floor Lamp / Lampu Stand Sudut Lantai Minimalis \\ BERSENI\nIncludes :\n1 x OZ Lamp Wood Frame\n1 x OZ Lamp Shade\n1 x Power & Dimmer\n1 x Manual & Guarantee card",
+      "desc": "OZ - Standing Side Floor Lamp / Lampu Stand Sudut Lantai Minimalis\nIncludes :\n1 x OZ Lamp Wood Frame\n1 x OZ Lamp Shade\n1 x Power & Dimmer\n1 x Manual & Guarantee card",
       "url": "https://xionco.shop/products/berseni-oz-floor-lamp-stand",
       "kats": [
         "Lightings"
       ],
       "shopId": 99,
       "shopName": "BERSENI • OZ | Floor Lamp Stand",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/oz-floor-lamp-stand/model.glb",
+      "vmodels": {
+        "Black": "assets/items/oz-floor-lamp-stand/model-black.glb"
+      }
     },
     {
       "status": "aktif",
@@ -9480,7 +9621,8 @@
       ],
       "shopId": 172,
       "shopName": "VOID CLOUD - CL03",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-cloud-cl03/model.glb"
     },
     {
       "status": "aktif",
@@ -9528,7 +9670,8 @@
       ],
       "shopId": 75,
       "shopName": "AETHER SERIES - Cloud RX7",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-series-cloud-rx7/model.glb"
     },
     {
       "status": "aktif",
@@ -9564,7 +9707,8 @@
       ],
       "shopId": 168,
       "shopName": "VOID SKY - V4",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-sky-v4/model.glb"
     },
     {
       "status": "aktif",
@@ -9600,7 +9744,8 @@
       ],
       "shopId": 174,
       "shopName": "VOID CLOUD - AZ8",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-cloud-az8/model.glb"
     },
     {
       "status": "aktif",
@@ -9661,7 +9806,11 @@
       ],
       "shopId": 94,
       "shopName": "VOID SERIES - Sky B8",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-series-sky-b8/model.glb",
+      "vmodels": {
+        "4 Lamps": "assets/items/void-series-sky-b8/model-4.glb"
+      }
     },
     {
       "status": "aktif",
@@ -9697,7 +9846,8 @@
       ],
       "shopId": 170,
       "shopName": "VOID CLOUD - G2",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-cloud-g2/model.glb"
     },
     {
       "status": "aktif",
@@ -9732,7 +9882,8 @@
       ],
       "shopId": 100,
       "shopName": "VOID SERIES - Cloud G1",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/void-series-cloud-g1/model.glb"
     },
     {
       "status": "aktif",
@@ -9767,7 +9918,8 @@
       ],
       "shopId": 119,
       "shopName": "AETHER SKY V1 - Ceiling Lamp",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-sky-v1-ceiling-lamp/model.glb"
     },
     {
       "status": "aktif",
@@ -9803,7 +9955,8 @@
       ],
       "shopId": 158,
       "shopName": "AETHER SKY - R100",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-sky-r100/model.glb"
     },
     {
       "status": "aktif",
@@ -9874,7 +10027,8 @@
       ],
       "shopId": 155,
       "shopName": "AETHER SERIES - Sky V2",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-series-sky-v2/model.glb"
     },
     {
       "status": "aktif",
@@ -9910,7 +10064,8 @@
       ],
       "shopId": 166,
       "shopName": "AETHER TERRA - X4",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-terra-x4/model.glb"
     },
     {
       "status": "aktif",
@@ -9946,7 +10101,9 @@
       ],
       "shopId": 180,
       "shopName": "AETHER CLOUD - Q1",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/aether-cloud-q1/model.glb",
+      "mount": "ceiling"
     },
     {
       "status": "aktif",
@@ -9981,7 +10138,8 @@
       ],
       "shopId": 127,
       "shopName": "TRASH BIN | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/trash-bin-each/model.glb"
     },
     {
       "status": "aktif",
@@ -10016,7 +10174,8 @@
       ],
       "shopId": 48,
       "shopName": "CLOTHES HANGER | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/clothes-hanger-each/model.glb"
     },
     {
       "status": "aktif",
@@ -10090,7 +10249,8 @@
       ],
       "shopId": 51,
       "shopName": "SOMNO BED PILLOW",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/somno-bed-pillow/model.glb"
     },
     {
       "status": "aktif",
@@ -10265,74 +10425,6 @@
       "customizable": false,
       "stock": "Ready",
       "note": "",
-      "id": "acrylic-mirror-emerald-jade-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "cat": "decor",
-      "name": "ACRYLIC MIRROR",
-      "type": "Emerald Jade · 122 x 244 cm",
-      "price": 917700,
-      "was": 966000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754710637319.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754710637319.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778568764519.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754710656473.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754710663294.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754710679231.png"
-      ],
-      "variants": [],
-      "variant": -1,
-      "sold": 47,
-      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
-      "url": "https://xionco.shop/products/acrylic-mirror-emerald-jade-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "kats": [
-        "Hardware"
-      ],
-      "shopId": 114,
-      "shopName": "ACRYLIC MIRROR | Emerald Jade | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
-      "bg": "white"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "",
-      "id": "acrylic-mirror-inferno-red-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "cat": "decor",
-      "name": "ACRYLIC MIRROR",
-      "type": "Inferno Red · 122 x 244 cm",
-      "price": 772800,
-      "was": 966000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754711543071.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754711543071.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778137977171.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754711557609.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754711562933.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754711568999.png"
-      ],
-      "variants": [],
-      "variant": -1,
-      "sold": 47,
-      "desc": "ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
-      "url": "https://xionco.shop/products/acrylic-mirror-inferno-red-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "kats": [
-        "Hardware"
-      ],
-      "shopId": 116,
-      "shopName": "ACRYLIC MIRROR | Inferno Red | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
-      "bg": "white"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "",
       "id": "powerbank-each",
       "cat": "decor",
       "name": "POWERBANK",
@@ -10359,7 +10451,8 @@
       ],
       "shopId": 139,
       "shopName": "POWERBANK | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/powerbank-each/model.glb"
     },
     {
       "status": "aktif",
@@ -10421,102 +10514,8 @@
       ],
       "shopId": 44,
       "shopName": "RAMEN BOWL | EACH",
-      "bg": "white"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "",
-      "id": "acrylic-mirror-blessing-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "cat": "decor",
-      "name": "ACRYLIC MIRROR",
-      "type": "Blessing Gold · 122 x 244 cm",
-      "price": 654400,
-      "was": 818000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754708018711.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754708018711.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778138064811.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754708076917.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754708081289.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754708086933.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-6-1754708277520.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-7-1754708285591.png"
-      ],
-      "variants": [
-        {
-          "key": "1 mm",
-          "label": "1 mm",
-          "group": "",
-          "fabric": "",
-          "hex": null,
-          "price": 654400,
-          "was": 818000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754708277520.png",
-          "on": true,
-          "subs": []
-        },
-        {
-          "key": "2 mm",
-          "label": "2 mm",
-          "group": "",
-          "fabric": "",
-          "hex": null,
-          "price": 931950,
-          "was": 1635000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754708285591.png",
-          "on": false,
-          "subs": []
-        }
-      ],
-      "variant": 0,
-      "sold": 44,
-      "desc": "ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
-      "url": "https://xionco.shop/products/acrylic-mirror-blessing-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "kats": [
-        "Hardware"
-      ],
-      "shopId": 106,
-      "shopName": "ACRYLIC MIRROR | Blessing Gold | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
-      "bg": "white"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "",
-      "id": "acrylic-mirror-bronze-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "cat": "decor",
-      "name": "ACRYLIC MIRROR",
-      "type": "Bronze · 122 x 244 cm",
-      "price": 772800,
-      "was": 966000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754709564339.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754709564339.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778137938507.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754709580328.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754709586315.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754709592859.png"
-      ],
-      "variants": [],
-      "variant": -1,
-      "sold": 40,
-      "desc": "ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
-      "url": "https://xionco.shop/products/acrylic-mirror-bronze-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "kats": [
-        "Hardware"
-      ],
-      "shopId": 111,
-      "shopName": "ACRYLIC MIRROR | Bronze | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/ramen-bowl-each/model.glb"
     },
     {
       "status": "aktif",
@@ -10551,7 +10550,8 @@
       ],
       "shopId": 41,
       "shopName": "BED PILLOW | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/bed-pillow-each/model.glb"
     },
     {
       "status": "draft",
@@ -10629,40 +10629,6 @@
       "customizable": false,
       "stock": "Ready",
       "note": "",
-      "id": "acrylic-mirror-ocean-blue-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "cat": "decor",
-      "name": "ACRYLIC MIRROR",
-      "type": "Ocean Blue · 122 x 244 cm",
-      "price": 772800,
-      "was": 966000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754710285302.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754710285302.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778138175257.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754710301730.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754710315064.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754710321758.png"
-      ],
-      "variants": [],
-      "variant": -1,
-      "sold": 30,
-      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
-      "url": "https://xionco.shop/products/acrylic-mirror-ocean-blue-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "kats": [
-        "Hardware"
-      ],
-      "shopId": 113,
-      "shopName": "ACRYLIC MIRROR | Ocean Blue | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
-      "bg": "white"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "",
       "id": "bidet-spray-each",
       "cat": "decor",
       "name": "BIDET SPRAY",
@@ -10689,7 +10655,8 @@
       ],
       "shopId": 126,
       "shopName": "BIDET SPRAY | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/bidet-spray-each/model.glb"
     },
     {
       "status": "aktif",
@@ -10724,7 +10691,8 @@
       ],
       "shopId": 56,
       "shopName": "Botol Minum Pintar | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/botol-minum-pintar-each/model.glb"
     },
     {
       "status": "aktif",
@@ -10759,7 +10727,8 @@
       ],
       "shopId": 47,
       "shopName": "PLATE | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/plate-each/model.glb"
     },
     {
       "status": "aktif",
@@ -10794,7 +10763,8 @@
       ],
       "shopId": 59,
       "shopName": "TISSUE BOX | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/tissue-box-each/model.glb"
     },
     {
       "status": "aktif",
@@ -10828,68 +10798,8 @@
       ],
       "shopId": 63,
       "shopName": "CHARGER | EACH",
-      "bg": "white"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "",
-      "id": "acrylic-mirror-silver-122-x-244-cm-thickness-1-or-2-mm-akrilik-cermin",
-      "cat": "decor",
-      "name": "ACRYLIC MIRROR",
-      "type": "Silver · 122 x 244 cm",
-      "price": 559512,
-      "was": 818000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754709947903.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754709947903.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778138022642.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754709965518.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754709974359.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754709980251.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-6-1754710070454.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-7-1754710075327.png"
-      ],
-      "variants": [
-        {
-          "key": "1 mm",
-          "label": "1 mm",
-          "group": "",
-          "fabric": "",
-          "hex": null,
-          "price": 559512,
-          "was": 818000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754710070454.png",
-          "on": true,
-          "subs": []
-        },
-        {
-          "key": "2 mm",
-          "label": "2 mm",
-          "group": "",
-          "fabric": "",
-          "hex": null,
-          "price": 931950,
-          "was": 1635000,
-          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754710075327.png",
-          "on": false,
-          "subs": []
-        }
-      ],
-      "variant": 0,
-      "sold": 21,
-      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
-      "url": "https://xionco.shop/products/acrylic-mirror-silver-122-x-244-cm-thickness-1-or-2-mm-akrilik-cermin",
-      "kats": [
-        "Hardware"
-      ],
-      "shopId": 112,
-      "shopName": "ACRYLIC MIRROR | Silver | 122 x 244 cm • Thickness 1 or 2 mm - Akrilik Cermin",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/charger-each/model.glb"
     },
     {
       "status": "aktif",
@@ -10924,7 +10834,8 @@
       ],
       "shopId": 235,
       "shopName": "CAPRA DELUXE 1s",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/capra-deluxe-1s/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -10959,41 +10870,8 @@
       ],
       "shopId": 237,
       "shopName": "CAPRA SIGNATURE 2s",
-      "bg": "white"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "",
-      "id": "acrylic-mirror-rose-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "cat": "decor",
-      "name": "ACRYLIC MIRROR",
-      "type": "Rose Gold · 122 x 244 cm",
-      "price": 772800,
-      "was": 966000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754713787122.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754713787122.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778136570054.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754713814809.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754713822883.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754713828504.png"
-      ],
-      "variants": [],
-      "variant": -1,
-      "sold": 17,
-      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
-      "url": "https://xionco.shop/products/acrylic-mirror-rose-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "kats": [
-        "Hardware"
-      ],
-      "shopId": 118,
-      "shopName": "ACRYLIC MIRROR | Rose Gold | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/capra-signature-2s/model-ai.glb"
     },
     {
       "status": "aktif",
@@ -11028,7 +10906,8 @@
       ],
       "shopId": 128,
       "shopName": "FOLDING UMBRELLA | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/folding-umbrella-each/model.glb"
     },
     {
       "status": "draft",
@@ -11165,7 +11044,12 @@
       ],
       "shopId": 58,
       "shopName": "STORAGE TRAY | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/storage-tray-each/model.glb",
+      "vmodels": {
+        "M": "assets/items/storage-tray-each/model-m.glb",
+        "L": "assets/items/storage-tray-each/model-l.glb"
+      }
     },
     {
       "status": "aktif",
@@ -11200,7 +11084,8 @@
       ],
       "shopId": 151,
       "shopName": "DRINKING GLASS | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/drinking-glass-each/model.glb"
     },
     {
       "status": "aktif",
@@ -11365,7 +11250,8 @@
       ],
       "shopId": 73,
       "shopName": "CUBIX SERIES - Throw Pillow Set",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/cubix-series-throw-pillow-set/model.glb"
     },
     {
       "status": "aktif",
@@ -11400,7 +11286,8 @@
       ],
       "shopId": 61,
       "shopName": "EARPHONE | EACH",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/earphone-each/model.glb"
     },
     {
       "status": "aktif",
@@ -11435,75 +11322,8 @@
       ],
       "shopId": 230,
       "shopName": "MIERU - Round Wall Mirror",
-      "bg": "white"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "",
-      "id": "acrylic-mirror-black-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "cat": "decor",
-      "name": "ACRYLIC MIRROR",
-      "type": "Black · 122 x 244 cm",
-      "price": 772800,
-      "was": 966000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754708671297.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754708671297.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778137888396.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754708682928.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754708692770.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754708696932.png"
-      ],
-      "variants": [],
-      "variant": -1,
-      "sold": 3,
-      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
-      "url": "https://xionco.shop/products/acrylic-mirror-black-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "kats": [
-        "Hardware"
-      ],
-      "shopId": 107,
-      "shopName": "ACRYLIC MIRROR | Black | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
-      "bg": "white"
-    },
-    {
-      "status": "aktif",
-      "dims": "",
-      "leadTime": "",
-      "customizable": false,
-      "stock": "Ready",
-      "note": "",
-      "id": "acrylic-mirror-natural-brown-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "cat": "decor",
-      "name": "ACRYLIC MIRROR",
-      "type": "Natural Brown · 122 x 244 cm",
-      "price": 772800,
-      "was": 966000,
-      "from": false,
-      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754713576833.png",
-      "images": [
-        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754713576833.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778138119073.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754713591953.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754713601095.png",
-        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754713606299.png"
-      ],
-      "variants": [],
-      "variant": -1,
-      "sold": 2,
-      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
-      "url": "https://xionco.shop/products/acrylic-mirror-natural-brown-122-x-244-cm-thickness-1-mm-akrilik-cermin",
-      "kats": [
-        "Hardware"
-      ],
-      "shopId": 117,
-      "shopName": "ACRYLIC MIRROR | Natural Brown | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/mieru-round-wall-mirror/model.glb"
     },
     {
       "status": "aktif",
@@ -11577,7 +11397,8 @@
       ],
       "shopId": 46,
       "shopName": "SOMNO BED PILLOW | King Size",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/somno-bed-pillow-king-size/model.glb"
     },
     {
       "status": "aktif",
@@ -11640,7 +11461,11 @@
       ],
       "shopId": 89,
       "shopName": "VAZRA - Rechargeable USB Type C AAA Battery / Baterai",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/vazra-rechargeable-usb-type-c-aaa-battery-baterai/model.glb",
+      "vmodels": {
+        "4 pcs": "assets/items/vazra-rechargeable-usb-type-c-aaa-battery-baterai/model-4-pcs.glb"
+      }
     },
     {
       "status": "aktif",
@@ -11703,7 +11528,11 @@
       ],
       "shopId": 90,
       "shopName": "VAZRA -Rechargeable USB Type C AA Battery / Baterai",
-      "bg": "white"
+      "bg": "white",
+      "model": "assets/items/vazra-rechargeable-usb-type-c-aa-battery-baterai/model.glb",
+      "vmodels": {
+        "4 pcs": "assets/items/vazra-rechargeable-usb-type-c-aa-battery-baterai/model-4-pcs.glb"
+      }
     },
     {
       "status": "aktif",
@@ -12008,6 +11837,375 @@
       "kats": [
         "Sofa"
       ]
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "",
+      "id": "acrylic-mirror-emerald-jade-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "cat": "decor",
+      "name": "ACRYLIC MIRROR",
+      "type": "Emerald Jade · 122 x 244 cm",
+      "price": 917700,
+      "was": 966000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754710637319.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754710637319.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778568764519.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754710656473.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754710663294.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754710679231.png"
+      ],
+      "variants": [],
+      "variant": -1,
+      "sold": 47,
+      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
+      "url": "https://xionco.shop/products/acrylic-mirror-emerald-jade-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
+      "shopId": 114,
+      "shopName": "ACRYLIC MIRROR | Emerald Jade | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
+      "bg": "white",
+      "model": "assets/items/acrylic-mirror-emerald-jade-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "",
+      "id": "acrylic-mirror-inferno-red-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "cat": "decor",
+      "name": "ACRYLIC MIRROR",
+      "type": "Inferno Red · 122 x 244 cm",
+      "price": 772800,
+      "was": 966000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754711543071.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754711543071.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778137977171.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754711557609.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754711562933.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754711568999.png"
+      ],
+      "variants": [],
+      "variant": -1,
+      "sold": 47,
+      "desc": "ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
+      "url": "https://xionco.shop/products/acrylic-mirror-inferno-red-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
+      "shopId": 116,
+      "shopName": "ACRYLIC MIRROR | Inferno Red | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
+      "bg": "white",
+      "model": "assets/items/acrylic-mirror-inferno-red-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "",
+      "id": "acrylic-mirror-blessing-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "cat": "decor",
+      "name": "ACRYLIC MIRROR",
+      "type": "Blessing Gold · 122 x 244 cm",
+      "price": 654400,
+      "was": 818000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754708018711.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754708018711.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778138064811.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754708076917.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754708081289.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754708086933.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-6-1754708277520.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-7-1754708285591.png"
+      ],
+      "variants": [
+        {
+          "key": "1 mm",
+          "label": "1 mm",
+          "group": "",
+          "fabric": "",
+          "hex": null,
+          "price": 654400,
+          "was": 818000,
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754708277520.png",
+          "on": true,
+          "subs": []
+        },
+        {
+          "key": "2 mm",
+          "label": "2 mm",
+          "group": "",
+          "fabric": "",
+          "hex": null,
+          "price": 931950,
+          "was": 1635000,
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754708285591.png",
+          "on": false,
+          "subs": []
+        }
+      ],
+      "variant": 0,
+      "sold": 44,
+      "desc": "ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
+      "url": "https://xionco.shop/products/acrylic-mirror-blessing-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
+      "shopId": 106,
+      "shopName": "ACRYLIC MIRROR | Blessing Gold | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
+      "bg": "white",
+      "model": "assets/items/acrylic-mirror-blessing-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "",
+      "id": "acrylic-mirror-bronze-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "cat": "decor",
+      "name": "ACRYLIC MIRROR",
+      "type": "Bronze · 122 x 244 cm",
+      "price": 772800,
+      "was": 966000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754709564339.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754709564339.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778137938507.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754709580328.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754709586315.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754709592859.png"
+      ],
+      "variants": [],
+      "variant": -1,
+      "sold": 40,
+      "desc": "ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
+      "url": "https://xionco.shop/products/acrylic-mirror-bronze-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
+      "shopId": 111,
+      "shopName": "ACRYLIC MIRROR | Bronze | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
+      "bg": "white",
+      "model": "assets/items/acrylic-mirror-bronze-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "",
+      "id": "acrylic-mirror-ocean-blue-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "cat": "decor",
+      "name": "ACRYLIC MIRROR",
+      "type": "Ocean Blue · 122 x 244 cm",
+      "price": 772800,
+      "was": 966000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754710285302.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754710285302.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778138175257.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754710301730.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754710315064.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754710321758.png"
+      ],
+      "variants": [],
+      "variant": -1,
+      "sold": 30,
+      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
+      "url": "https://xionco.shop/products/acrylic-mirror-ocean-blue-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
+      "shopId": 113,
+      "shopName": "ACRYLIC MIRROR | Ocean Blue | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
+      "bg": "white",
+      "model": "assets/items/acrylic-mirror-ocean-blue-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "",
+      "id": "acrylic-mirror-silver-122-x-244-cm-thickness-1-or-2-mm-akrilik-cermin",
+      "cat": "decor",
+      "name": "ACRYLIC MIRROR",
+      "type": "Silver · 122 x 244 cm",
+      "price": 559512,
+      "was": 818000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754709947903.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754709947903.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778138022642.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754709965518.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754709974359.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754709980251.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-6-1754710070454.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-7-1754710075327.png"
+      ],
+      "variants": [
+        {
+          "key": "1 mm",
+          "label": "1 mm",
+          "group": "",
+          "fabric": "",
+          "hex": null,
+          "price": 559512,
+          "was": 818000,
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-6-1754710070454.png",
+          "on": true,
+          "subs": []
+        },
+        {
+          "key": "2 mm",
+          "label": "2 mm",
+          "group": "",
+          "fabric": "",
+          "hex": null,
+          "price": 931950,
+          "was": 1635000,
+          "img": "https://hig3141592653.my.id/assets/pridukimage/img-7-1754710075327.png",
+          "on": false,
+          "subs": []
+        }
+      ],
+      "variant": 0,
+      "sold": 21,
+      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
+      "url": "https://xionco.shop/products/acrylic-mirror-silver-122-x-244-cm-thickness-1-or-2-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
+      "shopId": 112,
+      "shopName": "ACRYLIC MIRROR | Silver | 122 x 244 cm • Thickness 1 or 2 mm - Akrilik Cermin",
+      "bg": "white",
+      "model": "assets/items/acrylic-mirror-silver-122-x-244-cm-thickness-1-or-2-mm-akrilik-cermin/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "",
+      "id": "acrylic-mirror-rose-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "cat": "decor",
+      "name": "ACRYLIC MIRROR",
+      "type": "Rose Gold · 122 x 244 cm",
+      "price": 772800,
+      "was": 966000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754713787122.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754713787122.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778136570054.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754713814809.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754713822883.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754713828504.png"
+      ],
+      "variants": [],
+      "variant": -1,
+      "sold": 17,
+      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
+      "url": "https://xionco.shop/products/acrylic-mirror-rose-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
+      "shopId": 118,
+      "shopName": "ACRYLIC MIRROR | Rose Gold | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
+      "bg": "white",
+      "model": "assets/items/acrylic-mirror-rose-gold-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "",
+      "id": "acrylic-mirror-black-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "cat": "decor",
+      "name": "ACRYLIC MIRROR",
+      "type": "Black · 122 x 244 cm",
+      "price": 772800,
+      "was": 966000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754708671297.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754708671297.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778137888396.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754708682928.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754708692770.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754708696932.png"
+      ],
+      "variants": [],
+      "variant": -1,
+      "sold": 3,
+      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
+      "url": "https://xionco.shop/products/acrylic-mirror-black-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
+      "shopId": 107,
+      "shopName": "ACRYLIC MIRROR | Black | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
+      "bg": "white",
+      "model": "assets/items/acrylic-mirror-black-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb"
+    },
+    {
+      "status": "aktif",
+      "dims": "",
+      "leadTime": "",
+      "customizable": false,
+      "stock": "Ready",
+      "note": "",
+      "id": "acrylic-mirror-natural-brown-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "cat": "decor",
+      "name": "ACRYLIC MIRROR",
+      "type": "Natural Brown · 122 x 244 cm",
+      "price": 772800,
+      "was": 966000,
+      "from": false,
+      "img": "https://hig3141592653.my.id/assets/pridukimage/img-1-1754713576833.png",
+      "images": [
+        "https://hig3141592653.my.id/assets/pridukimage/img-1-1754713576833.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-2-1778138119073.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-3-1754713591953.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-4-1754713601095.png",
+        "https://hig3141592653.my.id/assets/pridukimage/img-5-1754713606299.png"
+      ],
+      "variants": [],
+      "variant": -1,
+      "sold": 2,
+      "desc": "• ACRYLIC MIRROR\n\"Cermin Akrilik dengan refleksifitas yang sempurna seperti kaca cermin. Memiliki banyak keunggulan dibandingkan cermin dengan bahan lainnya. Ringan dan dapat dibentuk.\"",
+      "url": "https://xionco.shop/products/acrylic-mirror-natural-brown-122-x-244-cm-thickness-1-mm-akrilik-cermin",
+      "kats": [
+        "Hardware"
+      ],
+      "shopId": 117,
+      "shopName": "ACRYLIC MIRROR | Natural Brown | 122 x 244 cm • Thickness 1 mm - Akrilik Cermin",
+      "bg": "white",
+      "model": "assets/items/acrylic-mirror-natural-brown-122-x-244-cm-thickness-1-mm-akrilik-cermin/model.glb"
     }
   ]
 }

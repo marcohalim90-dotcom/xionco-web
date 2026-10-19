@@ -20,41 +20,41 @@
     "sel": [
      [
       0,
-      1.9,
+      2.028,
       -0.01,
-      0.55,
-      0.08,
-      0.37
+      0.525,
+      0.092,
+      0.424
      ],
      [
       0,
-      1.9,
-      0.08,
-      0.16,
-      -0.01,
-      0.16
+      2.028,
+      0.076,
+      0.153,
+      -0.011,
+      0.183
      ]
     ],
     "islands": true,
     "selFaces": [
      [
-      0.15,
-      0.23,
-      0.08,
       0.16,
-      -0.01,
-      0.16
+      0.245,
+      0.076,
+      0.153,
+      -0.011,
+      0.183
      ]
     ],
     "pivot": [
-     0.94,
+     1.003,
      0,
-     0.15
+     0.172
     ],
     "move": [
      0,
      0,
-     0.15
+     0.226
     ],
     "until": 0.45,
     "dur": 2.2
@@ -63,32 +63,37 @@
     "id": "back",
     "group": "bed",
     "sel": [
-     0.05,
-     1.83,
-     0.53,
-     0.82,
-     0.16,
-     0.7
+     0.053,
+     1.953,
+     0.506,
+     0.783,
+     0.183,
+     0.802
     ],
     "islands": true,
     "pivot": [
-     0.94,
-     0.526,
-     0.254
+     1.003,
+     0.5,
+     0.279
     ],
     "axis": "x",
-    "amt": -1.3167,
+    "amt": -1.3615,
     "move": [
      0,
-     0.104,
-     0.134
+     0.14,
+     0.209
     ],
     "wait": 0.45,
     "dur": 2.2,
     "seq": "move-rot"
    }
   ],
-  "note": "Sofa bed eurobook dengan ukuran ASLI (tinggi 65 cm, tanpa reshape): dudukan maju 15 cm, sandaran (41,4 × 18,9 cm, miring 14,6°) diangkat lalu direbahkan 75,4° — muka depan di atas, rata dengan atas dudukan (34,8 cm), mengisi celah sampai panel belakang. Disimulasikan 19 Okt (scratchpad cameo_sim2.py)."
+  "note": "Sofa bed eurobook, ukuran xionco.shop 200 × 86 × 74 cm (fit dari SKP 187 × 90 × 65): dudukan maju 22,6 cm, sandaran (47,8 × 18,3 cm, miring 12°) diangkat lalu direbahkan 78° — muka depan rata dengan atas dudukan (39,7 cm), mengisi celah sampai panel belakang; kasur 200 × 99,5 cm. Disimulasikan 19 Okt (scratchpad cameo_sim2.py).",
+  "fit": [
+   200,
+   86,
+   74
+  ]
  },
  "canis": "canis",
  "cubix-ac": {

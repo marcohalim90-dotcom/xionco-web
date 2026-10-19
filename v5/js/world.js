@@ -383,6 +383,87 @@
     }
     return gltfP;
   }
+  /* cermin (acrylic mirror, MIERU): muka bernama/ber-extras xc_mirror diganti pantulan nyata (THREE.Reflector, dimuat saat perlu)
+     → memantulkan panggung sungguhan & bergeser saat produk diputar. Warna cermin (extras = hex) mewarnai pantulan. */
+  var reflP = null;
+  function needReflector() {
+    if (T.Reflector) return Promise.resolve(true);
+    return reflP || (reflP = new Promise(function (ok) {
+      var sc = document.createElement('script'); sc.src = 'https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/objects/Reflector.js';
+      sc.onload = function () { ok(!!T.Reflector); }; sc.onerror = function () { ok(false); }; document.head.appendChild(sc);
+    }));
+  }
+  /* latar pantulan cermin: ruang studio kosong terang (seperti foto produk akrilik xionco.shop) — dilukis di kanvas
+     equirect 2048×1024: dinding abu muda dengan sudut ruang, lantai lebih terang, lampu tabung di plafon, rak besi gelap. */
+  var mirBg = null;
+  function mirrorRoomTex() {
+    var Wd = 2048, Hd = 1024, c = document.createElement('canvas'); c.width = Wd; c.height = Hd; var g = c.getContext('2d');
+    var hz = Hd * .5, ceil = Hd * .38, flo = Hd * .57;   // garis plafon / lantai dekat cakrawala → tampak di pantulan cermin
+    var wall = g.createLinearGradient(0, ceil, 0, flo); wall.addColorStop(0, '#c4c3bf'); wall.addColorStop(.55, '#b5b3ae'); wall.addColorStop(1, '#9e9c97');
+    g.fillStyle = wall; g.fillRect(0, ceil, Wd, flo - ceil);
+    var cl = g.createLinearGradient(0, 0, 0, ceil); cl.addColorStop(0, '#e6e5e1'); cl.addColorStop(1, '#cfcecb'); g.fillStyle = cl; g.fillRect(0, 0, Wd, ceil);
+    var fl = g.createLinearGradient(0, flo, 0, Hd); fl.addColorStop(0, '#c2c0bb'); fl.addColorStop(1, '#dddcd8'); g.fillStyle = fl; g.fillRect(0, flo, Wd, Hd - flo);
+    for (var k = 0; k < 4; k++) {   // sudut ruang: bayangan lembut tegak
+      var x = Wd * (k + .5) / 4, sh = g.createLinearGradient(x - 70, 0, x + 70, 0);
+      sh.addColorStop(0, 'rgba(0,0,0,0)'); sh.addColorStop(.5, 'rgba(60,58,54,.22)'); sh.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = sh; g.fillRect(x - 70, ceil, 140, flo - ceil);
+      g.fillStyle = 'rgba(70,68,64,.35)'; g.fillRect(x - 1, ceil, 2, flo - ceil);
+    }
+    g.fillStyle = 'rgba(80,78,74,.25)'; g.fillRect(0, flo - 1, Wd, 2); g.fillRect(0, ceil - 1, Wd, 2);
+    for (var q = 0; q < 8; q++) {   // tiap sisi ruang: lampu tabung di plafon + rak besi / bingkai jendela gelap → pantulan selalu berisi detail
+      var u = Wd * (q + .25) / 8;
+      g.shadowColor = 'rgba(255,255,255,.95)'; g.shadowBlur = 26; g.fillStyle = '#ffffff'; g.fillRect(u - 60, ceil - 26, 120, 5); g.shadowBlur = 0;
+      g.strokeStyle = '#2b2a28'; g.lineWidth = 5;
+      { g.lineWidth = 2.5; var rx = u + 30, rt = hz - 40, rb = flo - 2; g.strokeRect(rx, rt, 26, rb - rt); for (var y = rt; y <= rb + 1; y += (rb - rt) / 4) { g.beginPath(); g.moveTo(rx, y); g.lineTo(rx + 26, y); g.stroke(); } }
+    }
+    var t = new T.CanvasTexture(c); t.encoding = T.sRGBEncoding; t.anisotropy = 4; return t;
+  }
+  function mirrorBg() {
+    if (mirBg) return mirBg;
+    var sp = new T.Mesh(new T.SphereGeometry(6, 64, 32), new T.MeshBasicMaterial({ map: mirrorRoomTex(), side: T.BackSide, toneMapped: false, fog: false, depthWrite: false }));
+    sp.visible = false; sp.userData.noPick = true; scene.add(sp);   // hanya tampak saat pantulan dirender
+    return (mirBg = Promise.resolve(sp));
+  }
+  function setupMirrors(g) {
+    var list = []; g.traverse(function (o) { if (o.isMesh && o.userData && o.userData.xc_mirror) list.push(o); });
+    if (!list.length) return Promise.resolve();
+    return Promise.all([needReflector(), mirrorBg()]).then(function (r) {
+      var ok = r[0], bg = r[1];
+      if (!ok || !g.parent) return;
+      list.forEach(function (mesh) {
+        var geo = mesh.geometry, pos = geo.attributes.position, idx = geo.index, tri = [], n = new T.Vector3(), a = new T.Vector3(), b = new T.Vector3(), c = new T.Vector3(), e1 = new T.Vector3(), e2 = new T.Vector3();
+        var cnt = idx ? idx.count : pos.count, best = new T.Vector3(), area = 0;
+        for (var i = 0; i < cnt; i += 3) {   // muka depan: segitiga yang menghadap +Z (ke kamera) — sisi tebal kaca diabaikan
+          var i0 = idx ? idx.getX(i) : i, i1 = idx ? idx.getX(i + 1) : i + 1, i2 = idx ? idx.getX(i + 2) : i + 2;
+          a.fromBufferAttribute(pos, i0); b.fromBufferAttribute(pos, i1); c.fromBufferAttribute(pos, i2);
+          e1.subVectors(b, a); e2.subVectors(c, a); n.crossVectors(e1, e2); var ar = n.length() / 2; if (!ar) continue; n.normalize();
+          if (n.z > .9) { tri.push(a.clone(), b.clone(), c.clone()); best.addScaledVector(n, ar); area += ar; }
+        }
+        if (!tri.length) return;
+        var nz = best.normalize(), up = new T.Vector3(0, 1, 0); up.sub(nz.clone().multiplyScalar(up.dot(nz))).normalize();
+        var xr = new T.Vector3().crossVectors(up, nz), ctr = new T.Vector3(); tri.forEach(function (v) { ctr.add(v); }); ctr.multiplyScalar(1 / tri.length);
+        var arr = new Float32Array(tri.length * 3), uvs = new Float32Array(tri.length * 2), d = new T.Vector3();
+        tri.forEach(function (v, k) { d.subVectors(v, ctr); arr[k * 3] = d.dot(xr); arr[k * 3 + 1] = d.dot(up); arr[k * 3 + 2] = 0; });
+        var pg = new T.BufferGeometry(); pg.setAttribute('position', new T.BufferAttribute(arr, 3)); pg.setAttribute('uv', new T.BufferAttribute(uvs, 2));
+        var dpr = Math.min(2, renderer.getPixelRatio()), sz = Math.min(1024, Math.round(Math.max(W, H) * dpr));
+        var tint = new T.Color(mesh.userData.xc_mirror || '#d8d8d8'), mx = Math.max(tint.r, tint.g, tint.b, .01); tint.multiplyScalar(Math.min(1.15, .95 / mx)).convertSRGBToLinear(); tint.r = Math.max(tint.r, .05); tint.g = Math.max(tint.g, .05); tint.b = Math.max(tint.b, .05);   // warna akrilik pekat (linear), cermin gelap tetap gelap
+        var rf = new T.Reflector(pg, { textureWidth: sz, textureHeight: sz, color: tint, clipBias: .003 });
+        var fs = rf.material.fragmentShader, fs2 = fs.replace(/blendOverlay\(\s*base\.rgb\s*,\s*color\s*\)/, 'base.rgb * color');   // overlay → kali: warna akrilik tetap pekat di area terang
+        if (fs2 !== fs) { rf.material.fragmentShader = fs2; rf.material.needsUpdate = true; }
+        var basis = new T.Matrix4().makeBasis(xr, up, nz).setPosition(ctr.addScaledVector(nz, .0004));
+        rf.matrixAutoUpdate = false; rf.matrix.multiplyMatrices(mesh.matrix, basis); rf.userData.noPick = true; rf.userData.mirror = true;
+        var base = rf.onBeforeRender;
+        rf.onBeforeRender = function (rr, sc) {   // pantulan: ruang studio terang, tanpa lantai/latar gelap panggung
+          var hide = sc.children.filter(function (o) { return o !== bg && o.visible && !o.isLight && (o.isMesh || o.isGroup || o.isObject3D && o.children.length); });   // pantulan: hanya ruang studio (lantai, latar, garis panggung, badan akrilik disembunyikan)
+          var b0 = sc.background, f0 = sc.fog, v0 = hide.map(function (o) { return o.visible; });
+          if (bg) { bg.position.setFromMatrixPosition(rf.matrixWorld); bg.visible = true; } sc.fog = null; hide.forEach(function (o) { o.visible = false; });
+          base.apply(this, arguments);
+          if (bg) bg.visible = false; sc.fog = f0; hide.forEach(function (o, i) { o.visible = v0[i]; });
+        };
+        mesh.parent.add(rf); mesh.visible = false;
+        var oldD = g.userData.dispose; g.userData.dispose = function () { if (oldD) oldD(); rf.getRenderTarget().dispose(); pg.dispose(); rf.material.dispose(); };
+      });
+    });
+  }
   function getModel(url) {
     if (!modelCache[url]) {
       modelCache[url] = gltfLoader().then(function (l) {
@@ -580,7 +661,8 @@
   // podium jauh lebih lebar dari objek (±1,3 × diagonal tapak) dan selalu mengikuti ukurannya
   function setPlinth(b, visible, dur) {
     b = typeof b === 'number' ? { w: b, d: b * .45 } : b || { w: 1, d: .5 };
-    var r = visible ? clamp(Math.sqrt(b.w * b.w + b.d * b.d) / 2 * 1.3 + .24, .95, 3.4) : .001, d = dur == null ? 1.1 : dur;
+    var dg = Math.sqrt(b.w * b.w + b.d * b.d), small = dg < .6;   // barang kecil (gelas, bantal, baterai): podium mengecil
+    var r = visible ? clamp(dg / 2 * 1.3 + (small ? dg * .35 : .24), small ? .3 : .95, 3.4) : .001, d = dur == null ? 1.1 : dur;
     tw(O.plinth.scale, { x: r, z: r, duration: d, ease: 'power3.inOut' });
     tw(O.plinth.position, { y: visible ? 0 : -.2, duration: d * .8, ease: 'power3.inOut' });
   }
@@ -595,7 +677,7 @@
     else if (prev !== obj) rise(obj, prev && prev !== O.map ? .45 : .1);
     setPlinth(obj.userData.bounds, kind !== 'map');
     var lamp = obj.userData.lamp;
-    tw(LAMPK, { k: lamp ? .3 : 1, duration: 1.6, ease: 'power2.inOut' });
+    tw(LAMPK, { k: lamp && !lamp.dark ? .3 : 1, duration: 1.6, ease: 'power2.inOut' });   // dekor dinding (cermin): panggung tidak diredupkan
     if (lamp && prev !== obj) lamp.props.forEach(function (mt) { mt.opacity = 0; tw(mt, { opacity: 1, duration: 1.6, delay: .7, ease: 'power2.out', onComplete: function () { if (mt.userData.solid) { mt.transparent = false; mt.needsUpdate = true; } } }); });
     if (lamp && lamp.wall) setPlinth(obj.userData.bounds, false);   // podium tidak menembus dinding
     // ruang (beberapa furnitur): tanpa podium, sorot utama lebih lebar
@@ -773,13 +855,14 @@
     var kh = st.kind === 'art' ? 1.45 : tight ? 2.3 : 3.6, kw = st.kind === 'art' ? 1.3 : tight ? 1.6 : 2.25;
     if (b.lamp) { kh = tight ? 1.45 : 2; kw = tight ? 1.3 : 1.7; }   // lampu: fokus rapat
     if (portrait) { kw = st.kind === 'art' ? 1.15 : st.kind === 'model' || st.kind === 'cubix' || st.kind === 'custom' ? 1.5 : 1.3; kh = st.kind === 'art' ? 1.3 : 1.9; }
-    var needH = b.h * kh + .3, needW = (b.w * kw + .2) * (H / W);
+    var big = Math.max(b.w, b.h), mg = Math.min(1, big / .5);   // barang kecil (gelas, baterai): margin ikut ukuran → tidak tampak mungil
+    var needH = b.h * kh + .3 * mg, needW = (b.w * kw + .2 * mg) * (H / W);
     var span = Math.max(needH * H / fh, needW * W / fw);
     var dist = span / vf;
     var turn = st.kind === 'cubix' || st.kind === 'cubixcfg' || st.kind === 'model' || st.kind === 'custom';   // objek 3D sungguhan: tampak 3/4
     var yaw = b.yaw != null ? b.yaw : turn ? -.3 : 0, pitch = b.pitch != null ? b.pitch : turn ? .17 : .09;
     if (st.kind === 'room' && RS.on) { yaw = .5; pitch = .2; }   // ruangan: tampak 3/4 dari kanan depan → tembok kiri & belakang terlihat
-    animView({ tx: 0, ty: LIFT + (b.y0 || 0) + b.h * .48, tz: turn ? b.d * .12 : 0, dist: clamp(dist, b.lamp ? 1.4 : 2.2, st.kind === 'room' ? 40 : 16), yaw: yaw, pitch: pitch, fov: fov }, dur);
+    animView({ tx: 0, ty: LIFT + (b.y0 || 0) + b.h * .48, tz: turn ? b.d * .12 : 0, dist: clamp(dist, Math.min(b.lamp ? 1 : 2.2, Math.max(.35, big * 2.6)), st.kind === 'room' ? 40 : 16), yaw: yaw, pitch: pitch, fov: fov }, dur);
   }
   function animView(to, dur) {
     if (camTw && camTw.kill) camTw.kill();
@@ -1448,6 +1531,7 @@
   function lampMount(p) {
     if (!p || (p.cat !== 'lighting' && (p.kats || []).indexOf('Lightings') < 0)) return null;
     var t = [p.name, p.type, p.shopName].join(' ').toLowerCase();
+    if (p.mount) return p.mount;   // pengecualian dari katalog (mis. AETHER CLOUD Q1 = lampu gantung)
     if (/\bsky\b|pendant|ceiling|chandelier|gantung|plafon/.test(t)) return 'ceiling';
     if (/\bcloud\b|wall light|dinding/.test(t)) return 'wall';
     if (/\bhill\b|table lamp|lampu meja/.test(t)) return 'table';
@@ -1479,6 +1563,19 @@
   }
   // dinding / plafon padat; transparan hanya selama memudar masuk (present → solid lagi)
   function propMat(hex) { var mt = new T.MeshStandardMaterial({ color: col(hex), roughness: .93, metalness: 0, envMapIntensity: .12, transparent: true, opacity: 0 }); mt.userData.solid = true; return mt; }
+  /* dekor dinding tanpa cahaya (cermin dinding MIERU): digantung ±1,5 m di dinding abu padat, podium disembunyikan */
+  function stageWallDecor(g, p) {
+    if (lampMount(p) || !/wall mirror|cermin dinding|power switch|saklar/i.test([p.name, p.type, p.shopName].join(' '))) return;   // cermin dinding & saklar VAZRA
+    var spin = g.userData.spin, m = spin.children[0], box = new T.Box3(), sz = new T.Vector3(), props = [];
+    m.updateMatrixWorld(true); box.setFromObject(m); box.getSize(sz);
+    m.position.y += Math.max(.3, 1.5 - sz.y / 2) - box.min.y; m.updateMatrixWorld(true); box.setFromObject(m);
+    var wl = new T.Mesh(new T.PlaneGeometry(6, 3.4), propMat(WALL_C)); wl.userData.noPick = true; wl.receiveShadow = true;
+    wl.position.set(0, 1.7, box.min.z - .003); spin.add(wl); props.push(wl.material);
+    g.children.forEach(function (o) { if (o.userData.blob) o.visible = false; });
+    var y0 = Math.max(0, box.min.y - LIFT - (sz.y > .4 ? .3 : .08));
+    g.userData.bounds = { w: Math.max(sz.x, sz.x > .4 ? .9 : .3), h: box.max.y + (sz.y > .4 ? .3 : .08) - LIFT - y0, d: sz.z, y0: y0, pitch: -.06, yaw: -.12, lamp: true };
+    g.userData.lamp = { mount: 'wall', props: props, line: null, wall: true, dark: true };
+  }
   function stageLamp(g, p) {
     var mount = lampMount(p); if (!mount) return;
     var spin = g.userData.spin, m = spin.children[0], b = g.userData.bounds, box = new T.Box3(), sz = new T.Vector3();
@@ -1570,7 +1667,7 @@
     }
     if (mount === 'ceiling') { var up = new T.PointLight(LAMP_C, .7, 1.4, 2); up.position.set(pos.x, CEIL_Y - .22, pos.z + .12); spin.add(up); }   // plafon ikut terang lembut
     // bingkai kamera: fokus ke lampu (bukan lantai); plafon dilihat sedikit dari bawah
-    var y0 = mount === 'table' || mount === 'floor' ? 0 : Math.max(0, box.min.y - LIFT - .3);
+    var y0 = mount === 'table' || mount === 'floor' ? 0 : Math.max(0, box.min.y - LIFT - (mount === 'ceiling' ? .12 : .3));   // gantung: bingkai dari bawah lampu sampai plafon
     g.userData.bounds = { w: Math.max(b.w, mount === 'wall' ? .9 : mount === 'table' ? r * 2 : b.w), h: (mount === 'ceiling' ? CEIL_Y + .05 : box.max.y + (mount === 'wall' ? .3 : 0)) - LIFT - y0, d: b.d, y0: y0, pitch: mount === 'ceiling' ? -.24 : mount === 'wall' ? -.1 : null, lamp: true };
     g.userData.lamp = { mount: mount, props: props, line: line, wall: mount === 'wall' || floorWall };
     if (floorWall) g.userData.bounds.w = Math.max(g.userData.bounds.w, 1.1);
@@ -1582,7 +1679,8 @@
     return getModel(url).then(function (s) {
       if (my !== req) return;
       var g = makeModel(s, p);
-      stageLamp(g, p);
+      setupMirrors(g);
+      stageLamp(g, p); stageWallDecor(g, p);
       g.visible = false; scene.add(g);
       tintModel(g, hexStr, 0);
       present('model', g);
@@ -1630,7 +1728,7 @@
     var box = new T.Box3();
     list.forEach(function (it) { for (var i = 0; i < it.P.length; i += 3) box.expandByPoint(new T.Vector3(it.P[i], it.P[i + 1], it.P[i + 2])); });
     var mats = [];
-    (g.userData.mats || []).forEach(function (mt) { if (mt.userData.pcCol0 || mt.metalness > .5 || mt.userData.role === 'metal') { if (!mt.userData.pcCol0) { mt.userData.pcCol0 = mt.color.clone(); mt.userData.pcRough0 = mt.roughness; mt.userData.pcMetal0 = mt.metalness; } mats.push(mt); } });
+    (g.userData.mats || []).forEach(function (mt) { if (mt.userData.role !== 'baked' && (mt.userData.pcCol0 || mt.metalness > .5 || mt.userData.role === 'metal')) {   /* baked (cermin, foto AI): tidak ikut finishing logam */ if (!mt.userData.pcCol0) { mt.userData.pcCol0 = mt.color.clone(); mt.userData.pcRough0 = mt.roughness; mt.userData.pcMetal0 = mt.metalness; } mats.push(mt); } });
     var bs = box.getSize(new T.Vector3());
     g.userData.pc = { list: list, box: box, mats: mats, b0: { w: bs.x, h: bs.y, d: bs.z }, blob0: g.children.filter(function (o) { return o.userData.blob; })[0] };
     return g.userData.pc;

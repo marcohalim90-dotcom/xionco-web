@@ -1001,8 +1001,6 @@ html.lay3 .adv { transform: translateX(-12px); }
 .panel__close { transition: background .3s, color .3s, opacity .3s; }
 .panel:has(.pane.is-on .pd.is-on) > .panel__close { opacity: 0; pointer-events: none; }
 .pd__bar { padding-right: 0; }
-.pd__adv { cursor: pointer; }
-.pd__adv.is-on { color: var(--t-d); border-color: var(--gold); }
 .adv__o { display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 12px; border-radius: var(--r); border: 1px solid var(--hair-2); color: var(--t-d); text-align: left; transition: border-color .3s, background .3s; }
 .adv__o + .adv__o { margin-top: 8px; }
 .adv__o:hover { border-color: var(--gold); background: var(--gold-a); }
@@ -1054,3 +1052,203 @@ html.lay3 .adv { transform: translateX(-12px); }
 .acc__n { margin: 8px 0 0; font: 300 var(--fs-s)/1.5 var(--f); color: var(--t-d3); }
 .acc__l { margin-top: 10px; }
 .kv--dim dt.is-on, .kv--dim dd.is-on { color: var(--gold-hi); }
+
+/* ==========================================================================
+   U2 · kotak varian rapi: tinggi seragam, swatch + nama sejajar, harga tambahan hanya di kotak terpilih
+   ========================================================================== */
+.og--v .cz-o { height: 38px; padding: 0 8px; gap: 6px; }
+.og--v .cz-o__c { width: 14px; height: 14px; border-radius: 50%; }
+.cz-o__t { display: flex; flex-direction: column; justify-content: center; min-width: 0; gap: 2px; }
+.cz-o__t > span { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.og--v .cz-o__d { flex-basis: auto; min-height: 0; font-size: 8.5px; line-height: 1; letter-spacing: -.01em; white-space: nowrap; }
+/* U3 · Detail box Customize: baris ringkas ke kotak samping kanan (panah ke kanan) & isi bebas (slider, isi kolom) */
+.cz-row.is-r svg { transform: none; }
+.cz-row.is-r.is-on svg { transform: translateX(3px); }
+.cz-pick--free { display: block !important; }
+.cz-pick--free > .cz-g { padding: 14px 0; }
+.cz-pick--free > .cz-g + .cz-g { border-top: 1px solid var(--hair); }
+.cz-pick--free .kx-lay { padding-top: 0; }
+/* U1 · kategori Koleksi bergambar garis (mask, warna mengikuti tema, emas saat dipilih) */
+.kfc__i { background: transparent; border: 1px solid var(--hair); }
+.kfc__m { width: 82%; height: 82%; display: block; background: var(--t-d2); -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; transition: background-color .3s; }
+.kfc:hover .kfc__m { background: var(--t-d); }
+.kfc.is-on .kfc__m { background: var(--gold-hi); }
+.kfc.is-on .kfc__i { border-color: var(--hair-2); }
+
+/* V2 · halaman produk: More variants & Advance = dua tombol kotak berdampingan, masing-masing membuka kotak samping */
+.pd__acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px 0 16px; border-bottom: 1px solid var(--hair); }
+.pd__acts:has(#pdVMore[hidden]) { grid-template-columns: 1fr; }
+.pd__ab { display: flex; align-items: center; justify-content: center; gap: 8px; height: var(--row); padding: 1px 12px 0; border-radius: var(--r); border: 1px solid var(--hair-2); color: var(--t-d); font: 400 var(--fs-l)/1 var(--f-h); letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; transition: border-color .3s, background .3s, color .3s; }
+.pd__ab[hidden] { display: none; }
+.pd__ab:hover { border-color: var(--gold); }
+.pd__ab.is-on { border-color: var(--gold); background: var(--gold-a); color: var(--gold-hi); }
+.pd__ab i { font-style: normal; letter-spacing: 0; color: var(--gold-hi); }
+.pd__ab svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 1.3; }
+.adv { max-height: calc(100vh - 32px); overflow-y: auto; scrollbar-width: thin; }
+.adv[data-mode="var"], .adv:has(.pc:not([hidden])) { width: 360px; }
+.adv[data-mode="var"] .adv__main, .adv[data-mode="adv"] .adv__var { display: none; }
+.adv__var .og__h { margin-top: 2px; }
+.adv .pc { margin: 0 0 12px; padding: 0; border: 0; }
+
+/* V1 · tab pertama "Kategori" lebih panjang dari tab lain */
+.cz__tabs { grid-template-columns: 1.4fr repeat(5, minmax(0, 1fr)); }
+
+/* V3 · masuk tas: gambar barang melayang (lengkung) ke ikon tas di header, ikon tas "menangkap" */
+.fly { position: fixed; left: 0; top: 0; z-index: 95; width: 58px; height: 58px; border-radius: 50%; overflow: hidden; border: 1px solid var(--gold); background: var(--panel-solid); box-shadow: 0 12px 30px rgba(0, 0, 0, .35); pointer-events: none; will-change: transform, opacity; }
+.fly img { width: 100%; height: 100%; object-fit: cover; }
+.fly--ic { display: grid; place-items: center; color: var(--gold-hi); }
+.fly--ic svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.3; }
+.top__bag.is-catch svg { animation: bagCatch .65s var(--ease); }
+@keyframes bagCatch { 0% { transform: none; } 30% { transform: scale(1.32) rotate(-9deg); } 62% { transform: scale(.94) rotate(5deg); } 100% { transform: none; } }
+.pd__foot .buy { grid-template-columns: 92px var(--row) minmax(0, 1fr); }
+
+/* V4 · logo brand (js/logos.js) */
+.xl { display: inline-grid; place-items: center; flex: none; line-height: 0; }
+.xl svg { display: block; width: auto; height: 100%; fill: initial; stroke: none; margin: 0; }
+.prov .xl { width: 18px; height: 18px; }
+.ph__n .xl { width: 18px; height: 18px; }
+.ph__n:has(.xl) { border-color: var(--hair-2); }
+.co-logos { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.xl--chip { height: 22px; padding: 4px 7px; border-radius: 4px; background: #efece7; border: 1px solid rgba(0, 0, 0, .06); }
+.xl--chip svg { height: 14px; }
+.opt-c--pay em { margin-top: 6px; }
+
+/* V4 · checkout = kotak besar di tengah (overlay), 3 kolom sejajar: kontak & alamat · pengiriman & pembayaran · ringkasan */
+.co-ov { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; padding: 28px; opacity: 0; visibility: hidden; transition: opacity .45s var(--ease), visibility 0s .45s; }
+.co-ov.is-on { opacity: 1; visibility: visible; transition: opacity .45s var(--ease); }
+.co-ov__bg { position: absolute; inset: 0; background: rgba(8, 6, 5, .55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.co-ov__box { position: relative; display: flex; flex-direction: column; width: min(1240px, 100%); max-height: min(92vh, 1000px); overflow: hidden; background: var(--panel-bg); border: 1px solid var(--box-line); border-radius: var(--box-r); box-shadow: var(--box-shadow); -webkit-backdrop-filter: var(--box-blur); backdrop-filter: var(--box-blur); transform: translateY(18px) scale(.985); transition: transform .7s var(--ease); }
+.co-ov.is-on .co-ov__box { transform: none; }
+.co-ov__h { display: flex; align-items: center; gap: 14px; padding: 20px var(--pad) 18px; border-bottom: 1px solid var(--hair-2); }
+.co-ov__x { margin-left: auto; width: 34px; height: 34px; display: grid; place-items: center; border-radius: var(--r); color: var(--t-d2); transition: background .3s, color .3s; }
+.co-ov__x:hover { background: var(--plate); color: var(--t-d); }
+.co-ov__x svg { width: var(--ic-s); height: var(--ic-s); fill: none; stroke: currentColor; stroke-width: 1.3; }
+.co-ov__scroll { overflow-y: auto; padding: 0 var(--pad); scrollbar-width: thin; }
+.co-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 380px); align-items: start; }
+.co-col { min-width: 0; padding: 0 28px 26px 0; }
+.co-col + .co-col { padding-left: 28px; border-left: 1px solid var(--hair); }
+.co-col:last-child { padding-right: 0; }
+.co-grid .co-sec:first-child { padding-top: 24px; border-top: 0; }
+.co-side { position: sticky; top: 0; }
+.co-h--side { gap: 10px; }
+.co-n { font: 300 var(--fs-s)/1 var(--f); font-style: normal; color: var(--t-d3); letter-spacing: 0; }
+.co-items { max-height: 290px; overflow-y: auto; scrollbar-width: thin; }
+.co-promo { padding: 18px 0; }
+.fld__l { margin-bottom: 8px; font: 400 var(--fs-l)/1.3 var(--f-h); letter-spacing: .24em; text-transform: uppercase; color: var(--t-d3); }
+.co-promo__in { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.co-promo__in input { text-transform: uppercase; letter-spacing: .08em; }
+.co-promo__in .btn { height: var(--row); }
+.co-promo .note { margin-top: 8px; }
+.co-promo__on { display: flex; align-items: center; gap: 10px; min-height: var(--row); font: 300 var(--fs-s)/1.4 var(--f); color: var(--t-d2); }
+.co-promo__on .mini { margin-left: auto; }
+.co-side .co-sum { padding-top: 18px; }
+.co-disc { color: var(--gold-hi); }
+.co-side .co-total { margin: 16px 0 14px; }
+.co-side .btn--full { margin-bottom: 10px; }
+html.co-open .notice { z-index: 96; }
+@media (max-width: 1100px) {
+  .co-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 340px); }
+  .co-col:nth-child(2) { grid-column: 1; padding-left: 0; border-left: 0; border-top: 1px solid var(--hair-2); }
+  .co-col:nth-child(2) .co-sec:first-child { padding-top: 22px; }
+  .co-side { grid-column: 2; grid-row: 1 / span 2; }
+}
+@media (max-width: 760px) {
+  .co-ov { padding: 0; }
+  .co-ov__box { width: 100%; height: 100%; max-height: none; border-radius: 0; border: 0; }
+  .co-ov__h { padding: 16px var(--pad) 14px; }
+  .co-grid { grid-template-columns: minmax(0, 1fr); }
+  .co-col, .co-col + .co-col, .co-col:nth-child(2) { grid-column: 1; grid-row: auto; padding: 0 0 8px; border-left: 0; border-top: 1px solid var(--hair-2); }
+  .co-col:first-child { border-top: 0; }
+  .co-side { position: static; }
+  .co-items { max-height: none; }
+}
+
+.co-ov .done { max-width: 600px; margin: 0 auto; padding: 34px 0 30px; }
+.btn .xl { width: 16px; height: 16px; }
+.btn .xl svg { width: auto; height: 100%; margin: 0; }
+
+/* V4b · checkout muat satu layar tanpa gulir (desktop ≥ 1280 × 720): jarak rapat, alamat grid 6 kolom, metode bayar satu baris */
+.fgrid--6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.fgrid--6 > * { grid-column: span 3; }
+.fgrid--6 > .c2 { grid-column: span 2; }
+.fgrid--6 > .fld--full, .fgrid--6 > .check { grid-column: 1 / -1; }
+.fgrid--6 .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.fgrid--6 .seg button { padding: 1px 4px 0; letter-spacing: .12em; }
+.co-ov { padding: 16px; }
+.co-ov__box { max-height: calc(100vh - 32px); }
+.co-ov__h { padding: 12px var(--pad) 11px; }
+.co-ov__h .ph__n { width: 28px; height: 28px; }
+.co-ov__x { width: 30px; height: 30px; }
+.co-ov .co-sec { padding: 14px 0; }
+.co-ov .co-grid .co-sec:first-child { padding-top: 16px; }
+.co-ov .co-col { padding-bottom: 14px; }
+.co-ov .co-h { margin-bottom: 11px; }
+.co-ov .co-h i { width: 22px; height: 22px; }
+.co-ov .fgrid { gap: 9px 10px; }
+.co-ov .fld { gap: 5px; }
+.co-ov .fld input, .co-ov .fld select { height: 34px; }
+.co-ov .fld textarea { min-height: 34px; height: 34px; padding: 8px 128px 6px 12px; resize: none; overflow: hidden; white-space: nowrap; line-height: 1.4; }
+.co-ov .fld__in .fld__act { top: 4px; height: 26px; }
+.co-ov .seg button { height: 26px; }
+.co-ov .note { margin-bottom: 8px !important; }
+.co-ov .prov { gap: 6px; }
+.co-ov .prov button { height: 34px; }
+.co-ov .or { margin: 10px 0; }
+.co-ov .opts { gap: 6px; }
+.co-ov .opt-c { min-height: 42px; padding: 7px 12px; }
+.co-ov .opt-c--pay > span { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0; }
+.co-ov .opt-c--pay .co-logos { margin-top: 0; flex-wrap: nowrap; gap: 4px; }
+.co-ov .opt-c--pay em { display: none; }
+.co-ov .xl--chip { height: 20px; padding: 3px 6px; }
+.co-ov .xl--chip svg { height: 12px; }
+.co-ov .co-promo { padding: 12px 0; }
+.co-ov .co-items { max-height: 210px; }
+.co-ov .co-items > li { padding-top: 10px; padding-bottom: 10px; }
+.co-ov .co-side .co-total { margin: 12px 0 12px; }
+.co-ov .co-side .kv dt, .co-ov .co-side .kv dd { padding-top: 8px; padding-bottom: 8px; }
+@media (max-width: 760px) {
+  .fgrid--6 > *, .fgrid--6 > .c2 { grid-column: span 3; }
+  .fgrid--6 > .c2:last-of-type { grid-column: 1 / -1; }
+  .co-ov { padding: 0; }
+  .co-ov__box { max-height: none; }
+}
+
+.co-ov .opt-c--pay b { white-space: nowrap; letter-spacing: .1em; }
+.co-ov .opt-c--pay .xl--chip { padding: 3px 5px; }
+.co-ov .opt-c--pay .xl--chip svg { height: 11px; }
+.co-ov .fgrid--6 .fld > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* V4c · checkout: hierarki & jarak seimbang
+   judul bagian (nomor + judul) > nama pilihan > logo / keterangan; setiap garis pembatas: jarak atas = jarak bawah (18 px) */
+.co-ov .co-sec { padding: 18px 0; }
+.co-ov .co-grid .co-sec:first-child { padding-top: 18px; }
+.co-ov .co-col { padding-bottom: 4px; }
+.co-ov .co-h { margin-bottom: 14px; }
+.co-h__n { margin-left: auto; font: 300 var(--fs-s)/1 var(--f); letter-spacing: 0; text-transform: none; color: var(--t-d3); }
+.co-ov .or { margin: 16px 0; }
+.co-ov .co-promo { padding: 18px 0; }
+.co-ov .co-items > li:first-child { padding-top: 0; }
+/* pilihan pengiriman & pembayaran: nama (tegas) di atas, logo / keterangan (sekunder) di bawah, rata kiri */
+.co-ov .opt-c { min-height: 0; padding: 10px 12px; align-items: center; }
+.co-ov .opt-c b { color: var(--t-d2); transition: color .3s; }
+.co-ov .opt-c.is-on b, .co-ov .opt-c:hover b { color: var(--t-d); }
+.co-ov .opt-c--pay > span { display: block; }
+.co-ov .opt-c--pay .co-logos { margin-top: 7px; flex-wrap: wrap; align-items: center; gap: 4px; }
+.co-ov .opt-c--pay .xl--chip { height: 18px; padding: 3px 5px; opacity: .62; transition: opacity .3s; }
+.co-ov .opt-c--pay .xl--chip svg { height: 10px; }
+.co-ov .opt-c--pay.is-on .xl--chip, .co-ov .opt-c--pay:hover .xl--chip { opacity: 1; }
+.co-ov .opt-c--pay em { display: inline; margin: 0 0 0 6px; }
+/* ringkasan: label & nilai sejajar tengah tiap baris */
+.co-ov .co-sum .kv dt, .co-ov .co-sum .kv dd { display: flex; align-items: center; min-height: 34px; padding: 7px 0; }
+.co-ov .co-sum .kv dd { justify-content: flex-end; }
+.co-ov .co-sum .kv dt:first-of-type, .co-ov .co-sum .kv dd:first-of-type { padding-top: 0; min-height: 27px; }
+.co-ov .co-side .co-total { align-items: center; margin: 16px 0; }
+
+/* V4d · metode bayar: logo saja (nama metode tersembunyi untuk pembaca layar), satu baris ringkas */
+.co-ov .opt-c--pay { padding: 9px 12px; }
+.co-ov .opt-c--pay b { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.co-ov .opt-c--pay .co-logos { margin-top: 0; gap: 5px; }
+.co-ov .opt-c--pay .xl--chip { height: 22px; padding: 4px 6px; opacity: 1; }
+.co-ov .opt-c--pay .xl--chip svg { height: 13px; }
+.co-ov .opt-c--pay em { margin-left: 8px; font-size: 8.5px; }
+

@@ -148,6 +148,19 @@ def box_to(ms, defs):
             bm.to_mesh(o.data); bm.free(); o.data.update()
         print('BOXTO', to, n, 'muka', flush=True)
 
+def fit_to(ms, cm):
+    """fit: [lebar, dalam, tinggi] cm (ukuran resmi xionco.shop) → model diskalakan per sumbu dari sudut min bbox.
+    Dijalankan sebelum reshape / boxTo / motions → koordinat sel, pivot & move di map = ukuran SESUDAH fit."""
+    mn = mathutils.Vector((1e9,) * 3); mx = -mn
+    for o in ms:
+        for c in o.bound_box:
+            v = o.matrix_world @ mathutils.Vector(c); mn = mathutils.Vector(map(min, mn, v)); mx = mathutils.Vector(map(max, mx, v))
+    sz = mx - mn; f = [cm[i] / 100 / sz[i] for i in range(3)]
+    S = mathutils.Matrix.Translation(mn) @ mathutils.Matrix.Diagonal((f[0], f[1], f[2], 1)) @ mathutils.Matrix.Translation(-mn)
+    for o in ms:
+        o.data.transform(o.matrix_world.inverted() @ S @ o.matrix_world); o.data.update()
+    print('FIT', [round(sz[i] * 100, 1) for i in range(3)], '->', cm, 'faktor', [round(x, 4) for x in f], flush=True)
+
 def reshape(ms, defs):
     """reshape: [{sel: kotak [x0,x1,y0,y1,z0,z1] dari sudut min bbox, z: [z0, z1, z0baru, z1baru]}] → pulau mesh yang >= 60% titiknya
     di dalam kotak direntangkan vertikal (mis. sandaran sofa bed dibuat lebih tinggi agar saat rebah menutup dek sampai panel belakang)."""
@@ -351,6 +364,7 @@ for slug, tgt in MAP.items():
         for o in ms: o.scale *= k; o.location *= k
     bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
     if mirror: mirror_mat(ms, mirror)
+    if not isinstance(tgt, str) and tgt.get('fit'): fit_to(ms, tgt['fit'])
     fix_normals(ms)
     if not isinstance(tgt, str) and tgt.get('reshape'): reshape(ms, tgt['reshape'])
     if not isinstance(tgt, str) and tgt.get('boxTo'): box_to(ms, tgt['boxTo'])

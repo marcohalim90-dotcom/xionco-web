@@ -38,6 +38,10 @@ for m in bpy.data.materials:
 # warna per bagian mengikuti foto produk: recolor = [[dari, ke], ...] (hex sRGB). Pasangan dari == ke = jangkar (warna itu tetap).
 # Tiap piksel ditimbang ke warna "dari" terdekat (lunak, σ .09 linear) lalu dikalikan rasio ke/dari → serat & bayangan tekstur tetap.
 RECOLOR = json.loads(argv[4]) if len(argv) > 4 and argv[4] else []
+import numpy as np
+ORIG = {}
+for im in [i for i in bpy.data.images if i.size[0] >= 256 and i.colorspace_settings.name != 'Non-Color']:
+    _px = np.empty(len(im.pixels), dtype=np.float32); im.pixels.foreach_get(_px); ORIG[im.name] = _px.reshape(im.size[1], im.size[0], 4)[:, :, :3].copy()
 if RECOLOR:
     import numpy as np
     lin = lambda h: np.array([int(h[i:i + 2], 16) / 255 for i in (1, 3, 5)], dtype=np.float32) ** 2.2
@@ -53,13 +57,34 @@ if RECOLOR:
 # (extras xc_wood) dengan UV kotak dalam meter → di situs ikut pengaturan global Developer Settings › Kayu koleksi,
 # sama seperti komponen kayu model SketchUp. Dua putaran penghalusan tetangga agar tidak berbintik.
 SPLIT = json.loads(argv[5]) if len(argv) > 5 and argv[5] else None
-if SPLIT and SPLIT.get('wood'):
+# KAIN (Z1): SPLIT.fabric = {set: 'fabric-linen', hex: '#rrggbb', scale: m, fab: [kluster kain]} → muka kain diganti kain pustaka
+# (albedo diwarnai = warna foto, normal map), role 'fabric' + UV kotak → tanpa bayangan/noda terbakar & ikut warna varian di situs.
+FAB = (SPLIT or {}).get('fabric')
+if SPLIT and (SPLIT.get('wood') or FAB):
     import numpy as np, bmesh
-    names = list(SPLIT['wood'].keys()) + list(SPLIT.get('keep', []))
+    names = list(SPLIT.get('wood', {}).keys()) + list(SPLIT.get('keep', [])) + (list(FAB['fab']) if FAB else [])
     lin = lambda h: np.array([int(h[i:i + 2], 16) / 255 for i in (1, 3, 5)], dtype=np.float32) ** 2.2
-    CEN = np.stack([lin(h) for h in names]); CLS = [SPLIT['wood'].get(h) for h in names]   # None = bukan kayu
+    CEN = np.stack([lin(h) for h in names]); CLS = [SPLIT.get('wood', {}).get(h) or ('FAB' if FAB and h in FAB['fab'] else None) for h in names]   # None = tetap tekstur AI
     mats = {}
+    def fabmat():
+        if 'FAB' in mats: return mats['FAB']
+        import os
+        d = os.path.join(FAB['root'], 'assets', 'library', 'textures', FAB['set'])
+        m = bpy.data.materials.new('kain ' + FAB['set'] + ' (AI)'); m.use_nodes = True; nt = m.node_tree; b = nt.nodes['Principled BSDF']
+        a = nt.nodes.new('ShaderNodeTexImage'); a.image = bpy.data.images.load(os.path.join(d, 'albedo.webp'))
+        px = np.empty(len(a.image.pixels), dtype=np.float32); a.image.pixels.foreach_get(px); px = px.reshape(-1, 4)
+        want = lin(FAB['hex']); mu = px[:, :3].mean(0); px[:, :3] = np.clip(mu + (px[:, :3] - mu) * FAB.get('ctr', 1), 0, 1); mu = px[:, :3].mean(0)
+        px[:, :3] = np.clip(px[:, :3] * (want / np.maximum(mu, 1e-3)), 0, 1)
+        im2 = bpy.data.images.new(FAB['set'] + '-kain', a.image.size[0], a.image.size[1]); im2.pixels.foreach_set(px.ravel()); im2.pack(); a.image = im2
+        nt.links.new(a.outputs['Color'], b.inputs['Base Color'])
+        npth = os.path.join(d, 'normal.webp')
+        if os.path.exists(npth):
+            n = nt.nodes.new('ShaderNodeTexImage'); n.image = bpy.data.images.load(npth); n.image.colorspace_settings.name = 'Non-Color'
+            nm = nt.nodes.new('ShaderNodeNormalMap'); nm.inputs['Strength'].default_value = .6; nt.links.new(n.outputs['Color'], nm.inputs['Color']); nt.links.new(nm.outputs['Normal'], b.inputs['Normal'])
+        b.inputs['Metallic'].default_value = 0; b.inputs['Roughness'].default_value = .92
+        m['role'] = 'fabric'; m['lib'] = FAB['set']; mats['FAB'] = m; return m
     def woodmat(cls):
+        if cls == 'FAB': return fabmat()
         if cls in mats: return mats[cls]
         m = bpy.data.materials.new('kayu ' + cls + ' (AI)'); m.use_nodes = True; b = m.node_tree.nodes['Principled BSDF']
         h = {'gelap': (.40, .24, .18), 'terang': (.80, .65, .48), 'natural': (.68, .46, .22)}.get(cls, (.5, .35, .25))
@@ -74,13 +99,18 @@ if SPLIT and SPLIT.get('wood'):
             b = m.node_tree.nodes.get('Principled BSDF')
             if b and b.inputs['Base Color'].is_linked and b.inputs['Base Color'].links[0].from_node.type == 'TEX_IMAGE': img = b.inputs['Base Color'].links[0].from_node.image
         if not img: continue
-        W, H = img.size; px = np.empty(W * H * 4, dtype=np.float32); img.pixels.foreach_get(px); px = px.reshape(H, W, 4)[:, :, :3]
+        W, H = img.size
+        if img.name in ORIG: px = ORIG[img.name]
+        else: px = np.empty(W * H * 4, dtype=np.float32); img.pixels.foreach_get(px); px = px.reshape(H, W, 4)[:, :, :3]
         uv = me.uv_layers.active.data; nf = len(me.polygons); lab = [None] * nf
         for p in me.polygons:
             u = sum(uv[i].uv[0] for i in p.loop_indices) / p.loop_total; v = sum(uv[i].uv[1] for i in p.loop_indices) / p.loop_total
             x = int((u % 1) * (W - 1)); y = int((v % 1) * (H - 1))
             c = px[max(0, y - 1):y + 2, max(0, x - 1):x + 2].reshape(-1, 3).mean(0)
             lab[p.index] = CLS[int(((CEN - c) ** 2).sum(1).argmin())]
+            if FAB and FAB.get('rule') and lab[p.index] in (None, 'FAB'):   # aturan warna: jenuh (kulit/bantal aksen) atau gelap (kaki) = tetap tekstur AI, sisanya kain
+                sc = c ** (1 / 2.2); mx = float(sc.max()); sat = (mx - float(sc.min())) / max(mx, 1e-3)
+                lab[p.index] = None if sat > FAB['rule'].get('sat', 1) or mx < FAB['rule'].get('dark', 0) else 'FAB'
         bm = bmesh.new(); bm.from_mesh(me); bm.faces.ensure_lookup_table()
         nb = [[g.index for e in f.edges for g in e.link_faces if g.index != f.index] for f in bm.faces]; bm.free()
         for _ in range(2):   # penghalusan: ikut mayoritas tetangga (sambungan atlas / bintik)
@@ -108,7 +138,8 @@ if SPLIT and SPLIT.get('wood'):
                 a, b2 = [k for k in range(3) if k != ax]
                 for li in p.loop_indices:
                     co = mw @ me.vertices[me.loops[li].vertex_index].co
-                    uv[li].uv = (co[a], co[b2])
+                    sc = FAB.get('scale', .5) if lab[p.index] == 'FAB' else 1
+                    uv[li].uv = (co[a] / sc, co[b2] / sc)
         print('WOODSPLIT', o.name, n, 'dari', nf, 'muka kayu', {c: lab.count(c) for c in set(lab) if c}, flush=True)
 bpy.ops.export_scene.gltf(filepath=dst, export_format='GLB', export_apply=True, export_image_format='WEBP', export_extras=True)
 print('AICLEAN', src, '->', dst, sum(len(o.data.polygons) for o in ms))

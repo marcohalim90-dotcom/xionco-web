@@ -425,7 +425,7 @@
   CATS.forEach(prep);
 
   var STEPS = [
-    O('jenis', 'Jenis', 'Type'), O('ukuran', 'Ukuran', 'Size'), O('bentuk', 'Bentuk', 'Shape'),   // pemilik: ukuran sebelum bentuk
+    O('jenis', 'Kategori', 'Category'), O('ukuran', 'Ukuran', 'Size'), O('bentuk', 'Bentuk', 'Shape'),   // pemilik: ukuran sebelum bentuk
     O('material', 'Material', 'Material'), O('detail', 'Detail', 'Details'), O('kirim', 'Ringkasan', 'Summary')
   ];
 

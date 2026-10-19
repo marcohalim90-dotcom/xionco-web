@@ -77,12 +77,18 @@
     scene.remove(cur.group); cur.dispose(); cur = null;
     mats.forEach(function (m) { m.dispose(); }); mats = [];
   }
-  function build(cfg, open) {
-    clear();
+  // opt (fokus bagian, dipakai plan.js):
+  //   hide(kotak, kotakPenuh, sig) → true = bagian disembunyikan (mis. top meja saat menggambar kaki/base)
+  //   dim(kotak, kotakPenuh, sig) → true = bagian digambar samar (konteks)
+  //   faint: { sig: jumlah } → bagian yang sama persis dengan pilihan pembanding digambar samar (konteks)
+  // kembali: box (bagian tampak), sbox (bagian tegas saja), sigs (tanda tiap bagian), solid/total (jumlah bagian), parts (kotak bagian tegas)
+  function build(cfg, open, opt) {
+    clear(); opt = opt || {};
     var b = window.XMAKER.build(JSON.parse(JSON.stringify(cfg)), kit);
     var mv = b.motions || [];
     mv.forEach(function (m, i) { var t = typeof open === 'function' ? open(m, i, mv) : (open || 0); m.apply(t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2); });
-    var id = 1;
+    b.group.updateMatrixWorld(true);
+    var list = [], B = new T.Box3();
     b.group.traverse(function (o) {
       if (!o.isMesh) return;
       var m0 = Array.isArray(o.material) ? o.material[0] : o.material;
@@ -90,15 +96,29 @@
       // samar: bayangan kasur (ghost) & alas piring linen (penanda kapasitas meja)
       var P = o.geometry && o.geometry.parameters, placemat = !!(P && P.height === .003 && P.radiusTop === .13);
       if (placemat && ICON_STATE.mats === 'hide') { o.visible = false; return; }
-      var faint = m0.transparent && m0.opacity < .25 || placemat;
-      var gm = gmat(id++ + (faint ? .5 : 0), m0.side); mats.push(gm);
+      var wb = new T.Box3().setFromObject(o), q = function (v) { return Math.round(v * 250); };
+      var pos = o.geometry && o.geometry.attributes.position;
+      var sig = [q(wb.min.x), q(wb.min.y), q(wb.min.z), q(wb.max.x), q(wb.max.y), q(wb.max.z), pos ? pos.count : 0].join(',');
+      list.push({ o: o, m0: m0, placemat: placemat, box: [wb.min.x, wb.min.y, wb.min.z, wb.max.x, wb.max.y, wb.max.z], sig: sig });
+      if (!placemat) B.union(wb);
+    });
+    var full = [B.min.x, B.min.y, B.min.z, B.max.x, B.max.y, B.max.z], id = 1, vis = new T.Box3(), sb = new T.Box3(), sigs = [], solid = 0, total = 0, parts = [];
+    var left = {}; if (opt.faint) for (var k in opt.faint) left[k] = opt.faint[k];
+    list.forEach(function (e) {
+      var o = e.o; sigs.push(e.sig);
+      if (opt.hide && !e.placemat && opt.hide(e.box, full, e.sig)) { o.visible = false; return; }
+      var ctx = !!(opt.dim && !e.placemat && opt.dim(e.box, full, e.sig)); if (!ctx && opt.faint && left[e.sig] > 0) { left[e.sig]--; ctx = true; }
+      var faint = e.m0.transparent && e.m0.opacity < .25 || e.placemat || ctx;
+      var gm = gmat(id++ + (faint ? .5 : 0), e.m0.side); mats.push(gm);
       o.material = gm; o.castShadow = o.receiveShadow = false;
+      if (!e.placemat) { vis.union(new T.Box3(new T.Vector3(e.box[0], e.box[1], e.box[2]), new T.Vector3(e.box[3], e.box[4], e.box[5]))); total++; }
+      if (!faint) { solid++; parts.push(e.box); sb.union(new T.Box3(new T.Vector3(e.box[0], e.box[1], e.box[2]), new T.Vector3(e.box[3], e.box[4], e.box[5]))); }
     });
     scene.add(b.group);
     cur = b;
-    b.group.updateMatrixWorld(true);
-    var bx = new T.Box3().setFromObject(b.group);
-    return { box: [bx.min.x, bx.min.y, bx.min.z, bx.max.x, bx.max.y, bx.max.z], parts: id - 1 };
+    var bx = vis.isEmpty() ? B : vis;
+    return { box: [bx.min.x, bx.min.y, bx.min.z, bx.max.x, bx.max.y, bx.max.z], full: full, sbox: sb.isEmpty() ? null : [sb.min.x, sb.min.y, sb.min.z, sb.max.x, sb.max.y, sb.max.z],
+      sigs: sigs, solid: solid, total: total, parts: parts };
   }
 
   /* ---------------- kamera */
@@ -141,6 +161,8 @@
     return { n: n, box: [x0 / A * 2 - 1, y0 / A * 2 - 1, (x1 + 1) / A * 2 - 1, (y1 + 1) / A * 2 - 1] };
   }
   function footprint(g) { return bbox(function (x, y) { return g[(y * A + x) * 4 + 3] > .25; }); }
+  // hanya bagian tegas (tanpa bagian samar / konteks)
+  function footSolid(g) { return bbox(function (x, y) { var w = g[(y * A + x) * 4 + 3]; return w > .25 && w - Math.floor(w + .01) < .25; }); }
   function octD(a, b) { var z = 1 - Math.abs(a) - Math.abs(b), x = a, y = b; if (z < 0) { x = (1 - Math.abs(b)) * (a >= 0 ? 1 : -1); y = (1 - Math.abs(a)) * (b >= 0 ? 1 : -1); } var l = Math.hypot(x, y, z) || 1; return [x / l, y / l, z / l]; }
   // piksel yang berbeda (latar, kedalaman > 0.2 %, normal > 14°) — piksel tunggal (derau) diabaikan
   function diff(a, b) {
@@ -201,5 +223,5 @@
   }
   function b64(u8) { var s = ''; for (var i = 0; i < u8.length; i += 8192) s += String.fromCharCode.apply(null, u8.subarray(i, i + 8192)); return btoa(s); }
 
-  window.ICON = { state: ICON_STATE, S: S, OUT: OUT, A: A, build: build, cam: setCam, project: project, snap: snap, footprint: footprint, diff: diff, draw: draw, svgAlpha: svgAlpha, preview: preview, b64: b64, clear: clear, uniforms: edgeMat.uniforms };
+  window.ICON = { state: ICON_STATE, S: S, OUT: OUT, A: A, build: build, cam: setCam, project: project, snap: snap, footprint: footprint, footSolid: footSolid, diff: diff, draw: draw, svgAlpha: svgAlpha, preview: preview, b64: b64, clear: clear, uniforms: edgeMat.uniforms };
 })();

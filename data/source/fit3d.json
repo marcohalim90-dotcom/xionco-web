@@ -1,0 +1,685 @@
+{
+ "note": "Target ukuran model 3D (cm, W × D × H) = ukuran resmi xionco.shop — dijalankan tools/glb/fit.js (X10, 19 Okt). CAMEO memakai fit di skp-glb/_map.json (sofa bed disimulasikan ulang).",
+ "models": {
+  "assets/items/kyrios/model-tiles.glb": {
+   "to": [
+    195,
+    85,
+    73
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/astral/model-ai.glb": {
+   "to": [
+    80,
+    80,
+    70
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/orycto/model.glb": {
+   "to": [
+    213,
+    90,
+    73
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/canis/model.glb": {
+   "to": [
+    210,
+    87,
+    67
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/geom/model-ai.glb": {
+   "to": [
+    160,
+    80,
+    75
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/hout/model.glb": {
+   "to": [
+    81,
+    81,
+    38
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/trapezo/model.glb": {
+   "to": [
+    120,
+    60,
+    75
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/arze/model.glb": {
+   "to": [
+    80,
+    50,
+    90
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/l7/model.glb": {
+   "to": [
+    110,
+    57,
+    90
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/pluq/model.glb": {
+   "to": [
+    120,
+    70,
+    38
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/poel/model.glb": {
+   "to": [
+    92,
+    207,
+    100
+   ],
+   "why": "X10: varian 90cm (P 92 × L 207 × T 100); ukuran lain = vmodels"
+  },
+  "assets/items/syme/model.glb": {
+   "to": [
+    225,
+    60,
+    210
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/qaztac/model-ai.glb": {
+   "to": [
+    55,
+    40,
+    50
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/lucid/model.glb": {
+   "to": [
+    80,
+    40,
+    160
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/lophus-bar-stool/model-ai.glb": {
+   "to": [
+    47,
+    45,
+    94
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/uruz-sofa-bed/model-ai.glb": {
+   "to": [
+    220,
+    100,
+    70
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/azedra/model-ai.glb": {
+   "to": [
+    210,
+    90,
+    80
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/barione-3-seater/model-ai.glb": {
+   "to": [
+    190,
+    80,
+    82
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-048/model-ai.glb": {
+   "to": [
+    220,
+    80,
+    75
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/tesse-kursi-puff-ottoman/model.glb": {
+   "to": [
+    40,
+    40,
+    40
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/guise-ottoman/model-ai.glb": {
+   "to": [
+    55,
+    55,
+    43
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/rhombio-puff-ottoman/model.glb": {
+   "to": [
+    82,
+    82,
+    46
+   ],
+   "why": "X10: Overall (set 3 puff) 82 × 82 × 46"
+  },
+  "assets/items/kyrios-1-seater/model.glb": {
+   "to": [
+    100,
+    85,
+    73
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/guise-1-seater/model.glb": {
+   "to": [
+    85,
+    80,
+    70
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/eorde-sofa-bed-futon-sleeper-minimalis/model.glb": {
+   "to": [
+    180,
+    80,
+    72
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/delune-series-sw04/model-ai.glb": {
+   "to": [
+    75,
+    70,
+    80
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/capra-signature-3s/model-ai.glb": {
+   "to": [
+    195,
+    80,
+    70
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/nora-bar-stool/model.glb": {
+   "to": [
+    42,
+    55,
+    95
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/capra-deluxe-3s/model-ai.glb": {
+   "to": [
+    211,
+    90,
+    70
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/cruiseo-dining-table/model-ai.glb": {
+   "to": [
+    240,
+    90,
+    75
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/scandus-dining-table/model-ai.glb": {
+   "to": [
+    180,
+    90,
+    75
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/capra-deluxe-ottoman/model-ai.glb": {
+   "to": [
+    72,
+    72,
+    40
+   ],
+   "why": "X10: ukuran resmi xionco.shop"
+  },
+  "assets/items/poel/model-120cm.glb": {
+   "to": [
+    122,
+    207,
+    100
+   ],
+   "from": "assets/items/poel/model.glb",
+   "why": "X10: POEL varian 120cm"
+  },
+  "assets/items/poel/model-160cm.glb": {
+   "to": [
+    162,
+    207,
+    100
+   ],
+   "from": "assets/items/poel/model.glb",
+   "why": "X10: POEL varian 160cm"
+  },
+  "assets/items/poel/model-180cm.glb": {
+   "to": [
+    182,
+    207,
+    100
+   ],
+   "from": "assets/items/poel/model.glb",
+   "why": "X10: POEL varian 180cm"
+  },
+  "assets/items/poel/model-200cm.glb": {
+   "to": [
+    202,
+    207,
+    100
+   ],
+   "from": "assets/items/poel/model.glb",
+   "why": "X10: POEL varian 200cm"
+  },
+  "assets/items/rouled/model-70.glb": {
+   "to": [
+    70,
+    70,
+    44
+   ],
+   "why": "Y1: ROULED ø70 (dipisah dari set)"
+  },
+  "assets/items/rouled/model-55.glb": {
+   "to": [
+    55,
+    55,
+    40
+   ],
+   "why": "Y1: ROULED ø55 (dipisah dari set)"
+  },
+  "assets/items/rouled/model.glb": {
+   "to": [
+    99.5,
+    70,
+    44
+   ],
+   "why": "Y1: ROULED Complete Set — meja besar ø70 (model lama ø99, skala 0,71)"
+  },
+  "assets/items/guise-sofa-set-l-3-2/model.glb": {
+   "to": [
+    195,
+    200,
+    70
+   ],
+   "why": "Y1: GUISE Set L 3+2 (3S + 2S dari derive.py sofa-l)"
+  },
+  "assets/items/poel-platform-bed-no-headrest/model.glb": {
+   "to": [
+    92,
+    207,
+    null
+   ],
+   "why": "Y1: POEL tanpa headboard 90 cm (tinggi = rangka + kasur peraga)"
+  },
+  "assets/items/poel-platform-bed-no-headrest/model-120cm.glb": {
+   "to": [
+    122,
+    207,
+    null
+   ],
+   "from": "assets/items/poel-platform-bed-no-headrest/model.glb",
+   "why": "Y1: POEL tanpa headboard 120 cm"
+  },
+  "assets/items/poel-platform-bed-no-headrest/model-160cm.glb": {
+   "to": [
+    162,
+    207,
+    null
+   ],
+   "from": "assets/items/poel-platform-bed-no-headrest/model.glb",
+   "why": "Y1: POEL tanpa headboard 160 cm"
+  },
+  "assets/items/poel-platform-bed-no-headrest/model-180cm.glb": {
+   "to": [
+    182,
+    207,
+    null
+   ],
+   "from": "assets/items/poel-platform-bed-no-headrest/model.glb",
+   "why": "Y1: POEL tanpa headboard 180 cm"
+  },
+  "assets/items/poel-platform-bed-no-headrest/model-200cm.glb": {
+   "to": [
+    202,
+    207,
+    null
+   ],
+   "from": "assets/items/poel-platform-bed-no-headrest/model.glb",
+   "why": "Y1: POEL tanpa headboard 200 cm"
+  },
+  "assets/items/barione-1-seater/model-ai.glb": {
+   "to": [
+    80,
+    80,
+    82
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf2s-x58/model-ai.glb": {
+   "to": [
+    160,
+    80,
+    70
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-024/model-ai.glb": {
+   "to": [
+    190,
+    80,
+    85
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-101-3-seater/model-ai.glb": {
+   "to": [
+    337,
+    78,
+    65
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-142/model-ai.glb": {
+   "to": [
+    210,
+    85,
+    70
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-124/model-ai.glb": {
+   "to": [
+    200,
+    100,
+    70
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/capra-deluxe-2s/model-ai.glb": {
+   "to": [
+    144,
+    90,
+    70
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-042/model-ai.glb": {
+   "to": [
+    195,
+    80,
+    80
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-027/model-ai.glb": {
+   "to": [
+    195,
+    80,
+    80
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/aieru-wood-dining-stool/model-ai.glb": {
+   "to": [
+    50,
+    30,
+    45
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-074/model-ai.glb": {
+   "to": [
+    185,
+    80,
+    81
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/guise-storage-bench/model-ai.glb": {
+   "to": [
+    120,
+    60,
+    43
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/lophus-dining-chair/model-ai.glb": {
+   "to": [
+    47,
+    48,
+    80
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf2s-084/model-ai.glb": {
+   "to": [
+    175,
+    80,
+    80
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/oxima-side-chair/model-ai.glb": {
+   "to": [
+    47,
+    48,
+    80
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-x74/model-ai.glb": {
+   "to": [
+    168,
+    80,
+    81
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-x07/model-ai.glb": {
+   "to": [
+    225,
+    85,
+    65
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/stax-minimalis-stackable-chair/model-ai.glb": {
+   "to": [
+    45,
+    45,
+    73
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf2s-158/model-ai.glb": {
+   "to": [
+    160,
+    80,
+    70
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-x27/model-ai.glb": {
+   "to": [
+    220,
+    90,
+    65
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/capra-signature-1s/model-ai.glb": {
+   "to": [
+    80,
+    80,
+    70
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-101-1-seater/model-ai.glb": {
+   "to": [
+    112.5,
+    78,
+    65
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/guise-side-chair/model-ai.glb": {
+   "to": [
+    48,
+    60,
+    82
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/upslope-side-chair/model-ai.glb": {
+   "to": [
+    48,
+    60,
+    82
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-x42/model-ai.glb": {
+   "to": [
+    195,
+    80,
+    80
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/astral-ottoman/model-ai.glb": {
+   "to": [
+    55,
+    55,
+    40
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/delune-series-sw14/model-ai.glb": {
+   "to": [
+    85,
+    85,
+    73
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-174/model-ai.glb": {
+   "to": [
+    200,
+    80,
+    84
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-101-2-seater/model-ai.glb": {
+   "to": [
+    225,
+    78,
+    65
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/nora-bludot/model-ai.glb": {
+   "to": [
+    48,
+    60,
+    82
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/sf3s-x24/model-ai.glb": {
+   "to": [
+    200,
+    100,
+    70
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/capra-deluxe-1s/model-ai.glb": {
+   "to": [
+    85,
+    90,
+    70
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/capra-signature-2s/model-ai.glb": {
+   "to": [
+    130,
+    80,
+    70
+   ],
+   "why": "Y4: 3D AI → ukuran resmi xionco.shop"
+  },
+  "assets/items/storage-tray-each/model.glb": {
+   "to": [
+    25,
+    17,
+    11
+   ],
+   "why": "Y6: tray S"
+  },
+  "assets/items/storage-tray-each/model-m.glb": {
+   "to": [
+    25,
+    17,
+    15
+   ],
+   "why": "Y6: tray M"
+  },
+  "assets/items/storage-tray-each/model-l.glb": {
+   "to": [
+    35,
+    25,
+    22
+   ],
+   "why": "Y6: tray L"
+  },
+  "assets/items/tissue-box-each/model.glb": {
+   "to": [
+    23.5,
+    13.5,
+    10
+   ],
+   "why": "Y6"
+  },
+  "assets/items/bed-pillow-each/model.glb": {
+   "to": [
+    69.8,
+    49.7,
+    8
+   ],
+   "why": "Y6: bantal tidur (panjang ke samping)"
+  },
+  "assets/items/astral-1-seater/model.glb": {
+   "to": [
+    80,
+    80,
+    70
+   ],
+   "why": "ASTRAL 1 Seater SKP → ukuran resmi"
+  }
+ }
+}

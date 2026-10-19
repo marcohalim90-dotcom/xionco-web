@@ -74,7 +74,7 @@ function parse(desc, vlabels) {
 const POLICY = /imitasi|peringatan|ongkir|jabodetabek|syarat|ketentuan|\bPENTING\b|IMPORTANT|toleransi|hubungi admin|info penting|returning|garansi resmi/i;
 const SPEC_KEY = /dimen|ukuran|material|finish|frame|rangka|kaki|leg\b|busa|top|size|tebal|thickness|tinggi|ketinggian|kedalaman|panjang|lebar|process|style|coating|upholster|cushion|lumen|watt|volt|beam|cri|lifespan|warranty|weight|color temp|shade|body|packing|packaging|kapasitas|garansi/i;
 function textParts(desc, title) {
-  const blocks = text(desc).split(/\n\s*={2,}\s*(?:\n|$)/);
+  const blocks = text(desc).replace(/[ \t]*[\\|\u2022][ \t]*BERSENI\b/gi, '').split(/\n\s*={2,}\s*(?:\n|$)/);   // merek BERSENI di belakang layar (OZ)
   const overview = [], box = [], care = [];
   blocks.forEach((b) => {
     const lines = b.split('\n').map((l) => l.trim()).filter(Boolean);
@@ -112,9 +112,35 @@ function finding(m, r) {
 
 // catatan penjelas (bukan kesalahan ukur): model 3D mewakili bentuk lain dari ukuran resmi
 const NOTE = {
-  rouled: 'Model 3D = Complete Set (ø70 + ø55 bersarang); ukuran resmi per meja',
+  'poel-platform-bed-no-headrest': 'Tinggi resmi 22 cm = rangka; model 3D termasuk kasur & bantal peraga',
   'void-series-sky-b9': 'Tinggi model 3D termasuk kabel gantung & kop; ukuran resmi = badan lampu',
   eorde: 'Sectional modular — ukuran resmi per modul (lihat catatan); model 3D = susunan L 5 seater'
+};
+// selisih yang DITERIMA (bentuk / cara ukur berbeda, bukan model salah) → status "Diterima", tidak dihitung Beda (X10)
+const ACCEPT = {
+  'poel-platform-bed-no-headrest': 'Tinggi resmi 22 cm = rangka; model 3D termasuk kasur & bantal peraga',
+  'void-series-sky-b9': 'Tinggi model 3D termasuk kabel gantung & kop; ukuran resmi = badan lampu',
+  'void-series-sky-b10': 'Tinggi model 3D termasuk batang gantung & kop; ukuran resmi = badan lampu',
+  'aether-series-sky-b83': 'Tinggi model 3D termasuk kawat gantung & kop; ukuran resmi = badan lampu 180 × 4 × 4',
+  'aether-series-sky-z1': 'Tinggi model 3D termasuk kawat gantung & kop; ukuran resmi = garis lampu 140 × 20 × 5',
+  'aether-sky-v3': 'Ukuran resmi 200 = panjang kabel maksimal; model 3D digantung lebih pendek (piringan ø30)',
+  'aether-series-cloud-r7': 'Batang dinding dipasang tegak: resmi panjang × lebar × tebal (170 / 100 × 5 × 1) = model tinggi × lebar × dalam',
+  'aether-series-cloud-rx7': 'Batang dinding dipasang tegak: resmi panjang × lebar × tebal (100 × 8 × 1) = model tinggi × lebar × dalam',
+  'aether-series-magnetic-track-light': 'Model 3D = set peraga (rel 100 cm + grille, spotlight, floodlight); ukuran resmi per komponen',
+  'aether-cloud-ae2': 'Resmi 20 × 20 × 10 = lebar × tinggi × tebal; model 3D dipasang miring di dinding',
+  'aether-series-cloud-m1': 'Lebar model 3D termasuk ornamen tanduk & pelat tengah (14 × 6 × 3); batang ø1,5 × 100,5',
+  'aether-cloud-b83': 'Resmi 31 × 4,5 × 7,5 = kepala lampu; model 3D termasuk lengan dinding & posisi berputar',
+  'ashara-54-nightstand': 'PERLU DICEK: deskripsi toko 120 × 60 × 75 tidak cocok dengan foto nakas 3 laci; model 3D dibuat ±60 × 45 × 50 sesuai foto',
+  'clothes-hanger-each': 'Resmi = hanger rebah (44,5 × 22 × 1,2); model 3D berdiri',
+  'powerbank-each': 'Resmi = rebah (12,9 × 7 × 2,9); model 3D berdiri',
+  'charger-each': 'Resmi 10,2 × 6 × 2,7 = rebah; model 3D berdiri (kaki colokan ke belakang)',
+  'bed-pillow-each': 'Bantal diletakkan memanjang ke samping (70 × 50)',
+  hexter: 'Meja segi enam: 58 cm = sisi ke sisi; model 3D diukur sudut ke sudut (58 ÷ cos 30° ≈ 67 cm)',
+  'gliza-tv-cabinet-stand': 'Model 3D = posisi diperpanjang; P 180 cm tertutup, bisa diperpanjang 240–260 cm',
+  'cubix-series-3-seaters-ac-al-ac-kayu-terang': 'Tinggi resmi 62 cm = rangka kayu; bantal sandaran di atas rangka (model 3D ±80 cm)',
+  'cubix-series-2-seater-ac-ac-kayu-terang': 'Tinggi resmi 62 cm = rangka kayu; bantal sandaran di atas rangka (model 3D ±80 cm)',
+  'cubix-series-1-seater-al-kayu-terang': 'Tinggi resmi 62 cm = rangka kayu; bantal sandaran di atas rangka (model 3D ±80 cm)',
+  'cubix-series-1-seater-ac-kayu-terang': 'Tinggi resmi 62 cm = rangka kayu; bantal sandaran di atas rangka (model 3D ±80 cm)',
 };
 function run() {
   const db = read('data/products.json', { items: [] }), live = (read('data/source/xionco-shop-live.json', { rows: {} })).rows;
@@ -164,12 +190,13 @@ function run() {
     // ukuran lain yang belum punya baris (varian ukuran tanpa angka di deskripsi)
     sizes.forEach((s) => { if (!used[s] && !rows.some((r) => r.k === s) && rows.length) rows.push({ k: s, src: SRC }); });
     Object.keys(p.vmodels || {}).forEach((k) => { if (!rows.some((r) => r.k === k)) rows.push({ k, src: SRC }); });
-    if (NOTE[p.id] && rows[0] && !rows[0].note) rows[0].note = NOTE[p.id];
+    if (NOTE[p.id] && rows[0] && !rows[0].note && !ACCEPT[p.id]) rows[0].note = NOTE[p.id];
+    if (ACCEPT[p.id]) rows.forEach((r) => { r.ok3d = ACCEPT[p.id]; });   // semua ukuran/varian produk itu
     // temuan terhadap model 3D
     rows.forEach((r) => {
       Object.keys(r).forEach((k) => { if (r[k] === '' || r[k] == null) delete r[k]; });
       ['w', 'd', 'h'].forEach((k) => { if (r[k]) r[k] = Math.round(r[k] * 10) / 10; });
-      const mf = r.k === 'Utama' ? p.model : (p.vmodels || {})[r.k], f = mf && finding(m3d[mf], r);
+      const mf = r.k === 'Utama' ? p.model : (p.vmodels || {})[r.k], f = mf && !r.ok3d && finding(m3d[mf], r);
       if (f) { r.auto = f; stat.diff.push(p.name + (p.type ? ' · ' + p.type : '') + ' [' + r.k + ']: ' + f); } else delete r.auto;
     });
     const all = keep.concat(rows.filter((r) => !keep.some((k) => k.k === r.k)));

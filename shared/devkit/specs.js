@@ -98,11 +98,12 @@
     var okH = tol(m.h, r.h), ok = tol(m.w, r.w) && tol(m.d, r.d) && okH, sw = !ok && okH && tol(m.w, r.d) && tol(m.d, r.w);
     var dif = [];
     if (!sw) [['w', 'W (lebar)'], ['d', 'D (dalam)'], ['h', 'H (tinggi)']].forEach(function (a) { var k = a[0], d = Math.round((m[k] - r[k]) * 10) / 10; if (!tol(m[k], r[k])) dif.push(a[1] + ' 3D ' + (d > 0 ? '+' : '') + d + ' cm (' + m[k] + ' vs ' + r[k] + ')'); });
+    if (!ok && r.ok3d) return { st: 'acc', m: m, auto: 'Diterima: ' + r.ok3d };   // selisih dijelaskan (bentuk / cara ukur), bukan model salah
     return { st: ok ? 'ok' : sw ? 'swap' : 'diff', m: m, auto: ok ? '' : sw ? 'Lebar & dalam model 3D tertukar (3D ' + m.w + ' × ' + m.d + ' vs ' + r.w + ' × ' + r.d + ')' : dif.join(' · ') };
   }
-  var ST = { ok: ['Sesuai', 'ok'], diff: ['Beda', 'bad'], swap: ['W/D tertukar', 'warn'], empty: ['Belum diisi', 'gold'], none: ['Tanpa 3D', ''], other: ['', ''], nom: ['Belum diukur', 'warn'] };
+  var ST = { acc: ['Diterima', 'gold'], ok: ['Sesuai', 'ok'], diff: ['Beda', 'bad'], swap: ['W/D tertukar', 'warn'], empty: ['Belum diisi', 'gold'], none: ['Tanpa 3D', ''], other: ['', ''], nom: ['Belum diukur', 'warn'] };
   function prodStatus(p) {   // status produk = baris terburuk
-    var order = ['diff', 'swap', 'nom', 'empty', 'ok', 'other', 'none'], best = 'none';
+    var order = ['diff', 'swap', 'nom', 'empty', 'acc', 'ok', 'other', 'none'], best = 'none';
     rowsOf(p).forEach(function (r) { var s = cmp(p, r).st; if (order.indexOf(s) < order.indexOf(best)) best = s; });
     return best;
   }
@@ -112,7 +113,7 @@
       if (q && (p.name + ' ' + p.type + ' ' + p.id).toLowerCase().indexOf(q) < 0) return false;
       if (S.f === 'semua') return true;
       var st = prodStatus(p);
-      return S.f === 'beda' ? st === 'diff' || st === 'swap' : S.f === 'kosong' ? st === 'empty' || rowsOf(p).some(function (r) { return !(r.w && r.d && r.h); }) : S.f === 'tanpa' ? st === 'none' : st === 'ok';
+      return S.f === 'beda' ? st === 'diff' || st === 'swap' : S.f === 'kosong' ? st === 'empty' || rowsOf(p).some(function (r) { return !(r.w && r.d && r.h); }) : S.f === 'tanpa' ? st === 'none' : st === 'ok' || st === 'acc';
     });
   }
 
@@ -129,14 +130,14 @@
   function render(ctx) {
     C = ctx; css();
     if (!S.specs) { C.head('Database', 'Ukuran & material', 'Memuat…'); C.el.body.innerHTML = ''; load(); return; }
-    var all = C.products().filter(function (p) { return p.status === 'aktif'; }), cnt = { diff: 0, swap: 0, empty: 0, none: 0, ok: 0, nom: 0, other: 0 };
+    var all = C.products().filter(function (p) { return p.status === 'aktif'; }), cnt = { diff: 0, swap: 0, empty: 0, none: 0, ok: 0, acc: 0, nom: 0, other: 0 };
     all.forEach(function (p) { cnt[prodStatus(p)]++; });
     var dirty = Object.keys(S.edits).length, ls = list();
     C.head('Database · ' + all.length + ' produk', 'Ukuran & material',
       'Ukuran resmi (cm) & material tiap produk / ukuran, dibandingkan otomatis dengan model 3D (toleransi ±2 cm atau 3%). Baris pudar = usulan dari data situs, belum disimpan.' + (S.m3d && S.m3d.measured ? ' Model 3D diukur ' + C.dt(S.m3d.measured) + '.' : ''),
       '<button class="btn" type="button" data-act="sp-measure"' + (S.busy ? ' disabled' : '') + '>' + (S.busy ? 'Mengukur…' : 'Ukur ulang model 3D') + '</button>' +
       '<button class="btn btn--dark" type="button" data-act="sp-save"' + (dirty ? '' : ' disabled') + '>' + (dirty ? 'Simpan (' + dirty + ' produk)' : 'Tersimpan') + '</button>');
-    var seg = [['semua', 'Semua', all.length], ['beda', 'Beda', cnt.diff + cnt.swap], ['kosong', 'Belum diisi', cnt.empty], ['ok', 'Sesuai', cnt.ok], ['tanpa', 'Tanpa 3D', cnt.none]];
+    var seg = [['semua', 'Semua', all.length], ['beda', 'Beda', cnt.diff + cnt.swap], ['kosong', 'Belum diisi', cnt.empty], ['ok', 'Sesuai', cnt.ok + cnt.acc], ['tanpa', 'Tanpa 3D', cnt.none]];
     var h = (S.err ? '<p class="pill pill--bad" style="margin-bottom:10px">' + C.esc(S.err) + '</p>' : '') +
       '<div class="sp-bar"><input class="in in--search" type="search" placeholder="Cari produk…" value="' + C.esc(S.q) + '" data-plug="' + ID + '" data-spq="1">' +
       '<div class="seg">' + seg.map(function (o) { return '<button type="button" data-act="sp-f" data-v="' + o[0] + '"' + (S.f === o[0] ? ' class="is-on"' : '') + '>' + o[1] + ' ' + o[2] + '</button>'; }).join('') + '</div>' +

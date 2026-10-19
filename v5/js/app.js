@@ -49,12 +49,15 @@
     get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
+  // Acrylic Mirror selalu paling bawah di semua daftar (koleksi, cari, filter, kategori, ruang)
+  function mirrorsLast(l) { var a = [], m = []; l.forEach(function (p) { (/^acrylic-mirror/.test(p.id) || /acrylic mirror/i.test(p.name + ' ' + (p.shopName || '')) ? m : a).push(p); }); return a.concat(m); }
+  XV.PRODUCTS = mirrorsLast(XV.PRODUCTS);
   var byId = {};
   XV.PRODUCTS.forEach(function (p) { byId[p.id] = p; });
   var catLabel = function (id) { var c = XV.CATEGORIES.filter(function (x) { return x.id === id; })[0]; return T(c ? c.label : id); };
   /* kategori Koleksi = kategori xionco.shop (urutan & gambar sama seperti toko); p.kats dari tools/import-shop.js */
   var KATS = [['Sofa', 'sofa'], ['Bed', 'bed'], ['Sofa Bed', 'sofa-bed'], ['Desk', 'desk'], ['Cabinet', 'cabinet'], ['Table', 'table'], ['Chair', 'chair'], ['Ottoman', 'ottoman'], ['Hardware', 'hardware'], ['Lightings', 'lightings'], ['Lifestyle', 'lifestyle'], ['Smart', 'smart'], ['Accent', 'accent']];
-  var katImg = function (k) { return '../assets/kats/' + k + '.webp'; };   // gambar kategori xionco.shop, dikecilkan (tools/kat-img.js)
+  var katImg = function (k) { return new URL('../assets/kats/line/' + k + '.png', location.href).href; };   // absolut: url() di variabel CSS dibaca relatif ke v5.css   // gambar garis kategori (tools/kat-line.py) — foto produk terlalu ramai
   var katsOf = function (p) { return p.kats && p.kats.length ? p.kats : [catLabel(p.cat)]; };
   // sub-filter jumlah dudukan hanya untuk Sofa (pemilik)
   var SOFA_SUB = [['1s', '1 Seat', /\b1 ?seat|\b1s\b|single|one seat|\(a[cl]\)|seater ?\(?a[cl]\)?$|armchair|armless/], ['2s', '2 Seat', /\b2 ?seat|\b2s\b|sf2s|two seat|ac,? ?ac/], ['3s', '3 Seat', /\b3 ?seat|\b3s\b|sf3s|three seat|ac,? ?al,? ?ac/], ['set', 'Sectional & set', /sectional|set l|5 seater/]];
@@ -494,7 +497,8 @@
     if (id === 'home') { panel.classList.remove('is-open'); panel.setAttribute('aria-hidden', 'true'); }
     else {
       panel.classList.add('is-open'); panel.setAttribute('aria-hidden', 'false');
-      $$('.pane', panel).forEach(function (p) { p.classList.toggle('is-on', p.dataset.pane === id); });
+      if (id !== 'bayar') $$('.pane', panel).forEach(function (p) { p.classList.toggle('is-on', p.dataset.pane === id); });
+      else if (!$('.pane.is-on', panel)) $('.pane[data-pane="tas"]', panel).classList.add('is-on');   // checkout = overlay; panel tetap menampilkan halaman asal
       var pane = $('.pane[data-pane="' + id + '"]', panel);
       if (ANIM && pane && prev !== id) G.fromTo($$('.pane__scroll:not(.pd) > *', pane).slice(0, 8), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .04, delay: prev === 'home' ? .35 : .2, clearProps: 'transform' });
     }
@@ -639,18 +643,18 @@
   /* kotak Filter: kartu bergambar kategori xionco.shop + jumlah produk; Sofa punya jenis jumlah dudukan */
   var fltBox = $('#kFltBox'), fltBtn = $('#kFlt');
   function fCard(attr, on, label, img, n) {
-    return '<button type="button" class="kfc' + (on ? ' is-on' : '') + '" ' + attr + (n ? '' : ' disabled') + '><span class="kfc__i">' + (img ? '<img src="' + esc(img) + '" alt="" loading="lazy">' : '') + '</span>' +
+    return '<button type="button" class="kfc' + (on ? ' is-on' : '') + '" ' + attr + (n ? '' : ' disabled') + '><span class="kfc__i">' + (img ? '<i class="kfc__m" style="--m:url(\'' + esc(img) + '\')"></i>' : '') + '</span>' +
       '<span class="kfc__l">' + esc(T(label)) + '</span><em>' + n + '</em></button>';
   }
   function renderCats() {
     var all = XV.PRODUCTS, body = $('#kFltBody');
     var h = '<p class="og__h"><span>' + T('Kategori') + '</span><b>' + esc(kCat === 'all' ? T('Semua') : T(kCat)) + '</b></p><div class="kfg">' +
-      fCard('data-fc="all"', kCat === 'all', 'Semua', '', all.length) +
+      fCard('data-fc="all"', kCat === 'all', 'Semua', katImg('all'), all.length) +
       KATS.map(function (k) { return fCard('data-fc="' + k[0] + '"', kCat === k[0], k[0], katImg(k[1]), all.filter(function (p) { return inKat(p, k[0], ''); }).length); }).join('') + '</div>';
     if (kCat === 'Sofa') {
       var sofa = all.filter(function (p) { return inKat(p, 'Sofa', ''); });
       h += '<p class="og__h og__h--sub"><span>' + T('Jumlah dudukan') + '</span><b>' + esc(kSub ? T((SOFA_SUB.filter(function (r) { return r[0] === kSub; })[0] || [0, ''])[1]) : T('Semua')) + '</b></p><div class="kfg">' +
-        SOFA_SUB.map(function (r) { var l = sofa.filter(function (p) { return subOk(p, r[0]); }), ph = l.filter(function (p) { return p.img; }).sort(function (a, b) { return (b.sold || 0) - (a.sold || 0); })[0]; return fCard('data-fs="' + r[0] + '"', kSub === r[0], r[1], ph ? src(ph.img, 240) : '', l.length); }).join('') + '</div>';
+        SOFA_SUB.map(function (r) { var l = sofa.filter(function (p) { return subOk(p, r[0]); }), ph = l.filter(function (p) { return p.img; }).sort(function (a, b) { return (b.sold || 0) - (a.sold || 0); })[0]; return fCard('data-fs="' + r[0] + '"', kSub === r[0], r[1], katImg('sub-' + r[0]), l.length); }).join('') + '</div>';
     }
     if (body && fltBox.classList.contains('is-on')) body.innerHTML = h;   // kotak tertutup: gambar belum diunduh
     var n = (kCat !== 'all' ? 1 : 0) + (kSub ? 1 : 0), parts = [];
@@ -769,7 +773,8 @@
     renderInfo(p, c, anim);
     var canBuy = !!c.price && p.id !== 'cubix';
     $('#pdFoot').style.display = canBuy ? '' : 'none';
-    $('#pdCustom').style.display = p.customizable || p.id === 'cubix' || p.model ? '' : 'none';
+    $('#pdCustom').style.display = !p.model && (p.customizable || p.id === 'cubix') ? '' : 'none';   // model asli: dimensi langsung di kotak Advance
+    $('#pdCustomE').textContent = T('Rancang di Customize');
     $('#pdCfg').hidden = !(p.series === 'cubix' || p.id === 'cubix');
     pcRender();
     kQty = 1; $('#pdQty').textContent = 1;
@@ -778,27 +783,34 @@
     $('#pdN').textContent = String(kI + 1).padStart(2, '0') + ' / ' + kList.length;
     if (ANIM && anim) G.fromTo($$('#pd > *').slice(1, 7), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .7, ease: 'expo.out', stagger: .04, clearProps: 'transform' });
   }
-  var vMore = {};   // produk → semua varian dibuka
   function renderVariants(p) {
     var vs = p.variants || [], s = selOf(p), c = cur(p, s);
     var box = $('#pdVar'), sub = $('#pdSub');
-    if (!vs.length) { box.innerHTML = ''; sub.innerHTML = ''; box.hidden = sub.hidden = true; return; }
+    if (!vs.length) { box.innerHTML = ''; sub.innerHTML = ''; box.hidden = sub.hidden = true; $('#pdVMore').hidden = true; $('#pdAdvVar').innerHTML = ''; if (advMode() === 'var') advOpen(false); return; }
     box.hidden = false;
     var lab = function (v) { return [v.group ? T(v.group) : '', v.label].filter(Boolean).join(' · '); };
-    var groups = [], dOf = function (i) { var x = cur(p, { v: i, s: subDef(vs[i]) }); return x.price && c.price ? x.price - c.price : 0; }, anyD = false;
-    vs.forEach(function (v, i) { var g = v.group || ''; var gg = groups.filter(function (x) { return x.g === g; })[0]; if (!gg) groups.push(gg = { g: g, i: [] }); gg.i.push(i); if (i !== s.v && dOf(i)) anyD = true; });
-    var order = [].concat.apply([], groups.map(function (gg) { return gg.i; })), more = order.length > 6 && !vMore[p.id] && order.indexOf(s.v) < 6;   // 6 pertama tampil
-    var btn = function (i) {
-      var v = vs[i], name = v.label.length > 15 ? v.label.slice(0, 14) + '…' : v.label, d = i === s.v ? 0 : dOf(i), hid = more && order.indexOf(i) >= 6;
+    var groups = [], pOf = function (i) { var x = cur(p, { v: i, s: subDef(vs[i]) }); return x.price || 0; }, pMin = Infinity;
+    vs.forEach(function (v, i) { var g = v.group || ''; var gg = groups.filter(function (x) { return x.g === g; })[0]; if (!gg) groups.push(gg = { g: g, i: [] }); gg.i.push(i); var pr = pOf(i); if (pr && pr < pMin) pMin = pr; });
+    var selD = s.v >= 0 && isFinite(pMin) ? pOf(s.v) - pMin : 0;   // harga tambahan hanya tampil di kotak yang dipilih
+    var order = [].concat.apply([], groups.map(function (gg) { return gg.i; })), shown = order.slice(0, 4);   // 4 teratas tampil, sisanya di kotak samping (More variants)
+    if (s.v >= 0 && shown.indexOf(s.v) < 0) shown[shown.length - 1] = s.v;   // varian terpilih selalu terlihat
+    var btn = function (i, all) {
+      var v = vs[i], name = v.label.length > 15 ? v.label.slice(0, 14) + '…' : v.label, d = i === s.v ? selD : 0, hid = !all && shown.indexOf(i) < 0;
       return '<button type="button" class="cz-o' + (i === s.v ? ' is-on' : '') + '" data-v="' + i + '" title="' + esc(lab(v)) + '"' + (hid ? ' hidden' : '') + '>' +
-        (v.hex ? '<i class="cz-o__c' + (/faux|leather/i.test(v.group) ? ' is-leather' : '') + '" style="--c:' + v.hex + '"></i>' : '') + '<span>' + esc(name) + '</span>' + (anyD ? '<em class="cz-o__d' + (d < 0 ? ' is-neg' : '') + '">' + (d ? (d > 0 ? '+' : '−') + 'Rp ' + short(Math.abs(d)) : '') + '</em>' : '') + '</button>';
+        (v.hex ? '<i class="cz-o__c' + (/faux|leather/i.test(v.group) ? ' is-leather' : '') + '" style="--c:' + v.hex + '"></i>' : '') + '<span class="cz-o__t"><span>' + esc(name) + '</span>' + (d > 0 ? '<em class="cz-o__d">+Rp ' + short(d) + '</em>' : '') + '</span></button>';
     };
-    box.innerHTML = '<p class="og__h"><span>' + T(p.vTitle || (vs[0].group ? 'Warna & material' : 'Varian')) + '</span><b>' + esc(c.v ? lab(c.v) : '') + '</b></p>' +
-      groups.map(function (gg) {
-        var vis = !more || gg.i.some(function (i) { return order.indexOf(i) < 6; });
-        return vis ? (groups.length > 1 && gg.g ? '<p class="og__g">' + esc(T(gg.g)) + ' <i>' + gg.i.length + '</i></p>' : '') + '<div class="og' + (anyD ? ' og--d' : '') + '">' + gg.i.map(btn).join('') + '</div>' : '';
-      }).join('') +
-      (order.length > 6 ? '<button type="button" class="vmore" data-vmore>' + (more ? T('More variants') + ' <i>+' + (order.length - 6) + '</i>' : T('Lebih sedikit')) + '<svg><use href="#i-arrow"/></svg></button>' : '');
+    var list = function (all) {
+      return groups.map(function (gg) {
+        var vis = all || gg.i.some(function (i) { return shown.indexOf(i) >= 0; });
+        return vis ? (groups.length > 1 && gg.g ? '<p class="og__g">' + esc(T(gg.g)) + ' <i>' + gg.i.length + '</i></p>' : '') + '<div class="og og--v">' + gg.i.map(function (i) { return btn(i, all); }).join('') + '</div>' : '';
+      }).join('');
+    };
+    var vt = T(p.vTitle || (vs[0].group ? 'Warna & material' : 'Varian'));
+    box.innerHTML = '<p class="og__h"><span>' + vt + '</span><b>' + esc(c.v ? lab(c.v) : '') + '</b></p>' + list(false);
+    var extra = order.length - shown.length;
+    $('#pdVMore').hidden = extra <= 0; $('#pdVMoreN').textContent = '+' + extra;
+    if (extra <= 0 && advMode() === 'var') advOpen(false);
+    $('#pdAdvVar').innerHTML = '<p class="eyebrow">' + T('Semua varian') + ' · ' + order.length + '</p><p class="og__h"><span>' + vt + '</span><b>' + esc(c.v ? lab(c.v) : '') + '</b></p>' + list(true);
     var subs = c.v && c.v.subs || [];
     sub.hidden = !subs.length;
     sub.innerHTML = subs.length ? '<p class="og__h"><span>' + T(p.sTitle || 'Ukuran & opsi') + '</span><b>' + esc(c.sub ? c.sub.label : '') + '</b></p><div class="og">' +
@@ -891,7 +903,6 @@
   }
   $('#pdVar').addEventListener('click', function (e) {
     var p = kList[kI]; if (!p) return;
-    if (e.target.closest('[data-vmore]')) { vMore[p.id] = !vMore[p.id]; renderVariants(p); return; }
     var b = e.target.closest('[data-v]'); if (b) setVariant(p, { v: +b.dataset.v });
   });
   $('#pdSub').addEventListener('click', function (e) { var b = e.target.closest('[data-s]'); if (b && kList[kI]) setVariant(kList[kI], { s: +b.dataset.s }); });
@@ -904,28 +915,44 @@
   $('#pdPlus').addEventListener('click', function () { kQty = Math.min(20, kQty + 1); $('#pdQty').textContent = kQty; });
   $('#pdAdd').addEventListener('click', function () { addToBag(kList[kI], kQty); });
   $('#pdNow').addEventListener('click', function () { buyNow(kList[kI], kQty); });
-  /* Advance: Ke ruang & Tanya di kotak samping panel (menggantikan tautan xionco.shop) */
-  var advBox = $('#pdAdvBox'), advBtn = $('#pdAdv');
+  /* Kotak samping halaman produk — mode 'var' (More variants: semua varian) atau 'adv' (Advance: dimensi + Customize / Ke ruang / Tanya).
+     Menutup hanya saat klik di luar kotak (seret 3D / gulir tidak dihitung). */
+  var advBox = $('#pdAdvBox'), advBtn = $('#pdAdv'), vmBtn = $('#pdVMore');
+  function advMode() { return advBox.classList.contains('is-on') ? advBox.dataset.mode : null; }
   function advPlace() {
     if (!advBox.classList.contains('is-on')) return;
-    var br = advBtn.getBoundingClientRect(), pr = panel.getBoundingClientRect(), h = advBox.offsetHeight, w = advBox.offsetWidth;
+    var ab = advBox.dataset.mode === 'var' ? vmBtn : advBtn, br = ab.getBoundingClientRect(), pr = panel.getBoundingClientRect(), h = advBox.offsetHeight, w = advBox.offsetWidth;
     if (isMobile()) { advBox.style.left = pr.left + 'px'; advBox.style.width = pr.width + 'px'; advBox.style.top = Math.max(70, br.top - h - 10) + 'px'; return; }
     advBox.style.width = '';
     advBox.style.top = clamp(br.top + br.height / 2 - h / 2, pr.top, innerHeight - h - 16) + 'px';
     advBox.style.left = (html.classList.contains('lay3') ? pr.right + 14 : pr.left - 14 - w) + 'px';
   }
-  function advOpen(on) {
-    advBox.classList.toggle('is-on', !!on); advBox.setAttribute('aria-hidden', on ? 'false' : 'true');
-    advBtn.setAttribute('aria-expanded', on ? 'true' : 'false'); advBtn.classList.toggle('is-on', !!on);
+  function advOpen(mode) {
+    if (mode === true) mode = 'adv';
+    var p = kList[kI];
+    if (mode === 'adv' && p && p.model) { var pc = pcFor(p) || (pcz = { pid: p.id }); pc.open = true; if (!pc.w0) pcInit(p); }   // dimensi model asli langsung tampil
+    if (mode) advBox.dataset.mode = mode;
+    advBox.classList.toggle('is-on', !!mode); advBox.setAttribute('aria-hidden', mode ? 'false' : 'true');
+    advBtn.setAttribute('aria-expanded', mode === 'adv' ? 'true' : 'false'); advBtn.classList.toggle('is-on', mode === 'adv');
+    vmBtn.setAttribute('aria-expanded', mode === 'var' ? 'true' : 'false'); vmBtn.classList.toggle('is-on', mode === 'var');
+    if (mode === 'adv') { pcRender(); czLazy($('#pdPc')); }
+    if (mode) advBox.scrollTop = 0;
     advPlace();
   }
-  advBtn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    var on = !advBox.classList.contains('is-on');
-    if (on && isMobile()) { advBtn.scrollIntoView({ block: 'center', behavior: 'smooth' }); setTimeout(advPlace, 450); }   // ponsel: kotak muncul di atas tombol, tombol harus terlihat
-    advOpen(on);
+  [[advBtn, 'adv'], [vmBtn, 'var']].forEach(function (x) {
+    x[0].addEventListener('click', function (e) {
+      e.stopPropagation();
+      var on = advMode() !== x[1];
+      if (on && isMobile()) { x[0].scrollIntoView({ block: 'center', behavior: 'smooth' }); setTimeout(advPlace, 450); }   // ponsel: kotak muncul di atas tombol, tombol harus terlihat
+      advOpen(on ? x[1] : false);
+    });
   });
-  document.addEventListener('pointerdown', function (e) { if (advBox.classList.contains('is-on') && !advBox.contains(e.target) && !advBtn.contains(e.target)) advOpen(false); });
+  $('#pdAdvVar').addEventListener('click', function (e) { var b = e.target.closest('[data-v]'), p = kList[kI]; if (b && p) setVariant(p, { v: +b.dataset.v }); });
+  (function () {   // klik di luar kotak (bukan seret / gulir) menutup
+    var d0 = null;
+    document.addEventListener('pointerdown', function (e) { d0 = advBox.classList.contains('is-on') && !advBox.contains(e.target) && !advBtn.contains(e.target) && !vmBtn.contains(e.target) ? { x: e.clientX, y: e.clientY } : null; }, true);
+    document.addEventListener('pointerup', function (e) { var d = d0; d0 = null; if (d && Math.abs(e.clientX - d.x) + Math.abs(e.clientY - d.y) < 7) advOpen(false); }, true);
+  })();
   pd.addEventListener('scroll', advPlace, { passive: true });
   addEventListener('resize', advPlace);
   $('#pdWa').addEventListener('click', function () { setTimeout(function () { advOpen(false); }, 0); });
@@ -961,7 +988,6 @@
     var p = kList[kI], box = $('#pdPc'), pc = pcFor(p);
     if (!box) return;
     box.hidden = !(pc && pc.open);
-    $('#pdCustom span').textContent = pc && pc.open ? T('Tutup penyesuaian') : T('Sesuaikan');
     if (!pc || !pc.open) { box.innerHTML = ''; return; }
     if (!pc.w0) { box.innerHTML = '<p class="note">' + T('Memuat model 3D…') + '</p>'; return; }
     var rng = function (k, lab, v, min, max, step) {
@@ -974,14 +1000,6 @@
       rng('w', T('Lebar'), Math.round(pc.w), Math.floor(pc.wMin * 10) / 10, Math.ceil(pc.wMax * 10) / 10, pc.wStep) + (pc.tile ? '<p class="note pc__ch">' + T('{n} lajur channel', { n: pc.tile.n0 + Math.round((pc.w - pc.w0) / pc.tile.pitch) }) + '</p>' : '') + rng('d', T('Kedalaman'), pc.d, pc.dMin, pc.dMax, 1) +
       (pc.hasMetal ? '<div class="cz-g"><p class="og__h"><span>' + T('Warna kaki & base') + '</span><b>' + esc(cm0 ? L(cm0) : '') + '</b></p><div class="cz-grid">' +
         XC.METAL.map(function (m) { return cell(mg, m, m.id === pc.metal, false); }).join('') + '</div></div>' : '');
-  }
-  function pcOpen(p) {
-    var pc = pcFor(p);
-    if (!pc) pc = pcz = { pid: p.id, open: false };
-    pc.open = !pc.open;
-    if (pc.open && !pc.w0) pcInit(p);
-    pcRender();
-    if (pc.open) setTimeout(function () { var b = $('#pdPc'); if (b && !b.hidden) b.scrollIntoView({ block: 'nearest', behavior: REDUCED ? 'auto' : 'smooth' }); }, 60);
   }
   // ukuran asli diambil dari model yang tampil di panggung (ditunggu bila belum termuat)
   function pcInit(p, tries) {
@@ -1021,8 +1039,8 @@
   });
   $('#pdCustom').addEventListener('click', function () {
     var p = kList[kI]; if (!p) return;
-    if (p.model) pcOpen(p);   // produk dengan model 3D: sesuaikan item itu sendiri
-    else openCustomize(p);    // belum ada model: rancangan Customize seperti sebelumnya
+    advOpen(false);   // tombol ada di kotak Advance (hanya produk tanpa model 3D asli)
+    openCustomize(p);
   });
   enter.koleksi = function () { if (!kReady) { kReady = true; renderGrid(); } };
   leave.koleksi = function (to) { if (to !== 'customize' && to !== 'bayar') closePd(); };
@@ -1091,16 +1109,37 @@
     else if (e.target.closest('.list__th, .list__n')) { if (en.type === 'cubix') cbxOpen(en.cfg); else if (en.type === 'custom') openDesign(en); else openProduct(byId[en.id]); }
   });
   function entryOf(p, q) { var s = selOf(p), pc = pcFor(p), e = { id: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, q: q || 1 }; if (pcChanged(pc)) e.pc = { w: pc.w, d: pc.d, w0: pc.w0, d0: pc.d0, metal: pc.metal, metal0: pc.metal0 }; return e; }
-  function bump() { var b = $('#bagBtn'); b.classList.remove('is-bump'); void b.offsetWidth; b.classList.add('is-bump'); }
+  /* masuk tas: gambar barang melayang dari tombol yang diklik ke ikon tas di header (lengkung), lalu ikon tas "menangkap" + angka berdenyut */
+  var lastTap = null;
+  document.addEventListener('pointerdown', function (e) { lastTap = e.target.closest ? e.target.closest('button, a') : null; }, true);
+  function bump(img) {
+    var b = $('#bagBtn');
+    var hit = function () { b.classList.remove('is-bump', 'is-catch'); void b.offsetWidth; b.classList.add('is-bump', 'is-catch'); };
+    var fr = lastTap && document.body.contains(lastTap) ? lastTap.getBoundingClientRect() : null, to = b.getBoundingClientRect();
+    if (REDUCED || !b.animate || !fr || !fr.width || !to.width) { hit(); return; }
+    var x0 = fr.left + fr.width / 2, y0 = fr.top + fr.height / 2, x1 = to.left + to.width / 2, y1 = to.top + to.height / 2;
+    var cx = x0 + (x1 - x0) * .2, cy = Math.min(y0, y1) - Math.max(80, Math.abs(x1 - x0) * .16);
+    var el = document.createElement('div'); el.className = 'fly' + (img ? '' : ' fly--ic');
+    el.innerHTML = img ? '<img src="' + esc(img) + '" alt="">' : '<svg><use href="#i-bag"/></svg>';
+    document.body.appendChild(el);
+    var kf = [];
+    for (var i = 0; i <= 20; i++) {
+      var t = i / 20, u = 1 - t, x = u * u * x0 + 2 * u * t * cx + t * t * x1, y = u * u * y0 + 2 * u * t * cy + t * t * y1;
+      var s = t < .12 ? .35 + t / .12 * .75 : 1.1 - (t - .12) / .88 * .82;
+      kf.push({ transform: 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) translate(-50%,-50%) scale(' + s.toFixed(3) + ')', opacity: t < .08 ? t / .08 : t > .9 ? (1 - t) / .1 : 1, offset: t });
+    }
+    var an = el.animate(kf, { duration: 900, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards' });
+    an.onfinish = function () { el.remove(); hit(); };
+  }
   function addToBag(p, q) {
     if (!p) return;
     var e = entryOf(p, q), l = line(e);
     if (!l) return;
     if (bag[l.key]) bag[l.key].q = clamp(bag[l.key].q + e.q, 1, 99); else bag[l.key] = e;
-    renderBag(); bump();
+    renderBag(); bump(src(l.c.img || p.img, 240));
     notice(T('{name} × {q} ditambahkan ke tas', { name: p.name, q: e.q }), { t: T('Lihat tas'), fn: function () { go('tas'); } });
   }
-  function addEntry(e) { bag[e.id] = e; renderBag(); bump(); notice(T('{name} × {q} ditambahkan ke tas', { name: e.title, q: e.q }), { t: T('Lihat tas'), fn: function () { go('tas'); } }); }
+  function addEntry(e) { bag[e.id] = e; renderBag(); var le = line(e); bump(le && le.c && le.c.img ? le.c.img : null); notice(T('{name} × {q} ditambahkan ke tas', { name: e.title, q: e.q }), { t: T('Lihat tas'), fn: function () { go('tas'); } }); }
   function buyNow(p, q) { if (!p) return; var e = entryOf(p, q); if (line(e)) openPay([e], 'produk'); }
   /* ======================================================================
      RUANG — beberapa furnitur tampil bersama di panggung (tersimpan di perangkat)
@@ -1808,6 +1847,7 @@
   var CBX_FOR = { 'cubix-series-1-seater-ac-kayu-terang': '1s', 'cubix-series-1-seater-al-kayu-terang': '1al', 'cubix-series-ottoman-kayu-terang': '1ot', 'cubix-series-2-seater-ac-ac-kayu-terang': '2s', 'cubix-series-3-seaters-ac-al-ac-kayu-terang': '3s', 'cubixct': 'lounge', 'cubix-series-meja-sudut-side': 'set' };
   CBX_PRESET['1al'] = { l: 'AL', m: [['al', 0, 0, 0, 0]], hide: true }; CBX_PRESET['1ot'] = { l: 'OT', m: [['ot', 0, 0, 0, 0]], hide: true };
   $('#pdCfg') && $('#pdCfg').addEventListener('click', function () {
+    if (typeof advOpen === 'function') advOpen(false);
     var p = kList[kI]; if (!p) return;
     var c = cur(p), base = { wood: c.v && /gelap/i.test(c.v.label) ? 'Gelap' : 'Terang', fab: c.sub && c.sub.hex ? c.sub.label : cbx.fab };
     cbx = cbxFromPreset(CBX_FOR[p.id] || '3s', base); cbxSave(); cbxSel = null; go('cubix');
@@ -1904,10 +1944,12 @@
   var XA = window.XAUTH;
   var me = function () { return XA ? XA.user() : null; };
   var initial = function (n) { return String(n || '?').trim().charAt(0).toUpperCase() || '?'; };
-  var PROV_ICON = { whatsapp: 'W', google: 'G', email: '@', instagram: 'I' };
+  // logo asli (js/logos.js) — WhatsApp, Google, Email, Instagram & metode pembayaran
+  var xl = function (k, cls) { var s = (window.XLOGO || {})[k]; return s ? '<span class="xl' + (cls ? ' ' + cls : '') + '" title="' + esc(k) + '">' + s + '</span>' : ''; };
+  var PROV_ICON = { whatsapp: xl('whatsapp'), google: xl('google'), email: xl('email'), instagram: xl('instagram') };
   function provHtml() {
     return '<div class="prov">' + (XA ? XA.providers : []).map(function (p) {
-      return '<button type="button" class="p-' + p.id + '" data-auth="' + p.id + '" title="' + esc(T(p.note)) + '"><i>' + PROV_ICON[p.id] + '</i>' + esc(p.label) + '</button>';
+      return '<button type="button" class="p-' + p.id + '" data-auth="' + p.id + '" title="' + esc(T(p.note)) + '">' + PROV_ICON[p.id] + esc(p.label) + '</button>';
     }).join('') + '</div>';
   }
   var authAfter = null;
@@ -1954,7 +1996,7 @@
      Gateway pembayaran: js/pay.js (XPAY.pay)
      ====================================================================== */
   var XPAY = window.XPAY || { methods: [], zones: [], pay: function (o) { return Promise.resolve({ status: 'pending', ref: o.id }); } };
-  var coState = { items: [], from: 'tas', form: {}, addrId: null, newAddr: false, zone: null, install: false, method: null, done: null, busy: false };
+  var coState = { items: [], from: 'tas', form: {}, addrId: null, newAddr: false, zone: null, install: false, method: null, done: null, busy: false, promo: '', promoIn: '', promoMsg: '' };
   function openPay(items, from) {
     var u = me(), cst = store.get('xv5_customer', {});
     coState.items = items.map(function (e) { return JSON.parse(JSON.stringify(e)); });
@@ -1971,7 +2013,9 @@
   function coZone() { var a = coAddr(), z = a ? a.zone : coState.form.zone; return XPAY.zones.filter(function (x) { return x.id === z; })[0] || null; }
   function coCalc() {
     var lines = coLines(), sub = sumOf(lines), z = coZone(), ship = z ? z.cost : null, inst = coState.install ? XPAY.install.cost : 0;
-    return { lines: lines, sub: sub, zone: z, ship: ship, inst: inst, total: sub + (ship || 0) + inst };
+    // promo hanya untuk barang berharga normal (harga penawaran khusus tidak dipotong lagi)
+    var base = sumOf(lines.filter(function (l) { return !l.quote; })), pm = coState.promo && XPAY.promo ? XPAY.promo(coState.promo, base) : null, disc = pm && pm.ok ? pm.disc : 0;
+    return { lines: lines, sub: sub, zone: z, ship: ship, inst: inst, promo: pm, disc: disc, total: sub - disc + (ship || 0) + inst };
   }
   function eta(z) {
     if (!z) return '';
@@ -1987,37 +2031,50 @@
     if (!k.lines.length) { box.innerHTML = '<div class="empty-card is-on"><p class="txt">' + T('Tas masih kosong.') + '</p><a class="btn btn--line" href="#/koleksi" data-go="koleksi"><span>' + T('Lihat koleksi') + '</span></a></div>'; return; }
     var hasContact = coState.form.name && (coState.form.phone || '').replace(/\D/g, '').length >= 8;
     var html = '';
-    // 1 · pesanan
-    html += '<section class="co-sec"><p class="co-h"><i>1</i>' + T('Pesanan') + '<button type="button" class="mini" data-co-back>' + (coState.from === 'tas' ? T('Ubah tas') : T('Kembali')) + '</button></p><ul class="list">' + k.lines.map(function (l) { return lineHtml(l, false); }).join('') + '</ul></section>';
-    // 2 · kontak
-    html += '<section class="co-sec"><p class="co-h' + (hasContact ? ' is-done' : '') + '"><i>2</i>' + T('Kontak') + (u ? '<button type="button" class="mini" data-go="profil">' + T('Ubah') + '</button>' : '') + '</p>';
+    // kolom 1 · 1 kontak
+    html += '<div class="co-grid"><div class="co-col">';
+    html += '<section class="co-sec"><p class="co-h' + (hasContact ? ' is-done' : '') + '"><i>1</i>' + T('Kontak') + (u ? '<button type="button" class="mini" data-go="profil">' + T('Ubah') + '</button>' : '<span class="co-h__n">' + T('Isi otomatis dengan akun') + '</span>') + '</p>';
     if (u) html += '<div class="who"><span class="who__av">' + esc(initial(u.name)) + '</span><div><b>' + esc(u.name) + '</b><span>' + esc([u.phone, u.email].filter(Boolean).join(' · ')) + '</span></div><span class="tag">' + esc((XA.providers.filter(function (p) { return p.id === u.provider; })[0] || {}).label || '') + '</span></div>';
-    else html += '<p class="note" style="margin-bottom:10px">' + T('Isi otomatis dengan akun') + '</p>' + provHtml() + '<p class="or">' + T('atau sebagai tamu') + '</p>' +
+    else html += provHtml() + '<p class="or">' + T('atau sebagai tamu') + '</p>' +
       '<div class="fgrid"><label class="fld"><span>' + T('Nama') + '</span><input data-cf="name" value="' + fv('name') + '" autocomplete="name"></label>' +
       '<label class="fld"><span>WhatsApp</span><input data-cf="phone" value="' + fv('phone') + '" inputmode="tel" autocomplete="tel"></label>' +
       '<label class="fld fld--full"><span>' + T('Email (opsional)') + '</span><input data-cf="email" value="' + fv('email') + '" type="email" autocomplete="email"></label></div>';
     html += '</section>';
-    // 3 · alamat
+    // 2 · alamat
     var addrs = u ? (u.addresses || []) : [];
-    html += '<section class="co-sec"><p class="co-h' + (coAddr() || coState.form.address ? ' is-done' : '') + '"><i>3</i>' + T('Alamat pengiriman') + (addrs.length ? '<button type="button" class="mini" data-new-addr>' + (coState.newAddr ? T('Alamat tersimpan') : '+ ' + T('Alamat baru')) + '</button>' : '') + '</p>';
+    html += '<section class="co-sec"><p class="co-h' + (coAddr() || coState.form.address ? ' is-done' : '') + '"><i>2</i>' + T('Alamat pengiriman') + (addrs.length ? '<button type="button" class="mini" data-new-addr>' + (coState.newAddr ? T('Alamat tersimpan') : '+ ' + T('Alamat baru')) + '</button>' : '') + '</p>';
     if (addrs.length && !coState.newAddr) html += addrs.map(function (a) { return addrHtml(a, a.id === coState.addrId, true); }).join('');
     else html += addrForm(!!u);
-    html += '</section>';
-    // 4 · pengiriman
+    html += '</section></div>';
+    // kolom 2 · 3 pengiriman
     var z = k.zone;
-    html += '<section class="co-sec"><p class="co-h' + (z ? ' is-done' : '') + '"><i>4</i>' + T('Pengiriman') + '</p><div class="opts">' +
+    html += '<div class="co-col"><section class="co-sec"><p class="co-h' + (z ? ' is-done' : '') + '"><i>3</i>' + T('Pengiriman') + '</p><div class="opts">' +
       '<div class="opt-c is-on"><i></i><span><b>' + T('Kurir XIONCO') + '</b><em>' + (z ? esc(T(z.label)) + ' · ' + T('tiba') + ' ' + eta(z) : T('Pilih wilayah di alamat untuk menghitung ongkir')) + '</em></span><strong>' + (!z ? '—' : z.cost == null ? T('Dikonfirmasi') : z.cost ? rupiah(z.cost) : T('Gratis')) + '</strong></div>' +
       '<button type="button" class="opt-c' + (coState.install ? ' is-on' : '') + '" data-install><i></i><span><b>' + T(XPAY.install.label) + '</b><em>' + T('Tim kami merakit & memasang di lokasi') + '</em></span><strong>' + rupiah(XPAY.install.cost) + '</strong></button></div></section>';
-    // 5 · pembayaran
-    html += '<section class="co-sec"><p class="co-h' + (coState.method ? ' is-done' : '') + '"><i>5</i>' + T('Pembayaran') + '</p><div class="opts">' + (XPAY.methods || []).map(function (m) {
-      return '<button type="button" class="opt-c' + (m.id === coState.method ? ' is-on' : '') + '" data-m="' + m.id + '"><i></i><span><b>' + esc(T(m.label)) + '</b><em>' + esc(T(m.note || '')) + '</em></span></button>';
-    }).join('') + '</div></section>';
-    // ringkasan & bayar
-    html += '<section class="co-sec co-sum"><dl class="kv"><dt>' + T('Subtotal') + '</dt><dd>' + rupiah(k.sub) + '</dd><dt>' + T('Ongkir') + '</dt><dd>' + (!z ? '—' : k.ship == null ? T('Dikonfirmasi') : k.ship ? rupiah(k.ship) : T('Gratis')) + '</dd>' +
-      (k.inst ? '<dt>' + T('Pemasangan') + '</dt><dd>' + rupiah(k.inst) + '</dd>' : '') + '</dl>' +
-      '<p class="note" id="payNote">' + T('Pembayaran diproses aman melalui payment gateway resmi.') + '</p></section>';
-    html += '<div class="foot foot--bar"><div class="co-total"><span class="eyebrow">' + T('Total') + '</span><b class="price">' + rupiah(k.total) + '</b><span class="co-trust">' + T('Garansi 3 tahun') + (coLines().some(function (l) { return l.custom; }) ? ' · ' + T('custom dibuat setelah bayar') : '') + '</span></div>' +
-      '<button class="btn btn--gold" type="button" data-pay' + (coState.busy ? ' disabled' : '') + '><svg><use href="#i-card"/></svg><span>' + (coState.busy ? T('Memproses…') : T('Bayar')) + '</span></button></div>';
+    // 4 · pembayaran (logo tiap metode)
+    html += '<section class="co-sec"><p class="co-h' + (coState.method ? ' is-done' : '') + '"><i>4</i>' + T('Pembayaran') + '</p><div class="opts">' + (XPAY.methods || []).map(function (m) {
+      var lg = (m.logos || []).map(function (x) { return xl(x, 'xl--chip'); }).join('');
+      // logo = fokus; nama metode hanya untuk pembaca layar & tooltip (keterangan kecil bila logo saja ambigu: QRIS, cicilan)
+      var hint = m.id === 'installment' ? T(m.label) + ' · ' + T(m.note || '') : T(m.note || '');
+      return '<button type="button" class="opt-c opt-c--pay' + (m.id === coState.method ? ' is-on' : '') + '" data-m="' + m.id + '" title="' + esc(T(m.label) + ' — ' + T(m.note || '')) + '" aria-label="' + esc(T(m.label)) + '"><i></i><span><b>' + esc(T(m.label)) + '</b>' +
+        (lg ? '<span class="co-logos">' + lg + (m.hint ? '<em>' + esc(hint) + '</em>' : '') + '</span>' : '<em>' + esc(hint) + '</em>') + '</span></button>';
+    }).join('') + '</div></section></div>';
+    // kolom 3 · ringkasan pesanan, promo, total & bayar
+    var pm = k.promo, pmsg = coState.promoMsg;
+    html += '<aside class="co-col co-side"><section class="co-sec"><p class="co-h co-h--side">' + T('Ringkasan pesanan') + ' <em class="co-n">' + k.lines.reduce(function (a, l) { return a + l.q; }, 0) + '</em><button type="button" class="mini" data-co-back>' + (coState.from === 'tas' ? T('Ubah tas') : T('Kembali')) + '</button></p>' +
+      '<ul class="list co-items">' + k.lines.map(function (l) { return lineHtml(l, false); }).join('') + '</ul></section>' +
+      '<section class="co-sec co-promo"><p class="fld__l">' + T('Kode promo') + '</p>' +
+        (pm && pm.ok ? '<div class="co-promo__on"><span class="tag tag--gold">' + esc(pm.code) + '</span><span>' + esc(T(pm.label)) + '</span><button type="button" class="mini" data-promo-rm>' + T('Hapus') + '</button></div>'
+          : '<div class="co-promo__in fld"><input data-promo value="' + esc(coState.promoIn || '') + '" placeholder="' + T('Masukkan kode') + '" autocapitalize="characters" autocomplete="off" spellcheck="false" aria-label="' + T('Kode promo') + '"><button type="button" class="btn btn--line" data-promo-apply><span>' + T('Pakai') + '</span></button></div>' +
+            (pmsg ? '<p class="note is-err">' + esc(pmsg) + '</p>' : '')) + '</section>' +
+      '<section class="co-sec co-sum"><dl class="kv"><dt>' + T('Subtotal') + '</dt><dd>' + rupiah(k.sub) + '</dd>' +
+        (k.disc ? '<dt>' + T('Diskon') + ' · ' + esc(pm.code) + '</dt><dd class="co-disc">− ' + rupiah(k.disc) + '</dd>' : '') +
+        '<dt>' + T('Ongkir') + '</dt><dd>' + (!z ? '—' : k.ship == null ? T('Dikonfirmasi') : k.ship ? rupiah(k.ship) : T('Gratis')) + '</dd>' +
+        (k.inst ? '<dt>' + T('Pemasangan') + '</dt><dd>' + rupiah(k.inst) + '</dd>' : '') + '</dl>' +
+        '<div class="co-total"><span class="eyebrow">' + T('Total') + '</span><b class="price">' + rupiah(k.total) + '</b></div>' +
+        '<button class="btn btn--gold btn--full" type="button" data-pay' + (coState.busy ? ' disabled' : '') + '><svg><use href="#i-card"/></svg><span>' + (coState.busy ? T('Memproses…') : T('Bayar')) + '</span></button>' +
+        '<p class="note" id="payNote">' + T('Pembayaran diproses aman melalui payment gateway resmi.') + '</p>' +
+        '<p class="co-trust">' + T('Garansi 3 tahun') + (coLines().some(function (l) { return l.custom; }) ? ' · ' + T('custom dibuat setelah bayar') : '') + '</p></section></aside></div>';
     box.innerHTML = html;
     cutThumbs(box);
     sc.scrollTop = keep ? top : 0;
@@ -2029,20 +2086,30 @@
   }
   function addrForm(user) {
     var f = coState.form;
-    return '<div class="fgrid">' +
-      '<div class="fld fld--full"><span>' + T('Simpan sebagai') + '</span><div class="seg seg--sm" data-addr-label>' + ['Rumah', 'Kantor', 'Lainnya'].map(function (x) { return '<button type="button" data-v="' + x + '" class="' + ((f.label || 'Rumah') === x ? 'is-on' : '') + '">' + T(x) + '</button>'; }).join('') + '</div></div>' +
+    // grid 6 kolom (rapat, satu layar): label & wilayah · penerima & HP · alamat · kota, kode pos & catatan
+    return '<div class="fgrid fgrid--6">' +
+      '<div class="fld"><span>' + T('Simpan sebagai') + '</span><div class="seg seg--sm" data-addr-label>' + ['Rumah', 'Kantor', 'Lainnya'].map(function (x) { return '<button type="button" data-v="' + x + '" class="' + ((f.label || 'Rumah') === x ? 'is-on' : '') + '">' + T(x) + '</button>'; }).join('') + '</div></div>' +
+      '<label class="fld"><span>' + T('Wilayah') + '</span><select data-cf="zone"><option value="">' + T('Pilih wilayah') + '</option>' + XPAY.zones.map(function (z) { return '<option value="' + z.id + '"' + (f.zone === z.id ? ' selected' : '') + '>' + esc(T(z.label)) + '</option>'; }).join('') + '</select></label>' +
       '<label class="fld"><span>' + T('Penerima') + '</span><input data-cf="recipient" value="' + esc(f.recipient || f.name || '') + '" autocomplete="name"></label>' +
       '<label class="fld"><span>' + T('HP penerima') + '</span><input data-cf="rphone" value="' + esc(f.rphone || f.phone || '') + '" inputmode="tel"></label>' +
-      '<div class="fld fld--full"><span>' + T('Alamat lengkap') + '</span><div class="fld__in"><textarea data-cf="address" rows="2" autocomplete="street-address" placeholder="' + T('Jalan, nomor, RT/RW, kelurahan') + '">' + fv('address') + '</textarea>' +
+      '<div class="fld fld--full"><span>' + T('Alamat lengkap') + '</span><div class="fld__in"><textarea data-cf="address" rows="1" autocomplete="street-address" placeholder="' + T('Jalan, nomor, RT/RW, kelurahan') + '">' + fv('address') + '</textarea>' +
         '<button type="button" class="fld__act' + (f.geo ? ' is-on' : '') + '" data-geo><svg><use href="#i-pin"/></svg>' + (f.geo ? T('Lokasi tersimpan') : T('Lokasi saya')) + '</button></div></div>' +
-      '<label class="fld"><span>' + T('Wilayah') + '</span><select data-cf="zone"><option value="">' + T('Pilih wilayah') + '</option>' + XPAY.zones.map(function (z) { return '<option value="' + z.id + '"' + (f.zone === z.id ? ' selected' : '') + '>' + esc(T(z.label)) + '</option>'; }).join('') + '</select></label>' +
-      '<label class="fld"><span>' + T('Kota / kabupaten') + '</span><input data-cf="city" value="' + fv('city') + '" autocomplete="address-level2"></label>' +
-      '<label class="fld"><span>' + T('Kode pos') + '</span><input data-cf="zip" value="' + fv('zip') + '" inputmode="numeric" autocomplete="postal-code"></label>' +
-      '<label class="fld"><span>' + T('Catatan kurir') + '</span><input data-cf="note" value="' + fv('note') + '" placeholder="' + T('Lantai, patokan') + '"></label>' +
+      '<label class="fld c2"><span>' + T('Kota') + '</span><input data-cf="city" value="' + fv('city') + '" autocomplete="address-level2"></label>' +
+      '<label class="fld c2"><span>' + T('Kode pos') + '</span><input data-cf="zip" value="' + fv('zip') + '" inputmode="numeric" autocomplete="postal-code"></label>' +
+      '<label class="fld c2"><span>' + T('Catatan kurir') + '</span><input data-cf="note" value="' + fv('note') + '" placeholder="' + T('Lantai, patokan') + '"></label>' +
       (user ? '<label class="check fld--full"><input type="checkbox" data-save-addr' + (coState.form.saveAddr !== false ? ' checked' : '') + '>' + T('Simpan alamat ini ke akun') + '</label>' : '') + '</div>';
   }
   var payBox = $('#coBody');
+  function coPromo() {
+    var c = (coState.promoIn || '').trim().toUpperCase(); if (!c) return;
+    var k = coCalc(), base = sumOf(k.lines.filter(function (l) { return !l.quote; })), r = XPAY.promo ? XPAY.promo(c, base) : { ok: false, err: 'unknown' };
+    if (r.ok) { coState.promo = r.code; coState.promoMsg = ''; notice(T('Kode promo {c} dipakai', { c: r.code })); }
+    else { coState.promo = ''; coState.promoMsg = r.err === 'min' ? T('Minimal belanja {x} untuk kode ini', { x: rupiah(r.min) }) : T('Kode promo tidak dikenal'); }
+    renderCo(true);
+  }
+  payBox.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.hasAttribute('data-promo')) { e.preventDefault(); coPromo(); } });
   payBox.addEventListener('input', function (e) {
+    if (e.target.hasAttribute('data-promo')) { coState.promoIn = e.target.value; return; }
     var k = e.target.dataset.cf; if (!k) return;
     coState.form[k] = e.target.value;
     if (k === 'zone') renderCo(true);
@@ -2054,7 +2121,9 @@
   payBox.addEventListener('click', function (e) {
     var b;
     if ((b = e.target.closest('[data-auth]'))) { authForm(b.dataset.auth); authAfter = function () { openPay(coState.items, coState.from); }; return; }
-    if (e.target.closest('[data-co-back]')) { if (coState.from === 'tas') go('tas'); else if (coState.from === 'customize') go('customize'); else if (kList[kI]) openProduct(kList[kI]); else go('koleksi'); return; }
+    if (e.target.closest('[data-co-back]')) { coBack(); return; }
+    if (e.target.closest('[data-promo-apply]')) { coPromo(); return; }
+    if (e.target.closest('[data-promo-rm]')) { coState.promo = ''; coState.promoIn = ''; coState.promoMsg = ''; renderCo(true); return; }
     if ((b = e.target.closest('[data-addr]'))) { coState.addrId = b.dataset.addr; renderCo(true); return; }
     if (e.target.closest('[data-new-addr]')) { coState.newAddr = !coState.newAddr; renderCo(true); return; }
     if ((b = e.target.closest('[data-addr-label] [data-v]'))) { coState.form.label = b.dataset.v; renderCo(true); return; }
@@ -2092,7 +2161,7 @@
       var bad = rs.filter(function (r) { return !r || !r.ok; })[0];
       if (bad) { coState.busy = false; renderCo(true); var nb = $('#payNote'); nb.textContent = (bad && bad.error) || T('Penawaran tidak valid'); nb.classList.add('is-err'); return; }
       rs.forEach(function (r, i) { var l = ql[i]; l.c = Object.assign({}, l.c, { price: r.unit }); l.q = r.qty; l.total = r.amount; l.ref = r.ref; });
-      k.sub = sumOf(k.lines); k.total = k.sub + (k.ship || 0) + k.inst;
+      k.sub = sumOf(k.lines); k.total = k.sub - (k.disc || 0) + (k.ship || 0) + k.inst;
       coPlace(k, u, contact, addr);
     });
   }
@@ -2100,7 +2169,7 @@
     var order = {
       id: 'XC-' + Date.now().toString(36).toUpperCase(), created: Date.now(), account: u ? u.id : null,
       items: k.lines.map(function (l) { return { id: l.p.id, name: l.p.name, variant: l.c.label, qty: l.q, price: l.c.price, custom: l.custom ? l.e.cfg : undefined, adjust: l.e.pc || undefined, quote: l.quote ? l.e.code : undefined, quoteRef: l.ref }; }),
-      subtotal: k.sub, shipping: k.ship, install: k.inst, total: k.total, customer: contact, address: addr, method: coState.method, eta: eta(k.zone), src: UTM || undefined
+      subtotal: k.sub, discount: k.disc || 0, promo: k.disc ? k.promo.code : undefined, shipping: k.ship, install: k.inst, total: k.total, customer: contact, address: addr, method: coState.method, eta: eta(k.zone), src: UTM || undefined
     };
     Promise.resolve(XPAY.pay(order)).catch(function () { return { status: 'failed' }; }).then(function (res) {
       coState.busy = false; res = res || {};
@@ -2108,7 +2177,7 @@
       if (order.status === 'failed') { renderCo(true); var n2 = $('#payNote'); n2.textContent = T('Pembayaran gagal. Silakan coba lagi atau pilih metode lain.'); n2.classList.add('is-err'); return; }
       var orders = store.get('xv5_orders', []); orders.unshift(order); store.set('xv5_orders', orders.slice(0, 50));
       if (coState.from === 'tas') { k.lines.forEach(function (l) { delete bag[l.key]; }); renderBag(); }
-      coState.done = order; renderCo(); $('#payScroll').scrollTop = 0; renderProfile();
+      coState.done = order; coState.promo = coState.promoIn = coState.promoMsg = ''; renderCo(); $('#payScroll').scrollTop = 0; renderProfile();
     });
   }
   function coDoneHtml(o) {
@@ -2119,7 +2188,7 @@
       '<p class="txt">' + (o.status === 'paid' ? T('Nomor pesanan {id}. Terima kasih — tim kami segera memproses pesanan Anda.', { id: o.id }) : T('Nomor pesanan {id}. Pembayaran online segera aktif — selesaikan pembayaran dengan konfirmasi melalui WhatsApp.', { id: o.id })) + '</p>' +
       '<dl class="kv" style="width:100%"><dt>' + T('Total') + '</dt><dd>' + rupiah(o.total) + '</dd><dt>' + T('Perkiraan tiba') + '</dt><dd>' + esc(o.eta || '—') + '</dd><dt>' + T('Kirim ke') + '</dt><dd>' + esc(o.address.city) + '</dd></dl>' +
       '<a class="btn btn--gold" href="' + wa(msg) + '" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span>' + T('Konfirmasi via WhatsApp') + '</span></a>' +
-      (!me() ? '<div class="card" style="width:100%"><p class="sh"><span>' + T('Simpan data Anda') + '</span></p><p class="txt" style="margin-bottom:12px">' + T('Satu ketukan — berikutnya nama, kontak & alamat terisi otomatis.') + '</p><div class="btns"><button class="btn btn--line" type="button" data-save-acc="whatsapp"><span>WhatsApp</span></button><button class="btn btn--line" type="button" data-save-acc="google"><span>Google</span></button></div></div>' : '') +
+      (!me() ? '<div class="card" style="width:100%"><p class="sh"><span>' + T('Simpan data Anda') + '</span></p><p class="txt" style="margin-bottom:12px">' + T('Satu ketukan — berikutnya nama, kontak & alamat terisi otomatis.') + '</p><div class="btns"><button class="btn btn--line" type="button" data-save-acc="whatsapp">' + xl('whatsapp') + '<span>WhatsApp</span></button><button class="btn btn--line" type="button" data-save-acc="google">' + xl('google') + '<span>Google</span></button></div></div>' : '') +
       '<a class="lnk" href="#/profil" data-go="profil"><span>' + T('Lihat pesanan saya') + '</span><svg><use href="#i-arrow"/></svg></a></div>';
   }
   // setelah membeli sebagai tamu: data yang sudah diisi langsung jadi akun (tanpa mengetik ulang)
@@ -2131,7 +2200,23 @@
       notice(T('Akun dibuat — data & alamat tersimpan')); renderCo();
     });
   }
-  enter.bayar = function () { if (!coLines().length && !coState.done) { if (bagLines().length) openPay(Object.keys(bag).map(function (k) { return bag[k]; }), 'tas'); else go('tas'); } };
+  enter.bayar = function () {
+    if (!coLines().length && !coState.done) { if (bagLines().length) openPay(Object.keys(bag).map(function (k) { return bag[k]; }), 'tas'); else go('tas'); }
+    if (current === 'bayar') coOvShow(true);
+  };
+  leave.bayar = function () { coOvShow(false); };
+  /* overlay checkout: tutup (×, klik latar, Esc) = kembali ke asal (tas / produk / customize) */
+  var coOv = $('#coOv');
+  function coOvShow(on) {
+    if (coOv.classList.contains('is-on') === !!on) return;
+    coOv.classList.toggle('is-on', !!on); coOv.setAttribute('aria-hidden', on ? 'false' : 'true'); html.classList.toggle('co-open', !!on);
+    if (on) setTimeout(function () { var x = coOv.querySelector('.co-ov__x'); if (x) x.focus({ preventScroll: true }); }, 60);
+  }
+  function coBack() {
+    if (coState.done) { go(coState.from === 'customize' ? 'customize' : 'koleksi'); return; }
+    if (coState.from === 'tas') go('tas'); else if (coState.from === 'customize') go('customize'); else if (kList[kI]) openProduct(kList[kI]); else go('koleksi');
+  }
+  coOv.addEventListener('click', function (e) { if (e.target.closest('[data-co-close]')) coBack(); });
 
   /* ======================================================================
      CUSTOMIZE — satu halaman gulir: Jenis · Bentuk · Ukuran · Material · Detail · Kirim
@@ -2282,8 +2367,17 @@
       return Math.round(((XC.estimate(c) || 0) - czUnit0) / 5000) * 5000;
     } catch (e) { return 0; }
   }
+  function czSelDelta(gr, x, multi) {   // harga pilihan terpilih dibanding pilihan termurah di grupnya (per unit)
+    if (gr.id === '_cat' || gr.id === '_sub' || !window.XC) return 0;
+    try {
+      if (czUnit0 == null) { var c0 = JSON.parse(JSON.stringify(cz)); c0.qty = 1; czUnit0 = XC.estimate(c0) || 0; }
+      if (multi) { var c = JSON.parse(JSON.stringify(cz)); c.qty = 1; XC.apply(c, gr.id, (c[gr.id] || []).filter(function (id) { return id !== x.id; })); return Math.round((czUnit0 - (XC.estimate(c) || 0)) / 5000) * 5000; }
+      var mn = 0; XC.opts(gr, cz).forEach(function (o) { var d = czDelta(gr, o, false, false); if (d < mn) mn = d; });
+      return -mn;
+    } catch (e) { return 0; }
+  }
   function cell(gr, x, on, multi) {
-    var full = L(x) + (x.add ? ' (+' + short(x.add) + ')' : ''), fig = '', kind = 'is-tx', dd = czDelta(gr, x, on, multi);
+    var full = L(x) + (x.add ? ' (+' + short(x.add) + ')' : ''), fig = '', kind = 'is-tx', dd = on ? czSelDelta(gr, x, multi) : 0;   // harga hanya di kartu yang dipilih
     if (x.hex) { fig = czSwatch(gr, x); kind = 'is-sw'; }
     else {
       var u = czIcon(gr, x);
@@ -2320,11 +2414,19 @@
     }
     return false;
   }
+  // baris ringkas di panel yang membuka kotak samping (Detail box): Jenis, ukuran L × D × T, isi kolom kabinet
+  function czRow(key, label, val) {
+    return '<button type="button" class="cz-row' + (czlNow() === 3 ? ' is-r' : '') + (czPick === key && picker.classList.contains('is-on') ? ' is-on' : '') + '" data-pick="' + key + '"><span>' + esc(label) + '</span><b>' + esc(val) + '</b><svg><use href="#i-arrow"/></svg></button>';
+  }
+  function czDimsGroups() { return XC.groups(cz).filter(function (g) { return g.type === 'range' && g.step === 'ukuran'; }); }
+  function czDimsTitle() { return czDimsGroups().slice(0, 3).map(function (g) { return L(g); }).join(' · ') || T('Ukuran'); }
+  function czDimsText() { var u = function (k) { return Math.round(+cz[k] || 0); }; return cz.w && cz.d ? u('w') + ' × ' + u('d') + ' × ' + u('h') + ' cm' : czDimsGroups().map(function (g) { return selText(g); }).join(' · '); }
   function czGroup(gr, box2) {
-    if (gr.type === 'layout') return czLayEd(gr);   // editor susunan kolom (kabinet)
+    if (gr.type === 'layout') return czLayEd(gr, box2);   // editor susunan kolom (kabinet)
+    if (box2 && gr.id === '_sub') return '';   // Sub-kategori hanya di kotak samping (terbuka saat kartu Kategori diklik)
     var dep = czDepOn(gr) ? ' is-dep' : '';   // pilihan turunan (muncul karena pilihan di atasnya)
     var lab = L(gr) + (gr.partsL && gr.partsL.length ? ' · ' + T('untuk') + ' ' + gr.partsL.join(' & ') : '');
-    var head = function (b) { return '<p class="cz-g__h"><span>' + esc(lab) + '</span><b' + (b ? ' data-out' : '') + '>' + esc(selText(gr)) + '</b></p>'; };
+    var head = function (b) { return '<p class="cz-g__h"><span>' + esc(lab) + '</span><b' + (b ? ' data-out' : '') + '>' + esc(selText(gr) + (box2 && gr.id === '_cat' ? ' · ' + L(XC.sub(cz)) : '')) + '</b></p>'; };
     if (gr.type === 'range') return '<div class="cz-g' + dep + '" data-g="' + gr.id + '">' + head(true) + '<input class="rng" type="range" style="--p:' + ((cz[gr.id] - gr.min) / (gr.max - gr.min) * 100).toFixed(1) + '%" min="' + gr.min + '" max="' + gr.max + '" step="' + gr.inc + '" value="' + cz[gr.id] + '" data-r="' + gr.id + '" aria-label="' + esc(L(gr)) + '"><p class="rng__ends"><span>' + esc(czVal(gr, gr.min)) + '</span><span>' + esc(czVal(gr, gr.max)) + '</span></p></div>';
     var o = XC.opts(gr, cz), multi = gr.type === 'multi';
     if (box2 && o.length > 4 && gr.id !== '_cat' && gr.id !== '_sub') {   // 3 pilihan tampil (yang terpilih selalu ikut) + kartu "Lihat semua" yang membuka kotak samping
@@ -2342,7 +2444,7 @@
   /* ---------- editor susunan kolom (kabinet): jumlah kolom → tampak depan (kolom bisa diklik, terpilih = emas)
      → isi kolom terpilih (kartu 3:4 bergambar garis) → jumlah / posisi / rak / lebar → preset. Data: cz.layout (spec-kabinet.js) */
   var czCol = 0, czColSub = '';
-  function czLayEd(gr) {
+  function czLayEd(gr, box2, part) {   // part 'col' = hanya isi kolom (untuk Detail box)
     var KB = window.XKAB; if (!KB) return '';
     var sub = cz.sub, lay = (cz.layout || []).map(function (q) { return KB.canonCol(q, sub); }), n = lay.length || 1;
     if (czColSub !== sub) { czColSub = sub; czCol = 0; }
@@ -2366,19 +2468,21 @@
     }).join('');
     var nums = lay.map(function (q, i) { return '<span style="flex:' + q.wr + ' 1 0"' + (i === czCol ? ' class="is-on"' : '') + '>' + (i + 1) + '</span>'; }).join('');
     var h = '<div class="cz-g kx-lay" data-g="layout" data-layg>';
+    var colOnly = part === 'col', inBox = box2 && !colOnly;
     // preset susunan
     var pr = KB.PRESETS[sub] || [], curJ = JSON.stringify(lay);
-    if (pr.length) h += '<div data-lay-a="preset">' + H2({ l: 'Mulai dari preset susunan', en: 'Start from a layout preset' }) + '<div class="cz-grid">' + pr.map(function (p) {
+    if (pr.length && !colOnly) h += '<div data-lay-a="preset">' + H2({ l: 'Mulai dari preset susunan', en: 'Start from a layout preset' }) + '<div class="cz-grid">' + pr.map(function (p) {
       var cfg = { sub: sub, w: cz.w, h: cz.h, d: cz.d, mount: cz.mount, leg: cz.leg, top: cz.top, doorStyle: ds }, k2; for (k2 in p.dims || {}) cfg[k2] = p.dims[k2];
       cfg.layout = p.layout.map(function (q) { return KB.canonCol(q, sub); });
       return card('preset:' + p.id, KB.frontSVG(cfg, { base: sub === 'wall' ? 0 : 8 }), p.s || shortL(p), JSON.stringify(cfg.layout) === curJ, L(p));
     }).join('') + '</div></div>';
-    h += '<p class="cz-g__h"><span>' + esc(L(gr)) + '</span><b>' + esc(n + ' ' + L({ l: 'kolom', en: n > 1 ? 'columns' : 'column' })) + '</b></p>' +
+    if (!colOnly) h += '<p class="cz-g__h"><span>' + esc(L(gr)) + '</span><b>' + esc(n + ' ' + L({ l: 'kolom', en: n > 1 ? 'columns' : 'column' })) + '</b></p>' +
       '<div class="kx-ed" data-lay-a="front"><div class="kx-ed__bar"><span>' + esc(L({ l: 'Kolom', en: 'Columns' })) + '</span>' +
       '<div class="kx-step"><button type="button" data-lay="cols:-1"' + (n <= 1 ? ' disabled' : '') + ' aria-label="' + esc(L({ l: 'Kurangi kolom', en: 'Remove column' })) + '"><svg viewBox="0 0 12 12"><path d="M2.5 6h7"/></svg></button><b>' + n + '</b>' +
       '<button type="button" data-lay="cols:1"' + (n >= max ? ' disabled' : '') + ' aria-label="' + esc(L({ l: 'Tambah kolom', en: 'Add column' })) + '"><svg viewBox="0 0 12 12"><path d="M2.5 6h7M6 2.5v7"/></svg></button></div>' +
       '<em>' + esc(L({ l: 'Ketuk kolom untuk mengatur isinya', en: 'Tap a column to set its content' })) + '</em></div>' +
       '<div class="kx-front" style="width:min(100%,' + fw + 'px);height:' + fh + 'px">' + front + '</div><div class="kx-nums" style="width:min(100%,' + fw + 'px)">' + nums + '</div></div>';
+    if (inBox) return h + czRow('@col', L({ l: 'Isi kolom ' + (czCol + 1), en: 'Column ' + (czCol + 1) + ' content' }), L(kd)) + '</div>';   // isi kolom di Detail box
     // isi kolom terpilih
     h += '<div data-lay-a="k">' + H2({ l: 'Isi kolom ' + (czCol + 1), en: 'Column ' + (czCol + 1) + ' content' }, L(kd)) + '<div class="cz-grid">' +
       KB.kindsFor(sub).map(function (k) { return card('k:' + k.id, colIco(KB.newCol(k.id, sub, col.wr)), shortL(k), k.id === col.k, L(k)); }).join('') + '</div></div>';
@@ -2408,7 +2512,7 @@
     var sub = cz.sub, lay = (cz.layout || []).map(function (q) { return KB.canonCol(q, sub); }), sel = Math.max(0, Math.min(lay.length - 1, czCol));
     var sc = $('#czScroll'), blk = b.closest('[data-lay-a]'), aid = blk ? blk.getAttribute('data-lay-a') : null, y0 = blk ? blk.getBoundingClientRect().top : 0;
     var reopen = false;
-    if (key === 'col') { czCol = +val; reopen = true; }
+    if (key === 'col') { czCol = +val; reopen = true; if (czLayout() !== 'box1') czPick = '@col'; }   // isi kolom muncul di Detail box
     else {
       czMark(); czTouched.bentuk = 1;
       if (key === 'cols') {
@@ -2434,7 +2538,7 @@
     var cat = XC.CATS.filter(function (c) { return c.id === cz.cat; })[0];
     return [
       { id: '_cat', type: 'chips', l: 'Kategori', en: 'Category', opts: XC.CATS },
-      { id: '_sub', type: 'chips', l: 'Jenis', en: 'Type', opts: cat.subs }
+      { id: '_sub', type: 'chips', l: 'Sub-kategori', en: 'Sub-category', opts: cat.subs }
     ];
   }
   /* urutan tampil pilihan per kategori: dari yang terpenting, yang berkaitan bersebelahan
@@ -2550,6 +2654,7 @@
           if (tt && cl.groups.length === 1) { var a = nrm(tt), b = nrm(L(cl.groups[0])); if (a === b) tt = null; }   // judul = label satu-satunya grup
           return (tt ? '<p class="cz__sub">' + esc(tt) + '</p>' : '') + cl.groups.map(function (gr) {
             if (gr.id === '_cat' || gr.id === '_sub') { var save = cz[gr.id]; cz[gr.id] = _get(gr); var h = czGroup(gr, box2); if (save === undefined) delete cz[gr.id]; else cz[gr.id] = save; return h; }
+            if (box2 && gr.type === 'range' && gr.step === 'ukuran') { if (czDimsGroups()[0] !== gr) return ''; czPrev.push(gr); return czRow('@dims', czDimsTitle(), czDimsText()); }   // L/D/T di Detail box
             var h2 = czGroup(gr, box2); czPrev.push(gr); return h2;
           }).join('');
         }).join('') : '<p class="note">' + T('Tidak ada pilihan tambahan untuk jenis ini.') + '</p>';
@@ -2571,7 +2676,7 @@
     sc.scrollTop = keepScroll ? top : 0;
     czLazy($('#czBody'));
     czSpy();
-    if (box2 && czPick && findGroup(czPick) && XC.opts(findGroup(czPick), cz).length > 4) czPickerFill(); else czPickerClose(true);
+    if (box2 && czPick && (czPick === '@dims' || czPick === '@col' || findGroup(czPick) && (CZ_SPECIAL[czPick] || XC.opts(findGroup(czPick), cz).length > 4))) czPickerFill(); else czPickerClose(true);
     czDetail();
   }
   // tab aktif mengikuti gulir
@@ -2592,7 +2697,20 @@
 
   /* ---------- Box 2: kotak pilihan kiri */
   var picker = $('#czPicker');
+  var CZ_SPECIAL = { '@dims': 1, '@col': 1, '_sub': 1 };   // selalu di Detail box (tidak bergantung jumlah pilihan)
   function czPickerFill() {
+    if (czPick === '@dims' || czPick === '@col') {
+      var dg = czPick === '@dims', lay = (XC.groups(cz).filter(function (g) { return g.type === 'layout'; })[0]);
+      if (!dg && !lay) return czPickerClose();
+      $('#czPickE').textContent = T('Pilih') + ' · ' + L(XC.STEPS.filter(function (s0) { return s0.id === (dg ? 'ukuran' : 'bentuk'); })[0]);
+      $('#czPickT').textContent = dg ? czDimsTitle() : L({ l: 'Isi kolom ' + (czCol + 1), en: 'Column ' + (czCol + 1) + ' content' });
+      var grid = $('#czPickGrid'); grid.dataset.g = czPick; grid.removeAttribute('data-multi'); czUnit0 = null;
+      grid.innerHTML = dg ? czDimsGroups().map(function (g) { return czGroup(g, false); }).join('') : czLayEd(lay, false, 'col');
+      grid.classList.add('cz-pick--free'); czLazy(grid);
+      if (!picker.classList.contains('is-on')) { picker.classList.add('is-on'); picker.setAttribute('aria-hidden', 'false'); insets(); }
+      return;
+    }
+    $('#czPickGrid').classList.remove('cz-pick--free');
     var gr = findGroup(czPick); if (!gr) return czPickerClose();
     var multi = gr.type === 'multi', val = _get(gr), sec = XC.STEPS.filter(function (s) { return gr.step ? s.id === gr.step : s.id === 'jenis'; })[0];
     $('#czPickE').textContent = T('Pilih') + (sec ? ' · ' + L(sec) : '');
@@ -2612,9 +2730,24 @@
   }
   picker.addEventListener('click', function (e) {
     if (e.target.closest('[data-pick-close]')) { czPickerClose(); return; }
-    var b = e.target.closest('[data-v]'); if (b) czChoose($('#czPickGrid'), b.dataset.v);
+    var lb = e.target.closest('[data-lay]'); if (lb) { if (!lb.disabled) czLayClick(lb); return; }   // isi kolom kabinet
+    var b = e.target.closest('[data-v]'); if (!b) return;
+    var g = b.closest('#czPickGrid [data-g]:not(#czPickGrid)') || $('#czPickGrid'); czChoose(g, b.dataset.v);
   });
+  picker.addEventListener('input', czRangeInput);
+  picker.addEventListener('change', czRangeChange);
 
+  (function () {   // kotak samping hanya menutup saat klik di LUAR kotak (di mana saja; seret 3D / gulir tidak dihitung)
+    var d0 = null;
+    document.addEventListener('pointerdown', function (e) { d0 = picker.classList.contains('is-on') && !picker.contains(e.target) ? { x: e.clientX, y: e.clientY, t: e.target } : null; }, true);
+    document.addEventListener('pointerup', function (e) {
+      var d = d0; d0 = null; if (!d || !picker.classList.contains('is-on')) return;
+      if (Math.abs(e.clientX - d.x) + Math.abs(e.clientY - d.y) >= 7) return;
+      // tombol yang membuka / mengganti isi kotak (baris ringkas, Lihat semua, kartu Kategori, kolom kabinet) diurus klik-nya sendiri
+      if (d.t.closest && d.t.closest('[data-pick], #czBody [data-g="_cat"] [data-v], .kx-col, [data-lay]')) return;
+      czPickerClose();
+    }, true);
+  })();
   /* ---------- memilih */
   /* ---------- URUNGKAN di Customize (Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y, klik kanan, tombol di notifikasi) */
   var czHist = { u: [], r: [] };
@@ -2629,17 +2762,21 @@
   function czChoose(g, v) {
     var id = g.dataset.g;
     if (id === '_cat' || id === '_sub') {
-      if ((id === '_cat' ? cz.cat : cz.sub) === v) return;
+      if ((id === '_cat' ? cz.cat : cz.sub) === v) {   // kategori aktif diklik lagi → kotak Sub-kategori terbuka
+        if (id === '_cat' && czLayout() !== 'box1') { czPick = '_sub'; czPickerFill(); }
+        return;
+      }
       var had = czEdited(cz); czMark(); czTouch(id);
-      if (id === '_cat') { var c0 = XC.CATS.filter(function (c) { return c.id === v; })[0]; czReset(XC.defaults(c0.id, c0.subs[0].id)); }
+      if (id === '_cat') { var c0 = XC.CATS.filter(function (c) { return c.id === v; })[0]; if (czLayout() !== 'box1') czPick = '_sub'; czReset(XC.defaults(c0.id, c0.subs[0].id)); }
       else czReset(XC.defaults(cz.cat, v));
-      if (had) notice(T('Jenis diganti — rancangan sebelumnya bisa dikembalikan'), czUndoAct());
+      if (had) notice(T('Kategori diganti — rancangan sebelumnya bisa dikembalikan'), czUndoAct());
       return;
     }
     czMark(); czTouch(id);
     var gp = findGroup(id), before = gp && gp.preset ? Object.keys(gp.preset).map(function (d) { return cz[d]; }).join() : null;
     if (g.hasAttribute('data-multi')) { var arr = (cz[id] || []).slice(), i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); XC.apply(cz, id, arr); }
     else XC.apply(cz, id, v);
+    if (gp && czLayout() !== 'box1' && gp.type !== 'range' && (gp.preset || gp.step === 'ukuran') && czDimsGroups().length) czPick = '@dims';   // pilih ukuran → L/D/T di Detail box
     if (before != null && Object.keys(gp.preset).map(function (d) { return cz[d]; }).join() !== before) notice(T('Ukuran disesuaikan ke {x}', { x: selText(gp) }), czUndoAct());
     if (czBase && czView === 'product') czView = 'design';
     var sc = $('#czScroll'), anc = g.closest && g.closest('[data-g]') && sc.contains(g) ? g.closest('[data-g]') : null, y0 = anc ? anc.getBoundingClientRect().top : 0;
@@ -2663,7 +2800,7 @@
     if ((b = e.target.closest('[data-lay]'))) { if (!b.disabled) czLayClick(b); return; }   // editor susunan kolom
     if ((b = e.target.closest('[data-v]')) && b.closest('[data-g]')) czChoose(b.closest('[data-g]'), b.dataset.v);
   });
-  $('#czBody').addEventListener('input', function (e) {
+  function czRangeInput(e) {
     var r = e.target.closest('[data-r]'); if (!r) return;
     var gr = findGroup(r.dataset.r);
     if (!r.dataset.m) { czMark(); czTouch(r.dataset.r); r.dataset.m = '1'; }   // satu geser = satu langkah urungkan
@@ -2672,8 +2809,11 @@
     if (gr) r.style.setProperty('--p', ((+r.value - gr.min) / (gr.max - gr.min) * 100).toFixed(1) + '%');
     if (czBase && czView === 'product') czView = 'design';
     czStage(); czDetail(true); czFoot();
-  });
-  $('#czBody').addEventListener('change', function (e) { var r = e.target.closest('[data-r]'); if (r) { XC.apply(cz, r.dataset.r, +r.value); czSave(); czRender(true); } });
+    var row = $('#czBody [data-pick="@dims"] b'); if (row) row.textContent = czDimsText();
+  }
+  function czRangeChange(e) { var r = e.target.closest('[data-r]'); if (r) { XC.apply(cz, r.dataset.r, +r.value); czSave(); czRender(true); } }
+  $('#czBody').addEventListener('input', czRangeInput);
+  $('#czBody').addEventListener('change', czRangeChange);
 
   /* ---------- pop-up tengah */
   var modal = $('#modal'), modalBody = $('#modalBody');
@@ -3353,7 +3493,7 @@
      ====================================================================== */
   window.addEventListener('xvdb:change', function (e) {
     if (!e.detail || e.detail.what !== 'products' || !window.XVDB) return;
-    XV.PRODUCTS = XVDB.activeProducts();
+    XV.PRODUCTS = mirrorsLast(XVDB.activeProducts());
     byId = {}; XV.PRODUCTS.forEach(function (p) { byId[p.id] = p; });
     indexProducts(); buildSections();
     if (descKey === current) { descKey = null; setDesc(current); }
@@ -3375,6 +3515,7 @@
     if (e.key === 'Escape') {
       if (typing) { e.target.blur(); return; }
       if ($('#modal').classList.contains('is-on')) { $('#modal').classList.remove('is-on'); return; }
+      if (current === 'bayar') { coBack(); return; }   // checkout overlay: kembali ke asal
       if ($('#czPicker').classList.contains('is-on')) { $('#czPicker [data-pick-close]').click(); return; }
       if (raBox && raBox.classList.contains('is-on')) { raOpen(false); return; }
       if (pd.classList.contains('is-on') && current === 'koleksi') { closePd(); return; }

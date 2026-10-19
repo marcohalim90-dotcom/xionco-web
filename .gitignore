@@ -26,3 +26,6 @@ data/source/skp-glb/*/
 # aset material untuk direview (katalog & unduhan mentah) — lokal saja; yang di-Acc masuk assets/library/textures/
 data/source/staging/
 data/source/glb-orig/
+
+# foto referensi xionco.shop per produk (tools/shop-images.js) — besar, lokal saja
+data/source/shop-img/
