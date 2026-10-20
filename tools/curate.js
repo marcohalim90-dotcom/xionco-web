@@ -14,7 +14,8 @@ const fs = require('fs');
 const path = require('path');
 
 const HIDE = ['x-coin', 'capra', 'capra-signature-series',
-  'astral-1-seater', 'aether-k60'];   // diarsip (data tetap ada) — dua terakhir: duplikat lokal SKP tanpa foto/harga dari ASTRAL 1 Seater & AETHER K60
+  'astral-1-seater', 'aether-k60',   // diarsip (data tetap ada) — dua terakhir: duplikat lokal SKP tanpa foto/harga dari ASTRAL 1 Seater & AETHER K60
+  'cubix'];   // CUBIX Modular (kartu studio) — CUBIX sudah ada di More › Konfigurasi CUBIX & produk seri CUBIX (pemilik, 20 Okt)
 // kategori xionco.shop untuk produk lokal (tanpa halaman toko) / produk yang kategorinya kosong di toko
 const KATS_OF = { seats: ['Sofa'], tables: ['Table'], bedframe: ['Bed'], cabinet: ['Cabinet'], lighting: ['Lightings'], decor: ['Accent'], smart: ['Smart'] };
 
@@ -138,6 +139,47 @@ function curate(items) {
   if (byId.astral && byId.astral.shopId === 24) Object.assign(byId.astral, { name: 'ASTRAL', type: '1 Seater' });
   // kategori Koleksi = kategori xionco.shop (p.kats dari impor); kosong → dari kategori internal
   items.forEach((p) => { if (!p.kats || !p.kats.length) p.kats = (KATS_OF[p.cat] || ['Accent']).concat(p.cat === 'seats' && /ottoman/i.test(p.name + ' ' + p.type) ? ['Ottoman'] : []); });
+  // ELITE COLOR (katalog Tokopedia XIONCO Official, Okt 2026) — kain & kulit sintetis premium untuk semua sofa kecuali ORYCTO & CAPRA
+  // (kain mereka berbeda). Sofa yang belum punya pilihan kain mendapat kain standar (Seperti foto + Vienna, warna sama GUISE) + Elite.
+  // Tambahan harga mengikuti Tokopedia per ukuran. Idempoten: varian / sub buatan (auto) dibuang lalu dibuat ulang.
+  const EC = [['EC01', 'Walnut', '#57493b'], ['EC02', 'Brown', '#493724'], ['EC03', 'Wood', '#6d5c4e'], ['EC04', 'String', '#e5e1db'], ['EC05', 'Pacific', '#187679'],
+    ['EC06', 'Aqua', '#22b0ac'], ['EC07', 'Moss', '#70701f'], ['EC08', 'Kiwi', '#948043'], ['EC09', 'Ruby', '#6e0e10'], ['EC10', 'Peach Skin', '#db8057']];
+  const EL = [['EL01', 'Ivory', '#ded5c1'], ['EL02', 'Khaki', '#cac2b3'], ['EL03', 'Cream', '#cab596'], ['EL04', 'Cappuccino', '#bba37c'], ['EL05', 'Chocolate', '#423632'],
+    ['EL06', 'L-Grey', '#a3a49f'], ['EL07', 'Saddle', '#b47353'], ['EL08', 'Chestnut', '#bf8c67'], ['EL09', 'A-Green', '#142017'], ['EL10', 'Navy', '#242a33']];
+  const ELITE_FB = { 1: 100000, 2: 180000, 3: 250000, set: 430000, big: 430000 }, ELITE_FX = { 1: 150000, 2: 250000, 3: 325000, set: 430000, big: 430000 };
+  const ELITE_FIX = { canis: 340000, 'eorde-sofa-bed-futon-sleeper-minimalis': 0 };
+  const isSofa = (p) => p.cat === 'seats' && !/^capra|^orycto$/.test(p.id) && (/^cubix-series-\d-seat/.test(p.id) ||
+    (/sofa|seater|couch/i.test(p.name + ' ' + p.type + ' ' + p.id) && !/ottoman|stool|chair|bench|pillow/i.test(p.name + ' ' + p.type + ' ' + p.id)));
+  const seatsOf = (p) => { const t = p.id + ' ' + p.type + ' ' + p.name; if (/\bset\b|set-l/i.test(t)) return 'set'; const m = t.match(/(\d)\s*-?\s*seat/i) || t.match(/sf(\d)s/i); const n = m ? +m[1] : 3; return n >= 4 ? 'big' : n; };
+  const stdSrc = ((byId.guise && byId.guise.variants) || []).filter((v) => v.group === 'Fabric' && !v.auto);
+  const plus = (v, add) => (v ? v + add : v);
+  const std = (price, was, img) => [{ key: 'Std-Foto', label: 'Seperti foto', group: 'Fabric', fabric: '', hex: null, price, was, img, on: true, subs: [], auto: 'std' }]
+    .concat(stdSrc.map((v) => ({ key: 'Std-' + v.label, label: v.label, group: 'Fabric', fabric: v.fabric, hex: v.hex, price, was, img, nophoto: true, on: false, subs: [], auto: 'std' })));
+  const elite = (fb, fx, a, x) => EC.map((e) => ({ key: 'Elite-' + e[0], label: e[0] + ' ' + e[1], group: 'Elite Fabric', fabric: 'Elite Color ' + e[0] + ' ' + e[1], hex: e[2],
+    price: plus(a.price, fb), was: plus(a.was, fb), img: a.img, nophoto: true, on: false, subs: [], auto: 'elite' })).concat(!x ? [] : EL.map((e) => ({ key: 'EliteFX-' + e[0], label: e[0] + ' ' + e[1],
+    group: 'Elite Faux leather', fabric: 'Elite Color ' + e[0] + ' ' + e[1], hex: e[2], price: plus(x.price, fx), was: plus(x.was, fx), img: x.img, nophoto: true, on: false, subs: [], auto: 'elite' })));
+  const strip = (L) => (L || []).filter((v) => !v.auto);
+  if (stdSrc.length) items.forEach((p) => {
+    if (!isSofa(p)) return;
+    const n = seatsOf(p), fb = ELITE_FIX[p.id] != null ? ELITE_FIX[p.id] : ELITE_FB[n], fx = ELITE_FX[n];
+    p.variants = strip(p.variants); p.variants.forEach((v) => { if (v.subs) v.subs = strip(v.subs); });
+    const vs = p.variants, minOf = (L) => L.reduce((a, v) => (v.price && (!a.price || v.price < a.price) ? v : a), L[0]);
+    if (/^cubix-series-/.test(p.id) && vs.length && vs[0].subs && vs[0].subs.length) {   // CUBIX: kain = sub-pilihan tiap kayu
+      vs.forEach((v) => { const a = minOf(v.subs); v.subs = v.subs.concat(elite(fb, 0, { price: a.price || v.price, was: a.was || v.was, img: a.img || v.img }, null)); });
+      return;
+    }
+    if (vs.some((v) => v.hex || /fabric|faux|(^|\s)fb\b|pet friendly/i.test((v.group || '') + ' ' + v.label))) {   // sudah punya kain → tambah Elite (Elite kulit sintetis bila ada faux leather)
+      const fbV = vs.filter((v) => !/faux/i.test(v.group || '')), fxV = vs.filter((v) => /faux/i.test(v.group || ''));
+      p.variants = vs.concat(elite(fb, fx, minOf(fbV.length ? fbV : vs), fxV.length ? minOf(fxV) : null));
+      return;
+    }
+    if (vs.length) {   // varian = susunan / ukuran (mis. EORDE recliner) → kain sebagai sub-pilihan tiap varian
+      vs.forEach((v) => { v.subs = std(v.price, v.was, v.img).concat(elite(fb, 0, v, null)); });
+      p.sTitle = p.sTitle || 'Warna kain';
+      return;
+    }
+    p.variants = std(p.price, p.was, p.img).concat(elite(fb, 0, p, null)); p.variant = 0;   // belum ada kain → standar + Elite
+  });
   // Acrylic Mirror selalu paling bawah (urutan katalog)
   const mir = items.filter((p) => /^acrylic-mirror/.test(p.id)); if (mir.length) { const rest = items.filter((p) => mir.indexOf(p) < 0); items.length = 0; rest.concat(mir).forEach((p) => items.push(p)); }
   return items;

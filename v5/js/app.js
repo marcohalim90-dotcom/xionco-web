@@ -345,20 +345,33 @@
   function fitDetail() {
     var free = innerWidth - (isMobile() ? 0 : stageInset.l + stageInset.r) - 40;
     detailEl.style.setProperty('--detail-w', Math.round(Math.min(880, free)) + 'px');
-    detailEl.classList.toggle('is-compact', free < 820);
+    // kolom rincian disembunyikan bila nama (min. 200 px) tidak lagi muat bersama kolom, harga & tombol yang tampil
+    var o = detailLast || {}, act = o.act && !html.classList.contains('no-dact'), need = 200 + (o.cols || []).length * 136 + (o.price ? 256 : 0) + (act ? 158 : 0) + 60;
+    detailEl.classList.toggle('is-compact', free < Math.max(820, need));
     detailEl.classList.toggle('is-tiny', free < 600);
   }
   /* kartu bawah sesuai halaman: tombol aksi disembunyikan bila panel sudah punya tombol beli untuk barang yang sama;
      Tas & Checkout → ringkasan isi (bukan barang terakhir di panggung) */
   var detailSum = false;
+  // kartu sesuai halaman: Bisnis → konsultasi proyek, Kontak → showroom & WhatsApp (bukan furnitur terakhir di panggung)
+  function pageDetail(id) {
+    if (id === 'bisnis') return { name: 'XIONCO for Business', sub: T('Custom · desain interior · proyek B2B'), cols: [[T('Penawaran'), T('1 jam')], [T('Cicilan'), '0%']],
+      act: { t: T('Konsultasi'), icon: 'i-wa', href: wa(T('Halo XIONCO, saya ingin konsultasi proyek bisnis.')) } };
+    if (id === 'kontak') return { name: T('Showroom XIONCO'), sub: 'Jl. Ciputat Raya No. 8, Jakarta Selatan', cols: [['WhatsApp', '+62 822-4040-8055'], ['Instagram', '@xionco.official']],
+      act: { t: 'WhatsApp', icon: 'i-wa', href: wa(T('Halo XIONCO, saya ingin konsultasi privat.')) } };
+    return null;
+  }
   function detailMode() {
     var own = (current === 'koleksi' && pd.classList.contains('is-on')) || current === 'customize' || current === 'cubix' || current === 'tas' || current === 'bayar' || current === 'penawaran';
     html.classList.toggle('no-dact', own);
+    html.classList.toggle('no-detail', current === 'profil' || current === 'setelan');   // halaman akun & pengaturan: tanpa kartu bawah
+    var pg = pageDetail(current);
     if (current === 'tas' || current === 'bayar') {
       var ls = current === 'tas' ? bagLines() : coLines(), n = ls.reduce(function (a, l) { return a + l.q; }, 0);
       setDetail({ name: current === 'tas' ? T('Tas Anda') : T('Checkout'), sub: n ? T('{n} barang', { n: n }) : T('Tas masih kosong.'), cols: [], priceK: T('Subtotal'), price: n ? rupiah(sumOf(ls)) : '' });
       detailSum = true;
-    } else if (detailSum) { detailSum = false; refreshDetail(); }
+    } else if (pg) { setDetail(pg); detailSum = true; }
+    else if (detailSum) { detailSum = false; if (OWN_STAGE.indexOf(current) < 0) refreshDetail(); }   // halaman berpanggung sendiri (Ruang, CUBIX, …) sudah mengisi kartunya
   }
 
   /* ======================================================================
@@ -411,7 +424,7 @@
   function stageShow(p) {
     var s = selOf(p), c = cur(p, s), photo = src(s.touched ? c.img : p.img, 1024);
     var mdl = stageModelOf(p, c); furniture.mdl = mdl;
-    if (mdl) { var pr = XW.showModel(p, src(mdl), photo, c.hex); if (pr && pr.then) pr.then(function () { var pt = partOf(p, c); if (pt && XW.setPart) XW.setPart(src(pt), false); if (pcFor(p)) { if (!pcz.w0) pcInit(p); else pcApply(); } }); }
+    if (mdl) { var pr = XW.showModel(p, src(mdl), photo, c.hex); if (pr && pr.then) pr.then(function () { cbxTint(p); var pt = partOf(p, c); if (pt && XW.setPart) XW.setPart(src(pt), false); if (pcFor(p)) { if (!pcz.w0) pcInit(p); else pcApply(); } }); }
     else XW.showProduct(p, photo, src(p.img, 1024));
   }
   function mapDetail(i) {
@@ -428,6 +441,7 @@
     else if (stageKind === 'map') mapDetail(stageSel);
     else if (stageKind === 'art') artDetail(galSel);
     else if (stageKind === 'custom') czDetail();
+    else if (stageKind === 'room') roomDetail();
     else cubixDetail();
   }
 
@@ -488,7 +502,7 @@
     var prev = current;
     current = id;
     html.classList.toggle('is-panel', id !== 'home'); html.dataset.pane = id;
-    $$('.rail__item').forEach(function (a) { a.classList.toggle('is-on', a.dataset.key === id || (a.id === 'railMore' && MORE_KEYS.indexOf(id) >= 0)); });
+    $$('.rail__item').forEach(function (a) { a.classList.toggle('is-on', a.dataset.key === id || (a.id === 'railMore' && (MORE_KEYS.indexOf(id) >= 0 || (isMobile() && /^(manufaktur|bisnis|galeri)$/.test(id))))); });
     $$('.more__item').forEach(function (a) { a.classList.toggle('is-on', a.dataset.moreKey === id); });
     $$('.top__ic, .top__bag').forEach(function (b) { b.classList.toggle('is-on', TOP_PANES[id] === '#' + b.id); });
     setDesc(id);
@@ -786,13 +800,13 @@
   function renderVariants(p) {
     var vs = p.variants || [], s = selOf(p), c = cur(p, s);
     var box = $('#pdVar'), sub = $('#pdSub');
-    if (!vs.length) { box.innerHTML = ''; sub.innerHTML = ''; box.hidden = sub.hidden = true; $('#pdVMore').hidden = true; $('#pdAdvVar').innerHTML = ''; if (advMode() === 'var') advOpen(false); return; }
+    if (!vs.length) { box.innerHTML = ''; sub.innerHTML = ''; box.hidden = sub.hidden = true; $('#pdAdvVar').innerHTML = ''; $('#pdAdvSub').innerHTML = ''; cbxPilRender(p); return; }
     box.hidden = false;
     var lab = function (v) { return [v.group ? T(v.group) : '', v.label].filter(Boolean).join(' · '); };
     var groups = [], pOf = function (i) { var x = cur(p, { v: i, s: subDef(vs[i]) }); return x.price || 0; }, pMin = Infinity;
     vs.forEach(function (v, i) { var g = v.group || ''; var gg = groups.filter(function (x) { return x.g === g; })[0]; if (!gg) groups.push(gg = { g: g, i: [] }); gg.i.push(i); var pr = pOf(i); if (pr && pr < pMin) pMin = pr; });
     var selD = s.v >= 0 && isFinite(pMin) ? pOf(s.v) - pMin : 0;   // harga tambahan hanya tampil di kotak yang dipilih
-    var order = [].concat.apply([], groups.map(function (gg) { return gg.i; })), shown = order.slice(0, 4);   // 4 teratas tampil, sisanya di kotak samping (More variants)
+    var order = [].concat.apply([], groups.map(function (gg) { return gg.i; })), shown = order.slice(0, 3);   // 3 teratas tampil (satu baris, 3 kolom), semua varian di kotak Advance
     if (s.v >= 0 && shown.indexOf(s.v) < 0) shown[shown.length - 1] = s.v;   // varian terpilih selalu terlihat
     var btn = function (i, all) {
       var v = vs[i], name = v.label.length > 15 ? v.label.slice(0, 14) + '…' : v.label, d = i === s.v ? selD : 0, hid = !all && shown.indexOf(i) < 0;
@@ -807,14 +821,16 @@
     };
     var vt = T(p.vTitle || (vs[0].group ? 'Warna & material' : 'Varian'));
     box.innerHTML = '<p class="og__h"><span>' + vt + '</span><b>' + esc(c.v ? lab(c.v) : '') + '</b></p>' + list(false);
-    var extra = order.length - shown.length;
-    $('#pdVMore').hidden = extra <= 0; $('#pdVMoreN').textContent = '+' + extra;
-    if (extra <= 0 && advMode() === 'var') advOpen(false);
-    $('#pdAdvVar').innerHTML = '<p class="eyebrow">' + T('Semua varian') + ' · ' + order.length + '</p><p class="og__h"><span>' + vt + '</span><b>' + esc(c.v ? lab(c.v) : '') + '</b></p>' + list(true);
-    var subs = c.v && c.v.subs || [];
+    $('#pdAdvVar').innerHTML = order.length > shown.length ? '<p class="og__h adv__h"><span>' + T('Semua varian') + ' · ' + order.length + '</span><b>' + esc(c.v ? lab(c.v) : '') + '</b></p>' + list(true) : '';
+    cbxPilRender(p);
+    var subs = c.v && c.v.subs || [], sw = subs.some(function (x) { return x.hex; }), sShown = subs.map(function (x, i) { return i; }).slice(0, 3);
+    if (s.s >= 0 && sShown.indexOf(s.s) < 0 && sShown.length) sShown[sShown.length - 1] = s.s;
+    var sBtn = function (x, i, all) { return '<button type="button" class="cz-o' + (i === s.s ? ' is-on' : '') + '" data-s="' + i + '" title="' + esc(x.label) + '"' + (!all && sw && sShown.indexOf(i) < 0 ? ' hidden' : '') + '>' + (x.hex ? '<i class="cz-o__c" style="--c:' + x.hex + '"></i>' : '') + '<span class="cz-o__t"><span>' + esc(x.label.length > 15 ? x.label.slice(0, 14) + '…' : x.label) + '</span></span></button>'; };
+    var pil = isCbxFab(p) && cbxPS(p).pil >= 0 ? ' · ' + cbxPilLab(p, s.v, s.pil) : '', sHead = '<span>' + T(p.sTitle || 'Ukuran & opsi') + '</span><b>' + esc((c.sub ? c.sub.label : '') + pil) + '</b>';
     sub.hidden = !subs.length;
-    sub.innerHTML = subs.length ? '<p class="og__h"><span>' + T(p.sTitle || 'Ukuran & opsi') + '</span><b>' + esc(c.sub ? c.sub.label : '') + '</b></p><div class="og">' +
-      subs.map(function (x, i) { return '<button type="button" class="cz-o' + (i === s.s ? ' is-on' : '') + '" data-s="' + i + '" title="' + esc(x.label) + '">' + (x.hex ? '<i class="cz-o__c" style="--c:' + x.hex + '"></i>' : '') + '<span>' + esc(x.label.length > 15 ? x.label.slice(0, 14) + '…' : x.label) + '</span></button>'; }).join('') + '</div>' : '';
+    sub.innerHTML = subs.length ? '<p class="og__h">' + sHead + '</p><div class="og' + (sw ? ' og--v' : '') + '">' + subs.map(function (x, i) { return sBtn(x, i, false); }).join('') + '</div>' : '';
+    // kotak Advance: semua sub-varian berwarna (bila lebih dari 4) — klik ditangani #pdAdvSub
+    $('#pdAdvSub').innerHTML = sw && subs.length > sShown.length ? '<p class="og__h adv__h"><span>' + T(p.sTitle || 'Ukuran & opsi') + ' · ' + subs.length + '</span><b>' + esc(c.sub ? c.sub.label : '') + '</b></p><div class="og og--v">' + subs.map(function (x, i) { return sBtn(x, i, true); }).join('') + '</div>' : '';
   }
   /* ---------- informasi produk: Overview & Specification (seperti xionco.shop) ----------
      data/specs.json (tools/spec/fill.js + Developer Settings › Ukuran & material): baris ukuran per produk/varian,
@@ -884,6 +900,31 @@
     var want = c && c.v && !(c.v.nophoto && !(c.sub && c.sub.img)) && selOf(p).touched ? c.img : null, k = want ? JSON.parse(box.dataset.list).indexOf(want) : -1;
     if (k >= 0) box.firstChild.scrollTo({ left: k * box.firstChild.clientWidth, behavior: 'smooth' });
   }
+  /* CUBIX: warna kain = pilihan kain produk itu sendiri (sub-varian "Warna kain", swatch seperti GUISE);
+     warna bantal sandaran bisa dibuat beda, dipilih dari kain yang sama (material 'pillow' di model — tools/glb/fix-normals.py --pillow);
+     tanpa warna kaki (kayu mengikuti produk, varian Kayu) */
+  var CBX_FAB_RE = /^cubix-series-(\d-seaters?|ottoman)/;
+  function cbxSubs(p) { var s = selOf(p), v = p && p.variants && p.variants[s.v]; return v && v.subs || []; }
+  function isCbxFab(p) { return !!p && CBX_FAB_RE.test(p.id) && cbxSubs(p).some(function (x) { return x.hex; }); }
+  function cbxPS(p) { var s = selOf(p); if (s.pil == null) s.pil = -1; return s; }
+  function cbxPilLab(p, v, pil) { var vv = p && p.variants && p.variants[v], x = vv && vv.subs && vv.subs[pil]; return x ? T('bantal') + ' ' + x.label : ''; }
+  function cbxTint(p) {
+    if (!isCbxFab(p) || !XW.setTint || !(furniture.kind === 'product' && furniture.p === p)) return;
+    var s = cbxPS(p), L = cbxSubs(p), f = cur(p, s).hex, b = s.pil >= 0 && L[s.pil] ? L[s.pil].hex : f;
+    XW.setTint(f, b);
+  }
+  function cbxPilRender(p) {   // kotak Advance: warna bantal (Sama dengan kain + kain yang tersedia)
+    var adv = $('#pdAdvCbx'); if (!adv) return;
+    if (!isCbxFab(p)) { adv.innerHTML = ''; return; }
+    var L = cbxSubs(p), s = cbxPS(p);
+    adv.innerHTML = '<p class="og__h adv__h"><span>' + T('Warna bantal') + '</span><b>' + esc(s.pil >= 0 && L[s.pil] ? L[s.pil].label : T('Sama dengan kain')) + '</b></p><div class="og og--v">' +
+      '<button type="button" class="cz-o' + (s.pil < 0 ? ' is-on' : '') + '" data-pil="-1" title="' + esc(T('Sama dengan kain')) + '"><span class="cz-o__t"><span>' + T('Sama') + '</span></span></button>' +
+      L.map(function (x, i) { return '<button type="button" class="cz-o' + (i === s.pil ? ' is-on' : '') + '" data-pil="' + i + '" title="' + esc(x.label) + '">' + (x.hex ? '<i class="cz-o__c" style="--c:' + x.hex + '"></i>' : '') + '<span class="cz-o__t"><span>' + esc(x.label) + '</span></span></button>'; }).join('') + '</div>';
+  }
+  $('#pdAdvCbx').addEventListener('click', function (e) {
+    var p = kList[kI], b; if (!p) return;
+    if ((b = e.target.closest('[data-pil]'))) { var s = cbxPS(p); s.pil = +b.dataset.pil; s.touched = true; renderVariants(p); cbxTint(p); productDetail(p); }
+  });
   function setVariant(p, patch) {
     var s = selOf(p);
     if (patch.v != null && patch.v !== s.v) {   // ganti varian (mis. kayu) → pilihan kain yang sama dipertahankan bila ada
@@ -896,6 +937,7 @@
     productDetail(p);
     if (!XW.ok || !(furniture.kind === 'product' && furniture.p === p)) return;
     var c = cur(p, s);
+    if (isCbxFab(p) && p.model) { cbxTint(p); return; }   // CUBIX: kain (sub-varian) & bantal
     if (p.vparts && XW.setPart) { var pt = partOf(p, c); XW.setPart(pt ? src(pt) : null); if (p.model) XW.setTint(c.hex); }   // bagian varian: hanya bagian itu yang muncul / hilang
     else if (p.vmodels && modelOf(p, c) !== (furniture.mdl || p.model)) { furniture.mdl = modelOf(p, c); stageShow(p); }
     else if (p.model) XW.setTint(c.hex);
@@ -905,6 +947,7 @@
     var p = kList[kI]; if (!p) return;
     var b = e.target.closest('[data-v]'); if (b) setVariant(p, { v: +b.dataset.v });
   });
+  $('#pdAdvSub').addEventListener('click', function (e) { var b = e.target.closest('[data-s]'); if (b && kList[kI]) setVariant(kList[kI], { s: +b.dataset.s }); });
   $('#pdSub').addEventListener('click', function (e) { var b = e.target.closest('[data-s]'); if (b && kList[kI]) setVariant(kList[kI], { s: +b.dataset.s }); });
   panel.addEventListener('scroll', function (e) { var t = e.target; if (t.classList && t.classList.contains('pane__scroll')) t.classList.toggle('is-sc', t.scrollTop > 6); }, { capture: true, passive: true });
   function closePd() { advOpen(false); pd.classList.remove('is-on'); pd.setAttribute('aria-hidden', 'true'); detailMode(); }
@@ -917,11 +960,11 @@
   $('#pdNow').addEventListener('click', function () { buyNow(kList[kI], kQty); });
   /* Kotak samping halaman produk — mode 'var' (More variants: semua varian) atau 'adv' (Advance: dimensi + Customize / Ke ruang / Tanya).
      Menutup hanya saat klik di luar kotak (seret 3D / gulir tidak dihitung). */
-  var advBox = $('#pdAdvBox'), advBtn = $('#pdAdv'), vmBtn = $('#pdVMore');
-  function advMode() { return advBox.classList.contains('is-on') ? advBox.dataset.mode : null; }
+  var advBox = $('#pdAdvBox'), advBtn = $('#pdAdv');
+  function advMode() { return advBox.classList.contains('is-on') ? 'adv' : null; }
   function advPlace() {
     if (!advBox.classList.contains('is-on')) return;
-    var ab = advBox.dataset.mode === 'var' ? vmBtn : advBtn, br = ab.getBoundingClientRect(), pr = panel.getBoundingClientRect(), h = advBox.offsetHeight, w = advBox.offsetWidth;
+    var ab = advBtn, br = ab.getBoundingClientRect(), pr = panel.getBoundingClientRect(), h = advBox.offsetHeight, w = advBox.offsetWidth;
     if (isMobile()) { advBox.style.left = pr.left + 'px'; advBox.style.width = pr.width + 'px'; advBox.style.top = Math.max(70, br.top - h - 10) + 'px'; return; }
     advBox.style.width = '';
     advBox.style.top = clamp(br.top + br.height / 2 - h / 2, pr.top, innerHeight - h - 16) + 'px';
@@ -934,12 +977,11 @@
     if (mode) advBox.dataset.mode = mode;
     advBox.classList.toggle('is-on', !!mode); advBox.setAttribute('aria-hidden', mode ? 'false' : 'true');
     advBtn.setAttribute('aria-expanded', mode === 'adv' ? 'true' : 'false'); advBtn.classList.toggle('is-on', mode === 'adv');
-    vmBtn.setAttribute('aria-expanded', mode === 'var' ? 'true' : 'false'); vmBtn.classList.toggle('is-on', mode === 'var');
     if (mode === 'adv') { pcRender(); czLazy($('#pdPc')); }
     if (mode) advBox.scrollTop = 0;
     advPlace();
   }
-  [[advBtn, 'adv'], [vmBtn, 'var']].forEach(function (x) {
+  [[advBtn, 'adv']].forEach(function (x) {
     x[0].addEventListener('click', function (e) {
       e.stopPropagation();
       var on = advMode() !== x[1];
@@ -950,7 +992,7 @@
   $('#pdAdvVar').addEventListener('click', function (e) { var b = e.target.closest('[data-v]'), p = kList[kI]; if (b && p) setVariant(p, { v: +b.dataset.v }); });
   (function () {   // klik di luar kotak (bukan seret / gulir) menutup
     var d0 = null;
-    document.addEventListener('pointerdown', function (e) { d0 = advBox.classList.contains('is-on') && !advBox.contains(e.target) && !advBtn.contains(e.target) && !vmBtn.contains(e.target) ? { x: e.clientX, y: e.clientY } : null; }, true);
+    document.addEventListener('pointerdown', function (e) { d0 = advBox.classList.contains('is-on') && !advBox.contains(e.target) && !advBtn.contains(e.target) ? { x: e.clientX, y: e.clientY } : null; }, true);
     document.addEventListener('pointerup', function (e) { var d = d0; d0 = null; if (d && Math.abs(e.clientX - d.x) + Math.abs(e.clientY - d.y) < 7) advOpen(false); }, true);
   })();
   pd.addEventListener('scroll', advPlace, { passive: true });
@@ -987,19 +1029,26 @@
   function pcRender() {
     var p = kList[kI], box = $('#pdPc'), pc = pcFor(p);
     if (!box) return;
-    box.hidden = !(pc && pc.open);
+    box.hidden = !(pc && pc.open); pcMetal(p, pc);
     if (!pc || !pc.open) { box.innerHTML = ''; return; }
     if (!pc.w0) { box.innerHTML = '<p class="note">' + T('Memuat model 3D…') + '</p>'; return; }
     var rng = function (k, lab, v, min, max, step) {
       return '<div class="cz-g"><p class="og__h"><span>' + lab + '</span><b>' + v + ' cm</b></p><input class="rng" type="range" style="--p:' + ((v - min) / (max - min) * 100).toFixed(1) + '%" min="' + min + '" max="' + max + '" step="' + step + '" value="' + v + '" data-pc="' + k + '" aria-label="' + esc(lab) + '"><p class="rng__ends"><span>' + min + ' cm</span><span>' + max + ' cm</span></p></div>';
     };
-    var mg = { id: 'metal', type: 'swatch' }, cm0 = XC.find(XC.METAL, pc.metal);
-    box.innerHTML = '<p class="og__h pc__h"><span>' + T('Sesuaikan {name}', { name: p.name }) + '</span></p>' +
+    box.innerHTML = '<p class="og__h pc__h"><span>' + T('Ukuran') + '</span></p>' +
       '<p class="note pc__n">' + T('Model asli diubah langsung — lengan & kaki tetap, bagian tengah yang menyesuaikan.') + '</p>' +
       (pcChanged(pc) ? '<p class="pc__r"><button type="button" class="mini" data-pc-reset>' + T('Ukuran asli') + '</button></p>' : '') +
-      rng('w', T('Lebar'), Math.round(pc.w), Math.floor(pc.wMin * 10) / 10, Math.ceil(pc.wMax * 10) / 10, pc.wStep) + (pc.tile ? '<p class="note pc__ch">' + T('{n} lajur channel', { n: pc.tile.n0 + Math.round((pc.w - pc.w0) / pc.tile.pitch) }) + '</p>' : '') + rng('d', T('Kedalaman'), pc.d, pc.dMin, pc.dMax, 1) +
-      (pc.hasMetal ? '<div class="cz-g"><p class="og__h"><span>' + T('Warna kaki & base') + '</span><b>' + esc(cm0 ? L(cm0) : '') + '</b></p><div class="cz-grid">' +
-        XC.METAL.map(function (m) { return cell(mg, m, m.id === pc.metal, false); }).join('') + '</div></div>' : '');
+      rng('w', T('Lebar'), Math.round(pc.w), Math.floor(pc.wMin * 10) / 10, Math.ceil(pc.wMax * 10) / 10, pc.wStep) + (pc.tile ? '<p class="note pc__ch">' + T('{n} lajur channel', { n: pc.tile.n0 + Math.round((pc.w - pc.w0) / pc.tile.pitch) }) + '</p>' : '') + rng('d', T('Kedalaman'), pc.d, pc.dMin, pc.dMax, 1);
+  }
+  // warna kaki & base: bagian tertutup (dibuka bila diklik), di bawah varian
+  function pcMetal(p, pc) {
+    var el = $('#pdPcM'); if (!el) return;
+    var on = !!(pc && pc.open && pc.w0 && pc.hasMetal); el.hidden = !on;
+    if (!on) { el.innerHTML = ''; return; }
+    var mg = { id: 'metal', type: 'swatch' }, cm0 = XC.find(XC.METAL, pc.metal);
+    el.innerHTML = '<details class="adv__acc"' + (pc.mOpen ? ' open' : '') + '><summary><span>' + T('Warna kaki & base') + '</span><b>' + esc(cm0 ? L(cm0) : '') + '</b><svg><use href="#i-arrow"/></svg></summary>' +
+      '<div class="cz-grid">' + XC.METAL.map(function (m) { return cell(mg, m, m.id === pc.metal, false); }).join('') + '</div></details>';
+    czLazy(el);
   }
   // ukuran asli diambil dari model yang tampil di panggung (ditunggu bila belum termuat)
   function pcInit(p, tries) {
@@ -1011,7 +1060,7 @@
     pc.wMin = r5(info.w * .75); pc.wMax = r5(info.w * 1.35); pc.wStep = 5; pc.dMin = Math.round(info.d * .85); pc.dMax = Math.round(info.d * 1.2);
     // model bermodul channel: lebar bertambah per lajur (channel baru), bukan diregangkan
     if (info.tile) { var tp = info.tile.pitch; pc.tile = info.tile; pc.wStep = tp; pc.wMin = info.w - (info.tile.n0 - 1) * tp; pc.wMax = info.w + 6 * tp; }
-    pc.hasMetal = info.metals > 0; pc.metal0 = pc.metal = nearMetal(info.metalHex);
+    pc.hasMetal = info.metals > 0 && p.series !== 'cubix'; pc.metal0 = pc.metal = nearMetal(info.metalHex);   // CUBIX: kaki kayu mengikuti produk, tanpa warna kaki
     pcRender();
   }
   function pcUpdate() {
@@ -1031,6 +1080,11 @@
     pcUpdate();
   });
   $('#pdPc') && $('#pdPc').addEventListener('change', function () { pcRender(); });
+  $('#pdPcM').addEventListener('toggle', function (e) { var pc = pcFor(kList[kI]); if (pc && e.target.tagName === 'DETAILS') pc.mOpen = e.target.open; }, true);
+  $('#pdPcM').addEventListener('click', function (e) {
+    var pc = pcFor(kList[kI]), b = e.target.closest('[data-v]'); if (!pc || !b) return;
+    pc.metal = b.dataset.v; pc.mOpen = true; pcRender(); pcUpdate();
+  });
   $('#pdPc') && $('#pdPc').addEventListener('click', function (e) {
     var pc = pcFor(kList[kI]); if (!pc) return;
     var b = e.target.closest('[data-v]');
@@ -1068,6 +1122,7 @@
     var c = cur(p, { v: e.v, s: e.s });
     if (!c.price) return null;
     var key = e.id + '|' + e.v + '|' + e.s;
+    if (e.pil != null && e.pil >= 0) { var o2 = {}; for (var k2 in c) o2[k2] = c[k2]; o2.label = (c.label ? c.label + ' · ' : '') + cbxPilLab(p, e.v, e.pil); c = o2; key += '|p' + e.pil; }   // CUBIX: warna bantal
     if (e.pc) { var o = {}; for (var k in c) o[k] = c[k]; o.price = pcPrice(c.price, e.pc); o.label = (c.label ? c.label + ' · ' : '') + pcLabel(e.pc); c = o; key += '|' + e.pc.w + 'x' + e.pc.d + e.pc.metal; }
     return { key: key, p: p, c: c, q: e.q, total: c.price * e.q, e: e };
   }
@@ -1108,7 +1163,7 @@
     else if (e.target.closest('[data-edit]')) { czEditKey = k; openDesign(en); notice(T('Ubah rancangan, lalu tekan Perbarui tas')); }
     else if (e.target.closest('.list__th, .list__n')) { if (en.type === 'cubix') cbxOpen(en.cfg); else if (en.type === 'custom') openDesign(en); else openProduct(byId[en.id]); }
   });
-  function entryOf(p, q) { var s = selOf(p), pc = pcFor(p), e = { id: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, q: q || 1 }; if (pcChanged(pc)) e.pc = { w: pc.w, d: pc.d, w0: pc.w0, d0: pc.d0, metal: pc.metal, metal0: pc.metal0 }; return e; }
+  function entryOf(p, q) { var s = selOf(p), pc = pcFor(p), e = { id: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, q: q || 1 }; if (isCbxFab(p) && cbxPS(p).pil >= 0) e.pil = cbxPS(p).pil; /* CUBIX: warna bantal beda */ if (pcChanged(pc)) e.pc = { w: pc.w, d: pc.d, w0: pc.w0, d0: pc.d0, metal: pc.metal, metal0: pc.metal0 }; return e; }
   /* masuk tas: gambar barang melayang dari tombol yang diklik ke ikon tas di header (lengkung), lalu ikon tas "menangkap" + angka berdenyut */
   var lastTap = null;
   document.addEventListener('pointerdown', function (e) { lastTap = e.target.closest ? e.target.closest('button, a') : null; }, true);
@@ -1205,6 +1260,7 @@
   function renderRoom() {
     var l = roomList(), box = $('#roomList'); if (!box) return;
     $('#roomEmpty').classList.toggle('is-on', !l.length);
+    roomStageCta();
     $('#roomFoot').hidden = !l.length;
     box.innerHTML = l.map(function (e) {
       var acc = e.kind === 'acc';
@@ -1647,10 +1703,17 @@
     var raT = 0; $('#raSearch').addEventListener('input', function () { clearTimeout(raT); raT = setTimeout(renderRoomAdd, 120); });
   }
   XW.onRoomTurn = function (rid, deg) { var l = roomList(); l.forEach(function (e) { if (e.rid === rid) e.ry = deg; }); roomSave(l); };
-  enter.ruang = function () { renderShell(); renderRoomPre(); renderRoom(); if (XW.roomShell) XW.roomShell(shell); roomStage(); };
+  enter.ruang = function () { renderShell(); renderRoomPre(); renderRoom(); if (XW.roomShell) XW.roomShell(shell); roomStage(); roomStageCta(); };
+  // panggung Ruang kosong: ajakan + tombol preset di tengah panggung (bukan hanya di panel)
+  function roomStageCta() {
+    var el = $('#roomStage'), on = current === 'ruang' && !roomList().length;
+    if (on) $('#roomStageB').innerHTML = roomPreList().slice(0, 4).map(function (p) { return '<button type="button" class="btn btn--line" data-room-pre="' + p.key + '"><span>' + esc(T(p.l)) + '</span></button>'; }).join('');
+    el.classList.toggle('is-on', on); el.setAttribute('aria-hidden', on ? 'false' : 'true');
+  }
+  $('#roomStage').addEventListener('click', function (e) { var b = e.target.closest('[data-room-pre]'); if (!b) return; roomPreset(b.dataset.roomPre); renderRoomPre(); renderRoom(); });
   // halaman yang mengatur panggungnya sendiri: leave dijalankan SETELAH enter halaman tujuan → jangan ditimpa furnitur
   var OWN_STAGE = ['customize', 'ruang', 'cubix', 'manufaktur', 'galeri', 'penawaran'];
-  leave.ruang = function (to) { shellEdOpen(null); raOpen(false); if (OWN_STAGE.indexOf(to) < 0) showFurniture(); };
+  leave.ruang = function (to) { $('#roomStage').classList.remove('is-on'); shellEdOpen(null); raOpen(false); if (OWN_STAGE.indexOf(to) < 0) showFurniture(); };
 
   /* ======================================================================
      KONFIGURASI CUBIX — susun modul AC / AL / OT / coffee / side bebas di panggung (grid, menempel, putar, cermin)
@@ -2346,6 +2409,8 @@
     }
     return rel ? CZI.base + rel + '.png?v=' + m.v : null;
   }
+  // lapis aksen (bagian yang dijelaskan, emas) untuk gambar garis yang memilikinya
+  function czIconA(u) { var m = CZI.man; if (!u || !m || !m.acc) return null; var rel = u.slice(CZI.base.length).replace(/\.png\?.*$/, ''); return m.acc[rel] ? CZI.base + rel + '.a.png?v=' + m.v : null; }
   // contoh bahan untuk kelompok warna: kain (kulit / bouclé / beludru), kayu, logam, batu, warna HPL
   function czSwatch(gr, x) {
     var k = '', u = gr.id === 'color' || gr.id === 'color2' ? XC.find(XC.UPH, cz.uph) : null;
@@ -2381,7 +2446,10 @@
     if (x.hex) { fig = czSwatch(gr, x); kind = 'is-sw'; }
     else {
       var u = czIcon(gr, x);
-      if (u) { kind = 'is-ic'; fig = '<span class="cz-card__f"><i class="cz-card__m' + (CZI.seen[u] ? ' is-m" style="--m:url(\'' + u + '\')' : '') + '" data-m="' + esc(u) + '"></i></span>'; }
+      if (u) {
+        var ua = czIconA(u), mk = function (url, c) { return '<i class="cz-card__m' + c + (CZI.seen[url] ? ' is-m" style="--m:url(\'' + url + '\')' : '') + '" data-m="' + esc(url) + '"></i>'; };
+        kind = 'is-ic'; fig = '<span class="cz-card__f' + (ua ? ' has-a' : '') + '">' + mk(u, '') + (ua ? mk(ua, ' cz-card__a') : '') + '</span>';
+      }
       else if (x.svg) { kind = 'is-ic'; fig = '<span class="cz-card__f">' + x.svg + '</span>'; }   // gambar garis SVG dari spesifikasi (pilihan tanpa render)
     }
     return '<button type="button" class="cz-o cz-card ' + kind + (on ? ' is-on' : '') + '" data-v="' + x.id + '" title="' + esc(full) + '">' + fig +
@@ -3147,6 +3215,11 @@
     if (!u) html += '<div class="card" style="margin-bottom:18px"><p class="sh"><span>' + T('Masuk atau daftar') + '</span></p><p class="txt" style="margin-bottom:12px">' + T('Checkout berikutnya terisi otomatis — kontak, alamat, dan rancangan tersimpan di akun Anda.') + '</p>' + provHtml() + '</div>';
     else html += '<dl class="kv" style="margin-bottom:18px"><dt>' + T('Masuk dengan') + '</dt><dd>' + esc((XA.providers.filter(function (p) { return p.id === u.provider; })[0] || {}).label || '—') + '</dd>' + (u.phone ? '<dt>WhatsApp</dt><dd>' + esc(u.phone) + '</dd>' : '') + (u.email ? '<dt>Email</dt><dd>' + esc(u.email) + '</dd>' : '') + (u.instagram ? '<dt>Instagram</dt><dd>' + esc(u.instagram) + '</dd>' : '') + '</dl>';
     var tabs = [['pesanan', T('Pesanan'), orders.length], ['rancangan', T('Rancangan'), ds.length], ['alamat', T('Alamat'), u ? (u.addresses || []).length : 0], ['akun', T('Akun'), null]];
+    if (!u) {   // belum masuk: Alamat & Akun butuh akun; Pesanan / Rancangan hanya bila ada isinya (tamu)
+      tabs = tabs.filter(function (t) { return t[2] > 0 && (t[0] === 'pesanan' || t[0] === 'rancangan'); });
+      if (!tabs.length) { body.innerHTML = html; return; }
+      if (!tabs.some(function (t) { return t[0] === pfTab; })) pfTab = tabs[0][0];
+    }
     html += '<div class="pf-tabs">' + tabs.map(function (t) { return '<button type="button" data-pf="' + t[0] + '" class="' + (pfTab === t[0] ? 'is-on' : '') + '">' + t[1] + (t[2] ? '<em>' + t[2] + '</em>' : '') + '</button>'; }).join('') + '</div>';
     if (pfTab === 'pesanan') {
       html += orders.length ? '<ul class="list">' + orders.map(function (o) {

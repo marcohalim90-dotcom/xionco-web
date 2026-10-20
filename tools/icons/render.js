@@ -9,7 +9,7 @@
      ICON.cam(spec)          → kamera {az, el, fov, target, dist, crop:[x0,y0,x1,y1] NDC}
      ICON.snap()             → G-buffer kecil (analisis) dari kamera tanpa crop
      ICON.footprint(g)       → kotak NDC piksel objek · ICON.diff(a, b) → kotak NDC perbedaan
-     ICON.draw(spec)         → Uint8Array alfa 240 × 240
+     ICON.draw(spec, {acc})  → Uint8Array alfa 240 × 240 (acc: hanya garis bagian aksen = bagian yang dijelaskan)
    ========================================================================== */
 (function () {
   'use strict';
@@ -36,42 +36,44 @@
 
   /* ---------------- tepi */
   var EF = [
-    'uniform sampler2D tG; uniform vec2 px; uniform float rS, rD, rI, tD, tN, wD, wI;', 'varying vec2 vUv;',
+    'uniform sampler2D tG; uniform vec2 px; uniform float rS, rD, rI, tD, tN, wD, wI, uAcc;', 'varying vec2 vUv;',
     'vec3 octD(vec2 e) { vec3 n = vec3(e, 1.0 - abs(e.x) - abs(e.y)); if (n.z < 0.0) n.xy = (1.0 - abs(n.yx)) * vec2(n.x >= 0.0 ? 1.0 : -1.0, n.y >= 0.0 ? 1.0 : -1.0); return normalize(n); }',
     'vec4 G(vec2 o) { return texture2D(tG, vUv + o * px); }',
     'bool bg(vec4 g) { return g.w < 0.25; }',
     'float idv(vec4 g) { return floor(g.w + 0.01); }',
-    'bool fnt(vec4 g) { return fract(g.w) > 0.25; }',
+    'bool fnt(vec4 g) { return fract(g.w) > 0.4; }',
+    'bool acc(vec4 g) { float f = fract(g.w); return g.w >= 0.25 && f > 0.15 && f < 0.35; }',
     'void main() {',
     '  vec4 c = G(vec2(0.0)); bool cb = bg(c);',
     '  float sil = 0.0, dep = 0.0, inn = 0.0; bool faint = !cb && fnt(c);',
-    '  vec3 nc = octD(c.xy);',
+    '  vec3 nc = octD(c.xy); bool an = !cb && acc(c);',
     '  for (int i = 0; i < 16; i++) {',
     '    float a = float(i) * 0.392699; vec2 d = vec2(cos(a), sin(a));',
     // siluet: batas objek ↔ latar (tebal)
-    '    vec4 s = G(d * rS); if (bg(s) != cb) { sil = 1.0; if (!bg(s) && fnt(s)) faint = true; }',
+    '    vec4 s = G(d * rS); if (acc(s)) an = true; if (bg(s) != cb) { sil = 1.0; if (!bg(s) && fnt(s)) faint = true; }',
     '    if (cb) continue;',
     // kontur kedalaman: turunan kedua 1/z (bidang datar = 0, juga yang miring)
     '    if (i < 8) { vec4 p = G(d * rD), q = G(-d * rD);',
     '      if (!bg(p) && !bg(q)) { float e = abs(1.0 / p.z + 1.0 / q.z - 2.0 / c.z) * c.z; if (e > tD) dep = 1.0; }',
     '      else if (!bg(p) && abs(p.z - c.z) > tD * 3.0 * c.z) dep = 1.0; }',
     // lipatan (normal) & sambungan bagian (id)
-    '    vec4 m = G(d * rI); if (!bg(m)) { if (idv(m) != idv(c)) { if (abs(m.z - c.z) > 0.0006 * c.z || dot(octD(m.xy), nc) < 0.995) { inn = 1.0; if (fnt(m)) faint = true; } } else if (dot(octD(m.xy), nc) < tN) inn = 1.0; }',
+    '    vec4 m = G(d * rI); if (acc(m)) an = true; if (!bg(m)) { if (idv(m) != idv(c)) { if (abs(m.z - c.z) > 0.0006 * c.z || dot(octD(m.xy), nc) < 0.995) { inn = 1.0; if (fnt(m)) faint = true; } } else if (dot(octD(m.xy), nc) < tN) inn = 1.0; }',
     '  }',
     '  float a = max(sil, max(dep * wD, inn * wI));',
-    '  if (faint) a *= 0.42;',
+    '  if (faint) a *= 0.55;',   // garis konteks samar (Y1: .42 → .55 agar terbaca di kartu kecil)
+    '  if (uAcc > 0.5 && !an) a = 0.0;',   // lapis aksen: hanya garis di sekitar bagian aksen
     '  gl_FragColor = vec4(0.0, 0.0, 0.0, a);',
     '}'].join('\n');
   var edgeMat = new T.ShaderMaterial({
     vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
     fragmentShader: EF, transparent: false, depthTest: false, depthWrite: false,
-    uniforms: { tG: { value: rt.texture }, px: { value: new T.Vector2(1 / S, 1 / S) }, rS: { value: 5.6 }, rD: { value: 4.4 }, rI: { value: 3.2 }, tD: { value: .022 }, tN: { value: .72 }, wD: { value: 1 }, wI: { value: .92 } }
+    uniforms: { tG: { value: rt.texture }, px: { value: new T.Vector2(1 / S, 1 / S) }, rS: { value: 5.6 }, rD: { value: 4.4 }, rI: { value: 3.2 }, tD: { value: .022 }, tN: { value: .72 }, wD: { value: 1 }, wI: { value: .92 }, uAcc: { value: 0 } }
   });
   var quad = new T.Mesh(new T.PlaneGeometry(2, 2), edgeMat), qScene = new T.Scene(), qCam = new T.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   quad.frustumCulled = false; qScene.add(quad);
 
   /* ---------------- model */
-  var cur = null, mats = [], ICON_STATE = { mats: 'faint' };
+  var cur = null, mats = [], ICON_STATE = { mats: 'faint', weight: 1.15, accRef: null, accBox: null };
   function clear() {
     if (!cur) return;
     scene.remove(cur.group); cur.dispose(); cur = null;
@@ -81,6 +83,7 @@
   //   hide(kotak, kotakPenuh, sig) → true = bagian disembunyikan (mis. top meja saat menggambar kaki/base)
   //   dim(kotak, kotakPenuh, sig) → true = bagian digambar samar (konteks)
   //   faint: { sig: jumlah } → bagian yang sama persis dengan pilihan pembanding digambar samar (konteks)
+  //   accSolid: true → semua bagian tegas = aksen; tanpa itu ICON.state.accRef { sig: jumlah } → bagian yang TIDAK ada di pembanding = aksen
   // kembali: box (bagian tampak), sbox (bagian tegas saja), sigs (tanda tiap bagian), solid/total (jumlah bagian), parts (kotak bagian tegas)
   function build(cfg, open, opt) {
     clear(); opt = opt || {};
@@ -104,12 +107,18 @@
     });
     var full = [B.min.x, B.min.y, B.min.z, B.max.x, B.max.y, B.max.z], id = 1, vis = new T.Box3(), sb = new T.Box3(), sigs = [], solid = 0, total = 0, parts = [];
     var left = {}; if (opt.faint) for (var k in opt.faint) left[k] = opt.faint[k];
+    var aref = !opt.accSolid && ICON_STATE.accRef ? Object.assign({}, ICON_STATE.accRef) : null, accN = 0;
     list.forEach(function (e) {
       var o = e.o; sigs.push(e.sig);
       if (opt.hide && !e.placemat && opt.hide(e.box, full, e.sig)) { o.visible = false; return; }
       var ctx = !!(opt.dim && !e.placemat && opt.dim(e.box, full, e.sig)); if (!ctx && opt.faint && left[e.sig] > 0) { left[e.sig]--; ctx = true; }
-      var faint = e.m0.transparent && e.m0.opacity < .25 || e.placemat || ctx;
-      var gm = gmat(id++ + (faint ? .5 : 0), e.m0.side); mats.push(gm);
+      var faint = e.m0.transparent && e.m0.opacity < .25 || (e.placemat && ICON_STATE.mats !== 'solid') || ctx;   // mats 'solid': alas piring = bagian yang dijelaskan (tableware)
+      var ac = false;
+      if (!faint) { if (opt.accSolid) ac = true; else if (aref) { if (aref[e.sig] > 0) aref[e.sig]--; else ac = true; } }
+      var ab = ICON_STATE.accBox;   // gambar daerah: aksen hanya bagian yang titik tengahnya di daerah itu (lengan, sandaran, kaki …)
+      if (ac && ab) { var cx = (e.box[0] + e.box[3]) / 2, cy = (e.box[1] + e.box[4]) / 2, cz = (e.box[2] + e.box[5]) / 2; ac = cx >= ab[0] && cx <= ab[3] && cy >= ab[1] && cy <= ab[4] && cz >= ab[2] && cz <= ab[5]; }
+      if (ac) accN++;
+      var gm = gmat(id++ + (faint ? .5 : ac ? .25 : 0), e.m0.side); mats.push(gm);
       o.material = gm; o.castShadow = o.receiveShadow = false;
       if (!e.placemat) { vis.union(new T.Box3(new T.Vector3(e.box[0], e.box[1], e.box[2]), new T.Vector3(e.box[3], e.box[4], e.box[5]))); total++; }
       if (!faint) { solid++; parts.push(e.box); sb.union(new T.Box3(new T.Vector3(e.box[0], e.box[1], e.box[2]), new T.Vector3(e.box[3], e.box[4], e.box[5]))); }
@@ -118,7 +127,7 @@
     cur = b;
     var bx = vis.isEmpty() ? B : vis;
     return { box: [bx.min.x, bx.min.y, bx.min.z, bx.max.x, bx.max.y, bx.max.z], full: full, sbox: sb.isEmpty() ? null : [sb.min.x, sb.min.y, sb.min.z, sb.max.x, sb.max.y, sb.max.z],
-      sigs: sigs, solid: solid, total: total, parts: parts };
+      sigs: sigs, solid: solid, total: total, parts: parts, acc: accN };
   }
 
   /* ---------------- kamera */
@@ -162,7 +171,7 @@
   }
   function footprint(g) { return bbox(function (x, y) { return g[(y * A + x) * 4 + 3] > .25; }); }
   // hanya bagian tegas (tanpa bagian samar / konteks)
-  function footSolid(g) { return bbox(function (x, y) { var w = g[(y * A + x) * 4 + 3]; return w > .25 && w - Math.floor(w + .01) < .25; }); }
+  function footSolid(g) { return bbox(function (x, y) { var w = g[(y * A + x) * 4 + 3]; return w > .25 && w - Math.floor(w + .01) < .4; }); }
   function octD(a, b) { var z = 1 - Math.abs(a) - Math.abs(b), x = a, y = b; if (z < 0) { x = (1 - Math.abs(b)) * (a >= 0 ? 1 : -1); y = (1 - Math.abs(a)) * (b >= 0 ? 1 : -1); } var l = Math.hypot(x, y, z) || 1; return [x / l, y / l, z / l]; }
   // piksel yang berbeda (latar, kedalaman > 0.2 %, normal > 14°) — piksel tunggal (derau) diabaikan
   function diff(a, b) {
@@ -186,7 +195,8 @@
   function draw(sp, opt) {
     if (sp) setCam(sp);
     opt = opt || {};
-    var u = edgeMat.uniforms, k = opt.weight || 1;
+    var u = edgeMat.uniforms, k = opt.weight || ICON_STATE.weight;   // Y1: garis +15 % (pemilik: tambah 10–20 %)
+    u.uAcc.value = opt.acc ? 1 : 0;
     u.rS.value = 5.6 * k; u.rD.value = 4.2 * k; u.rI.value = 3.0 * k;
     R.setRenderTarget(rt); R.clear(); R.render(scene, cam);
     R.setRenderTarget(null); R.clear(); R.render(qScene, qCam);

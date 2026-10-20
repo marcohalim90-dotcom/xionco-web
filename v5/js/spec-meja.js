@@ -334,7 +334,7 @@
           W(), D(), RET(100, 200, function (c) { return c.form === 'return' || c.form === 'u'; }), g('h'), g('thick'),
           topMat([TOPS.veneer(), TOPS.wood(1.25), TOPS.stone(1.45), TOPS.glass(1.05)]),
           { id: 'inlay', step: 'material', type: 'chips', l: 'Inlay kulit', en: 'Leather inlay', off: 'none', when: function (c) { return c.topMat !== 'glass' && c.topShape !== 'boat'; }, opts: [O('none', 'Tanpa', 'None'),
-            O('black', 'Kulit hitam', 'Black leather', { s: 'Hitam', se: 'Black', add: 1200000 }), O('cognac', 'Kulit cognac', 'Cognac leather', { s: 'Cognac', se: 'Cognac', add: 1200000 }), O('green', 'Kulit hijau', 'Green leather', { s: 'Hijau', se: 'Green', add: 1200000 })] },
+            O('black', 'Kulit hitam', 'Black leather', { s: 'Hitam', se: 'Black', add: 1200000, hex: '#1c1a19' }), O('cognac', 'Kulit cognac', 'Cognac leather', { s: 'Cognac', se: 'Cognac', add: 1200000, hex: '#7b4a2c' }), O('green', 'Kulit hijau', 'Green leather', { s: 'Hijau', se: 'Green', add: 1200000, hex: '#2f4a3a' })] },
           woodG(function (c) { return !bodyPaint(c); }), stoneG(), panelG(), bodyG(),
           g('metal', { l: 'Finishing besi / handle', en: 'Metal / handle finish' }),
           edgeG(1.2),

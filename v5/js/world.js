@@ -806,18 +806,18 @@
       if (dur) tw(mt.color, { r: c.r, g: c.g, b: c.b, duration: dur, ease: 'power2.inOut' }); else mt.color.copy(c);
     });
   }
-  function tintModel(obj, hexStr, dur) {
+  function tintModel(obj, hexStr, dur, pilHex) {   // pilHex: warna bantal (material extras part 'pillow', CUBIX) — kosong = sama dengan kain
     if (!obj || !obj.userData.mats) return;
     var roles = obj.userData.mats.some(function (mt) { return mt.userData.role; });
     obj.userData.mats.forEach(function (mt) {
       if (!mt.userData.col0) mt.userData.col0 = mt.color.clone();
       if (roles ? mt.userData.role !== 'fabric' : (mt.metalness > .5 || !mt.map && !mt.userData.map0)) return;   // model SKP: hanya kain (extras role); lainnya: logam tidak diwarnai
-      var tex = !!(mt.map || mt.userData.map0);
-      mt.userData.tint = hexStr || null; mt.userData.tintTex = tex;
+      var tex = !!(mt.map || mt.userData.map0), hx = mt.userData.part === 'pillow' && pilHex ? pilHex : hexStr;
+      mt.userData.tint = hx || null; mt.userData.tintTex = tex;
       if (!tex) return;
       if (!mt.userData.map0) mt.userData.map0 = mt.map;
-      if (hexStr && mt.userData.mapN === undefined) mt.userData.mapN = normalMap(mt.userData.map0);
-      var want = hexStr ? mt.userData.mapN || mt.userData.map0 : mt.userData.map0;
+      if (hx && mt.userData.mapN === undefined) mt.userData.mapN = normalMap(mt.userData.map0);
+      var want = hx ? mt.userData.mapN || mt.userData.map0 : mt.userData.map0;
       if (mt.map !== want) { mt.map = want; mt.needsUpdate = true; }
     });
     applyWB(obj, dur == null ? .8 : dur);
@@ -1786,7 +1786,7 @@
     if (Math.abs(b.w - fb.w) / fb.w > .06 || Math.abs(b.d - fb.d) / fb.d > .1) { pc.framed = { w: b.w, d: b.d }; frameItem(b, .9); }
     return true;
   };
-  XW.setTint = function (hexStr) { if (st.kind === 'model') tintModel(item, hexStr); };
+  XW.setTint = function (hexStr, pilHex) { if (st.kind === 'model') tintModel(item, hexStr, undefined, pilHex); };
   /* bagian varian (mis. VERK Laci = kabinet laci, tools/glb/part-diff.py): ditempel ke model produk yang sedang tampil —
      produk tidak dimuat ulang. Material bagian = salinan material model dasar dengan peran sama (kayu / logam / cat),
      jadi warna & serat persis sama. Muncul memudar sambil bergeser halus dari samping; hilang memudar keluar. */

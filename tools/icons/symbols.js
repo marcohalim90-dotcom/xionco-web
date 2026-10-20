@@ -9,7 +9,7 @@
    ========================================================================== */
 (function () {
   'use strict';
-  var W1 = 2.7, W2 = 1.5, W3 = 1.1;
+  var W1 = 3.1, W2 = 1.7, W3 = 1.25;   // Y1: +15 % (sama dengan garis gambar 3D)
   var C30 = Math.cos(Math.PI / 6);
   var f = function (n) { return Math.round(n * 10) / 10; };
   var uid = 0;
@@ -370,6 +370,101 @@
   add('kursi/dining:cushion__cord', seatSq(function (b) { var s = ''; for (var i = 1; i < 10; i++) { var t = i / 10; s += onFace(b.top, [[t, .05, t, .95]], i % 2 ? W2 : W3); } for (i = 1; i < 10; i++) { var t2 = i / 10; s += onFace(b.top, [[.05, t2, .95, t2]], W3); } return s; }), P2);
   add('kursi/dining:cushion__cane', seatSq(function (b) { var q = [quadPt(b.top, .1, .1), quadPt(b.top, .9, .1), quadPt(b.top, .9, .9), quadPt(b.top, .1, .9)], s = poly(q, W2), m = ''; for (var i = 0; i < 8; i++) for (var j = 0; j < 8; j++) { var c = quadPt(q, (i + .5) / 8, (j + .5) / 8); m += ell(c[0], c[1], 5, 3, W3); } return s + m + onFace(q, [[0, 0, 1, 1], [1, 0, 0, 1]], .8); }), P2);
   add('kursi/stool:cushion__cord', (function () { var s = ell(120, 90, 74, 34, W1) + path('M46 90 L46 104 Q120 150 194 104 L194 90', W1), m = ''; for (var i = -8; i <= 8; i++) { m += line([120 + i * 9 - 40, 50], [120 + i * 9 + 40, 130], W3) + line([120 + i * 9 + 40, 50], [120 + i * 9 - 40, 130], W3); } var id = 's' + (++uid); return '<clipPath id="' + id + '"><ellipse cx="120" cy="90" rx="70" ry="31"/></clipPath><g clip-path="url(#' + id + ')">' + m + '</g>' + s + line([70, 122], [64, 206], W1) + line([170, 122], [176, 206], W1) + line([104, 132], [102, 200], W2) + line([136, 132], [138, 200], W2); })(), P2);
+
+
+  /* ================================================================== Y3 · PILIHAN BEDA BAHAN (garis 3D tidak bisa membedakan) */
+  var F = { force: true };
+  // badan & laci meja: senada top (serat kayu) / dicat (HPL / duco)
+  function drawerFront(x0, y0, x1, y1) { var h = (y1 - y0) / 3, s = ''; for (var i = 1; i < 3; i++) s += line([x0, y0 + h * i], [x1, y0 + h * i], W2); for (i = 0; i < 3; i++) s += line([(x0 + x1) / 2 - 14, y0 + h * i + h / 2], [(x0 + x1) / 2 + 14, y0 + h * i + h / 2], W1); return s; }
+  add('body__same', door(function (x0, y0, x1, y1) { var s = ''; for (var i = 1; i < 8; i++) { var x = x0 + i * (x1 - x0) / 8; s += path('M' + f(x) + ' ' + (y0 + 4) + ' C' + f(x + 6) + ' ' + (y0 + 60) + ' ' + f(x - 6) + ' ' + (y0 + 120) + ' ' + f(x + 2) + ' ' + (y1 - 4), W3); } return s + drawerFront(x0, y0, x1, y1); }), F);
+  add('body__paint', door(function (x0, y0, x1, y1) { return drawerFront(x0, y0, x1, y1) + path('M' + (x1 - 64) + ' ' + (y0 - 18) + ' l26 0 l0 12 l-26 0 z', W2) + line([x1 - 51, y0 - 6], [x1 - 51, y0 + 6], W2) + line([x1 - 64, y0 - 12], [x1 - 70, y0 - 12], W2); }, { r: 6 }), F);
+
+  // rangka (ranjang susun / loft / anak; kursi makan & stool): tiang kayu / dicat / pipa besi / campuran
+  function rail(post) { return line([30, 62], [210, 62], W1) + line([30, 74], [210, 74], W2) + line([30, 62], [30, 74], W2) + line([210, 62], [210, 74], W2) + post + line([24, 212], [216, 212], W2); }
+  var postWood = path('M100 74 L136 74 L136 208 L100 208 Z', W1) + path('M110 82 Q116 140 112 200', W3) + path('M124 80 Q120 136 126 202', W3) + path('M130 90 Q128 120 131 150', W3);
+  var postPaint = path('M100 74 L136 74 L136 208 L100 208 Z', W1) + line([108, 84], [108, 196], W2) + path('M124 74 Q124 92 128 98 Q132 92 132 74', W2);
+  var postMetal = path('M110 74 L126 74 L126 208 L110 208 Z', W1) + line([115, 84], [115, 198], W3) + line([121, 88], [121, 118], W2) + ell(118, 208, 10, 3, W2);
+  var bedFrame = { wood: rail(postWood), painted: rail(postPaint), metal: rail(postMetal) };
+  ['bunk', 'loft', 'kids'].forEach(function (sb) { for (var k in bedFrame) add('divan/' + sb + ':frame__' + k, bedFrame[k], F); });
+  function seatOn(leg) { return path('M40 70 L200 70 L200 92 L40 92 Z', W1) + line([40, 70], [60, 56], W2) + line([60, 56], [214, 56], W2) + line([214, 56], [200, 70], W2) + line([214, 56], [214, 78], W2) + line([214, 78], [200, 92], W2) + leg + line([24, 212], [216, 212], W2); }
+  var legWood = path('M66 92 L88 92 L84 208 L70 208 Z', W1) + path('M74 100 Q78 150 76 200', W3) + path('M152 92 L174 92 L170 208 L156 208 Z', W1) + path('M160 100 Q164 150 162 200', W3);
+  var legMetal = path('M72 92 L82 92 L82 208 L72 208 Z', W1) + line([76, 100], [76, 200], W3) + path('M158 92 L168 92 L168 208 L158 208 Z', W1) + line([162, 100], [162, 200], W3);
+  var seatGrain = '';
+  for (var gi = 1; gi < 4; gi++) seatGrain += path('M' + (44 + gi * 2) + ' ' + (70 + gi * 5.5) + ' C100 ' + (66 + gi * 6) + ' 150 ' + (74 + gi * 5) + ' ' + (198 - gi) + ' ' + (70 + gi * 5.5), W3);
+  var chairFrame = { wood: seatOn(legWood + seatGrain), metal: seatOn(legMetal + line([50, 81], [190, 81], W3)), mix: seatOn(legMetal + seatGrain) };
+  ['dining', 'stool'].forEach(function (sb) { for (var k in chairFrame) add('kursi/' + sb + ':frame__' + k, chairFrame[k], F); });
+
+  // jenis kaca pintu kabinet (bar)
+  function glassDoor(fill) { return door(function (x0, y0, x1, y1) { var g = [[x0 + 16, y0 + 16], [x1 - 16, y0 + 16], [x1 - 16, y1 - 16], [x0 + 16, y1 - 16]]; return poly(g, W2) + clip(g, fill(x0 + 16, y0 + 16, x1 - 16, y1 - 16)) + line([x1 - 8, (y0 + y1) / 2 - 18], [x1 - 8, (y0 + y1) / 2 + 18], W1); }); }
+  var refl = function (x0, y0) { return line([x0 + 10, y0 + 60], [x0 + 60, y0 + 10], W2) + line([x0 + 18, y0 + 88], [x0 + 88, y0 + 18], W2); };
+  add('glassType__clear', glassDoor(function (x0, y0) { return refl(x0, y0); }), F);
+  add('glassType__fluted', glassDoor(function (x0, y0, x1, y1) { var s = ''; for (var x = x0 + 7; x < x1; x += 7) s += line([x, y0], [x, y1], W3); return s; }), F);
+  add('glassType__bronze', glassDoor(function (x0, y0, x1, y1) { return diag([x0, y0, x1, y1], 7, .9) + refl(x0, y0); }), F);
+  add('glassType__frosted', glassDoor(function (x0, y0, x1, y1) { var s = ''; for (var y = y0 + 6, r = 0; y < y1; y += 9, r++) for (var x = x0 + 6 + (r % 2) * 4.5; x < x1; x += 9) s += dot(x, y, 1.2); return s; }), F);
+
+  // panel privasi meja kantor: tanpa / kain / akrilik / kaca
+  function screen(body) { return poly([[26, 150], [214, 150], [214, 164], [26, 164]], W1) + line([26, 150], [44, 138], W2) + line([214, 150], [226, 140], W2) + line([44, 138], [226, 138], W2) + line([226, 138], [226, 152], W2) + line([214, 164], [226, 152], W2) + body + line([60, 164], [60, 214], W2) + line([180, 164], [180, 214], W2); }
+  var scr = [[54, 48], [196, 48], [196, 140], [54, 140]];
+  add('meja/office:screen__none', screen(poly(scr, W2, true, DASH)), F);
+  add('meja/office:screen__fabric', screen(poly(scr, W1) + clip(scr, (function () { var s = ''; for (var i = 0; i < 22; i++) s += line([54 + i * 7, 48], [54 + i * 7, 140], .9) + line([54, 48 + i * 5], [196, 48 + i * 5], .9); return s; })())), F);
+  add('meja/office:screen__acrylic', screen(path('M66 48 L184 48 Q196 48 196 60 L196 140 L54 140 L54 60 Q54 48 66 48 Z', W1) + line([70, 112], [110, 66], W2) + line([88, 124], [136, 70], W2)), F);
+  add('meja/office:screen__glass', screen(poly(scr, W1) + poly([[60, 54], [190, 54], [190, 134], [60, 134]], W3) + line([74, 116], [112, 70], W2) + line([92, 126], [136, 74], W2) + poly([[86, 134], [98, 134], [98, 152], [86, 152]], W2) + poly([[152, 134], [164, 134], [164, 152], [152, 152]], W2)), F);
+
+  // panel dinding di belakang kabinet gantung: tanpa / polos / fluted / bilah
+  function wallP(panel) { return panel + poly([[46, 138], [194, 138], [194, 176], [46, 176]], W1) + line([46, 138], [58, 130], W2) + line([58, 130], [204, 130], W2) + line([204, 130], [194, 138], W2) + line([204, 130], [204, 166], W2) + line([204, 166], [194, 176], W2) + line([120, 138], [120, 176], W2) + line([88, 157], [100, 157], W2) + line([140, 157], [152, 157], W2); }
+  var wp = [[62, 22], [178, 22], [178, 218], [62, 218]];
+  add('wallPanel__none', wallP(poly(wp, W2, true, DASH)), F);
+  add('wallPanel__flat', wallP(poly(wp, W1) + line([70, 30], [170, 30], W3)), F);
+  add('wallPanel__fluted', wallP(poly(wp, W1) + clip(wp, (function () { var s = ''; for (var x = 68; x < 178; x += 7) s += line([x, 22], [x, 218], W3); return s; })())), F);
+  add('wallPanel__slat', wallP((function () { var s = ''; for (var x = 62; x < 176; x += 14) s += poly([[x, 22], [x + 8, 22], [x + 8, 218], [x, 218]], W2); return s; })()), F);
+
+  // panel depan meja executive: terbuka / polos / fluted / kulit
+  function exFront(panel) {
+    return poly([[20, 52], [220, 52], [220, 66], [20, 66]], W1) + line([20, 52], [36, 40], W2) + line([36, 40], [232, 40], W2) + line([232, 40], [220, 52], W2) + line([232, 40], [232, 54], W2) + line([232, 54], [220, 66], W2) +
+      poly([[26, 66], [70, 66], [70, 208], [26, 208]], W1) + poly([[170, 66], [214, 66], [214, 208], [170, 208]], W1) + line([36, 104], [60, 104], W2) + line([36, 152], [60, 152], W2) + line([180, 104], [204, 104], W2) + line([180, 152], [204, 152], W2) + panel + line([14, 210], [226, 210], W2);
+  }
+  var fp = [[70, 70], [170, 70], [170, 178], [70, 178]];
+  add('meja/executive:front__open', exFront(poly(fp, W2, true, DASH)), F);
+  add('meja/executive:front__panel', exFront(poly(fp, W1)), F);
+  add('meja/executive:front__fluted', exFront(poly(fp, W1) + clip(fp, (function () { var s = ''; for (var x = 76; x < 170; x += 7) s += line([x, 70], [x, 178], W3); return s; })())), F);
+  add('meja/executive:front__leather', exFront(poly(fp, W1) + poly([[78, 78], [162, 78], [162, 170], [78, 170]], W3, true, DASH2) + clip(fp, (function () { var s = ''; for (var i = -6; i < 8; i++) s += line([70 + i * 20, 70], [70 + i * 20 + 108, 178], .9) + line([70 + i * 20 + 108, 70], [70 + i * 20, 178], .9); return s; })())), F);
+
+  // plinth meja resepsionis (tampak samping): mundur / melayang / besi
+  function counterSide(base) { return poly([[40, 34], [200, 34], [200, 46], [40, 46]], W1) + poly([[52, 46], [196, 46], [196, 176], [52, 176]], W1) + line([60, 60], [188, 60], W3) + base + line([20, 212], [220, 212], W2); }
+  add('meja/reception:plinth__recessed', counterSide(poly([[70, 176], [180, 176], [180, 210], [70, 210]], W1) + diag([52, 176, 70, 210], 6, .9)), F);
+  add('meja/reception:plinth__float', counterSide(poly([[96, 176], [156, 176], [156, 196], [96, 196]], W2) + line([60, 200], [190, 200], W3, DASH2)), F);
+  add('meja/reception:plinth__metal', counterSide(poly([[52, 176], [196, 176], [196, 210], [52, 210]], W1) + line([58, 186], [190, 186], W2) + line([58, 192], [120, 192], W3)), F);
+
+  // headboard panel kayu (serat) — panel polos tetap gambar 3D
+  add('headboard__woodpanel', (function () {
+    var hb = [[40, 30], [200, 30], [200, 132], [40, 132]], s = poly(hb, W1);
+    var g = ''; for (var i = 1; i < 9; i++) { var x = 40 + i * 160 / 9; g += path('M' + f(x) + ' 34 C' + f(x + 5) + ' 64 ' + f(x - 5) + ' 98 ' + f(x + 2) + ' 128', W3); }
+    return s + clip(hb, g) + poly([[30, 132], [210, 132], [226, 160], [14, 160]], W1) + line([14, 160], [14, 176], W2) + line([226, 160], [226, 176], W2) + line([14, 176], [226, 176], W1) + line([60, 140], [180, 140], W3);
+  })(), F);
+
+  // isi kabinet: cermin belakang, nampan tarik, USB, gantungan gelas, laci meja
+  add('interior__mback', cell(function (x0, y0, x1, y1) { return line([x0 + 30, y1 - 40], [x0 + 80, y0 + 40], W2) + line([x0 + 44, y1 - 30], [x0 + 104, y0 + 46], W2) + line([x0 + 4, (y0 + y1) / 2], [x1 - 4, (y0 + y1) / 2], W2); }), P2);
+  add('interior__tray', cell(function (x0, y0, x1, y1) { var y = (y0 + y1) / 2; return poly([[x0 + 6, y], [x1 - 6, y], [x1 + 14, y + 26], [x0 - 14, y + 26]], W1) + line([x0 - 14, y + 26], [x0 - 14, y + 34], W2) + line([x1 + 14, y + 26], [x1 + 14, y + 34], W2) + line([x0 - 14, y + 34], [x1 + 14, y + 34], W2) + line([(x0 + x1) / 2 - 12, y + 30], [(x0 + x1) / 2 + 12, y + 30], W1); }), P2);
+  add('interior__usb', cell(function (x0, y0, x1, y1) { var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2; return poly([[cx - 34, cy - 22], [cx + 34, cy - 22], [cx + 34, cy + 22], [cx - 34, cy + 22]], W1) + poly([[cx - 24, cy - 6], [cx - 6, cy - 6], [cx - 6, cy + 6], [cx - 24, cy + 6]], W2) + poly([[cx + 6, cy - 6], [cx + 24, cy - 6], [cx + 24, cy + 6], [cx + 6, cy + 6]], W2) + line([cx - 20, cy - 1], [cx - 10, cy - 1], W3) + line([cx + 10, cy - 1], [cx + 20, cy - 1], W3); }), P2);
+  add('interior__stem', cell(function (x0, y0, x1, y1) { var s = line([x0 + 4, y0 + 8], [x1 - 4, y0 + 8], W2); for (var i = 0; i < 3; i++) { var cx = x0 + 22 + i * 32; s += line([cx, y0 + 8], [cx, y0 + 26], W2) + path('M' + (cx - 12) + ' ' + (y0 + 26) + ' L' + (cx + 12) + ' ' + (y0 + 26) + ' Q' + (cx + 12) + ' ' + (y0 + 58) + ' ' + cx + ' ' + (y0 + 60) + ' Q' + (cx - 12) + ' ' + (y0 + 58) + ' ' + (cx - 12) + ' ' + (y0 + 26), W2); } return s; }), P2);
+
+  // putar dudukan stool: tidak / putar / putar + gas lift
+  function stoolS(extra) { return ell(120, 60, 52, 14, W1) + path('M68 60 L68 72 Q120 92 172 72 L172 60', W1) + line([120, 82], [120, 196], W1) + ell(120, 200, 40, 10, W1) + extra; }
+  add('swivel__no', stoolS(''), { prefer: true });
+  add('swivel__yes', stoolS(path('M58 38 Q120 12 182 38', W2) + path('M174 30 L184 39 L171 43', W2)), { prefer: true });
+  add('swivel__gas', stoolS(path('M58 38 Q120 12 182 38', W2) + path('M174 30 L184 39 L171 43', W2) + poly([[112, 100], [128, 100], [128, 160], [112, 160]], W2) + path('M146 104 L146 156 M140 112 L146 104 L152 112 M140 148 L146 156 L152 148', W2)), { prefer: true });
+
+  // muka depan meja console / resepsionis: polos / fluted / cane / bilah / batu / LED
+  function face(extra) { return door(function (x0, y0, x1, y1) { return extra(x0, y0, x1, y1) + line([x0 - 16, y0 - 2], [x1 + 28, y0 - 2], W1); }); }
+  add('face__plain', face(function (x0, y0, x1, y1) { return line([x0 + 6, y0 + 8], [x1 - 6, y0 + 8], W3); }), F);
+  add('face__fluted', face(function (x0, y0, x1, y1) { var s = ''; for (var x = x0 + 9; x < x1 - 4; x += 9) s += line([x, y0 + 3], [x, y1 - 3], W2); return s; }), F);
+  S['face__cane'] = { svg: S['finish__cane'].svg, prefer: false, force: true };   // rotan = simbol finishing cane
+  add('face__slats', face(function (x0, y0, x1, y1) { var s = ''; for (var x = x0 + 4; x < x1 - 8; x += 16) s += poly([[x, y0 + 3], [x + 9, y0 + 3], [x + 9, y1 - 3], [x, y1 - 3]], W2); return s; }), F);
+  add('face__stone', face(function (x0, y0, x1, y1) { return path('M' + (x0 + 6) + ' ' + (y0 + 40) + ' Q' + (x0 + 50) + ' ' + (y0 + 70) + ' ' + (x0 + 40) + ' ' + (y0 + 110) + ' T' + (x1 - 10) + ' ' + (y1 - 20), W2) + path('M' + (x1 - 8) + ' ' + (y0 + 20) + ' Q' + (x0 + 70) + ' ' + (y0 + 50) + ' ' + (x0 + 80) + ' ' + (y0 + 90), W3) + path('M' + (x0 + 10) + ' ' + (y1 - 50) + ' Q' + (x0 + 40) + ' ' + (y1 - 40) + ' ' + (x0 + 60) + ' ' + (y1 - 10), W3); }), F);
+  add('face__led', face(function (x0, y0, x1, y1) { var s = line([x0 + 8, y1 - 14], [x1 - 8, y1 - 14], W1); for (var i = 0; i < 6; i++) { var x = x0 + 18 + i * (x1 - x0 - 36) / 5; s += line([x, y1 - 22], [x, y1 - 34], W3); } return s; }), F);
+
+  // sandaran stool anyaman (rotan) — pola tidak tampak di gambar 3D
+  add('kursi/stool:backStyle__woven', (function () { var bk = [[60, 30], [180, 30], [180, 120], [60, 120]], m = ''; for (var i = -8; i < 14; i++) { m += line([60 + i * 12, 30], [60 + i * 12 + 90, 120], .9) + line([60 + i * 12 + 90, 30], [60 + i * 12, 120], .9); } return path('M60 120 L60 42 Q60 30 72 30 L168 30 Q180 30 180 42 L180 120', W1) + clip(bk, m) + ell(120, 132, 64, 14, W1) + line([70, 140], [62, 210], W1) + line([170, 140], [178, 210], W1) + line([96, 146], [94, 210], W2) + line([144, 146], [146, 210], W2); })(), { prefer: true });
 
   window.SYMBOLS = S;
 })();

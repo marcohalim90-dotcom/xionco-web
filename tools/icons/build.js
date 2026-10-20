@@ -7,7 +7,8 @@
    Butuh puppeteer-core (npm i -g puppeteer-core, atau NODE_PATH ke node_modules yang memilikinya)
    dan Chrome (CHROME=path untuk mengganti lokasi bawaan).
 
-   Hasil: assets/cz-icons/<cat>/<sub>/<group>__<opt>.png   gambar 3D per sub
+   Hasil: assets/cz-icons/<cat>/<sub>/<group>__<opt>.png   gambar 3D per sub (garis dasar)
+          assets/cz-icons/<cat>/<sub>/<group>__<opt>.a.png garis bagian yang dijelaskan (lapis aksen, manifest.acc)
           assets/cz-icons/_sym/<group>__<opt>.png           simbol bersama (bahan, isian, …)
           assets/cz-icons/_jenis/<cat>.png · <cat>__<sub>.png
           assets/cz-icons/manifest.json                     peta pilihan → file (dibaca app.js)
@@ -69,15 +70,16 @@ const blank = (a) => !a || !a.some((v) => v > 20);
 
   if (!ONLY.length) fs.rmSync(OUT, { recursive: true, force: true });
   const manPath = path.join(OUT, 'manifest.json');
-  let man = { v: '', size: N, jenis: {}, subs: {} };
+  let man = { v: '', size: N, jenis: {}, subs: {}, acc: {} };
   if (ONLY.length && fs.existsSync(manPath)) man = JSON.parse(fs.readFileSync(manPath, 'utf8'));
+  man.acc = man.acc || {};   // lapis aksen (bagian yang dijelaskan, tampil emas): <rel>.a.png
   const jobs = (await page.evaluate(() => PLAN.jobs())).filter((j) => !ONLY.length || ONLY.some((o) => (j.cat + '/' + (j.sub || '')).startsWith(o) || o === j.cat));
   const syms = new Set(), log = [], counts = {};
   const write = (rel, a) => { const f = path.join(OUT, rel + '.png'); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, png(a)); };
   for (const sk of Object.keys(man.subs)) if (ONLY.some((o) => sk.startsWith(o))) man.subs[sk] = {};
   let n = 0, skipped = 0;
   for (const j of jobs) {
-    const res = await page.evaluate((j) => PLAN.run(j).map((r) => ({ id: r.id, a: r.a ? ICON.b64(r.a) : null, sym: r.sym || null, note: r.note || '', skip: !!r.skip })), j);
+    const res = await page.evaluate((j) => PLAN.run(j).map((r) => ({ id: r.id, a: r.a ? ICON.b64(r.a) : null, acc: r.acc ? ICON.b64(r.acc) : null, sym: r.sym || null, note: r.note || '', skip: !!r.skip })), j);
     for (const r of res) {
       const a = r.a ? Buffer.from(r.a, 'base64') : null;
       if (j.kind === 'cat' || j.kind === 'sub') {
@@ -90,7 +92,11 @@ const blank = (a) => !a || !a.some((v) => v > 20);
       const sk = j.cat + '/' + j.sub, key = j.group + '__' + r.id;
       man.subs[sk] = man.subs[sk] || {};
       counts[j.cat] = counts[j.cat] || { d3: 0, sym: 0, none: 0 };
-      if (!blank(a)) { write(j.cat + '/' + j.sub + '/' + key, a); man.subs[sk][key] = ''; counts[j.cat].d3++; n++; }
+      if (!blank(a)) {
+        const rel = j.cat + '/' + j.sub + '/' + key, acc = r.acc ? Buffer.from(r.acc, 'base64') : null;
+        write(rel, a); man.subs[sk][key] = ''; counts[j.cat].d3++; n++;
+        if (acc && !blank(acc)) { write(rel + '.a', acc); man.acc[rel] = 1; counts[j.cat].acc = (counts[j.cat].acc || 0) + 1; n++; } else delete man.acc[rel];
+      }
       else if (r.sym) { syms.add(r.sym); man.subs[sk][key] = '_sym/' + r.sym.replace(/[/:]/g, '_'); counts[j.cat].sym++; }
       else { counts[j.cat].none++; log.push(sk + ' ' + key + ': TANPA GAMBAR ' + r.note); }
       if (r.note) log.push(sk + ' ' + key + ': ' + r.note);

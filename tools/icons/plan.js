@@ -102,10 +102,10 @@
       backrest: { m: 'new', v: { az: 30, el: 14 }, fb: { m: 'region', r: 'upper' } }, backStyle: { m: 'new', v: { az: 26, el: 12 }, fb: { m: 'region', r: 'upper' } },
       backS: { m: 'new', v: { az: 30, el: 14 }, fb: { m: 'region', r: 'upper' } },
       arm: { m: 'region', r: 'arm', v: { az: 30, el: 14 } }, armStyle: { m: 'region', r: 'upper', v: { az: 30, el: 14 } },
-      backTuft: SMALL.test(sub) ? { m: 'region', r: 'upper', v: { az: 16, el: 10 } } : { m: 'region', r: 'back', v: { az: 12, el: 10 } },
-      seatC: { m: 'region', r: 'seat', v: { az: 20, el: 30 } }, seatTuft: { m: 'region', r: 'seat', v: { az: 20, el: 34 } },
+      backTuft: SMALL.test(sub) ? { m: 'region', r: 'upper', v: { az: 16, el: 10 }, weight: 1.3, zoom: .8 } : { m: 'region', r: 'back', v: { az: 12, el: 10 }, weight: 1.3, zoom: .72 },
+      seatC: { m: 'region', r: 'seat', v: { az: 20, el: 30 } }, seatTuft: { m: 'region', r: 'seat', v: { az: 20, el: 34 }, weight: 1.3, zoom: .72 },
       top: cat === 'kabinet' ? { m: 'region', r: 'topR', v: { az: 30, el: 22 } } : { m: 'region', r: 'seat', v: { az: 20, el: 32 } },
-      topTuft: { m: 'region', r: 'seat', v: { az: 20, el: 32 } }, tuft: { m: 'full', v: { el: 32 } }, sides: { m: 'full', v: { el: 10 } },
+      topTuft: { m: 'region', r: 'seat', v: { az: 20, el: 32 }, weight: 1.3, zoom: .72 }, tuft: { m: 'full', v: { el: 32 }, weight: 1.3 }, sides: { m: 'full', v: { el: 10 } },
       cushion: SMALL.test(sub) ? { m: 'region', r: 'band', v: { az: 28, el: 26 } } : { m: 'new', v: { az: 28, el: 24 }, fb: { m: 'region', r: 'seat', v: { az: 20, el: 30 } } },
       seatShape: { m: 'region', r: 'band', v: { az: 28, el: 34 } },
       ends: { m: 'new', v: { az: 32, el: 14 }, fb: { m: 'region', r: 'arm', v: { az: 30, el: 14 } } },
@@ -123,7 +123,7 @@
       // kabinet (spec-kabinet.js): model pintu, jenis kaca, batu top, model & panel kabinet gantung
       doorStyle: { m: 'full', v: { az: 24, el: 12 }, open: 'one' }, glassType: { m: 'region', r: 'frontR', v: { az: 14, el: 8 } },
       topStone: { m: 'region', r: 'topR', v: { az: 30, el: 22 } }, wallType: { m: 'full', v: { az: 26, el: 10 } }, wallPanel: { m: 'new', v: { az: 26, el: 10 } },
-      handle: { m: 'new', rev: true, one: true, v: { az: 18, el: 10 }, fb: { m: 'region', r: 'frontR', v: { az: 18, el: 10 } } },
+      handle: { m: 'new', rev: true, one: true, minH: .07, pad: 2, v: { az: 18, el: 10 }, fb: { m: 'region', r: 'frontR', v: { az: 18, el: 10 } } },
       interior: { m: 'diff', open: 'all', v: { az: 18, el: 12 } },
       trim: { m: 'diff', anchor: 'right' }, extras: { m: 'diff', anchor: 'right' }, swivel: { m: 'diff' }
     };
@@ -131,8 +131,9 @@
     if (k === 'kursi/dining' && gid === 'frame') r = { m: 'part', hide: .42, v: { az: 30, el: 12 } };
     if (k === 'kursi/stool' && gid === 'frame') r = { m: 'part', hide: .5, v: { az: 30, el: 12 } };
     if (k === 'kursi/chaise' && gid === 'back') r = { m: 'new', v: { az: 30, el: 14 }, fb: { m: 'region', r: 'back', v: { az: 26, el: 12 } } };
-    if (k === 'kursi/chaise' && gid === 'base') r = { m: 'part', hide: .26, v: { az: 30, el: 10 } };
-    if (k === 'kursi/ottoman' && gid === 'tuft') r = { m: 'region', r: 'topR', v: { az: 26, el: 36 } };
+    if (k === 'kursi/chaise' && gid === 'base') r = { m: 'new', one: true, minH: .1, pad: 1.8, v: { az: 32, el: 10 }, fb: { m: 'part', hide: .26 } };   // satu kaki / base dari dekat
+    if (k === 'kursi/ottoman' && gid === 'tuft') r = { m: 'full', v: { az: 20, el: 52 }, weight: 1.3 };   // ottoman kecil: seluruh permukaan atas
+    if (/^kursi\/(sofa|armchair)$/.test(k) && gid === 'back') r = { m: 'region', r: 'back', v: { az: 46, el: 16 } };   // tampak serong: bantal sandaran vs sandaran menyatu terbaca
     if (k === 'kursi/bench' && gid === 'leg') r = { m: 'region', r: 'leg', v: { az: 34, el: 12 } };
     if (k === 'kursi/ottoman' && gid === 'leg') r = { m: 'full', v: { az: 30, el: 8 } };
     // divan & ranjang (spec-divan.js): susun / loft / sorong / daybed / kanopi / anak
@@ -150,19 +151,20 @@
     // meja (spec-meja.js): tata letak dilihat dari atas, kaki / pijakan dari samping, panel depan rendah
     if (cat === 'meja') {
       var MJ = { layout: { m: 'full', v: { az: 30, el: 34 } }, plan: { m: 'full', v: { az: 30, el: 30 } }, form: { m: 'full', v: { az: 30, el: 22 } }, side: { m: 'full', v: { az: 30, el: 34 } },
-        pieces: { m: 'full', v: { el: 24 } }, legStyle: { m: 'region', r: 'leg', v: { az: 34, el: 12 } }, footrest: { m: 'new', v: { az: 30, el: 10 } }, frame: { m: 'part', hide: 'under', v: { az: 30, el: 12 } }, mount: { m: 'region', r: 'lowR', v: { az: 30, el: 10 } },
+        pieces: { m: 'full', v: { el: 24 } }, legStyle: { m: 'new', one: true, minH: .1, pad: 1.7, v: { az: 32, el: 10 }, fb: { m: 'region', r: 'leg', v: { az: 34, el: 12 } } }, footrest: { m: 'new', v: { az: 30, el: 10 } }, frame: { m: 'part', hide: 'under', v: { az: 30, el: 12 } }, mount: { m: 'region', r: 'lowR', v: { az: 30, el: 10 } },
         pedestal: { m: 'new', v: { az: 28, el: 14 }, fb: { m: 'part', hide: 'under', v: { az: 30, el: 12 } } }, pedType: { m: 'new', v: { az: 28, el: 12 } }, pedDrawers: { m: 'new', v: { az: 24, el: 10 } },
         islandBody: { m: 'new', v: { az: 22, el: 10 } }, hutch: { m: 'new', v: { az: 28, el: 14 } }, tower: { m: 'new', v: { az: 28, el: 14 } }, face: { m: 'full', v: { az: 18, el: 8 } }, front: { m: 'full', v: { az: 16, el: 8 } }, screen: { m: 'full', v: { el: 16 } },
         mped: { m: 'new', v: { az: 28, el: 14 } }, ada: { m: 'new', v: { az: 28, el: 12 } }, plinth: { m: 'region', r: 'low', v: { az: 24, el: 8 } }, mirror: { m: 'new', v: { az: 24, el: 10 } }, stool: { m: 'new', v: { az: 28, el: 14 } },
         inlay: { m: 'full', v: { el: 40 } }, tableware: { m: 'full', v: { el: 40 } } };
       if (MJ[gid]) r = MJ[gid];
+      if (gid === 'topShape' && /^(side|nesting)$/.test(sub)) r = { m: 'full', v: { az: 20, el: 64 } };   // bentuk top kecil: dari atas
       if (sub === 'vanity' && gid === 'mount') r = { m: 'part', hide: 'under', v: { az: 30, el: 12 }, set: { stool: 'none' } };
       if (gid === 'seats') r.set = { tableware: 'mats' };
     }
     // tanpa bantal hias agar permukaan / bentuk sandaran terlihat
     if (/^(back|backTuft|seatTuft|seatC|arm)$/.test(gid)) r.set = { pillows: 0, bolsters: 0 };
     // alas piring linen (penanda kapasitas) hanya pada kelompok kapasitas meja makan
-    r.mats = gid === 'seats' || gid === 'tableware' ? 'faint' : 'hide';
+    r.mats = gid === 'tableware' ? 'solid' : gid === 'seats' ? 'faint' : 'hide';
     return r;
   }
   // aturan per pilihan (menggantikan aturan kelompok)
@@ -171,10 +173,14 @@
     var R = {
       trim__nailhead: big && sub !== 'chaise' ? { m: 'region', r: 'arm', v: { az: 30, el: 14 } } : null,
       trim__woodEnd: big ? { m: 'region', r: 'arm', v: { az: 30, el: 14 } } : null,
-      trim__brassCap: big || sub === 'bench' ? legR : sub === 'ottoman' ? { m: 'full', v: { az: 30, el: 8 } } : null,
-      trim__castor: big ? legR : sub === 'ottoman' ? { m: 'full', v: { az: 30, el: 8 } } : null,
+      trim__brassCap: big || sub === 'bench' || sub === 'ottoman' ? legR : null,
+      trim__castor: big || sub === 'ottoman' ? legR : null,
       trim__brassBand: big ? legR : null,
-      extras__storage: sub === 'sofa' ? { m: 'region', r: 'deck', v: { az: 24, el: 10 } } : null
+      back__pillow: /^(sofa|armchair)$/.test(sub) ? { set: {} } : null,   // sandaran bantal lepas: bantal tidak dihapus (beda dari cushion)
+      extras__storage: sub === 'sofa' ? { m: 'region', r: 'deck', v: { az: 24, el: 10 } } : null,
+      // top oval / persegi panjang pada meja kecil: ukuran contoh dibuat lonjong agar beda dari bulat / persegi
+      topShape__oval: /^(side|nesting)$/.test(sub) ? { set: { w: 62 } } : null,
+      topShape__rect: /^(side|nesting)$/.test(sub) ? { set: { w: 62 } } : null
     };
     var r = R[k]; if (!r) return null;
     var o = {}; for (var x in base) o[x] = base[x]; for (x in r) o[x] = r[x]; return o;
@@ -225,10 +231,28 @@
     }
     return a;
   }
-  function shotFull(cfg, v, open) {
+  function shotFull(cfg, v, open, j) {
     var info = ICON.build(cfg, open), sp = camFor(info.box, v); ICON.cam(sp);
     var fp = ICON.footprint(ICON.snap()); if (!fp.n) return null;
-    sp.crop = square(fp.box, 1.12); return ICON.draw(sp);
+    sp.crop = square(fp.box, 1.12); return j ? shot(j, sp) : ICON.draw(sp);
+  }
+  // gambar dasar + lapis aksen (bagian yang dijelaskan) dengan kamera yang sama; fadePx = tepi memudar (detail)
+  function shot(j, sp, fadePx) {
+    var a = ICON.draw(sp), c = ICON.draw(sp, { acc: true });
+    if (fadePx) { a = fade(a, fadePx); c = fade(c, fadePx); }
+    j.acc = c; return a;
+  }
+  // tanda bagian pilihan pembanding (tanpa pilihan ini untuk multi; pilihan acuan / pertama untuk chips)
+  function refCfg(j, gr, opts) {
+    var ru = j.ru, rf = clone(j.cfg);
+    if (gr.type === 'multi') XC.apply(rf, gr.id, (rf[gr.id] || []).filter(function (x) { return x !== j.o.id; }));
+    else { var rid = ru.ref && ru.ref !== j.o.id ? ru.ref : opts[0].id === j.o.id ? (opts[1] || opts[0]).id : opts[0].id; XC.apply(rf, gr.id, rid); }
+    return rf;
+  }
+  function refCount(j, gr, opts) {
+    ICON.state.accRef = null;
+    var cnt = {}; ICON.build(refCfg(j, gr, opts), openFn(j.ru.open)).sigs.forEach(function (g) { cnt[g] = (cnt[g] || 0) + 1; });
+    return cnt;
   }
   // kelompok: kembalikan [{ id, a: Uint8Array | null, sym: key | null, note }]
   function groupShots(cat, sub, gr) {
@@ -253,11 +277,16 @@
       var sp = camFor(ub, v), fu = null; ICON.cam(sp);
       three.forEach(function (j) { ICON.build(j.cfg, open); ICON.cam(sp); var fp = ICON.footprint(ICON.snap()); if (fp.n) fu = union2(fu, fp.box); });
       sp.crop = square(fu, 1.1);
-      three.forEach(function (j) { ICON.build(j.cfg, open); j.a = ICON.draw(sp); });
+      three.forEach(function (j) { ICON.state.accRef = refCount(j, gr, opts); ICON.build(j.cfg, open); j.a = shot(j, sp); ICON.state.accRef = null; });
     }
     solo.forEach(function (j) { one(j); });
     three.forEach(function (j) { if (ru.m !== 'common') one(j); });
     function one(j) {
+      ICON.state.accRef = /^(part|new)$/.test(j.ru.m) ? null : refCount(j, gr, opts);   // aksen = bagian yang berbeda dari pembanding
+      ICON.state.weight = j.ru.weight || 1.15;   // pola halus (tuft) digambar sedikit lebih tebal
+      try { one0(j); } finally { ICON.state.accRef = null; ICON.state.weight = 1.15; }
+    }
+    function one0(j) {
       var ru = j.ru, v = ru.v, open = openFn(ru.open);
       // bagian tegas, sisanya samar → kamera fokus pada bagian tegas (min. 30 % bingkai penuh, konteks tetap terbaca)
       function focus(info, swap) {
@@ -269,21 +298,21 @@
           var pick = info.parts.slice().sort(function (a, b) { return (b[3] + b[5]) - (a[3] + a[5]); })[0];
           tb = ICON.project(pick);
         }
-        var c = square(tb, ru.one ? 1.5 : 1.3, fh * (ru.one ? .2 : .32)), hc = (c[2] - c[0]) / 2;
+        var c = square(tb, ru.pad || (ru.one ? 1.5 : 1.3), fh * (ru.minH != null ? ru.minH : ru.one ? .2 : .32)), hc = (c[2] - c[0]) / 2;
         if (ru.cut && hc >= fh * .6 && (tb[3] - tb[1]) < (fa.box[3] - fa.box[1]) * .5) {   // bagian lebar tapi rendah (laci kolong): potong sisi kanan
           hc = fh * .62; var cx = Math.min((tb[0] + tb[2]) / 2, tb[2] - hc * .85), cy = (tb[1] + tb[3]) / 2;
           c = [cx - hc, cy - hc, cx + hc, cy + hc];
         }
         if (swap) swap();   // model lain digambar dengan bingkai yang sama
-        if ((c[2] - c[0]) / 2 >= fh * .86) { sp.crop = fullC; j.a = ICON.draw(sp); }
-        else { sp.crop = c; j.a = fade(ICON.draw(sp), 16); j.detail = true; }
+        if ((c[2] - c[0]) / 2 >= fh * .86) { sp.crop = fullC; j.a = shot(j, sp); }
+        else { sp.crop = c; j.a = shot(j, sp, 16); j.detail = true; }
         return true;
       }
       if (ru.m === 'part') {
         // hanya bagian yang dijelaskan tegas (base meja, kaki kursi), sisanya samar; penyaring gagal → seluruh benda
         var hf = typeof ru.hide === 'number' ? HIDE.lo(ru.hide) : HIDE[ru.hide], cfg0 = j.cfg;
-        var pi = ICON.build(cfg0, open, { dim: function (mb, B) { return hf(mb, B, cfg0); } });
-        if (!pi.solid || pi.solid === pi.total || !focus(pi)) j.a = shotFull(cfg0, v, open);
+        var pi = ICON.build(cfg0, open, { dim: function (mb, B) { return hf(mb, B, cfg0); }, accSolid: true });
+        if (!pi.solid || pi.solid === pi.total || !focus(pi)) j.a = shotFull(cfg0, v, open, j);
         return;
       }
       if (ru.m === 'new') {
@@ -292,23 +321,25 @@
         if (gr.type === 'multi') { rf = clone(j.cfg); XC.apply(rf, gr.id, (rf[gr.id] || []).filter(function (x) { return x !== j.o.id; })); }
         else { var rid2 = ru.ref && ru.ref !== j.o.id ? ru.ref : opts[0].id === j.o.id ? (opts[1] || opts[0]).id : opts[0].id; rf = clone(j.cfg); XC.apply(rf, gr.id, rid2); }
         var ri = ICON.build(rf, open), cnt = {}; ri.sigs.forEach(function (g) { cnt[g] = (cnt[g] || 0) + 1; });
-        var ni = ICON.build(j.cfg, open, { faint: cnt });
+        var ni = ICON.build(j.cfg, open, { faint: cnt, accSolid: true });
         if (!ni.solid && ru.rev) {
           // pilihan "tanpa" (push, tanpa storage): bingkai = letak bagian pada pembanding, digambar tanpa bagian itu
           var me = {}; ICON.build(j.cfg, open).sigs.forEach(function (g) { me[g] = (me[g] || 0) + 1; });
-          var rv = ICON.build(rf, open, { faint: me });
+          var rv = ICON.build(rf, open, { faint: me, accSolid: true });
           if (rv.solid && focus(rv, function () { ICON.build(j.cfg, open); })) return;
         }
-        if (!ni.solid) { if (ru.fb) { j.ru = ru.fb; one(j); } else j.a = shotFull(j.cfg, v, open); return; }
-        if (!focus(ni)) j.a = shotFull(j.cfg, v, open);
+        if (!ni.solid) { if (ru.fb) { j.ru = ru.fb; one(j); } else j.a = shotFull(j.cfg, v, open, j); return; }
+        if (!focus(ni)) j.a = shotFull(j.cfg, v, open, j);
         return;
       }
       if (ru.m === 'region') {
-        var info = ICON.build(j.cfg, open), sp = camFor(info.box, v); ICON.cam(sp);
+        var info = ICON.build(j.cfg, open);
+        ICON.state.accBox = REG[ru.r](info.box, j.cfg); info = ICON.build(j.cfg, open); ICON.state.accBox = null;
+        var sp = camFor(info.box, v); ICON.cam(sp);
         var rb = ICON.project(REG[ru.r](info.box, j.cfg)), fp = ICON.footprint(ICON.snap());
         // daerah dipotong ke tapak objek (tidak ada ruang kosong berlebih)
         if (fp.n) rb = [Math.max(rb[0], fp.box[0] - .04), Math.max(rb[1], fp.box[1] - .04), Math.min(rb[2], fp.box[2] + .04), Math.min(rb[3], fp.box[3] + .04)];
-        sp.crop = square(rb, 1.08, .07); j.a = fade(ICON.draw(sp), 16); j.detail = true;
+        sp.crop = square(rb, 1.08 * (ru.zoom || 1), .07); j.a = shot(j, sp, 16); j.detail = true;
       } else if (ru.m === 'diff') {
         // pembanding: tanpa pilihan ini (multi) atau pilihan acuan / pertama (chips)
         var ref;
@@ -325,17 +356,23 @@
           var cx = (db[0] + db[2]) / 2, cy = (db[1] + db[3]) / 2;
           if ((db[2] - db[0]) / 2 > h) cx = ru.anchor === 'left' ? db[0] + h * .85 : db[2] - h * .85;
           if ((db[3] - db[1]) / 2 > h) cy = db[3] - h * .85;
-          if (h >= fh * .6) { sp.crop = full; j.a = ICON.draw(sp); }
-          else { sp.crop = [cx - h, cy - h, cx + h, cy + h]; j.a = fade(ICON.draw(sp), 16); j.detail = true; }
-        } else { sp.crop = full; j.a = ICON.draw(sp); j.weak = true; }
-      } else j.a = shotFull(j.cfg, v, open);
+          if (h >= fh * .6) { sp.crop = full; j.a = shot(j, sp); }
+          else { sp.crop = [cx - h, cy - h, cx + h, cy + h]; j.a = shot(j, sp, 16); j.detail = true; }
+        } else { sp.crop = full; j.a = shot(j, sp); j.weak = true; }
+      } else j.a = shotFull(j.cfg, v, open, j);
     }
     // perbedaan terlalu kecil (pilihan tidak tampak di 3D) dan ada simbol → pakai simbol
     jobs.forEach(function (j) {
       if (j.weak && j.sym) { j.a = null; j.note = 'weak 3D → symbol'; }
       else if (j.weak) j.note = (j.note ? j.note + '; ' : '') + 'weak diff ' + j.diffN;
       if (j.a && j.sym && !SYM[j.sym].force && SYM[j.sym].prefer) { j.a = null; j.note = 'symbol preferred'; }
-      out.push({ id: j.o.id, a: j.a || null, sym: j.a ? null : j.sym, note: j.note || '', detail: !!j.detail, skip: !!j.skip });
+      var acc = null;
+      if (j.a && j.acc) {
+        var sa = 0, sc = 0; for (var i = 0; i < j.a.length; i++) { sa += j.a[i]; sc += Math.min(j.acc[i], j.a[i]); }
+        if (sa) j.note = (j.note ? j.note + '; ' : '') + 'aksen ' + Math.round(sc / sa * 100) + '%';
+        if (sa && sc / sa > .02 && sc / sa < .85) { acc = j.acc; for (i = 0; i < j.a.length; i++) { var c0 = Math.min(acc[i], j.a[i]); acc[i] = c0; j.a[i] = j.a[i] - c0; } }
+      }
+      out.push({ id: j.o.id, a: j.a || null, acc: acc, sym: j.a ? null : j.sym, note: j.note || '', detail: !!j.detail, skip: !!j.skip });
     });
     return out;
   }

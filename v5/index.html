@@ -7,6 +7,7 @@
   <meta name="description" content="Maison XIONCO — furnitur minimalis dengan pengerjaan tanpa kompromi, diproduksi sendiri di empat pabrik di Jawa. Pilih koleksi, rancang sofa modular dalam 3D, dan konsultasi privat.">
   <meta name="theme-color" content="#0f0c0a">
   <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,9 +83,9 @@
   <ul class="rail__group">
     <li><a class="rail__item" href="#/koleksi" data-go="koleksi" data-key="koleksi" style="--i:1"><svg><use href="#i-grid"/></svg><span class="rail__label">Koleksi</span></a></li>
     <li><a class="rail__item" href="#/customize" data-go="customize" data-key="customize" style="--i:2"><svg><use href="#i-ruler"/></svg><span class="rail__label">Customize</span></a></li>
-    <li><a class="rail__item" href="#/manufaktur" data-go="manufaktur" data-key="manufaktur" style="--i:3"><svg><use href="#i-factory"/></svg><span class="rail__label">Manufaktur</span></a></li>
-    <li><a class="rail__item" href="#/bisnis" data-go="bisnis" data-key="bisnis" style="--i:4"><svg><use href="#i-brief"/></svg><span class="rail__label">Bisnis</span></a></li>
-    <li><a class="rail__item" href="#/galeri" data-go="galeri" data-key="galeri" style="--i:5"><svg><use href="#i-frame"/></svg><span class="rail__label">Galeri</span></a></li>
+    <li class="rail__li--d"><a class="rail__item" href="#/manufaktur" data-go="manufaktur" data-key="manufaktur" style="--i:3"><svg><use href="#i-factory"/></svg><span class="rail__label">Manufaktur</span></a></li>
+    <li class="rail__li--d"><a class="rail__item" href="#/bisnis" data-go="bisnis" data-key="bisnis" style="--i:4"><svg><use href="#i-brief"/></svg><span class="rail__label">Bisnis</span></a></li>
+    <li class="rail__li--d"><a class="rail__item" href="#/galeri" data-go="galeri" data-key="galeri" style="--i:5"><svg><use href="#i-frame"/></svg><span class="rail__label">Galeri</span></a></li>
   </ul>
   <ul class="rail__group">
     <li><a class="rail__item" href="#/kontak" data-go="kontak" data-key="kontak" style="--i:6"><svg><use href="#i-chat"/></svg><span class="rail__label">Kontak</span></a></li>
@@ -93,6 +94,9 @@
 </nav>
 <!-- More: kotak pilihan yang keluar saat item More di rail di-hover (di luar rail karena rail ber-overflow tersembunyi) -->
 <div class="box more" id="moreBox" role="menu" aria-label="More">
+  <a class="more__item more__item--m" href="#/manufaktur" data-go="manufaktur" data-more-key="manufaktur" role="menuitem"><svg><use href="#i-factory"/></svg><span>Manufaktur</span></a>
+  <a class="more__item more__item--m" href="#/bisnis" data-go="bisnis" data-more-key="bisnis" role="menuitem"><svg><use href="#i-brief"/></svg><span>Bisnis</span></a>
+  <a class="more__item more__item--m" href="#/galeri" data-go="galeri" data-more-key="galeri" role="menuitem"><svg><use href="#i-frame"/></svg><span>Galeri</span></a>
   <a class="more__item" href="#/ruang" data-go="ruang" data-more-key="ruang" role="menuitem"><svg><use href="#i-room"/></svg><span>Ruang</span><b id="roomCount" data-n="0"></b></a>
   <a class="more__item" href="#/setelan" data-go="setelan" data-more-key="setelan" role="menuitem"><svg><use href="#i-gear"/></svg><span>Pengaturan</span></a>
   <a class="more__item" href="#/cubix" data-go="cubix" data-more-key="cubix" role="menuitem"><svg><use href="#i-cube"/></svg><span>Konfigurasi CUBIX</span></a>
@@ -143,6 +147,9 @@
   <a class="detail__act" id="dAct" href="#" aria-label="Aksi"><svg><use href="#i-plus"/></svg><span id="dActT">Tambah</span></a>
 </div>
 
+<!-- Ruang kosong: ajakan memilih preset langsung di panggung -->
+<div class="rstage" id="roomStage" aria-hidden="true"><p class="eyebrow">Ruang Anda masih kosong</p><p class="rstage__t">Mulai dari preset</p><div class="rstage__b" id="roomStageB"></div><p class="rstage__n">atau tambah barang satu per satu dari panel</p></div>
+
 <button class="recenter" id="recenter" type="button" aria-label="Kembali ke posisi awal"><svg><use href="#i-target"/></svg></button>
 
 <!-- panel kanan: konten tiap menu bergeser masuk di sini.
@@ -175,9 +182,8 @@
       <div class="pd__price" id="pdPrice"></div>
       <div class="pd__var" id="pdVar"></div>
       <div class="pd__var" id="pdSub"></div>
-      <!-- More variants & Advance: dua tombol kotak berdampingan, masing-masing membuka kotak samping -->
+      <!-- Advance: kotak samping berisi ukuran, semua varian, warna kain/bantal (CUBIX), warna kaki (tertutup) -->
       <div class="pd__acts" id="pdActs">
-        <button class="pd__ab" type="button" id="pdVMore" aria-expanded="false" aria-controls="pdAdvBox" hidden><span>More variants</span><i id="pdVMoreN"></i></button>
         <button class="pd__ab" type="button" id="pdAdv" aria-expanded="false" aria-controls="pdAdvBox"><span>Advance</span><svg><use href="#i-arrow"/></svg></button>
       </div>
       <!-- informasi produk seperti xionco.shop: Overview · Specification (data/specs.json) -->
@@ -376,11 +382,14 @@
 
 <!-- Advance (halaman produk): Ke ruang & Tanya di kotak samping panel -->
 <aside class="adv" id="pdAdvBox" aria-hidden="true" data-mode="adv">
-  <!-- mode var: semua varian · mode adv: pengaturan dimensi (model 3D asli) + Customize / Ke ruang / Tanya -->
-  <div class="adv__var" id="pdAdvVar"></div>
+  <!-- urutan: ukuran (model 3D asli) → semua varian → warna kain & bantal (CUBIX) → warna kaki & base (tertutup) → Customize / Ke ruang / Tanya -->
   <div class="adv__main">
   <p class="eyebrow">Advance</p>
   <div class="pc" id="pdPc" hidden></div>
+  <div class="adv__var" id="pdAdvVar"></div>
+  <div class="adv__var" id="pdAdvSub"></div>
+  <div class="adv__var" id="pdAdvCbx"></div>
+  <div class="pc pc--m" id="pdPcM" hidden></div>
   <button class="adv__o" type="button" id="pdCustom"><svg><use href="#i-ruler"/></svg><span><b id="pdCustomT">Sesuaikan</b><em id="pdCustomE">Ukuran &amp; warna kaki</em></span></button>
   <button class="adv__o" type="button" id="pdCfg" hidden><svg><use href="#i-cube"/></svg><span><b>Konfigurasi</b><em>Susun modul CUBIX</em></span></button>
   <button class="adv__o" type="button" id="pdRoom"><svg><use href="#i-room"/></svg><span><b>Ke ruang</b><em>Tata di ruangan Anda</em></span></button>
