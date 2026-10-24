@@ -293,6 +293,13 @@
   // ikon garis kecil untuk pilihan baru (tanpa gambar render) — kotak 100×100
   function ico(body) { return svgOpen('0 0 100 100') + body + '</svg>'; }
   var ICO = {
+    // CZ-B (25 Okt): ikon handle — muka pintu/laci dengan jenis handle (gambar render lama salah: meja / garis tegak)
+    hPush: ico(R(26, 14, 48, 72) + '<circle cx="50" cy="50" r="3.2" vector-effect="non-scaling-stroke"/>' + Pth('M41 41a13 13 0 0 1 18 0M41 59a13 13 0 0 0 18 0', true)),
+    hGrip: ico(R(26, 14, 48, 72) + Pth('M26 22h48M26 22v-3h48v3') + Ln(30, 26, 70, 26, true)),
+    hBar: ico(R(26, 14, 48, 72) + Pth('M63 34v32') + Ln(63, 34, 66, 34) + Ln(63, 66, 66, 66)),
+    hKnob: ico(R(26, 14, 48, 72) + '<circle cx="64" cy="50" r="3.6" vector-effect="non-scaling-stroke"/>'),
+    hTab: ico(R(26, 14, 48, 72) + Pth('M46 14v-5h8v5M46 9q4 3 8 0')),
+    hRecessed: ico(R(26, 14, 48, 72) + '<rect x="58" y="40" width="9" height="20" rx="4.5" vector-effect="non-scaling-stroke"/>' + Ln(60.5, 43, 60.5, 57, true)),
     swing: ico(R(22, 20, 56, 62) + Ln(50, 20, 50, 82) + Pth('M50 82 L32 90 L32 28 L50 20', true) + Ln(44, 46, 44, 56) + Ln(56, 46, 56, 56)),
     sliding: ico(R(18, 20, 64, 62) + R(22, 24, 30, 54) + R(48, 24, 30, 54) + Pth('M30 51h12m-4-4 4 4-4 4', true) + Ln(66, 46, 66, 56)),
     folding: ico(R(18, 20, 64, 62) + Pth('M18 22l14 6v52l-14 2M32 28l14-6v60l-14-2', false) + Ln(64, 46, 64, 56) + Ln(50, 22, 50, 82)),
@@ -394,8 +401,8 @@
     );
     if (extra.wall) gs.push(WALLPANEL_G);
     gs.push(
-      { id: 'handle', step: 'detail', type: 'chips', l: 'Handle', en: 'Handles', opts: [O('push', 'Tanpa handle (push to open)', 'Handleless (push-to-open)', { s: 'Push to open', se: 'Push to open', add: 200000 }), O('grip', 'Profil grip (J)', 'J-profile grip', { se: 'J-grip' }), O('bar', 'Handle batang', 'Bar handle'),
-        O('knob', 'Knob', 'Knob'), O('tab', 'Tab kulit', 'Leather tab', { add: 100000 }), O('recessed', 'Coakan (recessed)', 'Recessed pull', { s: 'Coakan', se: 'Recessed' })] },
+      { id: 'handle', step: 'detail', type: 'chips', l: 'Handle', en: 'Handles', opts: [O('push', 'Tanpa handle (push to open)', 'Handleless (push-to-open)', { s: 'Push to open', se: 'Push to open', add: 200000, svg: ICO.hPush }), O('grip', 'Profil grip (J)', 'J-profile grip', { se: 'J-grip', svg: ICO.hGrip }), O('bar', 'Handle batang', 'Bar handle', { svg: ICO.hBar }),
+        O('knob', 'Knob', 'Knob', { svg: ICO.hKnob }), O('tab', 'Tab kulit', 'Leather tab', { add: 100000, svg: ICO.hTab }), O('recessed', 'Coakan (recessed)', 'Recessed pull', { s: 'Coakan', se: 'Recessed', svg: ICO.hRecessed })] },
       g('metal', { l: 'Finishing handle / besi', en: 'Handle / metal finish', when: function (c) { return /^(bar|knob)$/.test(c.handle) || c.mount === 'legs' && /^(round|hairpin|sled|openFrame)$/.test(c.leg) || c.mount === 'castor'; } })
     );
     if (!extra.wall) gs.push(

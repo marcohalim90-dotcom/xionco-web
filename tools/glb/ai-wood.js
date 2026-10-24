@@ -7,7 +7,7 @@
      Jalankan ulang hanya bila peta atau model aslinya berubah. Lalu dikompres (tools/compress). */
 const fs = require('fs'), path = require('path'), { execFileSync } = require('child_process');
 const ROOT = path.resolve(__dirname, '../..');
-const BLENDER = process.env.BLENDER || 'C:/Users/Marco/AppData/Local/Programs/Blender/blender-5.2.2-windows-x64/blender.exe';
+const BLENDER = require('../blender-path').BLENDER;   // env BLENDER → PATH → folder pemasangan umum
 const map = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/source/ai3d/wood-map.json'), 'utf8')).models;
 const only = process.argv.slice(2);
 let n = 0;

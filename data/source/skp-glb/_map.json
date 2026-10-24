@@ -182,68 +182,6 @@
    }
   ]
  },
- "gliza": {
-  "id": "gliza-tv-cabinet-stand",
-  "motions": [
-   {
-    "id": "flap1",
-    "sel": [
-     0.63,
-     1.25,
-     0,
-     0.025,
-     0.13,
-     0.4
-    ],
-    "pivot": [
-     0.94,
-     0,
-     0.14
-    ],
-    "axis": "x",
-    "amt": 1.45
-   },
-   {
-    "id": "flap2",
-    "sel": [
-     1.25,
-     1.88,
-     0,
-     0.025,
-     0.13,
-     0.4
-    ],
-    "pivot": [
-     1.565,
-     0,
-     0.14
-    ],
-    "axis": "x",
-    "amt": 1.45
-   },
-   {
-    "id": "flap3",
-    "sel": [
-     1.88,
-     2.49,
-     0,
-     0.025,
-     0.13,
-     0.4
-    ],
-    "pivot": [
-     2.185,
-     0,
-     0.14
-    ],
-    "axis": "x",
-    "amt": 1.45
-   }
-  ],
-  "remap": {
-   "[Color M07]": "paint:#1d1c1b"
-  }
- },
  "guise-1-seater": {
   "id": "guise-1-seater",
   "remap": {
@@ -345,33 +283,10 @@
  },
  "somno": {
   "id": "somno",
-  "woodAs": "gelap"
- },
- "syme": {
-  "id": "syme",
-  "motions": [
-   {
-    "id": "doorL",
-    "sel": [
-     0,
-     1.149,
-     0.02,
-     0.066,
-     -0.01,
-     2.14
-    ],
-    "pivot": [
-     0.57,
-     0.04,
-     1.06
-    ],
-    "move": [
-     1.1,
-     0,
-     0
-    ]
-   }
-  ]
+  "woodAs": "gelap",
+  "remap": {
+   "[Color M00]": "paint:#eceae5"
+  }
  },
  "tesse": "tesse-kursi-puff-ottoman",
  "trapezo": "trapezo",

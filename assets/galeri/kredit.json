@@ -1,0 +1,82 @@
+{
+ "catatan": "Model 3D pihak ketiga yang dipakai di render Galeri v12. CC-BY wajib mencantumkan nama pembuat di situs bila render ditayangkan.",
+ "cc_by": [
+  {
+   "title": "Sofa Chair",
+   "author": "PatelDev",
+   "license": "CC Attribution",
+   "url": "https://sketchfab.com/3d-models/0e8e009f398249b9bc13e8ff7078530a"
+  },
+  {
+   "title": "Wall Light",
+   "author": "Lucas Garnier",
+   "license": "CC Attribution",
+   "url": "https://sketchfab.com/3d-models/c723fa0a1ac3478790192acdb39161b0"
+  },
+  {
+   "title": "Executive Office Chair",
+   "author": "subhashssimon",
+   "license": "CC Attribution",
+   "url": "https://sketchfab.com/3d-models/88e43eb5dc55498dace0bda014603b3d"
+  },
+  {
+   "title": "Table Lamp",
+   "author": "siotech2011",
+   "license": "CC Attribution",
+   "url": "https://sketchfab.com/3d-models/ac90b3ea2cc742a49405bec08d5ddcd4"
+  },
+  {
+   "title": "Old Desk Lamp",
+   "author": "Maxence Rouillet",
+   "license": "CC Attribution",
+   "url": "https://sketchfab.com/3d-models/693529b6817a4632bc812394a48f06b0"
+  },
+  {
+   "title": "Macbook Pro 13 inch 2020",
+   "author": "timblewee",
+   "license": "CC Attribution",
+   "url": "https://sketchfab.com/3d-models/efab224280fd4c3993c808107f7c0b38"
+  }
+ ],
+ "cc0": [
+  "Poly Haven (polyhaven.com): book_encyclopedia_set_01, ceramic_pot, wooden_bowl_01, coffee_table_round_01, calathea_orbifolia_01, throw_pillows_01, ceramic_vase, brass_vase",
+  "ambientCG (ambientcg.com): Fabric084, Fabric030, Leather039, Carpet016, Plaster001"
+ ],
+ "b1": {
+  "catatan": "Galeri B1 \"Paviliun Pagi\" (render Cycles). Model CC-BY wajib disebut; Poly Haven (model, tekstur, HDRI) & ambientCG = CC0 tanpa atribusi.",
+  "cc_by": [
+   {
+    "title": "Table Lamp",
+    "author": "siotech2011",
+    "license": "CC Attribution",
+    "url": "https://sketchfab.com/3d-models/ac90b3ea2cc742a49405bec08d5ddcd4"
+   }
+  ],
+  "cc0": [
+   "Poly Haven: pachira_aquatica_01, calathea_orbifolia_01, anthurium_botany_01, dry_branches_medium_01, brass_vase_02/03/04, ceramic_vase_01/02/03/04, carved_wooden_plate, wooden_bowl_01, wicker_basket_01, hanging_picture_frame_02, HDRI kloofendal_overcast_puresky",
+   "ambientCG: tekstur plester/kain",
+   "Produk XIONCO: SF3S 074, CUBIX 3S, HOUT, RECTA ST62019, NORA, LOPHUS, RECTA W SB-62011, LUCID, SOMNO, QAZTAC, SYME, AETHER K60 & lampu lantai, SHUSIO W3 & 5, TESSE"
+  ]
+ },
+ "b2": {
+  "catatan": "Galeri B2 \"Malam Marmer\" (render Cycles). Model CC-BY wajib disebut; Poly Haven = CC0.",
+  "cc_by": [
+   {
+    "title": "Wall Light",
+    "author": "Lucas Garnier",
+    "license": "CC Attribution",
+    "url": "https://sketchfab.com/3d-models/c723fa0a1ac3478790192acdb39161b0"
+   },
+   {
+    "title": "Table Lamp",
+    "author": "siotech2011",
+    "license": "CC Attribution",
+    "url": "https://sketchfab.com/3d-models/ac90b3ea2cc742a49405bec08d5ddcd4"
+   }
+  ],
+  "cc0": [
+   "Poly Haven: Chandelier_03, coffee_table_round_01, brass_vase_01/02/04, ceramic_vase_03, wooden_bowl_01, pachira_aquatica_01, calathea_orbifolia_01, anthurium_botany_01",
+   "Produk XIONCO: CANIS, KYRIOS 1S, ASTRAL 1S, PLUQ, CUBIX CT, SOMNO, ASHARA 54, SYME, NORA bar stool, AETHER lampu lantai"
+  ]
+ }
+}

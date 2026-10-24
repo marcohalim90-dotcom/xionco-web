@@ -1,0 +1,570 @@
+[
+ {
+  "id": "ref",
+  "title": "galery1",
+  "note": "Video referensi",
+  "n": 165,
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    12,
+    "Ruang keluarga"
+   ],
+   [
+    38,
+    "Ruang biliar"
+   ],
+   [
+    70,
+    "Kamar tidur"
+   ],
+   [
+    100,
+    "Ruang seni"
+   ],
+   [
+    128,
+    "Bar"
+   ],
+   [
+    150,
+    "Lounge"
+   ]
+  ]
+ },
+ {
+  "id": "g1",
+  "title": "galery1 · v1",
+  "note": "3D arsitektur",
+  "n": 165,
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    12,
+    "Ruang keluarga"
+   ],
+   [
+    38,
+    "Ruang biliar"
+   ],
+   [
+    70,
+    "Kamar tidur"
+   ],
+   [
+    100,
+    "Ruang seni"
+   ],
+   [
+    128,
+    "Bar"
+   ],
+   [
+    150,
+    "Lounge"
+   ]
+  ]
+ },
+ {
+  "id": "g2",
+  "title": "galery1 · v2",
+  "note": "Berlapis · belokan · bayangan tegas",
+  "n": 182,
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    26,
+    "Ruang keluarga"
+   ],
+   [
+    52,
+    "Ruang biliar"
+   ],
+   [
+    78,
+    "Kamar tidur"
+   ],
+   [
+    104,
+    "Ruang marmer"
+   ],
+   [
+    130,
+    "Bar"
+   ],
+   [
+    156,
+    "Lounge"
+   ]
+  ]
+ },
+ {
+  "id": "g3",
+  "type": "3d",
+  "title": "galery1 · v3",
+  "note": "3D langsung (tanpa render)",
+  "n": 294,
+  "thumb": "thumb.jpg",
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    42,
+    "Ruang keluarga"
+   ],
+   [
+    84,
+    "Ruang biliar"
+   ],
+   [
+    126,
+    "Kamar tidur"
+   ],
+   [
+    168,
+    "Ruang marmer"
+   ],
+   [
+    210,
+    "Bar"
+   ],
+   [
+    252,
+    "Lounge"
+   ]
+  ]
+ },
+ {
+  "id": "g4",
+  "type": "3d",
+  "title": "galery1 · v4",
+  "note": "Belokan siku 40° · 3D langsung",
+  "n": 288,
+  "thumb": "thumb.jpg",
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    32,
+    "Jalan"
+   ],
+   [
+    64,
+    "Ruang keluarga"
+   ],
+   [
+    96,
+    "Ruang biliar"
+   ],
+   [
+    128,
+    "Kamar tidur"
+   ],
+   [
+    160,
+    "Jalan"
+   ],
+   [
+    192,
+    "Ruang marmer"
+   ],
+   [
+    224,
+    "Bar"
+   ],
+   [
+    256,
+    "Lounge"
+   ]
+  ]
+ },
+ {
+  "id": "g5",
+  "type": "3d",
+  "title": "galery1 · v5",
+  "note": "Kamera lurus · dinding miring 40° · 3D langsung",
+  "n": 216,
+  "thumb": "thumb.jpg",
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    24,
+    "Ruang keluarga"
+   ],
+   [
+    48,
+    "Jalan"
+   ],
+   [
+    72,
+    "Ruang biliar"
+   ],
+   [
+    96,
+    "Kamar tidur"
+   ],
+   [
+    120,
+    "Ruang marmer"
+   ],
+   [
+    144,
+    "Jalan"
+   ],
+   [
+    168,
+    "Bar"
+   ],
+   [
+    192,
+    "Lounge"
+   ]
+  ]
+ },
+ {
+  "id": "g6",
+  "type": "3d",
+  "title": "galery1 · v6",
+  "note": "Belokan B 32°/45° · 3D langsung",
+  "n": 360,
+  "thumb": "thumb.jpg",
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    25,
+    "Ruang keluarga"
+   ],
+   [
+    65,
+    "Jalan"
+   ],
+   [
+    99,
+    "Ruang biliar"
+   ],
+   [
+    133,
+    "Kamar tidur"
+   ],
+   [
+    175,
+    "Jalan"
+   ],
+   [
+    210,
+    "Ruang marmer"
+   ],
+   [
+    244,
+    "Bar"
+   ],
+   [
+    284,
+    "Jalan"
+   ],
+   [
+    318,
+    "Lounge"
+   ]
+  ]
+ },
+ {
+  "id": "g7",
+  "type": "3d",
+  "title": "galery1 · v7",
+  "note": "Alur sketsa pemilik · 3D langsung",
+  "n": 300,
+  "thumb": "thumb.jpg",
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    81,
+    "Ruang keluarga"
+   ],
+   [
+    111,
+    "Ruang biliar"
+   ],
+   [
+    156,
+    "Lorong atas"
+   ],
+   [
+    198,
+    "Kamar tidur"
+   ],
+   [
+    252,
+    "Ruang marmer"
+   ],
+   [
+    282,
+    "Bar"
+   ]
+  ]
+ },
+ {
+  "id": "g8",
+  "type": "3d",
+  "title": "galery1 · v8",
+  "note": "Alur sketsa · ukuran dari video · 3D langsung",
+  "n": 320,
+  "thumb": "thumb.jpg",
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    64,
+    "Ruang keluarga"
+   ],
+   [
+    94,
+    "Ruang biliar"
+   ],
+   [
+    155,
+    "Lorong atas"
+   ],
+   [
+    258,
+    "Kamar tidur"
+   ],
+   [
+    281,
+    "Ruang marmer"
+   ],
+   [
+    301,
+    "Bar"
+   ]
+  ]
+ },
+ {
+  "id": "g9",
+  "type": "3d",
+  "title": "galery1 · v9",
+  "note": "Ukuran v6 · cara kamera sketsa · 3D langsung",
+  "n": 540,
+  "thumb": "thumb.jpg",
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    39,
+    "Ruang keluarga"
+   ],
+   [
+    73,
+    "Ruang biliar"
+   ],
+   [
+    253,
+    "Kamar tidur"
+   ],
+   [
+    292,
+    "Ruang marmer"
+   ],
+   [
+    331,
+    "Bar"
+   ],
+   [
+    430,
+    "Lounge"
+   ]
+  ]
+ },
+ {
+  "id": "g10",
+  "type": "3d",
+  "title": "galery1 · v10",
+  "note": "Sketsa kamera ke-2 · 3D langsung",
+  "n": 540,
+  "thumb": "thumb.jpg",
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    39,
+    "Ruang keluarga"
+   ],
+   [
+    73,
+    "Ruang biliar"
+   ],
+   [
+    165,
+    "Ruang marmer"
+   ],
+   [
+    258,
+    "Kamar tidur"
+   ],
+   [
+    297,
+    "Bar"
+   ],
+   [
+    335,
+    "Lounge"
+   ]
+  ]
+ },
+ {
+  "id": "g11",
+  "type": "3d",
+  "title": "galery1 · v11",
+  "note": "Dibuat ulang dari sketsa · 3D langsung",
+  "n": 420,
+  "thumb": "thumb.jpg",
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    73,
+    "Ruang besar"
+   ],
+   [
+    128,
+    "Ruang kecil"
+   ],
+   [
+    224,
+    "Dinding pajang"
+   ],
+   [
+    350,
+    "Ruang kiri atas"
+   ],
+   [
+    388,
+    "Ruang kiri bawah"
+   ]
+  ]
+ },
+ {
+  "id": "g12",
+  "type": "3d",
+  "title": "galery1 · v12",
+  "note": "Warna per ruang · furnitur · plafon tinggi · 3D langsung",
+  "n": 420,
+  "thumb": "thumb.jpg",
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ],
+   [
+    55,
+    "Ruang besar"
+   ],
+   [
+    112,
+    "Ruang kecil"
+   ],
+   [
+    215,
+    "Dinding pajang"
+   ],
+   [
+    348,
+    "Ruang kiri atas"
+   ],
+   [
+    387,
+    "Ruang kiri bawah"
+   ]
+  ]
+ },
+ {
+  "id": "g12d1",
+  "title": "galery1 · v12 d1",
+  "note": "Render Room 1 (Cycles) · furnitur & tekstur nyata",
+  "n": 57,
+  "rooms": [
+   [
+    0,
+    "Lobi"
+   ]
+  ]
+ },
+ {
+  "id": "b1",
+  "title": "Galeri B1",
+  "note": "Paviliun Pagi · render Cycles · 4 ruang · cahaya matahari lewat kisi jati",
+  "n": 180,
+  "rooms": [
+   [
+    0,
+    "Beranda"
+   ],
+   [
+    38,
+    "Ruang duduk"
+   ],
+   [
+    96,
+    "Ruang makan"
+   ],
+   [
+    154,
+    "Kamar"
+   ]
+  ]
+ },
+ {
+  "id": "b2",
+  "title": "Galeri B2",
+  "note": "Malam Marmer · render Cycles · rotunda, kolam pantul, salon beludru, suite",
+  "n": 200,
+  "rooms": [
+   [
+    0,
+    "Vestibul"
+   ],
+   [
+    37,
+    "Rotunda"
+   ],
+   [
+    122,
+    "Salon"
+   ],
+   [
+    174,
+    "Suite"
+   ]
+  ]
+ }
+]

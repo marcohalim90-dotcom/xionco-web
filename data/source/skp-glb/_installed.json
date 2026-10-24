@@ -949,26 +949,6 @@
   "kb": 81
  },
  {
-  "slug": "somno",
-  "id": "somno",
-  "variant": null,
-  "file": "assets/items/somno/model.glb",
-  "scale": 1,
-  "tris": 36572,
-  "tris_out": 36572,
-  "size_cm": [
-   137.0,
-   170.5,
-   81.0
-  ],
-  "roles": {
-   "[Color M00]": "fabric",
-   "MIDGREY": "fabric",
-   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
-  },
-  "kb": 1432
- },
- {
   "slug": "poel",
   "id": "poel",
   "variant": null,
@@ -1044,5 +1024,25 @@
    "MIDGREY": "fabric"
   },
   "kb": 1899
+ },
+ {
+  "slug": "somno",
+  "id": "somno",
+  "variant": null,
+  "file": "assets/items/somno/model.glb",
+  "scale": 1,
+  "tris": 36572,
+  "tris_out": 36572,
+  "size_cm": [
+   137.0,
+   170.5,
+   81.0
+  ],
+  "roles": {
+   "cat #eceae5": "paint",
+   "MIDGREY": "fabric",
+   "wood-walnut #673e2f x0.75 gelap (lib)": "wood"
+  },
+  "kb": 1432
  }
 ]

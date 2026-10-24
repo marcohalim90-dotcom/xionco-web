@@ -1,0 +1,12 @@
+{
+ "catatan": "Model 3D pihak ketiga yang dipakai di model katalog (panggung 3D situs). CC-BY wajib mencantumkan nama pembuat di situs sebelum dipush.",
+ "cc_by": [
+  {
+   "title": "Queen-bed",
+   "author": "lugher3d.com",
+   "license": "CC Attribution",
+   "url": "https://sketchfab.com/3d-models/39d113d5868d473caf71e928d1d313a6",
+   "dipakai": "selimut & bantal tidur: SOMNO, POEL, POEL Platform (tools/glb/bedding.py)"
+  }
+ ]
+}

@@ -60,8 +60,7 @@
 
 <!-- pembuka -->
 <div class="veil" id="veil" role="status" aria-live="polite">
-  <svg class="veil__logo" viewBox="-1 -1 208 30" aria-hidden="true"><path class="logo-path veil__stroke"/><path class="logo-path veil__fill"/></svg>
-  <div class="veil__line"><i id="veilLine"></i></div>
+  <svg class="veil__logo" viewBox="-1 -1 208 30" aria-hidden="true"><path class="logo-path"/></svg>
 </div>
 
 <!-- bar atas: hanya logo & tas -->
@@ -148,6 +147,17 @@
 </div>
 
 <!-- Ruang kosong: ajakan memilih preset langsung di panggung -->
+<div class="gwalk" id="gwalk" aria-hidden="true">
+  <canvas class="gwalk__c" id="gwalkC"></canvas>
+  <canvas class="gwalk__c" id="gwalk3" hidden></canvas>
+  <span class="gwalk__ln gwalk__ln--t"></span><span class="gwalk__ln gwalk__ln--l"></span><span class="gwalk__ln gwalk__ln--r"></span>
+  <p class="gwalk__t">Galeri<small id="gwalkVer"></small></p>
+  <nav class="gwalk__nav" id="gwalkNav" aria-label="Ruang"></nav>
+  <p class="gwalk__room"><b id="gwalkN">01 / 07</b><i></i><span id="gwalkName">Lobi</span></p>
+  <p class="gwalk__hint" id="gwalkHint">Gulir untuk berjalan</p>
+  <button class="gwalk__btn" id="gwalkBtn" type="button" aria-label="Karya terpilih" title="Karya terpilih"><svg><use href="#i-frame"/></svg></button>
+  <span class="gwalk__bar"><i id="gwalkBar"></i></span>
+</div>
 <div class="rstage" id="roomStage" aria-hidden="true"><p class="eyebrow">Ruang Anda masih kosong</p><p class="rstage__t">Mulai dari preset</p><div class="rstage__b" id="roomStageB"></div><p class="rstage__n">atau tambah barang satu per satu dari panel</p></div>
 
 <button class="recenter" id="recenter" type="button" aria-label="Kembali ke posisi awal"><svg><use href="#i-target"/></svg></button>
@@ -270,6 +280,9 @@
   <section class="pane" data-pane="galeri" aria-label="Galeri">
     <div class="pane__scroll">
       <header class="ph"><span class="ph__n">05</span><div><p class="ph__e">Galeri</p><h2 class="ph__t">Ruang yang diwujudkan</h2></div></header>
+      <p class="gsets__h" id="galSetsH" hidden>Versi ruang</p>
+      <div class="gsets" id="galSets"></div>
+      <button class="btn btn--line btn--full gal__walk" id="galWalk" type="button" hidden><svg><use href="#i-frame"/></svg><span>Jelajahi ruang</span></button>
       <div class="gal" id="gal"></div>
     </div>
   </section>
@@ -294,6 +307,7 @@
         <a href="https://www.xionco.com/terms-and-condition/" target="_blank" rel="noopener">Syarat</a>
       </p>
       <p class="note">© 2026 PT Halim Inti Gahara</p>
+      <p class="note">Model 3D pihak ketiga (CC BY 4.0): <a href="https://sketchfab.com/3d-models/39d113d5868d473caf71e928d1d313a6" target="_blank" rel="noopener">Queen-bed</a> — lugher3d.com · <a href="https://sketchfab.com/3d-models/0e8e009f398249b9bc13e8ff7078530a" target="_blank" rel="noopener">Sofa Chair</a> — PatelDev · <a href="https://sketchfab.com/3d-models/c723fa0a1ac3478790192acdb39161b0" target="_blank" rel="noopener">Wall Light</a> — Lucas Garnier · <a href="https://sketchfab.com/3d-models/88e43eb5dc55498dace0bda014603b3d" target="_blank" rel="noopener">Executive Office Chair</a> — subhashssimon · <a href="https://sketchfab.com/3d-models/ac90b3ea2cc742a49405bec08d5ddcd4" target="_blank" rel="noopener">Table Lamp</a> — siotech2011 · <a href="https://sketchfab.com/3d-models/693529b6817a4632bc812394a48f06b0" target="_blank" rel="noopener">Old Desk Lamp</a> — Maxence Rouillet · <a href="https://sketchfab.com/3d-models/efab224280fd4c3993c808107f7c0b38" target="_blank" rel="noopener">Macbook Pro 13 inch 2020</a> — timblewee. Manikin skala: Blender Studio Human Base Meshes &amp; burning_barb (CC0).</p>
     </div>
   </section>
 
@@ -335,7 +349,7 @@
         <div class="row"><span title="Otomatis: mulai ringan, naik ke kualitas penuh bila perangkat lancar">Grafis</span><div class="seg" id="setGfx"><button type="button" data-gfx="auto">Otomatis</button><button type="button" data-gfx="lite">Ringan</button><button type="button" data-gfx="hd">Tinggi</button></div></div>
         <div class="row row--hd"><span title="Simpan semua model 3D & tekstur di perangkat agar tampil seketika">Paket HD</span><div class="hd"><button class="hd__btn" type="button" id="setHd">Unduh</button><button class="hd__rm" type="button" id="setHdRm" hidden>Hapus</button></div></div>
         <div class="hdbar" id="setHdBar" hidden><i></i></div>
-        <div class="row"><span>Tampilkan ukuran</span><div class="seg" id="setDims"><button type="button" data-dims="0">Tidak</button><button type="button" data-dims="1">Tampilkan</button></div></div>
+        <div class="row"><span title="Basic: lebar, dalam, tinggi · Advance: semua ukuran (dudukan, kaki, lengan, tebal top …) dari data toko dan diukur dari model 3D">Ukuran</span><div class="seg" id="setDims"><button type="button" data-dims="0">Off</button><button type="button" data-dims="1">Basic</button><button type="button" data-dims="2">Advance</button></div></div>
       </div>
       <div class="lights" id="setLights" hidden></div>
     </div>
@@ -400,6 +414,7 @@
 <!-- Customize Box 2: pilihan lebih dari 4 tampil di kotak kiri panel -->
 <aside class="picker" id="czPicker" aria-hidden="true">
   <button class="panel__close" type="button" data-pick-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+  <button class="picker__back" type="button" data-pick-close><svg aria-hidden="true"><use href="#i-back"/></svg><span>Kembali</span></button>
   <p class="eyebrow" id="czPickE"></p>
   <p class="pane__t" id="czPickT"></p>
   <div class="cz-grid" id="czPickGrid"></div>
@@ -426,6 +441,7 @@
 <div class="mlabels" id="mLabels" aria-hidden="true"></div>
 <div class="dim" id="dim" aria-hidden="true"><i></i><span id="dimText">248 cm</span></div>
 <svg class="dims" id="dims" aria-hidden="true"></svg>
+<svg class="dims dims--hum" id="humLine" aria-hidden="true"></svg>
 <div class="dimcard" id="dimCard" aria-hidden="true"></div>
 <p class="notice" id="notice" role="status" aria-live="polite"></p>
 
@@ -449,6 +465,7 @@
 <script src="js/texlib-extra.js"></script>
 <script src="js/texlib.js"></script>
 <script src="js/world.js"></script>
+<script src="js/galeri3d.js"></script>
 <script src="js/custom-spec.js"></script>
 <script src="js/spec-meja.js"></script>
 <script src="js/spec-kabinet.js"></script>

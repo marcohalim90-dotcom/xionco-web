@@ -26,6 +26,24 @@ data/source/skp-glb/*/
 # aset material untuk direview (katalog & unduhan mentah) — lokal saja; yang di-Acc masuk assets/library/textures/
 data/source/staging/
 data/source/glb-orig/
+data/source/glb-pregrain/
+data/source/glb-prebedding/
 
 # foto referensi xionco.shop per produk (tools/shop-images.js) — besar, lokal saja
 data/source/shop-img/
+
+# pustaka aset render Galeri (Poly Haven CC0, tools/fetch-polyhaven.py) — besar, bisa diunduh ulang
+data/source/render-lib/
+
+# Galeri: frame referensi dari video pihak lain (pratinjau layout) — hanya lokal, JANGAN online
+assets/galeri/ref/
+
+# Z4: audit tangkapan layar & salinan model sebelum dihaluskan (lokal)
+data/source/audit/
+data/source/glb-presmooth/
+
+# add-on Blender (SketchUp Importer, unduhan lokal)
+data/source/addons/
+
+# cache Python
+__pycache__/

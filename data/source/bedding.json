@@ -1,0 +1,80 @@
+{
+ "_note": "Ranjang dengan tempat tidur diganti (tools/glb/bedding.py): path GLB -> nama material sprei/bantal lama. Jalankan lagi setelah model dibangun ulang (finish.py / fit.js / derive.py), lalu compress & grain-all. Salinan sebelum: data/source/glb-prebedding.",
+ "assets/items/somno/model.glb": {
+  "mat": [
+   "cat #eceae5"
+  ],
+  "drape": "mattress",
+  "duvet": "#f3f1ec"
+ },
+ "assets/items/poel/model.glb": {
+  "mat": [
+   "DefaultMaterial"
+  ],
+  "drape": "mattress",
+  "duvet": "#2f3e58"
+ },
+ "assets/items/poel/model-120cm.glb": {
+  "mat": [
+   "DefaultMaterial"
+  ],
+  "drape": "mattress",
+  "duvet": "#2f3e58"
+ },
+ "assets/items/poel/model-160cm.glb": {
+  "mat": [
+   "DefaultMaterial"
+  ],
+  "drape": "mattress",
+  "duvet": "#2f3e58"
+ },
+ "assets/items/poel/model-180cm.glb": {
+  "mat": [
+   "DefaultMaterial"
+  ],
+  "drape": "mattress",
+  "duvet": "#2f3e58"
+ },
+ "assets/items/poel/model-200cm.glb": {
+  "mat": [
+   "DefaultMaterial"
+  ],
+  "drape": "mattress",
+  "duvet": "#2f3e58"
+ },
+ "assets/items/poel-platform-bed-no-headrest/model.glb": {
+  "mat": [
+   "DefaultMaterial"
+  ],
+  "drape": "mattress",
+  "duvet": "#2f3e58"
+ },
+ "assets/items/poel-platform-bed-no-headrest/model-120cm.glb": {
+  "mat": [
+   "DefaultMaterial"
+  ],
+  "drape": "mattress",
+  "duvet": "#2f3e58"
+ },
+ "assets/items/poel-platform-bed-no-headrest/model-160cm.glb": {
+  "mat": [
+   "DefaultMaterial"
+  ],
+  "drape": "mattress",
+  "duvet": "#2f3e58"
+ },
+ "assets/items/poel-platform-bed-no-headrest/model-180cm.glb": {
+  "mat": [
+   "DefaultMaterial"
+  ],
+  "drape": "mattress",
+  "duvet": "#2f3e58"
+ },
+ "assets/items/poel-platform-bed-no-headrest/model-200cm.glb": {
+  "mat": [
+   "DefaultMaterial"
+  ],
+  "drape": "mattress",
+  "duvet": "#2f3e58"
+ }
+}

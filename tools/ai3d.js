@@ -14,7 +14,7 @@ const ROOT = path.resolve(__dirname, '..');
 const CONF = path.join(ROOT, 'data', 'private', 'ai3d.json');
 const WORK = path.join(ROOT, 'data', 'source', 'ai3d');
 const JOBS = path.join(WORK, '_jobs.json');
-const BLENDER = process.env.BLENDER || 'C:/Users/Marco/AppData/Local/Programs/Blender/blender-5.2.2-windows-x64/blender.exe';
+const BLENDER = require('./blender-path').BLENDER;   // env BLENDER → PATH → folder pemasangan umum
 const PARALLEL = 3;          // permintaan fal.ai bersamaan
 const POLL_MS = 4000;
 const FACES = 60000;    // cukup halus untuk web, ringan di HP (dibatasi lagi per model: faces)
@@ -28,6 +28,9 @@ const MODELS = {
   'v2.5': { l: 'Tripo v2.5', d: 'Versi lama, murah. Multiview bila ≥ 2 foto.', image: 'tripo3d/tripo/v2.5/image-to-3d', multi: 'tripo3d/tripo/v2.5/multiview-to-3d',
             cost: (o) => o.texture === 'detailed' ? .4 : .3 }
 };
+/* image→3D open source (riset 23 Okt): TRELLIS 2 = bidang & tepi rapi, 1 foto; Hunyuan3D v3 = multiview depan/kiri/belakang/kanan */
+MODELS.trellis2 = { l: 'TRELLIS 2', d: 'Microsoft (MIT). 1 foto, resolusi 1536. Bidang rata & tepi lurus.', image: 'fal-ai/trellis-2', cost: () => .35 };
+MODELS.hy3 = { l: 'Hunyuan3D v3', d: 'Tencent. Multiview bila ≥ 2 foto (depan, kiri, belakang, kanan). PBR.', image: 'fal-ai/hunyuan3d-v3/image-to-3d', multi: 'fal-ai/hunyuan3d-v3/image-to-3d', cost: () => .38 };
 const DEF = { model: 'h3.1', texture: 'standard', geometry: 'standard' };
 
 /* ---------------------------------------------------------------- simpan */
@@ -62,6 +65,11 @@ function buildInput(o, views) {
     if (useMulti) input.image_urls = seq.map(imageInput); else input.image_url = imageInput(views[0]);
   } else if (o.model === 'p2') {
     input = { image_url: imageInput(views[0]), texture: true, pbr: true, texture_quality: tex ? 'detailed' : 'standard', auto_size: true, face_limit: FACE_LIMIT };
+  } else if (o.model === 'trellis2') {
+    input = { image_url: imageInput(views[0]), resolution: '1536', texture_size: tex ? '4096' : '2048', decimation_target: 200000, remesh: true };
+  } else if (o.model === 'hy3') {
+    input = { input_image_url: imageInput(seq[0] || views[0]), enable_pbr: true, face_count: 200000, generate_type: 'Normal' };
+    if (useMulti) ['left', 'back', 'right'].forEach((k, i) => { if (seq[i + 1]) input[k + '_image_url'] = imageInput(seq[i + 1]); });
   } else if (o.model === 'p1') {
     input = { image_url: imageInput(views[0]), texture: true, face_limit: FACE_LIMIT };
   } else {
@@ -151,7 +159,7 @@ async function run(job) {
     }
     set(job, { status: 'unduh' });
     const out = await fal(job.response_url, { method: 'GET' });
-    const mesh = out.model_mesh || (out.model_urls && (out.model_urls.pbr_model || out.model_urls.base_model));
+    const mesh = out.model_mesh || out.model_glb || (out.model_urls && (out.model_urls.pbr_model || out.model_urls.base_model || out.model_urls.glb));   // Tripo: model_mesh; TRELLIS 2 / Hunyuan3D: model_glb
     if (!mesh || !mesh.url) throw new Error('Hasil tanpa model');
     const dir = path.join(WORK, job.id), stamp = Date.now().toString(36);
     const raw = path.join(dir, 'raw-' + stamp + '.glb');

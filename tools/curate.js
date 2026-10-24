@@ -118,7 +118,7 @@ function curate(items) {
   [['aether-series-cloud-r7', { '100cm': 'assets/items/aether-series-cloud-r7/model-100cm.glb' }], ['oz-floor-lamp-stand', { Black: 'assets/items/oz-floor-lamp-stand/model-black.glb' }]].forEach(([id, vm]) => { if (byId[id] && Object.values(vm).every(has)) byId[id].vmodels = vm; });
   ['aether-cloud-q1', 'aether-series-magnetic-track-light'].forEach((id) => { if (byId[id]) byId[id].mount = 'ceiling'; });
   // Y5 · varian modul furnitur prosedural (tools/glb/furniture.py): model-<varian>.glb
-  [['poel-modular-wardrobe', ['Drawer', 'Shelves']], ['poel-modular-cabinet', ['Door', 'Drawer']], ['aobo-cabinet-and-wardrobe', ['A1', 'A3', 'A4', 'C2']],
+  [['syme', ['Prestige']], ['poel-modular-wardrobe', ['Drawer', 'Shelves']], ['poel-modular-cabinet', ['Door', 'Drawer']], ['aobo-cabinet-and-wardrobe', ['A1', 'A3', 'A4', 'C2']],
    ['vazra', ['2 Gang 1 Way', '3 Gang 1 Way', 'European Outlet']], ['storage-tray-each', ['M', 'L']],
    ['vazra-rechargeable-usb-type-c-aa-battery-baterai', ['4 pcs']], ['vazra-rechargeable-usb-type-c-aaa-battery-baterai', ['4 pcs']]].forEach(([id, vs]) => {
     const vm = {}; vs.forEach((v) => { const f = 'assets/items/' + id + '/model-' + v.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.glb'; if (has(f)) vm[v] = f; }); if (byId[id] && Object.keys(vm).length) byId[id].vmodels = vm;
@@ -180,6 +180,10 @@ function curate(items) {
     }
     p.variants = std(p.price, p.was, p.img).concat(elite(fb, 0, p, null)); p.variant = 0;   // belum ada kain → standar + Elite
   });
+  // Koreksi warna kain dari pemilik (hex xionco.shop kurang tepat). Custard: pemilik 24 Okt 2026 — "seharusnya agak kekuningan cream"
+  const HEX_FIX = { custard: '#ead592' };
+  const fixHex = (v) => { const k = String(v.label || '').toLowerCase().replace(/^(vienna|elite color)\s+/, '').trim(); if (HEX_FIX[k] && v.hex) v.hex = HEX_FIX[k]; (v.subs || []).forEach(fixHex); };
+  items.forEach((p) => (p.variants || []).forEach(fixHex));
   // Acrylic Mirror selalu paling bawah (urutan katalog)
   const mir = items.filter((p) => /^acrylic-mirror/.test(p.id)); if (mir.length) { const rest = items.filter((p) => mir.indexOf(p) < 0); items.length = 0; rest.concat(mir).forEach((p) => items.push(p)); }
   return items;

@@ -1,0 +1,7 @@
+{
+ "_": "tools/glb/drawers.py — laci tarik (muka + pegangan + kotak laci). Koordinat meter dari sudut min bbox Blender (y = dalam dari depan). z: atas → bawah.",
+ "assets/items/verk/part-laci.glb": {"src": "data/source/glb-pregrain/verk/part-laci.glb", "x": [0, 0.39], "y": [0, 0.0475], "depth": 0.59, "pull": 0.32,
+  "z": [[0.570, 0.752], [0.379, 0.566], [0.016, 0.373]]},
+ "assets/items/verk/model-laci.glb": {"src": "data/source/glb-pregrain/verk/model-laci.glb", "x": [1.35, 1.74], "y": [0, 0.0475], "depth": 0.59, "pull": 0.32,
+  "z": [[0.571, 0.754], [0.380, 0.567], [0.016, 0.374]]}
+}
