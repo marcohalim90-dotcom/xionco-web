@@ -276,8 +276,8 @@
     if (on) {
       var r = moreBtn.getBoundingClientRect(), mob = isMobile();
       // desktop: di sebelah rail yang sudah melebar penuh (200 px), bukan lebar saat animasi
-      moreBox.style.left = (mob ? Math.max(12, Math.min(innerWidth - moreBox.offsetWidth - 12, r.left + r.width / 2 - moreBox.offsetWidth / 2)) : html.classList.contains('lay3') ? railEl.getBoundingClientRect().right - 200 - 10 - moreBox.offsetWidth : railEl.getBoundingClientRect().left + 200 + 10) + 'px';   // layout III: sidebar kanan → kotak More di kirinya
-      moreBox.style.top = (mob ? r.top - moreBox.offsetHeight - 12 : Math.min(innerHeight - moreBox.offsetHeight - 12, r.top - 6)) + 'px';
+      moreBox.style.left = (mob ? Math.max(12, r.left - moreBox.offsetWidth - 10) : html.classList.contains('lay3') ? railEl.getBoundingClientRect().right - 200 - 10 - moreBox.offsetWidth : railEl.getBoundingClientRect().left + 200 + 10) + 'px';   // layout III: sidebar kanan → kotak More di kirinya
+      moreBox.style.top = (mob ? Math.max(70, Math.min(innerHeight - moreBox.offsetHeight - 12, r.bottom - moreBox.offsetHeight)) : Math.min(innerHeight - moreBox.offsetHeight - 12, r.top - 6)) + 'px';
     }
     moreBox.classList.toggle('is-on', on); moreBtn.setAttribute('aria-expanded', on ? 'true' : 'false');
   }
@@ -290,6 +290,23 @@
   moreBox.addEventListener('click', function (e) { if (e.target.closest('.more__item')) moreOpen(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && moreBox.classList.contains('is-on')) { moreOpen(false); moreBtn.focus(); } });
   document.addEventListener('pointerdown', function (e) { if (moreBox.classList.contains('is-on') && !moreBox.contains(e.target) && !moreBtn.contains(e.target)) moreOpen(false); });
+  /* MOB: navigasi ponsel = satu lingkaran. Ketuk → ikon (Beranda, Koleksi, Customize, Kontak, More) naik satu per satu dari bawah
+     ke atas (--m = urutan dari bawah); menutup terbalik. Tutup saat memilih, ketuk di luar, Escape, atau pindah halaman. */
+  var mFab = $('#mFab');
+  function mNav(on) {
+    if (!mFab) return;
+    if (on) $$('.rail__item', railEl).filter(function (a) { return a.offsetParent !== null || getComputedStyle(a.closest('li')).display !== 'none'; }).forEach(function (a, k) { a.style.setProperty('--m', k); });
+    html.classList.toggle('mnav-open', !!on); mFab.setAttribute('aria-expanded', on ? 'true' : 'false');
+    if (!on && moreBox.classList.contains('is-on')) moreOpen(false);
+  }
+  if (mFab) {
+    mFab.addEventListener('click', function () { mNav(!html.classList.contains('mnav-open')); });
+    railEl.addEventListener('click', function (e) { var a = e.target.closest('.rail__item'); if (a && a !== moreBtn && isMobile()) mNav(false); });
+    moreBox.addEventListener('click', function (e) { if (e.target.closest('.more__item') && isMobile()) mNav(false); });
+    document.addEventListener('pointerdown', function (e) { if (html.classList.contains('mnav-open') && !railEl.contains(e.target) && !mFab.contains(e.target) && !moreBox.contains(e.target)) mNav(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && html.classList.contains('mnav-open')) { mNav(false); mFab.focus(); } });
+    addEventListener('hashchange', function () { mNav(false); });
+  }
   $$('.rail__item', railEl).forEach(function (a) {
     a.addEventListener('pointerenter', function () {
       if (!FINE) return;
@@ -481,7 +498,7 @@
     if (isMobile()) {
       html.classList.remove('lay3');
       stageInset = { l: 0, r: 0 };
-      if (XW.ok) XW.setInsets(0, 0, on ? panel.offsetHeight + (current === 'customize' ? 28 : 76 + 74) : 150, on ? 64 : 230);   // CZ-D: lembar Customize menempel di bawah (menu bawah disembunyikan)
+      if (XW.ok) XW.setInsets(0, 0, on ? panel.offsetHeight + 24 : 84, current === 'customize' ? 70 : 128);   // MOB: kotak harga di atas, lembar panel di bawah, nav = lingkaran (tidak memakan baris)
       html.style.setProperty('--cx', '0px');
       return;
     }
@@ -2023,7 +2040,11 @@
      MENU KLIK KANAN di panggung — opsi sesuai yang diklik (modul CUBIX, furnitur ruang, produk) + umum
      (Tampilkan ukuran, Reset tampilan). Opsi baru cukup ditambah di ctxItems.
      ====================================================================== */
-  var ctxEl = $('#ctxMenu'), ctxPick = null;
+  var ctxEl = $('#ctxMenu'), ctxPick = null, ctxXY = null;
+  /* Isi menu: baris aksi (undo, Animate, modul …) lalu baris pengaturan tampilan dalam toggle kecil —
+     Ukuran, Pembanding (kotak samping saat hover), Putar bebas, Tema, Background — dan Reset tampilan.
+     Bentuk entri: ['id', label] aksi · ['id', label, on] aksi bertanda · { seg: label, opts: [[id, label, on] …] }
+     · { fly: label, cur: teks, opts: [[id, label, on] …] } · null = garis pemisah */
   function ctxItems(pick) {
     var it = [];
     if (pick && pick.kind === 'cfg' && current === 'cubix') { cbxSel = pick.uid; cbxRender(); if (XW.cfgSelect) XW.cfgSelect(pick.uid); it.push(['cfg-rot', T('Putar 90°')], ['cfg-flip', T('Balik')], ['cfg-dup', T('Duplikat')], ['cfg-del', T('Hapus modul')], null); }
@@ -2031,29 +2052,50 @@
     var hs = current === 'cubix' ? cbxHist : current === 'ruang' ? roomHist : current === 'customize' ? czHist : null;
     if (hs && (hs.u.length || hs.r.length)) { if (hs.u.length) it.push(['undo', T('Urungkan') + '  ·  Ctrl+Z']); if (hs.r.length) it.push(['redo', T('Ulangi') + '  ·  Ctrl+Shift+Z']); it.push(null); }
     if (XW.motions && XW.motions().length && !(pick && pick.kind !== 'item' && pick.kind)) it.push(['anim', T('Animate'), XW.motions().some(function (m) { return m.to > .5; })], null);
-    var dm = dimsMode();
-    it.push(['dims:0', T('Ukuran') + ' · Off', dm === 0], ['dims:1', T('Ukuran') + ' · Basic', dm === 1], ['dims:2', T('Ukuran') + ' · Advance', dm === 2], null, ['human:pria', T('Manusia 170 cm · pria'), XW.human && XW.human() === 'pria'], ['human:wanita', T('Manusia 170 cm · wanita'), XW.human && XW.human() === 'wanita'], ['human:manikin', T('Manikin kayu 170 cm'), XW.human && XW.human() === 'manikin'], null, ['reset', T('Reset tampilan')]);
+    var dm = dimsMode(), hk = XW.human ? XW.human() : false, fr = freeNow(), th = themeNow(), bg = bgNow();
+    it.push({ seg: T('Ukuran'), opts: [['dims:0', 'Off', dm === 0], ['dims:1', 'Basic', dm === 1], ['dims:2', 'Advance', dm === 2]] });
+    it.push({ fly: T('Pembanding'), cur: hk === 'pria' ? T('Pria') + ' · 170' : hk === 'wanita' ? T('Wanita') + ' · 160' : hk === 'manikin' ? T('Manikin') + ' · 170' : T('Tanpa'), opts: [['human:pria', T('Pria') + ' · 170 cm', hk === 'pria'], ['human:wanita', T('Wanita') + ' · 160 cm', hk === 'wanita']] });
+    it.push({ seg: T('Putar bebas'), opts: [['free:1', 'On', fr], ['free:0', 'Off', !fr]] });
+    it.push({ seg: T('Tema'), opts: [['theme:dark', T('Gelap'), th === 'dark'], ['theme:light', T('Terang'), th === 'light']] });
+    it.push({ seg: 'Background', opts: [['bg:default', 'Default', bg === 'default'], ['bg:studio', 'Studio', bg === 'studio'], ['bg:grid', T('Garis'), bg === 'grid']] });
+    it.push(null, ['reset', T('Reset tampilan')]);
     return it;
   }
-  function ctxOpen(x, y, pick) {
-    ctxPick = pick;
-    ctxEl.innerHTML = '<p class="ctx__h">' + T('Panggung') + '</p>' + ctxItems(pick).map(function (o) {
+  function ctxHtml(pick) {
+    var segBtn = function (o) { return '<button type="button" role="menuitemradio" aria-checked="' + (o[2] ? 'true' : 'false') + '" class="' + (o[2] ? 'is-on' : '') + '" data-ctx="' + o[0] + '"><span>' + esc(o[1]) + '</span></button>'; };
+    return '<p class="ctx__h">' + T('Panggung') + '</p>' + ctxItems(pick).map(function (o) {
       if (!o) return '<hr>';
+      if (o.seg) return '<div class="ctx__row"><span class="ctx__l">' + esc(o.seg) + '</span><div class="ctx__seg">' + o.opts.map(segBtn).join('') + '</div></div>';
+      if (o.fly) return '<div class="ctx__row ctx__row--fly" tabindex="0"><span class="ctx__l">' + esc(o.fly) + '</span><span class="ctx__cur" data-fly><span>' + esc(o.cur) + '</span><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span><div class="ctx__fly" role="group">' + o.opts.map(function (q) { return '<button type="button" role="menuitemradio" aria-checked="' + (q[2] ? 'true' : 'false') + '" class="more__item ' + (q[2] ? 'is-on' : '') + '" data-ctx="' + q[0] + '"><span>' + esc(q[1]) + '</span><i class="' + (q[2] ? 'is-on' : '') + '"></i></button>'; }).join('') + '</div></div>';
       return '<button type="button" class="more__item" role="menuitem" data-ctx="' + o[0] + '"><span>' + esc(o[1]) + '</span>' + (o.length > 2 ? '<i class="' + (o[2] ? 'is-on' : '') + '"></i>' : '') + '</button>';
     }).join('');
-    ctxEl.style.left = Math.max(8, Math.min(innerWidth - ctxEl.offsetWidth - 8, x + 4)) + 'px';
+  }
+  function ctxOpen(x, y, pick) {
+    ctxPick = pick; ctxXY = { x: x, y: y };
+    ctxEl.innerHTML = ctxHtml(pick);
+    var left = Math.max(8, Math.min(innerWidth - ctxEl.offsetWidth - 8, x + 4));
+    ctxEl.style.left = left + 'px';
     ctxEl.style.top = Math.max(8, Math.min(innerHeight - ctxEl.offsetHeight - 8, y + 4)) + 'px';
+    ctxEl.classList.toggle('ctx--flipl', left + ctxEl.offsetWidth + 190 > innerWidth);   // kotak samping ke kiri bila mepet tepi kanan
     ctxEl.classList.add('is-on');
   }
+  // toggle di menu: menu tetap terbuka, isinya diperbarui di tempat
+  function ctxRefresh() { if (ctxEl.classList.contains('is-on')) ctxEl.innerHTML = ctxHtml(ctxPick); }
+  // layar sentuh: ketuk baris Pembanding = buka / tutup kotak samping (hover tidak ada)
+  ctxEl.addEventListener('click', function (e) { var cur = e.target.closest('[data-fly]'); if (cur) cur.closest('.ctx__row--fly').classList.toggle('is-open'); });
   function ctxClose() { ctxEl.classList.remove('is-on'); ctxPick = null; }
   XW.onContext = function (x, y, pick) { ctxOpen(x, y, pick); };
   (function () { var hk = store.get('xv5_human', 0); if (XW.human && hk) XW.human(hk === 1 ? 'pria' : hk); })();   // manikin skala diingat di perangkat
+  function ctxOpenAgain() { if (ctxXY && ctxPick !== undefined) { ctxEl.innerHTML = ctxHtml(ctxPick); ctxEl.classList.add('is-on'); } }
   ctxEl.addEventListener('click', function (e) {
     var b = e.target.closest('[data-ctx]'); if (!b) return;
-    var a = b.dataset.ctx, pick = ctxPick; ctxClose();
-    if (a.indexOf('dims:') === 0) { store.set('xv5_dims', +a.slice(5)); renderSettings(); return; }
+    var a = b.dataset.ctx, pick = ctxPick; ctxEl.classList.remove('is-on');
+    if (a.indexOf('dims:') === 0) { store.set('xv5_dims', +a.slice(5)); renderSettings(); ctxOpenAgain(); return; }
+    if (a.indexOf('free:') === 0) { store.set('xv5_free', +a.slice(5)); applyFree(); ctxOpenAgain(); return; }
+    if (a.indexOf('theme:') === 0) { setTheme(a.slice(6)); ctxOpenAgain(); return; }
+    if (a.indexOf('bg:') === 0) { store.set('xv5_bg', a.slice(3)); applyBg(); renderSettings(); ctxOpenAgain(); return; }
     if (a === 'reset') { if (XW.recenter) XW.recenter(); return; }
-    if (a.indexOf('human:') === 0) { if (XW.human) { var hk = a.slice(6); store.set('xv5_human', XW.human(XW.human() === hk ? false : hk) || 0); renderSettings(); } return; }   // pilih lagi = sembunyikan
+    if (a.indexOf('human:') === 0) { if (XW.human) { var hk = a.slice(6); store.set('xv5_human', XW.human(XW.human() === hk ? false : hk) || 0); renderSettings(); } ctxOpenAgain(); return; }   // pilih lagi = sembunyikan
     if (a === 'undo' || a === 'redo') { histStep(a === 'undo'); return; }
     if (a === 'anim') { if (XW.animate) XW.animate(); return; }
     if (a.indexOf('cfg-') === 0) { cbxEdit({ 'cfg-rot': 'rot', 'cfg-flip': 'flip', 'cfg-dup': 'dup', 'cfg-del': 'del' }[a]); return; }
@@ -2381,15 +2423,19 @@
   var czLayout = function () { return isMobile() ? 'box1' : 'box' + czlNow(); };
 
   // panggung: rancangan 3D (atau produk asli bila dipilih)
-  var czT = 0;
-  function czStage() {
+  /* CZ-F: saat slider diseret (live) model dibangun ulang berkala (throttle, jeda ≥ 5× waktu bangun terakhir, min 60 ms)
+     — dulu debounce 30 ms: selama jari bergerak model tidak berubah sama sekali, lalu melompat saat berhenti */
+  var czT = 0, czLastB = 0, czBuildMs = 8;
+  function czStage(live) {
     if (current !== 'customize' || !XW.ok) return;
     clearTimeout(czT);
+    var wait = live ? Math.max(0, Math.max(60, czBuildMs * 5) - (performance.now() - czLastB)) : 30;
     czT = setTimeout(function () {
+      var t0 = czLastB = performance.now();
       if (czBase && czView === 'product' && byId[czBase.id]) showProduct(byId[czBase.id]);
-      else { stageKind = 'custom'; furniture = { kind: 'custom' }; XW.showCustom(cz); }
+      else { stageKind = 'custom'; furniture = { kind: 'custom' }; XW.showCustom(cz, { live: !!live }); czBuildMs = czBuildMs * .7 + (performance.now() - t0) * .3; }
       czDetail();
-    }, 30);
+    }, wait);
   }
   // skrip uji: pasang konfigurasi Customize langsung (mis. XVCustom({ cat: 'meja', sub: 'desk', ... }))
   window.XVCustom = function (cfg) { cz = XC.normalize(Object.assign(XC.defaults(cfg.cat, cfg.sub), cfg)); czSave(); if (current === 'customize') { czRender(); czStage(); } return JSON.parse(JSON.stringify(cz)); };
@@ -2561,10 +2607,11 @@
       if (si && show.indexOf(si) < 0) show[show.length - 1] = si;
     }
     var on = function (x) { return selIds.indexOf(x.id) >= 0; }, rest = ord.length - show.length;
+    var grp = ' role="group" aria-label="' + esc(L(gr)) + '"', M = isMobile() ? 6 : 9;
     var more = rest > 0 ? '<button type="button" class="cz-all' + (czPick === gr.id ? ' is-on' : '') + '" data-pick="' + gr.id + '">' + esc(T('Semua pilihan')) + ' · ' + ord.length + '<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>' : '';
-    if (kind === 'sw') return '<div class="cz-sws" role="group" style="--per:' + (show.length <= 9 ? show.length : Math.ceil(show.length / Math.ceil(show.length / 9))) + '">' + show.map(function (x) { return cell(gr, x, on(x), multi, 'sw'); }).join('') + '</div>' + more;
-    if (kind === 'ic') { var cols = czCols(show.length); return '<div class="cz-grid cz-tiles" style="--cols:' + cols + '">' + show.map(function (x) { return cell(gr, x, on(x), multi, 'ic'); }).join('') + '</div>' + more; }
-    return '<div class="cz-txs">' + show.map(function (x) { return cell(gr, x, on(x), multi, 'tx'); }).join('') + '</div>' + more;
+    if (kind === 'sw') return '<div class="cz-sws"' + grp + ' style="--per:' + (show.length <= M ? show.length : Math.ceil(show.length / Math.ceil(show.length / M))) + '">' + show.map(function (x) { return cell(gr, x, on(x), multi, 'sw'); }).join('') + '</div>' + more;
+    if (kind === 'ic') { var cols = czCols(show.length); return '<div class="cz-grid cz-tiles"' + grp + ' style="--cols:' + cols + '">' + show.map(function (x) { return cell(gr, x, on(x), multi, 'ic'); }).join('') + '</div>' + more; }
+    return '<div class="cz-txs"' + grp + '>' + show.map(function (x) { return cell(gr, x, on(x), multi, 'tx'); }).join('') + '</div>' + more;
   }
   // gambar garis dimuat saat kartu mendekati area gulir (panel atau kotak pilihan Box 2)
   function czLazy(root) {
@@ -2614,7 +2661,7 @@
       return d > 0 ? '<em>+Rp ' + short(d) + '</em>' : '';
     };
     var head = function (b) { return '<p class="cz-g__h"><span>' + (gr.id === '_cat' ? '' : esc(lab)) + '</span><b' + (b ? ' data-out' : '') + '>' + esc(selText(gr) + (box2 && gr.id === '_cat' ? ' · ' + L(XC.sub(cz)) : '')) + hd() + '</b></p>'; };
-    if (gr.type === 'range') return '<div class="cz-g' + dep + '" data-g="' + gr.id + '">' + head(true) + '<input class="rng" type="range" style="--p:' + ((cz[gr.id] - gr.min) / (gr.max - gr.min) * 100).toFixed(1) + '%" min="' + gr.min + '" max="' + gr.max + '" step="' + gr.inc + '" value="' + cz[gr.id] + '" data-r="' + gr.id + '" aria-label="' + esc(L(gr)) + '"><p class="rng__ends"><span>' + esc(czVal(gr, gr.min)) + '</span><span>' + esc(czVal(gr, gr.max)) + '</span></p></div>';
+    if (gr.type === 'range') return '<div class="cz-g' + dep + '" data-g="' + gr.id + '">' + head(true) + '<input class="rng" type="range" style="--p:' + ((cz[gr.id] - gr.min) / (gr.max - gr.min) * 100).toFixed(1) + '%" min="' + gr.min + '" max="' + gr.max + '" step="' + gr.inc + '" value="' + cz[gr.id] + '" data-r="' + gr.id + '" aria-label="' + esc(L(gr)) + '" aria-valuetext="' + esc(czVal(gr, cz[gr.id])) + '"><p class="rng__ends"><span>' + esc(czVal(gr, gr.min)) + '</span><span>' + esc(czVal(gr, gr.max)) + '</span></p></div>';
     var o = XC.opts(gr, cz), multi = gr.type === 'multi', selIds = multi ? (cz[gr.id] || []) : [cz[gr.id]], kind = czKind(gr, o);
     // Box 2 (desktop): warna tampil hingga 20 cakram; ubin bergambar 4 (satu baris penuh); teks 8 — sisanya lewat "Semua pilihan · N" ke kotak pemilih
     var lim = box2 && gr.id !== '_cat' && gr.id !== '_sub' ? (kind === 'sw' ? (o.length > 20 ? 19 : 0) : kind === 'ic' ? (o.length > 4 ? 4 : 0) : (o.length > 8 ? 8 : 0)) : 0;
@@ -2643,7 +2690,7 @@
     var front = lay.map(function (q, i) {
       var cwc = ws[i] * 100, ihc = ihM * 100;
       return '<button type="button" class="kx-col' + (i === czCol ? ' is-on' : '') + '" data-lay="col:' + i + '" style="flex:' + q.wr + ' 1 0" title="' + esc(L({ l: 'Kolom', en: 'Column' }) + ' ' + (i + 1) + ' · ' + L(KB.KIND[q.k])) + '" aria-pressed="' + (i === czCol) + '">' +
-        KB.svgOpen('0 0 ' + cwc.toFixed(1) + ' ' + ihc.toFixed(1)).replace('<svg ', '<svg preserveAspectRatio="none" ') + KB.colSVG(q, sub, 0, 0, cwc, ihc, ihM, ws[i], i >= n / 2 && n > 1, ds) + '</svg></button>';
+        KB.svgOpen('0 0 ' + cwc.toFixed(1) + ' ' + ihc.toFixed(1)) + KB.colSVG(q, sub, 0, 0, cwc, ihc, ihM, ws[i], i >= n / 2 && n > 1, ds) + '</svg></button>';
     }).join('');
     var nums = lay.map(function (q, i) { return '<span style="flex:' + q.wr + ' 1 0"' + (i === czCol ? ' class="is-on"' : '') + '>' + (i + 1) + '</span>'; }).join('');
     var h = '<div class="cz-g kx-lay" data-g="layout" data-layg>';
@@ -2679,12 +2726,13 @@
     });
     return h + '</div>';
   }
-  // buka pintu / tarik laci kolom terpilih di panggung (yang lain ditutup)
+  // buka pintu / tarik laci kolom terpilih di panggung (yang lain ditutup) — CZ-G4: satu per satu, BAWAH → ATAS, menutup terbalik;
+  // kolom laci: hanya laci paling bawah (dulu laci ATAS & semua pintu serentak); status tersimpan seperti Animate
   function czOpenCol() {
-    if (!window.XW || !XW.motions || cz.cat !== 'kabinet') return;
+    if (!window.XW || !XW.motions || !XW.openOnly || cz.cat !== 'kabinet') return;
     var ms = XW.motions().filter(function (m) { return m.col != null && m.col >= 0; }), mine = ms.filter(function (m) { return m.col === czCol; });
-    var doors = mine.filter(function (m) { return m.kind !== 'drawer'; }), pick = doors.length ? doors : mine.slice(0, 1);
-    ms.forEach(function (m) { m.to = pick.indexOf(m) >= 0 ? 1 : 0; });
+    var doors = mine.filter(function (m) { return m.kind !== 'drawer'; }), pick = doors.length ? doors : mine;
+    XW.openOnly(pick.map(function (m) { return m.id; }), { one: !doors.length, scope: ms.map(function (m) { return m.id; }) });
   }
   function czLayClick(b) {
     var KB = window.XKAB, a = b.getAttribute('data-lay'), i = a.indexOf(':'), key = a.slice(0, i), val = a.slice(i + 1);
@@ -2842,14 +2890,28 @@
       return '<section class="cz__sec" data-sec="' + st.id + '" id="cz-' + st.id + '"><h3 class="cz__h">' + esc(L(st)) + '</h3>' + inner + '</section>';
     }).join('');
   }
+  /* CZ-E: kunci elemen fokus agar bisa dipulihkan setelah panel dibangun ulang (dulu fokus hilang tiap klik / panah slider) */
+  function czFocusKey(el) {
+    if (!el || el === document.body) return null;
+    var root = el.closest('#czPicker') ? '#czPicker ' : el.closest('#czScroll') ? '#czScroll ' : null; if (!root) return null;
+    var q = function (a) { return '[' + a + '="' + (window.CSS && CSS.escape ? CSS.escape(el.getAttribute(a)) : el.getAttribute(a)) + '"]'; };
+    if (el.hasAttribute('data-r')) return root + q('data-r');
+    if (el.hasAttribute('data-v')) { var g = el.closest('[data-g]'); return root + (g && g.id !== 'czPickGrid' ? '[data-g="' + g.getAttribute('data-g') + '"] ' : '') + q('data-v'); }
+    var ks = ['data-pick', 'data-tab', 'data-czq', 'data-lay', 'data-view', 'data-breakdown', 'data-cz-buy', 'data-send'];
+    for (var i = 0; i < ks.length; i++) if (el.hasAttribute(ks[i])) return root + (el.getAttribute(ks[i]) ? q(ks[i]) : '[' + ks[i] + ']');
+    return null;
+  }
+  var czTabsH = '', czPop = null;
   function czRender(keepScroll) {
+    var fae = document.activeElement, fkey = czFocusKey(fae), fvis = !!(fae && fae.matches && fae.matches(':focus-visible'));
     var sc = $('#czScroll'), top = sc.scrollTop, base = $('#czBase'), lay = czLayout(), box2 = lay !== 'box1';
     html.classList.toggle('cz-box2', box2); html.classList.toggle('cz-box3', lay === 'box3');
     base.hidden = !czBase;
     base.innerHTML = czBase ? '<div class="cz__from"><p class="eyebrow">' + T('Custom dari') + '</p><b>' + esc(czBase.name) + '</b><span>' + esc(czBase.type) + '</span></div>' +
-      '<div class="seg seg--sm"><button type="button" data-view="design" class="' + (czView === 'design' ? 'is-on' : '') + '">' + T('Rancangan 3D') + '</button><button type="button" data-view="product" class="' + (czView === 'product' ? 'is-on' : '') + '">' + T('Produk asli') + '</button></div>' +
+      '<div class="seg seg--sm" role="group"><button type="button" data-view="design" aria-pressed="' + (czView === 'design') + '" class="' + (czView === 'design' ? 'is-on' : '') + '">' + T('Rancangan 3D') + '</button><button type="button" data-view="product" aria-pressed="' + (czView === 'product') + '" class="' + (czView === 'product' ? 'is-on' : '') + '">' + T('Produk asli') + '</button></div>' +
       '<button class="cz__fresh" type="button" data-czfresh>' + T('Mulai dari nol') + '</button>' : '';
-    $('#czTabs').innerHTML = XC.STEPS.map(function (st) { return '<button type="button" data-tab="' + st.id + '"><span>' + esc(L(st)) + '</span></button>'; }).join('');   // CZ-A: tanpa nomor, nama tab = judul bagian
+    var tabsH = XC.STEPS.map(function (st) { return '<button type="button" data-tab="' + st.id + '"><span>' + esc(L(st)) + '</span></button>'; }).join('');   // CZ-A: tanpa nomor, nama tab = judul bagian
+    if (tabsH !== czTabsH) { $('#czTabs').innerHTML = tabsH; czTabsH = tabsH; }   // CZ-E: tidak dibangun ulang tiap klik → garis bawah tab tidak berkedip
     czFoot(); czUnit0 = null;
     $('#czBody').innerHTML = czSections(box2);
     sc.scrollTop = keepScroll ? top : 0;
@@ -2857,6 +2919,8 @@
     czSpy();
     if (box2 && czPick && (czPick === '@dims' || czPick === '@col' || findGroup(czPick) && (CZ_SPECIAL[czPick] || XC.opts(findGroup(czPick), cz).length > 4))) czPickerFill(); else czPickerClose(true);
     czDetail();
+    if (fkey) { var nf = document.querySelector(fkey); if (nf && nf !== document.activeElement) { try { nf.focus({ preventScroll: true, focusVisible: fvis }); } catch (e) { nf.focus(); } } }
+    if (czPop) { var pe = document.querySelector(czPop); czPop = null; if (pe && pe.classList.contains('is-on')) { pe.classList.add('cz-pop'); setTimeout(function () { pe.classList.remove('cz-pop'); }, 420); } }   // CZ-E: umpan balik pilihan baru
   }
   // tab aktif mengikuti gulir
   function czSpy() {
@@ -2875,7 +2939,8 @@
   });
 
   /* ---------- Box 2: kotak pilihan kiri */
-  var picker = $('#czPicker');
+  var picker = $('#czPicker'), czPickOpener = null;
+  picker.inert = true;   // CZ-E: tertutup = tidak bisa dicapai Tab / pembaca layar
   var CZ_SPECIAL = { '@dims': 1, '@col': 1, '_sub': 1 };   // selalu di Detail box (tidak bergantung jumlah pilihan)
   function czPickerFill() {
     if (czPick === '@dims' || czPick === '@col') {
@@ -2886,7 +2951,7 @@
       var grid = $('#czPickGrid'); grid.dataset.g = czPick; grid.removeAttribute('data-multi'); czUnit0 = null;
       grid.innerHTML = dg ? czDimsGroups().map(function (g) { return czGroup(g, false); }).join('') : czLayEd(lay, false, 'col');
       grid.classList.add('cz-pick--free'); czLazy(grid);
-      if (!picker.classList.contains('is-on')) { picker.classList.add('is-on'); picker.setAttribute('aria-hidden', 'false'); insets(); }
+      if (!picker.classList.contains('is-on')) czPickOpen();
       return;
     }
     $('#czPickGrid').classList.remove('cz-pick--free');
@@ -2900,7 +2965,13 @@
     grid.innerHTML = '<div class="cz-g is-' + czKind(gr, XC.opts(gr, cz)) + '"><p class="cz-g__h"><span></span><b>' + esc(selText(gr)) + '</b></p>' + czOpts(gr, XC.opts(gr, cz), multi, multi ? (val || []) : [val], 0) + '</div>';
     grid.classList.add('cz-pick--free');   // CZ-B: komponen yang sama dengan panel (cakram / ubin / teks), bukan kisi kartu
     czLazy(grid);
-    if (!picker.classList.contains('is-on')) { picker.classList.add('is-on'); picker.setAttribute('aria-hidden', 'false'); insets(); }
+    if (!picker.classList.contains('is-on')) czPickOpen();
+  }
+  /* CZ-E: kotak pemilih = dialog non-modal — dibuka: inert lepas, fokus ke Kembali; ditutup: inert, fokus kembali ke pemicunya */
+  function czPickOpen() {
+    var ae = document.activeElement; czPickOpener = ae && !picker.contains(ae) ? (ae.getAttribute('data-pick') || null) : null;
+    picker.inert = false; picker.classList.add('is-on'); picker.setAttribute('aria-hidden', 'false'); insets();
+    var bk = picker.querySelector('.picker__back'); if (bk) { try { bk.focus({ preventScroll: true }); } catch (e) { bk.focus(); } }
   }
   function czPickPlace() {   // CZ-D: kotak pemilih tepat di atas panel (halaman lanjutan), bukan kolom kedua yang menyempitkan panggung
     if (!picker || !picker.classList.contains('is-on') || isMobile()) return;
@@ -2909,7 +2980,9 @@
   }
   function czPickerClose(silent) {
     if (!picker.classList.contains('is-on')) { czPick = silent ? czPick : null; return; }
-    picker.classList.remove('is-on'); picker.setAttribute('aria-hidden', 'true');
+    var hadFocus = picker.contains(document.activeElement), back = czPick;
+    picker.classList.remove('is-on'); picker.setAttribute('aria-hidden', 'true'); picker.inert = true;
+    if (!silent && hadFocus) setTimeout(function () { var t = document.querySelector('#czScroll [data-pick="' + (czPickOpener || back) + '"]') || document.querySelector('#czScroll .cz-all, #czScroll [data-pick]'); if (t) { try { t.focus({ preventScroll: true }); } catch (e) { t.focus(); } } }, 0);
     if (!silent) { czPick = null; $$('.cz-row, .cz-more, .cz-all').forEach(function (r) { r.classList.remove('is-on'); }); }
     insets();
   }
@@ -2919,6 +2992,7 @@
     var b = e.target.closest('[data-v]'); if (!b) return;
     var g = b.closest('#czPickGrid [data-g]:not(#czPickGrid)') || $('#czPickGrid'); czChoose(g, b.dataset.v);
   });
+  picker.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.stopPropagation(); czPickerClose(); } });   // CZ-E: Escape menutup kotak pemilih
   picker.addEventListener('input', czRangeInput);
   picker.addEventListener('change', czRangeChange);
 
@@ -2943,7 +3017,14 @@
   }
   var czUndoAct = function () { return { t: T('Urungkan'), fn: function () { if (czStep(true)) notice(T('Diurungkan')); } }; };
   // rancangan sudah diubah dari bawaannya? (untuk peringatan saat ganti jenis)
-  function czEdited(c) { try { var d = XC.defaults(c.cat, c.sub), a = JSON.parse(JSON.stringify(c)); delete a.qty; delete d.qty; return JSON.stringify(XC.normalize(a)) !== JSON.stringify(XC.normalize(d)); } catch (e) { return true; } }
+  function czSame(a, b) {   // CZ-H7: sama secara isi (urutan kunci tidak berpengaruh; dulu JSON string → "Kategori diganti" bisa muncul keliru)
+    if (a === b) return true;
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return a == b && String(a) === String(b);
+    if (Array.isArray(a) !== Array.isArray(b)) return false;
+    var ka = Object.keys(a).filter(function (k) { return a[k] !== undefined; }), kb = Object.keys(b).filter(function (k) { return b[k] !== undefined; });
+    return ka.length === kb.length && ka.every(function (k) { return czSame(a[k], b[k]); });
+  }
+  function czEdited(c) { try { var d = XC.defaults(c.cat, c.sub), a = JSON.parse(JSON.stringify(c)); delete a.qty; delete d.qty; return !czSame(XC.normalize(a), XC.normalize(d)); } catch (e) { return true; } }
   function czChoose(g, v) {
     var id = g.dataset.g;
     if (id === '_cat' || id === '_sub') {
@@ -2951,13 +3032,14 @@
         if (id === '_cat' && czLayout() !== 'box1') { czPick = '_sub'; czPickerFill(); }
         return;
       }
-      var had = czEdited(cz); czMark(); czTouch(id);
-      if (id === '_cat') { var c0 = XC.CATS.filter(function (c) { return c.id === v; })[0]; if (czLayout() !== 'box1') czPick = '_sub'; czReset(XC.defaults(c0.id, c0.subs[0].id)); }
-      else czReset(XC.defaults(cz.cat, v));
+      var had = czEdited(cz); czMark(); czTouched = { jenis: 1 };
+      if (id === '_cat') { var c0 = XC.CATS.filter(function (c) { return c.id === v; })[0]; if (czLayout() !== 'box1') czPick = '_sub'; czReset(XC.defaults(c0.id, c0.subs[0].id), true); }
+      else czReset(XC.defaults(cz.cat, v), true);
       if (had) notice(T('Kategori diganti — rancangan sebelumnya bisa dikembalikan'), czUndoAct());
       return;
     }
     czMark(); czTouch(id);
+    czPop = (g.id === 'czPickGrid' ? '#czPicker ' : '#czScroll [data-g="' + id + '"] ') + '[data-v="' + (window.CSS && CSS.escape ? CSS.escape(v) : v) + '"]';
     var gp = findGroup(id), before = gp && gp.preset ? Object.keys(gp.preset).map(function (d) { return cz[d]; }).join() : null;
     if (g.hasAttribute('data-multi')) { var arr = (cz[id] || []).slice(), i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); XC.apply(cz, id, arr); }
     else XC.apply(cz, id, v);
@@ -2968,11 +3050,16 @@
     czSave(); czRender(true); czStage();
     if (anc) { var a2 = sc.querySelector('[data-g="' + id + '"]'); if (a2) sc.scrollTop += a2.getBoundingClientRect().top - y0; }
   }
-  function czReset(next) { var q = cz.qty; cz = next; cz.qty = q || 1; czSave(); czRender(true); czStage(); }
+  // CZ-H5: kembali ke bawaan bisa diurungkan (dulu langsung hilang tanpa konfirmasi)
+  function czFresh() {
+    var had = czEdited(cz) || !!czBase; czMark(); czBase = null; czView = 'design'; czReset(XC.defaults(cz.cat, cz.sub));
+    if (had) notice(T('Rancangan dikembalikan ke bawaan'), czUndoAct());
+  }
+  function czReset(next, keep) { var q = cz.qty; cz = next; cz.qty = q || 1; if (!keep) czTouched = {}; czSave(); czRender(true); czStage(); }   // CZ-H6: tanda tab ikut direset
   $('#czBase').addEventListener('click', function (e) {
     var v = e.target.closest('[data-view]');
     if (v) { czView = v.dataset.view; czRender(true); czStage(); return; }
-    if (e.target.closest('[data-czfresh]')) { czBase = null; czView = 'design'; czReset(XC.defaults(cz.cat, cz.sub)); }
+    if (e.target.closest('[data-czfresh]')) czFresh();
   });
   $('#czBody').addEventListener('click', function (e) {
     var b;
@@ -3008,12 +3095,13 @@
     if (!r.dataset.m) { czMark(); czTouch(r.dataset.r); r.dataset.m = '1'; }   // satu geser = satu langkah urungkan
     cz[r.dataset.r] = +r.value;
     var out = r.parentNode.querySelector('[data-out]'); if (out && gr) out.textContent = czVal(gr, +r.value);
+    if (gr) r.setAttribute('aria-valuetext', czVal(gr, +r.value));
     if (gr) r.style.setProperty('--p', ((+r.value - gr.min) / (gr.max - gr.min) * 100).toFixed(1) + '%');
     if (czBase && czView === 'product') czView = 'design';
-    czStage(); czDetail(true); czFoot();
+    czStage(true); czDetail(true); czFoot();
     var row = $('#czBody [data-pick="@dims"] b'); if (row) row.textContent = czDimsText();
   }
-  function czRangeChange(e) { var r = e.target.closest('[data-r]'); if (r) { XC.apply(cz, r.dataset.r, +r.value); czSave(); czRender(true); } }
+  function czRangeChange(e) { var r = e.target.closest('[data-r]'); if (r) { XC.apply(cz, r.dataset.r, +r.value); czSave(); czRender(true); czStage(); } }   // CZ-F: bangun akhir setelah XC.apply (nilai terkait bisa ikut berubah) + bingkai akhir
   $('#czBody').addEventListener('input', czRangeInput);
   $('#czBody').addEventListener('change', czRangeChange);
 
@@ -3025,7 +3113,7 @@
     if (e.target === modal || e.target.closest('[data-modal-close]')) { closeModal(); return; }
     if (e.target.closest('[data-send]')) czSend();
     if (e.target.closest('[data-cz-addbag]')) czAddToBag();
-    if (e.target.closest('[data-cznew]')) { closeModal(); czBase = null; czView = 'design'; czReset(XC.defaults(cz.cat, cz.sub)); $('#czScroll').scrollTop = 0; }
+    if (e.target.closest('[data-cznew]')) { closeModal(); czFresh(); $('#czScroll').scrollTop = 0; }
   });
   modalBody.addEventListener('submit', function (e) { e.preventDefault(); if (e.target.id === 'authForm') authSubmit(e.target); else czSubmit(); });
   modalBody.addEventListener('click', function (e) {
@@ -3139,8 +3227,8 @@
       var line = /cherokee/i.test(cv.v.fabric) ? 'cherokee' : /vienna/i.test(cv.v.fabric) ? 'vienna' : null;
       if (line) { XC.apply(c, 'uph', line); var u = XC.find(XC.UPH, line), cc = u.colors.filter(function (x) { return x.l.toLowerCase() === cv.v.fabric.toLowerCase(); })[0]; if (cc) XC.apply(c, 'color', cc.id); }
     }
-    if (p.dims) { var n = String(p.dims).match(/\d+(\.\d+)?/g); if (n && n.length >= 2) { c.w = +n[0]; c.d = +n[1]; if (n[2]) c.h = +n[2]; } }
-    return c;
+    if (p.dims) { var n = String(p.dims).match(/\d+(\.\d+)?/g); if (n && n.length >= 2) XC.fitDims(c, +n[0], +n[1], n[2] != null ? +n[2] : null); }   // CZ-H1: dijepit & dipetakan per jenis
+    return XC.normalize(c);
   }
   function openCustomize(p) {
     czView = 'design'; czPick = null;
@@ -3235,12 +3323,15 @@
   enter.setelan = function () { if (XW.lightMarkers) XW.lightMarkers(moodNow() === 'manual'); };
   leave.setelan = function () { if (XW.lightMarkers) XW.lightMarkers(false); };
 
-  var bgNow = function () { var b = store.get('xv5_bg', 'default'); return /^(studio|grid|neon)$/.test(b) ? b : 'default'; };
+  var bgNow = function () { var b = store.get('xv5_bg', 'default'); return /^(studio|grid)$/.test(b) ? b : 'default'; };
+  // putar bebas (menu klik kanan): on = geser latar mengubah arah kamera & klik tengah menggeser; off = geser di mana pun hanya memutar objek kiri-kanan
+  var freeNow = function () { return store.get('xv5_free', 1) !== 0; };
+  function applyFree() { if (XW.ok && XW.setFree) XW.setFree(freeNow()); }
   // Garis & Neon: warna pilihan per jenis; kotak warna tetap terbuka saat warna diganti
-  var BG_DEF = { grid: '#bfa274', neon: '#22e1ff' };
+  var BG_DEF = { grid: '#e8e2d6', neon: '#22e1ff' };   // garis: satu warna untuk pengguna (pemilik 25 Okt)
   var BG_SW = ['#22e1ff', '#2f7bff', '#8b5cff', '#ff2bd6', '#ff3b5c', '#ff7a1a', '#ffd23f', '#a6ff3c', '#2bffb0', '#bfa274', '#e8e2d6', '#6f6a64'];
-  var bgHexNow = function (b) { return store.get('xv5_bgc_' + b, BG_DEF[b] || '#bfa274'); };
-  var bgBox = true;
+  var bgHexNow = function (b) { return BG_DEF[b] || '#e8e2d6'; };   // warna tersimpan lama diabaikan: pengguna tidak memilih warna
+  var bgBox = false;   // kotak warna hanya di Developer Settings
   function applyBg() { if (XW.ok && XW.setBackground) XW.setBackground(bgNow(), BG_DEF[bgNow()] ? bgHexNow(bgNow()) : null); }
   function renderBgC() {
     var box = $('#setBgC'), b = bgNow(), on = !!BG_DEF[b] && bgBox; if (!box) return;
@@ -3252,7 +3343,6 @@
   }
   $('#setBg').addEventListener('click', function (e) {
     var b = e.target.closest('[data-bg]'); if (!b) return;
-    if (b.dataset.bg === bgNow() && BG_DEF[b.dataset.bg]) bgBox = !bgBox; else bgBox = true;   // klik lagi = buka / tutup kotak warna
     store.set('xv5_bg', b.dataset.bg); applyBg(); renderSettings();
   });
   function setBgColor(h) { store.set('xv5_bgc_' + bgNow(), h); if (XW.ok && XW.setBackgroundColor) XW.setBackgroundColor(h); }
@@ -3979,7 +4069,7 @@
   try { gl = XW.init ? XW.init($('#world'), Object.assign({ mobile: isMobile() || !FINE, reduced: REDUCED }, gfxOpts(gfxNow()))) : false; } catch (err) { gl = false; }
   if (!gl || !XW.ok) html.classList.add('no-webgl');
   XW.onLost = function () { html.classList.add('no-webgl'); };
-  if (XW.ok) { applyLighting(); if (themeNow() === 'light') XW.setTheme('light', 0); applyBg(); applyLook(); }
+  if (XW.ok) { applyLighting(); if (themeNow() === 'light') XW.setTheme('light', 0); applyBg(); applyLook(); applyFree(); }
   // kayu koleksi global (Developer Settings › Kayu koleksi) — semua komponen berlabel gelap / terang / natural
   if (XW.ok && XW.setWood) fetch('../data/wood.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) { if (j && j.classes) XW.setWood(j.classes); }).catch(function () {});
   cubixDetail();

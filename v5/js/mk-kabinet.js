@@ -39,9 +39,10 @@
       else if (mount === 'castor') { y0 = .08; [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (q) { leg(root, 'castor', q[0] * (W / 2 - .06), q[1] * (D / 2 - .06), .08, METAL()); }); }
       else if (mount === 'floating') y0 = s === 'tv' || s === 'nightstand' ? .3 : s === 'wardrobe' ? .12 : .4;
       else if (mount === 'wall') { y0 = cm(c.elev, 30); if (desk) y0 = Math.max(y0, .98); }
+      root.userData.hang = mount === 'floating' || mount === 'wall';   // CZ-F: panggung tanpa podium, tetap pada ketinggiannya
       var wp = wall ? c.wallPanel || 'none' : 'none';
       // dinding semu (transparan) untuk unit gantung tanpa panel: unit menempel, bukan melayang
-      if (mount === 'floating' || wall && wp === 'none') { var gh = Math.max(y0 + Hb + .32, 1.05), gw2 = box(root, W + .5, gh, .006, ghost(), 0, gh / 2, -D / 2 - .004, 0); gw2.castShadow = false; gw2.receiveShadow = false; }
+      if (mount === 'floating' || wall && wp === 'none') { var gh = Math.max(y0 + Hb + .32, 1.05), gw2 = box(root, W + .5, gh, .006, ghost(), 0, gh / 2, -D / 2 - .004, 0); gw2.castShadow = false; gw2.receiveShadow = false; gw2.userData.noBounds = true; }
       if (wall && wp !== 'none') wallPanel(wp);
       if (desk) deskTop();
 
@@ -68,7 +69,7 @@
           var h = g.h * k, r = { x: cx, y: yT - h / 2, w: cw, h: h, col: i, g: g, ci: col };
           regions.push(r); region(r);
           yT -= h;
-          if (j < m - 1) { box(root, cw + .004, t, d2, bodyM, cx, yT - t / 2, zc, .002); box(root, cw + .004, t, .002, EM, cx, yT - t / 2, D / 2 - .001, 0); yT -= t; }
+          if (j < m - 1) { box(root, cw, t, d2, bodyM, cx, yT - t / 2, zc, .002); box(root, cw, t, .002, EM, cx, yT - t / 2, D / 2 - .0008, 0); yT -= t; }   // CZ-G8: tepat selebar kolom, lis tidak sebidang dengan lis sekat (z-fighting)
         });
         xc += cw + t;
       });
@@ -84,10 +85,11 @@
       var target = null;
       var firstK = function (re) { return cells.filter(function (q) { return re.test(q.k); })[0] || null; };
       if (s === 'bar') target = firstK(/^flap$/);
-      else if (s === 'wardrobe') target = firstK(/^(door|fold|slide)$/);
+      // CZ-G6: lemari tampil tertutup (dulu pintu kiri terbuka sebagai keadaan awal); isi dilihat lewat pilih kolom / Animate
       else if (s === 'pantry') target = firstK(/^pull$/) || firstK(/^(door|glass)$/);
       var firstFront = null;
-      cells.forEach(function (cl, idx) { front(cl, idx); });
+      var perCol = {};   // CZ-G5: id gerak stabil per kolom (dulu indeks sel global → tambah kolom memindahkan status buka ke pintu lain)
+      cells.forEach(function (cl, idx) { var ck = cl.col == null ? 'n' : cl.col; perCol[ck] = (perCol[ck] || 0) + 1; cl.mid = 'c' + ck + '.' + (perCol[ck] - 1) + cl.k; front(cl, idx); });
 
       /* ---------- aksesori */
       var topY = y0 + Hc + topT;
@@ -370,7 +372,7 @@
         else if (k === 'slide') apply = function (v) { P.position.x = -sdir * cl.w * .86 * v; };
         else if (k === 'pull') apply = function (v) { P.position.z = D * .82 * v; };
         else apply = function (v) { P.position.z = dd * .78 * v; };
-        var mo = { id: 'f' + idx, kind: k, col: cl.col, t: open0, to: open0, apply: apply };
+        var mo = { id: cl.mid || 'f' + idx, kind: k, col: cl.col, t: open0, to: open0, apply: apply };
         apply(open0);
         P.userData.motion = mo; if (Q) Q.userData.motion = mo;
         motions.push(mo);

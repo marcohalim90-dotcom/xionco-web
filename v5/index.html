@@ -91,6 +91,8 @@
     <li><button class="rail__item" id="railMore" type="button" data-key="more" style="--i:7" aria-haspopup="menu" aria-expanded="false" aria-controls="moreBox"><svg><use href="#i-more"/></svg><span class="rail__label">More</span></button></li>
   </ul>
 </nav>
+<!-- MOB: ponsel — navigasi = satu lingkaran mengambang; ketuk → ikon naik satu per satu dari bawah ke atas -->
+<button class="mfab" id="mFab" type="button" aria-label="Menu navigasi" aria-expanded="false" aria-controls="rail"><svg class="mfab__a" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14"/></svg><svg class="mfab__b" aria-hidden="true"><use href="#i-close"/></svg></button>
 <!-- More: kotak pilihan yang keluar saat item More di rail di-hover (di luar rail karena rail ber-overflow tersembunyi) -->
 <div class="box more" id="moreBox" role="menu" aria-label="More">
   <a class="more__item more__item--m" href="#/manufaktur" data-go="manufaktur" data-more-key="manufaktur" role="menuitem"><svg><use href="#i-factory"/></svg><span>Manufaktur</span></a>
@@ -341,11 +343,11 @@
         <div class="row"><span>Bahasa</span><div class="seg" id="setLang"><button type="button" data-lang="id">Indonesia</button><button type="button" data-lang="en">English</button></div></div>
         <div class="row"><span>Tema</span><div class="seg" id="setTheme"><button type="button" data-theme="dark">Gelap</button><button type="button" data-theme="light">Terang</button></div></div>
         <div class="row"><span>Pencahayaan</span><div class="seg" id="setMood"><button type="button" data-mood="siang">Siang</button><button type="button" data-mood="senja">Senja</button><button type="button" data-mood="malam">Malam</button><button type="button" data-mood="manual">Manual</button></div></div>
-        <div class="row"><span>Background</span><div class="seg" id="setBg"><button type="button" data-bg="default">Default</button><button type="button" data-bg="studio">Studio</button><button type="button" data-bg="grid">Garis</button><button type="button" data-bg="neon">Neon</button></div></div>
+        <div class="row"><span>Background</span><div class="seg" id="setBg"><button type="button" data-bg="default">Default</button><button type="button" data-bg="studio">Studio</button><button type="button" data-bg="grid">Garis</button></div></div>
         <div class="bgc" id="setBgC" hidden></div>
         <div class="row"><span>Efek render</span><div class="seg" id="setLook"><button type="button" data-look="classic">Klasik</button><button type="button" data-look="real">Realistis</button></div></div>
         <div class="row"><span>Info layout</span><div class="seg" id="setCzl"><button type="button" data-czl="1" title="Semua pilihan di panel kanan">I</button><button type="button" data-czl="2" title="Pilihan panjang di kotak sebelah panel">II</button><button type="button" data-czl="3" title="Cermin II: sidebar kanan, panel kiri">III</button></div></div>
-        <div class="row"><span title="Manusia setinggi 170 cm sebagai pembanding ukuran">Manusia</span><div class="seg" id="setHuman"><button type="button" data-hum="0">Tanpa</button><button type="button" data-hum="pria">Pria</button><button type="button" data-hum="wanita">Wanita</button><button type="button" data-hum="manikin">Manikin</button></div></div>
+        <div class="row"><span title="Pembanding ukuran: pria 170 cm · wanita 160 cm · manikin 170 cm">Pembanding</span><div class="seg" id="setHuman"><button type="button" data-hum="0">Tanpa</button><button type="button" data-hum="pria">Pria</button><button type="button" data-hum="wanita">Wanita</button><button type="button" data-hum="manikin">Manikin</button></div></div>
         <div class="row"><span title="Otomatis: mulai ringan, naik ke kualitas penuh bila perangkat lancar">Grafis</span><div class="seg" id="setGfx"><button type="button" data-gfx="auto">Otomatis</button><button type="button" data-gfx="lite">Ringan</button><button type="button" data-gfx="hd">Tinggi</button></div></div>
         <div class="row row--hd"><span title="Simpan semua model 3D & tekstur di perangkat agar tampil seketika">Paket HD</span><div class="hd"><button class="hd__btn" type="button" id="setHd">Unduh</button><button class="hd__rm" type="button" id="setHdRm" hidden>Hapus</button></div></div>
         <div class="hdbar" id="setHdBar" hidden><i></i></div>
@@ -412,7 +414,7 @@
 </aside>
 
 <!-- Customize Box 2: pilihan lebih dari 4 tampil di kotak kiri panel -->
-<aside class="picker" id="czPicker" aria-hidden="true">
+<aside class="picker" id="czPicker" role="dialog" aria-labelledby="czPickT" aria-hidden="true">
   <button class="panel__close" type="button" data-pick-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
   <button class="picker__back" type="button" data-pick-close><svg aria-hidden="true"><use href="#i-back"/></svg><span>Kembali</span></button>
   <p class="eyebrow" id="czPickE"></p>

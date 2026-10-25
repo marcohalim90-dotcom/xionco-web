@@ -46,9 +46,9 @@
     O('ash', 'Ash putih', 'White ash', { hex: '#d8cbb4', f: 1.05 }), O('mahogany', 'Mahoni', 'Mahogany', { hex: '#6b3a2a', f: 1.05 }), O('ebony', 'Hitam (ebony stain)', 'Ebony stain', { s: 'Hitam (ebony)', hex: '#2a2522', f: 1.05 })
   ];
   var METAL = [
-    O('black', 'Besi hitam doff', 'Matte black steel', { se: 'Matte black', hex: '#1d1c1b', f: 1, rough: .45 }), O('brass', 'Kuningan', 'Brass', { hex: '#b8924f', f: 1.2, rough: .26 }),
+    O('black', 'Besi hitam doff', 'Matte black steel', { se: 'Matte black', hex: '#1d1c1b', f: 1, rough: .6 }), O('brass', 'Kuningan', 'Brass', { hex: '#b8924f', f: 1.2, rough: .26 }),
     O('champagne', 'Champagne gold', 'Champagne gold', { hex: '#c7aa78', f: 1.15, rough: .3 }), O('stainless', 'Stainless brushed', 'Brushed stainless', { s: 'Stainless', se: 'Stainless', hex: '#a9a9a6', f: 1.12, rough: .32 }),
-    O('gunmetal', 'Gunmetal', 'Gunmetal', { hex: '#4a4b4d', f: 1.05, rough: .35 }), O('ivory', 'Besi ivory', 'Ivory powder coat', { se: 'Ivory coat', hex: '#e4ddd0', f: 1, rough: .5 })
+    O('gunmetal', 'Gunmetal', 'Gunmetal', { hex: '#4a4b4d', f: 1.05, rough: .35 }), O('ivory', 'Besi ivory', 'Ivory powder coat', { se: 'Ivory coat', hex: '#e4ddd0', f: 1, rough: .55 })
   ];
   var STONE = [
     O('carrara', 'Marmer Carrara', 'Carrara marble', { hex: '#e8e5df', vein: '#9a9894', f: 1.55 }), O('calacatta', 'Marmer Calacatta', 'Calacatta marble', { hex: '#ece6dc', vein: '#b19a6c', f: 1.75 }),
@@ -417,7 +417,7 @@
       s.groups = s.groups.map(function (gr) {
         if (gr.type !== 'range' || !s.dims || !s.dims[gr.id]) return gr;
         var o = {}; for (var k in gr) o[k] = gr[k];
-        if (o.min == null || G[gr.id] && G[gr.id].min == null) { o.min = s.dims[gr.id][0]; o.max = s.dims[gr.id][1]; o.inc = s.dims[gr.id][2]; }
+        if (o.min == null || gr === G[gr.id]) { o.min = s.dims[gr.id][0]; o.max = s.dims[gr.id][1]; o.inc = s.dims[gr.id][2]; }   // CZ-H4: dulu syarat G.min == null selalu benar → rentang eksplisit tertimpa
         return o;
       });
     });
@@ -540,7 +540,8 @@
   var SIZE_KEYS = [
     { id: 'w', l: 'Lebar / panjang', en: 'Width / length', per: 10 }, { id: 'd', l: 'Kedalaman', en: 'Depth', per: 10 }, { id: 'h', l: 'Tinggi', en: 'Height', per: 10 },
     { id: 'ret', l: 'Sisi L / chaise', en: 'Return / chaise', per: 10, ref: 200 }, { id: 'dia', l: 'Diameter / sisi (bulat & persegi)', en: 'Diameter / side', per: 10 },
-    { id: 'hbH', l: 'Tinggi headboard', en: 'Headboard height', per: 10 }, { id: 'thick', l: 'Tebal top', en: 'Top thickness', per: 1 }
+    { id: 'hbH', l: 'Tinggi headboard', en: 'Headboard height', per: 10 }, { id: 'thick', l: 'Tebal top', en: 'Top thickness', per: 1 },
+    { id: 'retL', l: 'Sisi L meja', en: 'Desk return', per: 10 }   // CZ-H2: meja memakai retL (sofa memakai ret)
   ];
   var subKey = function (s) { return s.cat + '.' + s.id; };
   var r1k = function (v) { return Math.round(v / 1000) * 1000; };
@@ -554,7 +555,7 @@
     var has = function (id) { return s.groups.some(function (g) { return g.id === id; }); };
     SIZE_KEYS.forEach(function (k) {
       if (!has(k.id) && !(s.bed && k.id === 'h')) return;
-      var ref = k.id === 'ret' ? 200 : k.id === 'dia' ? (s.def.dia || 90) : k.id === 'hbH' ? (s.def.hbH || 110) : k.id === 'thick' ? (s.def.thick || 3) : d[k.id] ? d[k.id][3] : null;
+      var ref = k.id === 'ret' ? 200 : k.id === 'retL' ? (s.def.retL || 120) : k.id === 'dia' ? (s.def.dia || 90) : k.id === 'hbH' ? (s.def.hbH || 110) : k.id === 'thick' ? (s.def.thick || 3) : d[k.id] ? d[k.id][3] : null;
       if (ref != null) out.push({ id: k.id, l: k.l, en: k.en, per: k.per, ref: ref });
     });
     return out;
@@ -569,6 +570,7 @@
       else if (s.cab) v = k.id === 'w' ? slope('w', .85) : k.id === 'h' ? slope('h', .85) : k.id === 'd' ? slope('d', .425) : 0;
       else if (s.tableH) v = k.id === 'w' ? slope('w', .7) : k.id === 'd' ? slope('d', .7) : k.id === 'dia' ? r1k(roundBase(s) * 1.4 / k.ref * 10) : 0;
       else v = k.id === 'w' ? slope('w', .9) : k.id === 'd' ? slope('d', .45) : k.id === 'h' ? slope('h', .27) : k.id === 'ret' ? r1k(base * .5 / 200 * 10) : 0;
+      if (k.id === 'retL') v = slope('w', .7);   // CZ-H2: tiap 10 cm sisi L ≈ 10 cm panjang meja × 0,7
       per10[k.id] = v;
     });
     s.groups.forEach(function (gr) {
@@ -646,6 +648,7 @@
       if (round ? /^(w|d)$/.test(k.id) : k.id === 'dia') return;
       if (k.id === 'ret' && !/^(lkiri|lkanan|lcurve|u|chaise)/.test(c.shape || '')) return;
       if (k.id === 'hbH' && c.headboard === 'none') return;
+      var kg = s.groups.filter(function (x) { return x.id === k.id; })[0]; if (kg && !visible(kg, c)) return;   // CZ-H3
       var v = +c[k.id]; if (!v || (!ratio && !tbl.per10[k.id])) return;
       var dv = ratio ? (base + size) * (v / k.ref - 1) : tbl.per10[k.id] * (v - k.ref) / k.per;
       if (Math.abs(dv) >= 1) { size += dv; rows.push({ k: 'size', l: L(k) + ' ' + v + ' cm' + (ratio ? ' (× ' + v + '/' + k.ref + ')' : ''), v: dv }); }
@@ -695,7 +698,29 @@
   }
   function colorOf(c) { var u = UPH.filter(function (x) { return x.id === c.uph; })[0]; var o = u && u.colors.filter(function (x) { return x.id === c.color; })[0]; return o || null; }
 
+  /* CZ-H1: ukuran produk toko (lebar × dalam × tinggi) → konfigurasi. Hanya ukuran yang bisa diatur di sub ini; dijepit ke rentang
+     slider & dibulatkan ke langkahnya. Ranjang: lebar → ukuran kasur terdekat (lebar total = kasur + 6), tinggi → tinggi headboard
+     (dulu tinggi 110 masuk ke tinggi dasar 20–45 → model & harga salah sampai slider disentuh). Ukuran turunan model (0–999) dilewati. */
+  function fitDims(c, w, d, h) {
+    var s = sub(c), dm = s.dims || {}, gs = groups(c);
+    var gOf = function (id) { return gs.filter(function (x) { return x.id === id && x.type === 'range'; })[0]; };
+    var put = function (id, v) {
+      if (v == null || isNaN(v) || v <= 0) return;
+      var gr = gOf(id), r = gr ? [gr.min, gr.max, gr.inc || 1] : dm[id]; if (!r || r[0] === 0 && r[1] >= 999) return;
+      var st = r[2] || 1; apply(c, id, Math.min(r[1], Math.max(r[0], r[0] + Math.round((v - r[0]) / st) * st)));
+    };
+    if (s.bed) {
+      var mg = gs.filter(function (x) { return x.id === 'mattress'; })[0], best = null;
+      if (mg && w) opts(mg, c).forEach(function (o) { [w, w - 6].forEach(function (t) { var e = Math.abs(+o.id - t); if (!isNaN(e) && (!best || e < best.e)) best = { id: o.id, e: e }; }); });
+      if (best && best.e <= 15) apply(c, 'mattress', best.id);
+      var hb = gOf('hbH'); if (hb && h != null && h >= hb.min * .9) put('hbH', h);
+      return fix(c);
+    }
+    put('w', w); put('d', d); put('h', h);
+    return fix(c);
+  }
   window.XC = {
+    fitDims: fitDims,
     CATS: CATS, STEPS: STEPS, UPH: UPH, WOOD: WOOD, METAL: METAL, STONE: STONE, PANEL: PANEL,
     sub: sub, opts: opts, groups: groups, visible: visible, pick: pick, defaults: defaults, apply: apply,
     normalize: normalize, normalise: normalize, migrate: migrate, stale: stale,
