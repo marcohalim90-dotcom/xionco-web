@@ -478,7 +478,7 @@
   "type": "3d",
   "title": "galery1 · v12",
   "note": "Warna per ruang · furnitur · plafon tinggi · 3D langsung",
-  "n": 420,
+  "n": 519,
   "thumb": "thumb.jpg",
   "rooms": [
    [
@@ -486,38 +486,67 @@
     "Lobi"
    ],
    [
-    55,
+    59,
     "Ruang besar"
    ],
    [
-    112,
+    119,
     "Ruang kecil"
    ],
    [
-    215,
+    217,
     "Dinding pajang"
    ],
    [
-    348,
+    343,
     "Ruang kiri atas"
    ],
    [
-    387,
+    386,
     "Ruang kiri bawah"
+   ],
+   [
+    479,
+    "Ruang barat"
    ]
   ]
  },
  {
   "id": "g12d1",
-  "title": "galery1 · v12 d1",
-  "note": "Render Room 1 (Cycles) · furnitur & tekstur nyata",
-  "n": 57,
+  "title": "galery1 · v12 Render",
+  "note": "Render HD Room 1–6 (Cycles) · furnitur & tekstur nyata",
+  "n": 519,
   "rooms": [
    [
     0,
     "Lobi"
+   ],
+   [
+    59,
+    "Ruang besar"
+   ],
+   [
+    119,
+    "Ruang kecil"
+   ],
+   [
+    217,
+    "Dinding pajang"
+   ],
+   [
+    343,
+    "Ruang kiri atas"
+   ],
+   [
+    386,
+    "Ruang kiri bawah"
+   ],
+   [
+    479,
+    "Ruang barat"
    ]
-  ]
+  ],
+  "thumb": "060.webp"
  },
  {
   "id": "b1",

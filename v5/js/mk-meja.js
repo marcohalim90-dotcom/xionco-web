@@ -487,7 +487,6 @@
       topSlab(root, k, w, d, h, t, topM);
       var I = { innerX: w / 2 - .05, innerZ: d / 2 - .03 }, apH = nd ? .13 : 0;
       if (B === 'wall') {
-        root.userData.hang = true;   // CZ-F: meja dinding melayang pada tingginya, tanpa podium
         var bh = nd ? .14 : .05, zr0 = zRange(k, w, d, w / 2 - .06, .02);
         box(root, w - .08, bh, Math.max(.12, zr0[1] - zr0[0] - .02), bodyM, 0, under - bh / 2, (zr0[0] + zr0[1]) / 2, .004);
         box(root, w * .7, .04, .015, dark('#2a2420'), 0, under - .03, -d / 2 - .0075, .002);
@@ -828,7 +827,6 @@
     function vanity() {
       var k = c.topShape || 'rect', w = cm(c.w, 100), d = cm(c.d, 45), h = cm(c.h, 75), under = h - t, mount = c.mount || 'legs', nd = Math.max(0, +c.drawers || 0), flip = has('flip') && nd <= 2, ah = .15;
       if (mount === 'pedestal' && w < 1.09) mount = 'legs';
-      if (mount === 'wall') root.userData.hang = true;   // CZ-F: meja rias gantung melayang pada tingginya, tanpa podium
       topSlab(root, k, w, d, h, t, topM);
       var rx, zf, pts = null;
       if (mount === 'legs') {

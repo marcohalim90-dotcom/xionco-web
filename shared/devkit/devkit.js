@@ -185,6 +185,8 @@
     '.vname span { font-size: 12.5px; color: var(--tl2); }',
     '.vnote { font-size: 12.5px; color: var(--tl2); }',
     '.vnote .mono { display: block; margin-top: 4px; font-size: 10.5px; color: var(--tl3); }',
+    '.vrow .btn[disabled] { opacity: .55; pointer-events: none; }',
+    '.vlist--git .vname b { font: 500 13px/1.2 var(--f); letter-spacing: .04em; text-transform: none; font-variant-numeric: tabular-nums; }',
     '.howto { margin-top: 26px; padding: 22px 24px; display: grid; grid-template-columns: 1fr auto; gap: 14px 24px; align-items: center; }',
     '.howto h3 { margin: 0 0 6px; font: 400 12px/1.3 var(--fh); letter-spacing: .22em; text-transform: uppercase; }',
     '.code { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: var(--ink2); color: var(--td); font: 400 12px/1.4 ui-monospace, Consolas, monospace; }',
@@ -465,7 +467,8 @@
     kat: { q: '', cat: 'semua', status: 'semua' },
     cus: { q: '', type: 'semua', status: 'semua' },
     harga: { sel: 'kursi.sofa', keep: false },
-    detect: {}, scanning: false, editor: null
+    detect: {}, scanning: false, editor: null,
+    git: null, gitBusy: ''   // Versi git: daftar 10 versi terakhir (server lokal) & versi yang sedang dipasang ke v5-b
   };
   var products = [], saveT = 0;
 
@@ -656,8 +659,49 @@
         (here ? '<span class="pill pill--ok">Sedang dibuka</span>' : '<button class="btn btn--sm" type="button" data-act="goto" data-path="' + esc(v.path) + '">' + ic('open') + 'Buka</button>') +
       '</div>';
     }).join('') + '</div>' +
+    gitSection() +
     '<div class="card howto"><div><h3>Membuat checkpoint baru</h3><p class="muted">Sebelum merombak, simpan keadaan sekarang. Salinan lengkap masuk ke folder <span class="mono">checkpoints/</span> dan otomatis muncul di daftar ini. Atau cukup minta Claude: “buat checkpoint v5”.</p></div>' +
       '<div class="code"><span>node tools/checkpoint.js v5 "catatan"</span><button class="ibtn" type="button" data-act="copy" data-text="node tools/checkpoint.js v5 &quot;catatan&quot;" aria-label="Salin">' + ic('copy') + '</button></div></div>';
+  }
+
+  /* Versi git (26 Okt, pemilik): 10 versi v5 terakhir dari git. "Pasang di v5-b" menyalin versi itu ke folder v5-b
+     (server lokal, tools/gitver.js) lalu membukanya. Folder v5 tidak pernah disentuh. */
+  function gitLoad() {
+    state.git = { loading: true };
+    fetch(ROOT + 'api/gitver', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
+      state.git = d && d.ok ? d : { error: (d && d.error) || 'Daftar versi tidak bisa dibaca' };
+    }, function () { state.git = { error: 'Server lokal tidak terhubung — jalankan node tools/serve.js' }; }).then(function () { if (state.open && state.tab === 'versi') renderTab(); });
+  }
+  function gitSection() {
+    var g = state.git;
+    if (!g) { gitLoad(); g = state.git; }
+    var h = '<h3 class="group__h">Versi git <small>10 terakhir · dibuka di v5-b persis seperti dulu (kode, data produk, model 3D) · folder v5 tidak berubah</small></h3>';
+    if (g.loading) return h + '<p class="muted">Membaca riwayat git…</p>';
+    if (g.error) return h + '<p class="muted">' + esc(g.error) + '</p>';
+    var cur = g.current && g.current.hash;
+    return h + '<div class="vlist vlist--git">' + g.list.map(function (v) {
+      var here = v.hash === cur, busy = state.gitBusy === v.hash;
+      return '<div class="vrow' + (here ? ' is-here' : '') + '"><span class="vdot"></span>' +
+        '<div class="vname"><b>' + esc(v.date) + '</b><span class="mono">' + esc(v.short) + '</span></div>' +
+        '<div>' + (here ? '<span class="pill pill--ok">Di v5-b</span>' : '<span class="pill">Git</span>') + '</div>' +
+        '<div class="muted"></div>' +
+        '<div class="vnote">' + esc(v.subject) + '</div>' +
+        (here ? '<button class="btn btn--sm" type="button" data-act="goto" data-path="v5-b/">' + ic('open') + 'Buka v5-b</button>'
+          : '<button class="btn btn--sm" type="button" data-act="gitver" data-hash="' + esc(v.hash) + '"' + (state.gitBusy ? ' disabled' : '') + '>' + (busy ? 'Memasang…' : 'Pasang di v5-b') + '</button>') +
+      '</div>';
+    }).join('') + '</div>';
+  }
+  function gitInstall(hash) {
+    state.gitBusy = hash; renderTab();
+    fetch(ROOT + 'api/gitver/load', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-XIONCO': '1' }, body: JSON.stringify({ hash: hash }) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        state.gitBusy = '';
+        if (!d || !d.ok) { toast((d && d.error) || 'Gagal memasang'); renderTab(); return; }
+        if (state.git) state.git.current = d.current;
+        toast('Terpasang di v5-b — membuka…');
+        setTimeout(function () { location.href = d.url || ROOT + 'v5-b/'; }, 700);
+      }, function () { state.gitBusy = ''; toast('Server lokal tidak terhubung'); renderTab(); });
   }
 
   /* ---------------------------------------------------------------- ASET */
@@ -1114,7 +1158,12 @@
   function renderSet() {
     var s = XVDB.settings();
     head('06 · Pengaturan', 'Pengaturan', 'Posisi tombol, data, dan pintasan. Semua data tersimpan di browser ini — gunakan export untuk cadangan atau memindahkan ke komputer lain.');
+    var ft = XVDB.features ? XVDB.features() : {};   // 27 Okt (pemilik): fitur situs bawaan mati, hanya dinyalakan di sini
     el.body.innerHTML = '<div class="sets">' + PLUG.map(function (p) { return p.setCard ? p.setCard(plugCtx()) : ''; }).join('') +
+      '<div class="card set"><h3>Fitur situs</h3><p>Fitur yang mati tidak tampil untuk pengunjung (menu, tombol &amp; alamat langsung). ' + (XVDB.mode() === 'folder' ? 'Tersimpan di <span class="mono">data/features.json</span> — ikut online saat dipublish.' : 'Situs online: hanya berlaku di browser ini — ubah di komputer lokal lalu publish agar berlaku untuk semua.') + '</p>' +
+        [['ruang', 'Ruang'], ['cubix', 'Konfigurasi CUBIX'], ['bisnis', 'Bisnis'], ['manufaktur', 'Manufaktur']].map(function (f) {
+          return '<button class="tg' + (ft[f[0]] ? ' is-on' : '') + '" type="button" data-act="feat" data-feat="' + f[0] + '" style="margin:0 8px 8px 0"><span class="sw"></span>' + f[1] + '</button>';
+        }).join('') + '</div>' +
       '<div class="card set"><h3>Posisi tombol</h3><p>Default di kiri bawah. Tombol juga bisa diseret — ia akan menempel ke sudut terdekat.</p><div class="corners">' +
         [['tl', 'Kiri atas'], ['tr', 'Kanan atas'], ['bl', 'Kiri bawah'], ['br', 'Kanan bawah']].map(function (c) { return '<button type="button" data-act="pos" data-pos="' + c[0] + '"' + (s.position === c[0] ? ' class="is-on"' : '') + '>' + c[1] + '</button>'; }).join('') + '</div></div>' +
       '<div class="card set"><h3>Tampilan tombol</h3><p>Sembunyikan tombol melayang. Panel tetap bisa dibuka dengan Ctrl + Shift + D.</p>' +
@@ -1204,7 +1253,9 @@
     }
     var a = t.dataset.act;
     for (var pi = 0; pi < PLUG.length; pi++) if (a && PLUG[pi].prefix && a.indexOf(PLUG[pi].prefix) === 0) { PLUG[pi].click(t, e, plugCtx()); return; }
+    if (a === 'feat' && XVDB.saveFeatures) { var fts = XVDB.features(); fts[t.dataset.feat] = !fts[t.dataset.feat]; XVDB.saveFeatures(fts); toast((fts[t.dataset.feat] ? 'Dinyalakan: ' : 'Dimatikan: ') + t.textContent); renderTab(); return; }
     if (a === 'goto') { location.href = ROOT + t.dataset.path; return; }
+    if (a === 'gitver') { if (!state.gitBusy) gitInstall(t.dataset.hash); return; }
     if (a === 'copy') { var txt = t.dataset.text; (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(function () { toast('Disalin'); }, function () { toast(txt); }); return; }
     if (a === 'scan') { state.detect = {}; scan(); return; }
     if (a === 'check') { var k = t.dataset.key; if (state.detect[k]) { toast('Terdeteksi otomatis di folder'); return; } XVDB.setCheck(k, !XVDB.checks()[k]); return; }

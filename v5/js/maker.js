@@ -175,7 +175,7 @@
 
     /* ---------------- material */
     var mcache = {};
-    function M(key, make) { if (!mcache[key]) mcache[key] = keep(make()); return mcache[key]; }
+    function M(key, make) { if (!mcache[key]) { mcache[key] = keep(make()); if (!mcache[key].name) mcache[key].name = key; } return mcache[key]; }   // nama = kunci → bahan bisa dikenali saat diekspor (Galeri)
     /* tekstur PBR asli (js/texlib.js, CC0): albedo + normal + roughness berskala meter. Material dibuat
        dengan kanvas prosedural sebagai cadangan; set asli menggantikannya begitu termuat. */
     var XT = window.XTEX;
@@ -202,37 +202,35 @@
             real ? 'leather-fine' : 'leather-faux', { map: false, normal: real ? 1.2 : .7, rough: real ? .55 : .46 });
         }
         var tex = u.nap === 'boucle' ? TX.boucle(T) : TX.weave(T), set = UPHSET[u.id] || 'fabric-woven';
-        var m = new T.MeshPhysicalMaterial({ color: base.clone().multiplyScalar(FAB_K), map: tex, bumpMap: tex, bumpScale: u.nap === 'boucle' ? .0045 : .003, roughness: u.nap === 'velvet' ? .82 : .93, metalness: 0, envMapIntensity: .5 });
+        var m = new T.MeshPhysicalMaterial({ color: base.clone().multiplyScalar(1.12), map: tex, bumpMap: tex, bumpScale: u.nap === 'boucle' ? .0045 : .003, roughness: u.nap === 'velvet' ? .82 : .93, metalness: 0, envMapIntensity: .5 });
         // velvet / chenille: kilau serat (sheen) senada warna kain, bukan putih
-        if (u.nap === 'velvet') { m.sheen = .9; m.sheenRoughness = .5; m.sheenColor = base.clone().multiplyScalar(1.35).lerp(new T.Color(1, 1, 1), .06); m.color.multiplyScalar(.92); }
-        else { m.sheen = .35; m.sheenRoughness = .7; m.sheenColor = base.clone().lerp(new T.Color(1, 1, 1), SHEEN_W); }   // CZ-G1: kilau serat senada kain
+        if (u.nap === 'velvet') { m.sheen = .75; m.sheenRoughness = .5; m.sheenColor = base.clone().multiplyScalar(1.35).lerp(new T.Color(1, 1, 1), .06); m.color.multiplyScalar(.92); }
+        else { m.sheen = .35; m.sheenRoughness = .7; m.sheenColor = base.clone().lerp(new T.Color(1, 1, 1), .35); }
         return TXS(m, set, { normal: UPHN[set], rough: m.roughness });
       });
     }
-    // CZ-G1: kalibrasi warna kain (diukur: render vs swatch) — dulu ×1,12 & kilau 35 % putih
-    var FAB_K = window.XMK_FAB_K != null ? window.XMK_FAB_K : 1, SHEEN_W = window.XMK_SHEEN_W != null ? window.XMK_SHEEN_W : .08;
     // kind: solid (serat bergelombang) | veneer (serat lurus) ; coat: lapisan anti noda (clearcoat)
     function wood(hex, kind, coat) {
       kind = kind || 'solid';
       return M('wood' + hex + kind + (coat ? 'c' : ''), function () {
         var wx = (X.WOOD || []).filter(function (x) { return x.tex && x.hex.toLowerCase() === String(hex).toLowerCase(); })[0];
-        if (wx) { var pw = { color: col('#ffffff'), roughness: .5, metalness: 0, envMapIntensity: .7 }, mw; if (coat) { pw.clearcoat = .6; pw.clearcoatRoughness = .25; mw = new T.MeshPhysicalMaterial(pw); } else mw = new T.MeshStandardMaterial(pw); return TXS(mw, wx.tex, { normal: .5, rough: .5 }); }   // kayu koleksi: warna asli
+        if (wx) { var pw = { color: col('#ffffff'), roughness: .5, metalness: 0, envMapIntensity: .7 }, mw; if (coat) { pw.clearcoat = .9; pw.clearcoatRoughness = .08; mw = new T.MeshPhysicalMaterial(pw); } else mw = new T.MeshStandardMaterial(pw); return TXS(mw, wx.tex, { normal: .5, rough: .5 }); }   // kayu koleksi: warna asli
         var o = { color: col(hex).multiplyScalar(1.15), map: kind === 'veneer' ? TX.veneer(T) : TX.grain(T), roughness: kind === 'veneer' ? .42 : .55, metalness: 0, envMapIntensity: .7 }, m;
-        if (coat) { o.clearcoat = .6; o.clearcoatRoughness = .25; o.envMapIntensity = .8; m = new T.MeshPhysicalMaterial(o); }   // CZ-G2: lak satin anti noda (dulu kilap piano .9 / .08)
+        if (coat) { o.clearcoat = .9; o.clearcoatRoughness = .08; o.envMapIntensity = .9; m = new T.MeshPhysicalMaterial(o); }
         else m = new T.MeshStandardMaterial(o);
         return TXS(m, woodSet(hex), { normal: .35, rough: o.roughness, done: function (mt) { mt.color.multiplyScalar(.9); } });
       });
     }
     // logam: brushed (normal + roughness asli) untuk kuningan, champagne, stainless, gunmetal; powder coat & krom polos
-    var BRUSH = /^(brass|champagne|stainless|gunmetal)$/, POWDER = /^(black|ivory)$/;
-    function metal(o) { o = o || X.METAL[0]; return M('metal' + o.id, function () { if (o.tex) return TXS(new T.MeshStandardMaterial({ color: col('#ffffff'), roughness: o.rough || .35, metalness: 1, envMapIntensity: 1.1 }), o.tex, { normal: .4, rough: o.rough || .35 }); var pc = POWDER.test(o.id), m = new T.MeshStandardMaterial({ color: col(o.hex), roughness: o.rough || .35, metalness: pc ? 0 : 1, envMapIntensity: pc ? .6 : 1.1 }); /* CZ-G2: powder coat = cat (dielektrik), bukan logam */ return BRUSH.test(o.id) ? TXS(m, 'metal-brushed', { normal: .25, rough: m.roughness }) : m; }); }
+    var BRUSH = /^(brass|champagne|stainless|gunmetal)$/;
+    function metal(o) { o = o || X.METAL[0]; return M('metal' + o.id, function () { if (o.tex) return TXS(new T.MeshStandardMaterial({ color: col('#ffffff'), roughness: o.rough || .35, metalness: 1, envMapIntensity: 1.1 }), o.tex, { normal: .4, rough: o.rough || .35 }); var m = new T.MeshStandardMaterial({ color: col(o.hex), roughness: o.rough || .35, metalness: o.id === 'ivory' ? .2 : 1, envMapIntensity: 1.1 }); return BRUSH.test(o.id) ? TXS(m, 'metal-brushed', { normal: .25, rough: m.roughness }) : m; }); }
     // mode: hpl (doff bertekstur) | duco (cat satin) | gloss
     function paint(hex, mode, grain, coat) {
       if (mode === true) mode = 'gloss'; else if (!mode) mode = 'hpl';
       return M('paint' + hex + mode + grain + (coat ? 'c' : ''), function () {
         var o = { color: col(hex).multiplyScalar(grain ? 1.15 : 1), map: grain ? TX.grain(T) : null, roughness: mode === 'gloss' ? .12 : mode === 'duco' ? .34 : .62, metalness: 0, envMapIntensity: mode === 'gloss' ? 1 : mode === 'duco' ? .8 : .55 }, m;
         if (mode === 'hpl') { o.bumpMap = TX.hpl(T); o.bumpScale = .0006; }
-        if (coat || mode === 'gloss') { o.clearcoat = mode === 'gloss' ? .8 : .6; o.clearcoatRoughness = mode === 'gloss' ? .06 : .25; m = new T.MeshPhysicalMaterial(o); }
+        if (coat || mode === 'gloss') { o.clearcoat = coat ? .9 : .6; o.clearcoatRoughness = .08; m = new T.MeshPhysicalMaterial(o); }
         else m = new T.MeshStandardMaterial(o);
         // motif kayu (HPL / duco bercorak): hanya albedo serat asli, permukaan tetap rata
         return grain ? TXS(m, woodSet(hex), { normal: false, done: function (mt) { mt.color.multiplyScalar(.9); } }) : m;
@@ -246,7 +244,7 @@
         return STONESET[o.id] || o.tex ? TXS(m, STONESET[o.id] || o.tex, { rough: r }) : m;
       });
     }
-    function glass(coat) { return M('glass' + (coat ? 'c' : ''), function () { return new T.MeshPhysicalMaterial({ color: col(coat ? '#e3ece9' : '#e9efed'), roughness: .04, metalness: 0, transmission: 1, ior: 1.52, thickness: .01, envMapIntensity: coat ? 1.4 : 1.1, clearcoat: coat ? 1 : 0, clearcoatRoughness: .03 }); }); }   // CZ-G2: kaca transmisi asli (dulu opacity .32), hijau tipis tepi float glass
+    function glass(coat) { return M('glass' + (coat ? 'c' : ''), function () { return new T.MeshPhysicalMaterial({ color: col(coat ? '#a6bab8' : '#9fb0ad'), roughness: .05, metalness: 0, transparent: true, opacity: .32, envMapIntensity: coat ? 1.6 : 1.2, clearcoat: coat ? 1 : 0, depthWrite: false }); }); }
     function dark(hex) { return M('dark' + (hex || ''), function () { return new T.MeshStandardMaterial({ color: col(hex || '#141110'), roughness: .8, metalness: 0 }); }); }
     function glow(hex) { return M('glow' + (hex || ''), function () { return new T.MeshBasicMaterial({ color: col(hex || '#ffcf8f'), toneMapped: false }); }); }
     function wash() { return M('wash', function () { return new T.MeshBasicMaterial({ map: TX.wash(T), transparent: true, depthWrite: false, blending: T.AdditiveBlending, toneMapped: false }); }); }
@@ -550,10 +548,10 @@
     }
     // isian & kekerasan → parameter bentuk bantal
     function fillOf() {
-      var f = { foam: { r: .024, cr: .013, bu: .004, dh: 0 }, hd: { r: .018, cr: .011, bu: .003, dh: .008 }, dacron: { r: .03, cr: .018, bu: .007, dh: .004 },   // CZ-G3: crown 1–2,5 cm (dulu 0,3–1,6 cm → bantal tampak rata)
-        feather: { r: .034, cr: .024, bu: .009, wr: .003, dh: .012 }, pocket: { r: .02, cr: .014, bu: .002, dh: .02, welt: 1 }, memory: { r: .014, cr: .008, bu: .002, dh: .008, layer: 1 } }[c.fill] || { r: .024, cr: .013, bu: .004, dh: 0 };
+      var f = { foam: { r: .024, cr: .008, bu: .004, dh: 0 }, hd: { r: .016, cr: .004, bu: .002, dh: .008 }, dacron: { r: .03, cr: .013, bu: .007, dh: .004 },
+        feather: { r: .034, cr: .016, bu: .009, wr: .003, dh: .012 }, pocket: { r: .02, cr: .01, bu: .002, dh: .02, welt: 1 }, memory: { r: .014, cr: .003, bu: .002, dh: .008, layer: 1 } }[c.fill] || { r: .024, cr: .008, bu: .004, dh: 0 };
       var k = { soft: { h: .92, c: 1.3, r: 1.15, sag: .008 }, firm: { h: 1.06, c: .6, r: .85, sag: 0 } }[c.firm] || { h: 1, c: 1, r: 1, sag: 0 };
-      return { r: Math.min(.04, f.r * k.r), cr: Math.min(.028, f.cr * k.c), bu: Math.min(.012, f.bu * k.c), wr: f.wr || 0, sag: k.sag, hk: k.h, dh: f.dh, welt: f.welt, layer: f.layer };
+      return { r: Math.min(.04, f.r * k.r), cr: Math.min(.02, f.cr * k.c), bu: Math.min(.012, f.bu * k.c), wr: f.wr || 0, sag: k.sag, hk: k.h, dh: f.dh, welt: f.welt, layer: f.layer };
     }
     function fo(base, extra) { var o = {}, k; for (k in base) o[k] = base[k]; for (k in extra) o[k] = extra[k]; return o; }
     // detail kecil bersama

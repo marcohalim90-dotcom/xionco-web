@@ -360,8 +360,29 @@ def color_management(sc, exposure=0.0, wb=None):
         try: vs.use_white_balance = True; vs.white_balance_temperature = wb; vs.white_balance_tint = 0
         except Exception: pass
 
+def use_gpu():
+    """Render sewaan (tools/render/cloud): pakai GPU bila ada (OptiX > CUDA > HIP > oneAPI), selain itu None → CPU.
+    Aktif hanya dengan argumen --gpu atau env XC_GPU=1, jadi render di komputer sendiri tetap CPU seperti biasa."""
+    import sys
+    if '--gpu' not in sys.argv and os.environ.get('XC_GPU') != '1': return None
+    try: prefs = bpy.context.preferences.addons['cycles'].preferences
+    except Exception as e: print('[gpu] cycles prefs tidak ada:', e); return None
+    for kind in ('OPTIX', 'CUDA', 'HIP', 'ONEAPI'):
+        try: prefs.compute_device_type = kind
+        except Exception: continue
+        for fn in ('refresh_devices', 'get_devices'):
+            try: getattr(prefs, fn)(); break
+            except Exception: pass
+        devs = [d for d in prefs.devices if d.type == kind]
+        if not devs: continue
+        for d in prefs.devices: d.use = d.type == kind
+        print('[gpu] %s: %s' % (kind, ', '.join(d.name for d in devs)), flush=True)
+        return kind
+    print('[gpu] tidak ada GPU yang didukung → CPU', flush=True)
+    return None
+
 def cycles(sc, samples, threshold=0.015):
-    sc.render.engine = 'CYCLES'; cy = sc.cycles; cy.device = 'CPU'
+    sc.render.engine = 'CYCLES'; cy = sc.cycles; cy.device = 'GPU' if use_gpu() else 'CPU'
     cy.samples = samples; cy.use_adaptive_sampling = True; cy.adaptive_threshold = threshold
     cy.use_denoising = True
     try: cy.denoiser = 'OPENIMAGEDENOISE'; cy.denoising_prefilter = 'ACCURATE'

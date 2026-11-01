@@ -263,25 +263,25 @@
   "assets/items/vazratrack/model.glb": {
    "w": 100,
    "d": 8.6,
-   "h": 4.1,
+   "h": 5.5,
    "unit": "m"
   },
   "assets/items/vazratrack/model-pw-50-cm.glb": {
    "w": 50,
    "d": 8.6,
-   "h": 4.1,
+   "h": 5.5,
    "unit": "m"
   },
   "assets/items/vazratrack/model-pws-usb.glb": {
-   "w": 6,
-   "d": 6,
-   "h": 1.9,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 3.3,
    "unit": "m"
   },
   "assets/items/vazratrack/model-pws-eu.glb": {
-   "w": 6,
-   "d": 6,
-   "h": 1.9,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 3.3,
    "unit": "m"
   },
   "assets/items/lophus-bar-stool/model-ai.glb": {
@@ -897,9 +897,9 @@
    "unit": "m"
   },
   "assets/items/void-terra-s88/model.glb": {
-   "w": 25,
-   "d": 25,
-   "h": 135.5,
+   "w": 19,
+   "d": 19,
+   "h": 135,
    "unit": "m"
   },
   "assets/items/void-sky-s7/model.glb": {

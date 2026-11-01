@@ -1,0 +1,11 @@
+{
+  "app": "XIONCO",
+  "kind": "features",
+  "updated": 1793102866291,
+  "features": {
+    "ruang": false,
+    "cubix": false,
+    "bisnis": false,
+    "manufaktur": false
+  }
+}

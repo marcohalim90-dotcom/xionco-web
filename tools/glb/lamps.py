@@ -108,14 +108,23 @@ TO_FRONT = ROT_X(math.pi / 2)    # sumbu Z lokal → −Y (menghadap depan)
 TO_BACK = ROT_X(-math.pi / 2)    # sumbu Z lokal → +Y (ke dinding)
 
 # ---------------------------------------------------------------- VOID (Y2)
-def void_terra_s88():   # lampu lantai spiral ganda D25 × T135, alas bulat hitam
-    cyl(.125, 0, .018, 'black', seg=64); cyl(.012, .018, .07, 'black')
-    R, z0, z1, turns = .075, .07, 1.35, 1.15
-    for ph in (0, math.pi):
-        pts = [V((R * math.cos(ph + 2 * math.pi * turns * k / 120) * (.35 + .65 * min(1, k / 12)), R * math.sin(ph + 2 * math.pi * turns * k / 120) * (.35 + .65 * min(1, k / 12)), z0 + (z1 - z0) * k / 120)) for k in range(121)]
-        rad = lambda i, P=pts: V((P[i].x, P[i].y, 0)).normalized() if V((P[i].x, P[i].y, 0)).length > 1e-4 else V((1, 0, 0))
-        ribbon(pts, .024, .007, 'black', nrm=lambda i, P=pts: V((0, 0, 1)).cross(rad(i)).normalized())
-        ribbon([p - rad(i) * .0045 for i, p in enumerate(pts)], .016, .003, 'led', nrm=lambda i, P=pts: V((0, 0, 1)).cross(rad(i)).normalized())
+def void_terra_s88():
+    """Lampu lantai heliks ganda T135 (alas seukuran heliks, C78) (foto toko 04 + foto pemilik C77): alas bulat, tiang tengah tipis sampai ±1,25 m,
+    DUA PITA HELIKS (tabung pipih 2,2 × 1,1 cm) yang SENDIRI menyala — muka luar diffuser LED putih, sisi dalam logam —
+    + tulang penyangga mendatar dari tiang ke pita. Dulu: LED menghadap ke dalam (tak terlihat), tanpa tiang penuh & tulang."""
+    cyl(.095, 0, .016, 'black', seg=64); cyl(.02, .016, .028, 'black', seg=32)   # C78: alas ø19 = selebar heliks (dulu ø25)
+    cyl(.0065, .028, 1.35, 'black', seg=20)                                       # tiang tengah, sedikit lebih tinggi dari heliks (C78)
+    R, z0, z1, turns, N = .088, .14, 1.29, 1.3, 170                                 # C78: heliks mulai rendah (14 cm; dulu 32)
+    rr = lambda t: R * (.62 + .38 * math.sin(math.pi * t))                         # ujung pita sedikit merapat ke tiang
+    def hp(ph, t): return V((rr(t) * math.cos(ph + 2 * math.pi * turns * t), rr(t) * math.sin(ph + 2 * math.pi * turns * t), z0 + (z1 - z0) * t))
+    for j, ph in enumerate((0, math.pi)):
+        pts = [hp(ph, k / N) for k in range(N + 1)]
+        rad = lambda i, P=pts: V((P[i].x, P[i].y, 0)).normalized()
+        ribbon(pts, .022, .011, 'black')                                           # badan pita logam (lebar di permukaan silinder, tebal ke arah radial)
+        ribbon([p + rad(i) * .0052 for i, p in enumerate(pts)], .019, .0016, 'led') # diffuser LED di muka luar → bentuk heliks yang menyala
+        for k, t in enumerate((.16, .45, .74) if j == 0 else (.3, .59, .88)):     # tulang penyangga mendatar tiang → pita, berselang antar pita
+            q = hp(ph, t); d = V((q.x, q.y, 0)).normalized()
+            ribbon([V((d.x * .006, d.y * .006, q.z)), V((q.x - d.x * .0055, q.y - d.y * .0055, q.z))], .006, .006, 'black')
 def void_sky_s7():   # gantung: terompet hitam D8,5, leher kuningan, total badan 21 cm
     lathe([(.0425, 0), (.041, .004), (.033, .015), (.022, .035), (.014, .06), (.0105, .085), (.0095, .10)], 'black', 64, cap=False); shell(PARTS[-1], .0015)
     lathe([(.04, .0015), (.032, .014), (.021, .034), (.0135, .058)], 'gold in', 64, cap=False)

@@ -47,3 +47,7 @@ data/source/addons/
 
 # cache Python
 __pycache__/
+
+# salinan versi lama untuk dilihat (Developer Settings > Versi git) - lokal saja, tidak ikut online
+v5-b/
+v5-b.tmp-*/

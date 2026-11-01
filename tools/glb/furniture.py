@@ -62,6 +62,8 @@ def M(k):
         b.inputs['Alpha'].default_value = al
         if hasattr(m, 'surface_render_method'): m.surface_render_method = 'BLENDED'
     if k == 'led': b.inputs['Emission Color'].default_value = (*lin('#ffd9a8'), 1); b.inputs['Emission Strength'].default_value = 1.5
+    if k == 'vzring': b.inputs['Emission Color'].default_value = (*lin('#f6f3ee'), 1); b.inputs['Emission Strength'].default_value = 2.5   # cincin LED soket VAZRA
+    if k in ('vzgloss', 'vzbody'): b.inputs['Coat Weight'].default_value = 1.0 if k == 'vzgloss' else .35; b.inputs['Coat Roughness'].default_value = .04 if k == 'vzgloss' else .25
     m['role'] = role
     if role == 'wood': m['xc_wood'] = k
     MATS[k] = m; return m
@@ -333,6 +335,9 @@ SPEC.update({
     'ppwhite': ('PP putih doff', '#ecebe7', 0, .6, 'baked', 1), 'ceramic': ('keramik glasir putih', '#f3f1ec', 0, .18, 'baked', 1),
     'bluepat': ('keramik biru putih', '#c9d4e2', 0, .2, 'baked', 1), 'bamboo': ('tutup bambu', '#c49a62', 0, .5, 'baked', 1),
     'steel': ('baja', '#b9bbbd', 1, .3, 'baked', 1), 'matte': ('hitam doff', '#1e1e1f', 0, .55, 'baked', 1),
+    'vzgloss': ('hitam kilap rel VAZRA', '#202024', 0, .12, 'baked', 1), 'vzgroove': ('alur hitam doff VAZRA', '#1e1e20', 0, .9, 'baked', 1),   # albedo ≥ sRGB 30 (pbr-materials); beda kilap vs doff + rongga alur
+    'vzbody': ('grafit soket VAZRA', '#2a2a2e', 0, .42, 'baked', 1), 'vzface': ('muka hitam soket VAZRA', '#202022', 0, .6, 'baked', 1),
+    'vzring': ('cincin led soket VAZRA', '#f2efe8', 0, .4, 'baked', 1), 'vzhole': ('lubang soket VAZRA', '#141414', 0, .95, 'baked', 1),   # rongga lubang: sedikit di bawah 30 = pengganti AO (panggung web tanpa AO)
     'pillow': ('kain bantal putih', '#eeece8', 0, .92, 'baked', 1), 'cream2': ('krem payung', '#e6dccb', 0, .6, 'baked', 1),
     'smokeclear': ('PP asap', '#6f665b', 0, .12, 'baked', 1), 'tissue': ('tisu', '#f6f5f2', 0, .9, 'baked', 1),
     'beech': ('kayu hanger', '#d2a97a', 0, .5, 'baked', 1),
@@ -466,18 +471,77 @@ def scandus():   # daun HPL oak 180 × 90 × 3 + kaki U besi hitam 8 × 4
         for sy in (-1, 1): box(x - .02, x + .02, sy * (D / 2 - .06) - .04, sy * (D / 2 - .06) + .04, 0, H - th, 'black', bev=.002)
         box(x - .02, x + .02, -D / 2 + .02, D / 2 - .02, 0, .04, 'black', bev=.002)
         box(x - .02, x + .02, -D / 2 + .02, D / 2 - .02, H - th - .04, H - th, 'black', bev=.002)
-def vazra_socket(x, y, z):   # soket bundar hitam ø6 dengan cincin perak
-    lathe([(0, 0), (.03, 0), (.03, .014), (.027, .018), (0, .018)], 'matte', 48, c=(x, y, z))
-    lathe([(.0245, .0175), (.0265, .0175), (.0265, .0185), (.0245, .0185)], 'steel', 48, c=(x, y, z))
-    for dx in (-.007, .007): box(x + dx - .001, x + dx + .001, y - .004, y + .004, z + .0175, z + .0186, 'steel', bev=0)
-def vazratrack(L=1.0, n=4):   # rel listrik aluminium hitam (L × 8,6 × 2,2) + soket
-    box(-L / 2, L / 2, -.043, .043, 0, .022, 'matte', bev=.003)
-    box(-L / 2 + .01, L / 2 - .01, -.012, .012, .0215, .0225, 'steel', bev=0)   # alur rel
-    for i in range(n): vazra_socket(-L / 2 + L * (i + .5) / n, 0, .022)
+# VAZRA (C73–C75) dibangun ulang dengan skill blender-hardsurface-modeling + blender-pbr-materials + blender-asset-qa:
+# lathe tanpa cakram bertumpuk (titik pusat tunggal, cincin tertutup tanpa tutup), alur & lubang = potongan boolean EXACT
+# (material pemotong ikut ke dinding potongan), bevel 4 segmen + tepi tajam > 30° + Weighted Normal (bidang datar tanpa gradasi).
+def vz_apply(o, name):
+    bpy.ops.object.select_all(action='DESELECT'); o.select_set(True); bpy.context.view_layer.objects.active = o; bpy.ops.object.modifier_apply(modifier=name)
+def vz_lathe(prof, mk, seg=96, c=(0, 0, 0), loop=False, caps=(True, True)):
+    """Lathe hard-surface: r = 0 → satu titik pusat (kipas segitiga, tanpa muka degeneratif); loop=True → profil tertutup (cincin) tanpa tutup;
+    caps → tutup ngon di ujung profil yang tidak menyentuh sumbu (False = terbuka, mis. alas soket yang menempel di rel)."""
+    bm = bmesh.new(); rings = []
+    for r, z in prof:
+        if r < 1e-7: rings.append([bm.verts.new((c[0], c[1], c[2] + z))])
+        else: rings.append([bm.verts.new((c[0] + r * math.cos(2 * math.pi * i / seg), c[1] + r * math.sin(2 * math.pi * i / seg), c[2] + z)) for i in range(seg)])
+    for a, b in list(zip(rings, rings[1:])) + ([(rings[-1], rings[0])] if loop else []):
+        for i in range(seg):
+            j = (i + 1) % seg
+            if len(a) == 1 and len(b) > 1: bm.faces.new((a[0], b[j], b[i]))
+            elif len(b) == 1 and len(a) > 1: bm.faces.new((a[i], a[j], b[0]))
+            elif len(a) > 1: bm.faces.new((a[i], a[j], b[j], b[i]))
+    if not loop:
+        for rg, cp in ((rings[0], caps[0]), (rings[-1], caps[1])):
+            if cp and len(rg) > 2: bm.faces.new(rg)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:]); return obj(bm, mk, smooth=True)
+def vz_cut(o, cutters):
+    """Potong o dengan [(bmesh pemotong, material)]: Boolean EXACT, material pemotong DITRANSFER ke dinding potongan, pemotong dibuang."""
+    for bm, mk in cutters:
+        me = bpy.data.meshes.new('pemotong'); bm.to_mesh(me); bm.free(); ct = bpy.data.objects.new('pemotong', me); bpy.context.collection.objects.link(ct)
+        ct.data.materials.append(M(mk))
+        md = o.modifiers.new('potong', 'BOOLEAN'); md.object = ct; md.operation = 'DIFFERENCE'; md.solver = 'EXACT'; md.material_mode = 'TRANSFER'
+        vz_apply(o, 'potong'); bpy.data.objects.remove(ct, do_unlink=True)
+    bm = bmesh.new(); bm.from_mesh(o.data); bmesh.ops.dissolve_degenerate(bm, dist=1e-6, edges=bm.edges[:]); bm.to_mesh(o.data); bm.free()   # serpih boolean (asset-qa: degeneratif)
+    uvbox(o, 1.0)
+def vz_box(x0, x1, y0, y1, z0, z1):
+    bm = bmesh.new(); bmesh.ops.create_cube(bm, size=1)
+    for v in bm.verts: v.co = V(((x0 + x1) / 2 + v.co.x * (x1 - x0), (y0 + y1) / 2 + v.co.y * (y1 - y0), (z0 + z1) / 2 + v.co.z * (z1 - z0)))
+    return bm
+def vz_cyl(x, y, z0, z1, r, seg=32):
+    bm = bmesh.new(); bmesh.ops.create_cone(bm, cap_ends=True, segments=seg, radius1=r, radius2=r, depth=z1 - z0)
+    for v in bm.verts: v.co = V((x + v.co.x, y + v.co.y, (z0 + z1) / 2 + v.co.z))
+    return bm
+def vz_finish(o, ang=30):
+    """Shading hard-surface: semua muka halus, tepi > ang° ditandai tajam, Weighted Normal (luas muka, keep sharp) diterapkan."""
+    me = o.data
+    for p in me.polygons: p.use_smooth = True
+    bm = bmesh.new(); bm.from_mesh(me); sharp = [e.index for e in bm.edges if e.is_manifold and e.calc_face_angle(0) > math.radians(ang)]; bm.free()
+    sh = me.attributes.get('sharp_edge') or me.attributes.new('sharp_edge', 'BOOLEAN', 'EDGE')
+    for i in sharp: sh.data[i].value = True
+    md = o.modifiers.new('wn', 'WEIGHTED_NORMAL'); md.mode = 'FACE_AREA'; md.keep_sharp = True; md.weight = 50
+    vz_apply(o, 'wn')
+def vazra_socket(x, y, z, kind='usb', base=False):
+    """Soket VAZRA (foto pemilik C73/C74 + toko 06): badan grafit ø6,6 × 3,3 cm, silinder LURUS (tanpa kerucut), tepi atas membulat
+    0,8 mm; bidang atas rata lalu CEKUNGAN 1,5 mm (ø4,44 cm); di dasar cekungan cincin LED tipis ø4,12–4,4 cm (di luar lubang, bukan di tepi)
+    + muka hitam rata; lubang DIPOTONG 5 mm ke dalam (boolean). Tidak ada warna terang lain di badan. kind: 'usb' (2 slot) · 'eu' (2 bulat).
+    base=False: alas terbuka (menempel di rel, tidak ada muka tersembunyi); True: soket lepas (PWS) beralas."""
+    arc = [(.0322 + .0008 * math.cos(math.radians(t)), .0322 + .0008 * math.sin(math.radians(t))) for t in (0, 22.5, 45, 67.5, 90)]
+    prof = ([(0, 0)] if base else []) + [(.0305, 0), (.033, .0025)] + arc + [(.0224, .033), (.0222, .0328), (.0222, .0315), (.0205, .0315)]   # dasar cekungan terbuka di tepi muka: tanpa sumur tersembunyi (asset-qa: muka menempel)
+    sk = vz_lathe(prof, 'vzbody', 96, c=(x, y, z), caps=(base, False)); vz_finish(sk)
+    fc = vz_lathe([(0, .0262), (.0204, .0262), (.0204, .0318), (0, .0318)], 'vzface', 96, c=(x, y, z))           # muka dalam (celah 0,1 mm dari dinding sumur)
+    if kind == 'usb': cuts = [(vz_box(x + dx - .0021, x + dx + .0021, y - .0058, y + .0058, z + .0268, z + .034), 'vzhole') for dx in (-.0072, .0072)]
+    else: cuts = [(vz_cyl(x + dx, y, z + .0268, z + .034, .0024, 32), 'vzhole') for dx in (-.0095, .0095)]
+    vz_cut(fc, cuts); vz_finish(fc)
+    rg = vz_lathe([(.0206, .03155), (.0206, .032), (.0222, .032)], 'vzring', 96, c=(x, y, z), caps=(False, False)); vz_finish(rg)   # cincin LED: dinding dalam + atas saja (sisi lain tersembunyi)
+def vazratrack(L=1.0, n=4):
+    """Rel VAZRA (L × 8,6 × 2,2 cm): badan hitam KILAP (clearcoat) bertepi bulat 6 mm (bevel 4 segmen) + ALUR tengah 3 mm sedalam 1,5 mm
+    hitam doff (potongan boolean, bukan strip menonjol) — foto pemilik C73; soket bergantian USB · EU."""
+    bm = vz_box(-L / 2, L / 2, -.043, .043, 0, .022)
+    bmesh.ops.bevel(bm, geom=[e for e in bm.edges if e.calc_length() > .018], offset=.006, segments=4, affect='EDGES', clamp_overlap=True)
+    rail = obj(bm, 'vzgloss')
+    vz_cut(rail, [(vz_box(-L / 2 + .012, L / 2 - .012, -.0015, .0015, .0205, .024), 'vzgroove')]); vz_finish(rail)
+    for i in range(n): vazra_socket(-L / 2 + L * (i + .5) / n, 0, .022, ('usb', 'eu')[(i + (i >= n // 2)) % 2] if n > 2 else ('usb', 'eu')[i % 2])
 def vazra_puck(kind):
-    vazra_socket(0, 0, 0)
-    if kind == 'usb':
-        for dx in (-.008, .008): box(dx - .004, dx + .004, -.0012, .0012, .018, .0186, 'black', bev=0)
+    vazra_socket(0, 0, 0, kind, base=True)
 SF101 = 'lib:fabric-linen#c2b9ac@fabric'
 def sf101_module(x0, w):   # modul SF3S 101: alas kayu terang 11 cm menjorok, dudukan & sandaran bantal empuk
     D, lg = .78, .11
@@ -493,6 +557,7 @@ BUILD.update({
     'geom': lambda: geom('white'), 'geom|hitam': lambda: geom('blackpanel'), 'geom|abu-abu': lambda: geom('grey'),
     'scandus-dining-table': scandus,
     'vazratrack': lambda: vazratrack(1.0, 4), 'vazratrack|pw-50-cm': lambda: vazratrack(.5, 2), 'vazratrack|pws-usb': lambda: vazra_puck('usb'), 'vazratrack|pws-eu': lambda: vazra_puck('eu'),
+    'vazratrack|rail-100': lambda: vazratrack(1.0, 0), 'vazratrack|rail-50': lambda: vazratrack(.5, 0),   # C77: rel tanpa soket — soket dipasang di panggung sesuai jumlah PWS EU / USB
     'sf3s-101-1-seater': lambda: sf101(1), 'sf3s-101-2-seater': lambda: sf101(2), 'sf3s-101-3-seater': lambda: sf101(3),
 })
 

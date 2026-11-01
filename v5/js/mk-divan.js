@@ -322,11 +322,7 @@
           var np = MW < 1.1 ? 1 : 2;
           for (var p = 0; p < np; p++) { var pw = Math.min(.66, MW / np - .06), pl = cushion(MP, pw, .13, .42, linen(), -MW / 2 + MW * (p + .5) / np, myo + .36, mz - ML / 2 + .28, { r: .03, cr: .04, both: true }); pl.rotation.x = -.18; }
           box(MP, MW + .04, .045, .55, fabric(throwHex(), 'linen'), 0, myo + .3, mz + ML / 2 - .4, .02);
-        } else {   // CZ-G3: kasur peraga (linen polos + bantal) — dulu kotak transparan, ranjang tampak belum jadi; harga tetap tanpa kasur
-          cushion(MP, MW, .22, ML, linen(), 0, myo + .11, mz, { r: .045, cr: .006, bu: .006, st: null });
-          var np2 = MW < 1.1 ? 1 : 2;
-          for (var p2 = 0; p2 < np2; p2++) { var pw2 = Math.min(.66, MW / np2 - .06), pl2 = cushion(MP, pw2, .13, .42, linen(), -MW / 2 + MW * (p2 + .5) / np2, myo + .3, mz - ML / 2 + .28, { r: .03, cr: .04, both: true }); pl2.rotation.x = -.18; }
-        }
+        } else box(MP, MW, .26, ML, ghost(), 0, myo + .13, mz, .06).castShadow = false;
       }
       if (LIFT) addMotion(LIFT, 'lift', function (v) { LIFT.rotation.x = -.6 * v; });
       // headboard

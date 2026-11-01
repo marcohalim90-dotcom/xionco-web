@@ -5,11 +5,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 195,
      "d": 85,
      "h": 73,
-     "frame": "Certified Solid Akasia, Plywood",
+     "frame": "Certified Solid Mindi, Plywood",
      "uph": "Vienna Linen 54% polyester, 26% cotton, 20% linen · Busa: Super Premium Yellow 32, HQ Rebounded",
      "finish": "Melamine",
      "legs": "Solid Mindi Wood"
@@ -87,14 +87,14 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 80,
      "d": 80,
      "h": 70,
      "frame": "Certified Solid Meranti, Plywood",
      "uph": "Vienna Linen 54% polyester, 26% cotton, 20% linen · Busa: Yellow + HQ Rebounded",
      "finish": "Melamine",
-     "legs": "Solid Acacia Wood",
+     "legs": "Solid Mindi Wood",
      "other": "Ketebalan Dudukan: 12cm · Ketinggian Dudukan: 38cm · Ketinggian Kaki: 5cm"
     }
    ],
@@ -108,11 +108,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 213,
      "d": 90,
      "h": 73,
-     "frame": "T 68.6cm · Solid Mindi · Solid Acacia Wood",
+     "frame": "T 68.6cm · Solid Mindi",
      "uph": "Cushion: Super Premium Yellow 32 Foam , Firm Rebounded 4 Foam. · Fino Premium Synthetic Leather",
      "finish": "Matte, Doff · Coating: Melamine"
     }
@@ -148,8 +148,8 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
-     "frame": "Solid Acacia Wood",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
+     "frame": "Solid Mindi Wood",
      "uph": "MBTECH PREMIUM CARRERA · Cushion: Density 37",
      "finish": "Matte, Doff",
      "legs": "karet 3 cm",
@@ -327,10 +327,11 @@
     }
    ],
    "at": "2026-10-19T18:00:26.512Z",
-   "overview": "Overall: L120 x H145 x D60cm\nDesk only : L90 x H75 x D60cm\nIntegrated shelving Tower unit : L30 x H145 x D60cm\n(Optional) Additional Cabinet : L40 x H75 x D60cm\nDaun Meja : Solid Acacia Wood\nVERK - Meja kerja yang mengintegrasi kan shelving unit untuk memaksimalkan ruang penyimpanan, terutama penggunaan dalam penyimpanan dokumen. Meja ini didesain dengan style industrial minimalist. Permukaan meja berbahan kayu solid yang halus sehingga memberikan kenyamanan pada tangan saat bekerja, menulis atau belajar. Pada dasarnya, meja ini berkonstruksi besi solid; tidak perlu kuatir untuk menaruhkan barang yang berbeban berat.\nVERK Desk dapat dikombinasikan dengan unit cabinet laci / pintu untuk ruang penyimpanan ekstra.\nPilihan ini dapat dipilih pada tombol Varian Produk di halaman ini.",
+   "overview": "Overall: L120 x H145 x D60cm\nDesk only : L90 x H75 x D60cm\nIntegrated shelving Tower unit : L30 x H145 x D60cm\n(Optional) Additional Cabinet : L40 x H75 x D60cm\nDaun Meja : Solid Mindi Wood\nVERK - Meja kerja yang mengintegrasi kan shelving unit untuk memaksimalkan ruang penyimpanan, terutama penggunaan dalam penyimpanan dokumen. Meja ini didesain dengan style industrial minimalist. Permukaan meja berbahan kayu solid yang halus sehingga memberikan kenyamanan pada tangan saat bekerja, menulis atau belajar. Pada dasarnya, meja ini berkonstruksi besi solid; tidak perlu kuatir untuk menaruhkan barang yang berbeban berat.\nVERK Desk dapat dikombinasikan dengan unit cabinet laci / pintu untuk ruang penyimpanan ekstra.\nPilihan ini dapat dipilih pada tombol Varian Produk di halaman ini.",
    "box": [
     "Termasuk di dalam: 1 Buah Meja + Rak Ambalan"
-   ]
+   ],
+   "overviewManual": true
   },
   "hout": {
    "rows": [
@@ -401,11 +402,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96 (akasia → mindi)",
      "w": 92,
      "d": 62,
      "h": 38,
-     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap) · Solid Acacia Wood",
+     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap)",
      "finish": "Matte, Doff · Coating: Melamine · Tabletop: Smooth Polished Glass",
      "other": "Frame Size: 3,7cm x 3,7cm · Glass Size: 58cm x 58cm · Glass Thickness: 5mm"
     },
@@ -444,11 +445,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96 (akasia → mindi)",
      "w": 110,
      "d": 57,
      "h": 90,
-     "frame": "Solid Acacia Wood",
+     "frame": "Solid Mindi Wood",
      "finish": "Melamine, Ducco Accent White",
      "other": "Tinggi Daun Meja: 75cm"
     }
@@ -495,11 +496,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96 (akasia → mindi)",
      "w": 120,
      "d": 70,
      "h": 38,
-     "frame": "Solid Acacia Wood",
+     "frame": "Solid Mindi Wood",
      "finish": "Melamine, Ducco Accent White"
     },
     {
@@ -575,11 +576,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 92,
      "d": 207,
      "h": 100,
-     "frame": "Solid Acacia Wood / Kayu Mindi · Besi Hollow 3*6 · Welded Steel",
+     "frame": "Solid Mindi Wood · Besi Hollow 3*6 · Welded Steel",
      "finish": "Ducco",
      "other": "ukuran 90cm · Ketinggian dari lantai ke rangka: 22cm · Ketebalan Besi Rangka: 1,2mm · Tinggi Tempat Tidur Standard: 23-30cm"
     },
@@ -871,11 +872,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 80,
      "d": 80,
      "h": 82,
-     "frame": "Solid Akasia + Multipleks",
+     "frame": "Solid Mindi + Multipleks",
      "uph": "Vienna · Busa: Rebounded Density 50 + Busa 32",
      "finish": "Finishing Kaki: Walnut Melamic",
      "legs": "Solid Steel Black",
@@ -911,11 +912,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 62,
      "d": 62,
      "h": 38,
-     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap) · Solid Acacia Wood",
+     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap)",
      "uph": "Cushion: Super Premium Yellow 32 Foam , Firm Rebounded 4 Foam. · Vienna Linen (54% polyester, 26% cotton, 20% linen)",
      "finish": "Matte, Doff · Coating: Melamine",
      "other": "Frame Size: 3,7cm x 3,7cm"
@@ -961,14 +962,14 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 187,
      "d": 80,
      "h": 70,
      "frame": "Certified Solid Meranti, Plywood",
      "uph": "Vienna Linen 54% polyester, 26% cotton, 20% linen · Busa: Yellow + HQ Rebounded",
      "finish": "Melamine",
-     "legs": "Solid Acacia Wood",
+     "legs": "Solid Mindi Wood",
      "other": "Ketebalan Dudukan: 12cm · Ketinggian Dudukan: 38cm · Ketinggian Kaki: 5cm"
     }
    ],
@@ -1001,11 +1002,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 186,
      "d": 62,
      "h": 62,
-     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap) · Solid Acacia Wood",
+     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap)",
      "uph": "Cushion: Super Premium Yellow 32 Foam , Firm Rebounded 4 Foam. · Vienna Linen (54% polyester, 26% cotton, 20% linen)",
      "finish": "Matte, Doff · Coating: Melamine",
      "other": "Frame Size: 3,7cm x 3,7cm",
@@ -1145,11 +1146,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 55,
      "d": 55,
      "h": 43,
-     "frame": "Certified Solid Akasia, Multiplek + Mindi",
+     "frame": "Certified Solid Mindi, Multiplek + Mindi",
      "uph": "Fabric",
      "finish": "Walnut",
      "other": "Ketebalan Dudukan: 5cm · Ketinggian Dudukan: 43cm · Ketinggian Kaki: 15cm"
@@ -1209,14 +1210,14 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 120,
      "d": 60,
      "h": 43,
-     "frame": "Akasia dan Multiplek",
+     "frame": "Mindi dan Multiplek",
      "uph": "Vienna Linen 54% polyester, 26% cotton, 20% linen · Busa: Super Premium Yellow 32, HQ Rebounded",
      "finish": "Melamine",
-     "legs": "Solid Acacia Wood",
+     "legs": "Solid Mindi Wood",
      "other": "Tinggi Dudukan: 43 cm · Lebar Dudukan: 60 cm · Ketebalan Dudukan: 5 cm"
     }
    ],
@@ -1391,11 +1392,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 100,
      "d": 85,
      "h": 73,
-     "frame": "Certified Solid Akasia, Plywood",
+     "frame": "Certified Solid Mindi, Plywood",
      "uph": "Vienna Linen 54% polyester, 26% cotton, 20% linen · Busa: Super Premium Yellow 32, HQ Rebounded",
      "finish": "Melamine",
      "legs": "Solid Mindi Wood"
@@ -1496,11 +1497,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 80,
      "d": 80,
      "h": 70,
-     "frame": "Certified Solid Akasia",
+     "frame": "Certified Solid Mindi",
      "uph": "Faux Leather · Busa: Super Premium Yellow 32, HQ Rebounded",
      "finish": "Coating Kaki: Solid Black Paint",
      "legs": "Solid Mindi Wood",
@@ -1537,11 +1538,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 124,
      "d": 62,
      "h": 62,
-     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap) · Solid Acacia Wood",
+     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap)",
      "uph": "Cushion: Super Premium Yellow 32 Foam , Firm Rebounded 4 Foam. · Vienna Linen (54% polyester, 26% cotton, 20% linen)",
      "finish": "Matte, Doff · Coating: Melamine",
      "other": "Frame Size: 3,7cm x 3,7cm",
@@ -1606,14 +1607,14 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 180,
      "d": 80,
      "h": 72,
      "frame": "Certified Solid Meranti, Plywood",
      "uph": "VIENNA Linen 100% Polyesther · Cushion: Super Premium Yellow 32, Extruded Polystyrene Foam",
      "finish": "Matte, Doff · Coating: Melamine",
-     "legs": "Solid Acacia Wood",
+     "legs": "Solid Mindi Wood",
      "other": "Area Tidur (ketika dibuka): 180cm x 153cm x 21cm · Tinggi Dudukan: 42cm · Tinggi Sandaran: 30cm"
     }
    ],
@@ -1628,14 +1629,14 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 75,
      "d": 70,
      "h": 80,
-     "frame": "Akasia & Triplek",
+     "frame": "Mindi & Triplek",
      "uph": "Beludru 54% polyester, 26% cotton, 20% linen · Busa: Super Premium Yellow 32, HQ Rebounded",
      "finish": "kaki DUCO (Gold)",
-     "legs": "Solid Acacia Wood",
+     "legs": "Solid Mindi Wood",
      "other": "Tinggi Dudukan: 40 cm · Lebar Dudukan: 75 cm · Ketebalan Dudukan: 10 cm"
     }
    ],
@@ -1649,11 +1650,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 195,
      "d": 80,
      "h": 70,
-     "frame": "Certified Solid Akasia",
+     "frame": "Certified Solid Mindi",
      "uph": "Faux Leather · Busa: Super Premium Yellow 32, HQ Rebounded",
      "finish": "Coating Kaki: Solid Black Paint",
      "legs": "Solid Mindi Wood",
@@ -1676,11 +1677,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 62,
      "d": 62,
      "h": 62,
-     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap) · Solid Acacia Wood",
+     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap)",
      "uph": "Cushion: Super Premium Yellow 32 Foam , Firm Rebounded 4 Foam. · Vienna Linen (54% polyester, 26% cotton, 20% linen)",
      "finish": "Matte, Doff · Coating: Melamine",
      "other": "Frame Size: 3,7cm x 3,7cm",
@@ -1764,11 +1765,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 62,
      "d": 62,
      "h": 62,
-     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap) · Solid Acacia Wood",
+     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap)",
      "uph": "Cushion: Super Premium Yellow 32 Foam , Firm Rebounded 4 Foam. · Vienna Linen (54% polyester, 26% cotton, 20% linen)",
      "finish": "Matte, Doff · Coating: Melamine",
      "other": "Frame Size: 3,7cm x 3,7cm",
@@ -1806,14 +1807,14 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 55,
      "d": 55,
      "h": 40,
-     "frame": "Certified Solid Akasia, Plywood",
+     "frame": "Certified Solid Mindi, Plywood",
      "uph": "Fabric · Busa: Yellow + HQ Rebounded",
      "finish": "Walnut",
-     "legs": "Solid Acacia Wood",
+     "legs": "Solid Mindi Wood",
      "other": "Ketebalan Dudukan: 5cm · Ketinggian Dudukan: 40cm · Ketinggian Kaki: 5 cm"
     }
    ],
@@ -1854,13 +1855,13 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 85,
      "d": 85,
      "h": 73,
-     "frame": "Akasia dan Multiplek",
+     "frame": "Mindi dan Multiplek",
      "uph": "Kain Fabric 54% polyester, 26% cotton, 20% linen · Busa: Super Premium Yellow 32, HQ Rebounded",
-     "legs": "Solid Acacia Wood",
+     "legs": "Solid Mindi Wood",
      "other": "Tinggi Dudukan: 40 cm · Lebar Dudukan: 85 cm · Ketebalan Dudukan: 5.5 cm"
     }
    ],
@@ -1950,11 +1951,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96 (akasia → mindi)",
      "w": 62,
      "d": 62,
      "h": 38,
-     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap) · Solid Acacia Wood",
+     "frame": "Solid Sungkai (Terang), Solid Mindi (Gelap)",
      "finish": "Matte, Doff · Coating: Melamine · Tabletop: Smooth Polished Glass",
      "other": "Frame Size: 3,7cm x 3,7cm · Glass Size: 58cm x 58cm · Glass Thickness: 5mm"
     },
@@ -2268,11 +2269,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 92,
      "d": 207,
      "h": 22,
-     "frame": "Solid Acacia Wood / Kayu Mindi · Besi Hollow 3*6 · Welded Steel",
+     "frame": "Solid Mindi Wood · Besi Hollow 3*6 · Welded Steel",
      "finish": "Ducco",
      "other": "ukuran 90 cm · Ketinggian dari lantai ke rangka: 22cm · Ketebalan Besi Rangka: 1,2mm · Tinggi Tempat Tidur Standard: 23-30cm",
      "ok3d": "Tinggi resmi 22 cm = rangka; model 3D termasuk kasur & bantal peraga"
@@ -3728,11 +3729,11 @@
    "rows": [
     {
      "k": "Utama",
-     "src": "xionco.shop (deskripsi)",
+     "src": "Koreksi pemilik C96–C97 (akasia → mindi)",
      "w": 130,
      "d": 80,
      "h": 70,
-     "frame": "Certified Solid Akasia",
+     "frame": "Certified Solid Mindi",
      "uph": "Faux Leather · Busa: Super Premium Yellow 32, HQ Rebounded",
      "finish": "Coating Kaki: Solid Black Paint",
      "legs": "Solid Mindi Wood",

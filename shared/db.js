@@ -6,6 +6,7 @@
                  data/products.json          katalog item       (ikut online saat di-push)
                  data/checks.json            centang aset       (ikut online)
                  data/pricing.json           harga Customize    (ikut online — selisih dari harga bawaan)
+                 data/features.json          fitur situs yang dinyalakan (ikut online; bawaan semua mati)
                  data/private/customs.json   pesanan custom     (TIDAK ikut online)
    • online  — situs yang sudah online: membaca data/*.json yang dipublish;
                perubahan di Developer Settings hanya tersimpan di browser itu
@@ -18,6 +19,7 @@
      customs() / saveCustom(rec) / deleteCustom(id)
      checks() / setCheck(key, bool)
      pricing() / savePricing(obj) / resetPricing()  harga Customize (selisih dari bawaan custom-spec.js)
+     features() / saveFeatures(obj)                 fitur situs { ruang, cubix, bisnis, manufaktur: true|false } (Galeri selalu ada, 28 Okt)
      settings() / setSetting(key, value)          (selalu per browser)
      assetList()           Promise<string[]> daftar file di assets/ (mode folder)
      exportAll() / importAll(obj) / resetAll()
@@ -56,10 +58,10 @@
 
   /* ------------------------------------------------------------------ penyimpanan */
   // isi file: { app:'XIONCO', kind, updated, items|records|checks }
-  var FIELD = { products: 'items', customs: 'records', checks: 'checks', pricing: 'pricing' };
-  var EMPTY = { products: function () { return clone(DEFAULTS); }, customs: function () { return []; }, checks: function () { return {}; }, pricing: function () { return {}; } };
-  var NAMES = ['products', 'customs', 'checks', 'pricing'];
-  var state = { mode: 'browser', products: null, customs: null, checks: null, pricing: null, updated: {} };
+  var FIELD = { products: 'items', customs: 'records', checks: 'checks', pricing: 'pricing', features: 'features' };
+  var EMPTY = { products: function () { return clone(DEFAULTS); }, customs: function () { return []; }, checks: function () { return {}; }, pricing: function () { return {}; }, features: function () { return {}; } };
+  var NAMES = ['products', 'customs', 'checks', 'pricing', 'features'];
+  var state = { mode: 'browser', products: null, customs: null, checks: null, pricing: null, features: null, updated: {} };
   function getJSON(url) {
     return fetch(url, { cache: 'no-store', headers: { 'X-XIONCO': '1' } }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
   }
@@ -106,7 +108,7 @@
         });
       }
       state.mode = HTTP ? 'online' : 'browser';
-      var pub = HTTP ? Promise.all([getJSON(ROOT + 'data/products.json'), getJSON(ROOT + 'data/checks.json'), getJSON(ROOT + 'data/pricing.json')]) : Promise.resolve([null, null, null]);
+      var pub = HTTP ? Promise.all([getJSON(ROOT + 'data/products.json'), getJSON(ROOT + 'data/checks.json'), getJSON(ROOT + 'data/pricing.json'), getJSON(ROOT + 'data/features.json')]) : Promise.resolve([null, null, null, null]);
       return pub.then(function (docs) {
         // perubahan di browser ini (bila ada) didahulukan, lalu file yang dipublish
         var lp = read('products', null), lc = read('checks', null);
@@ -116,6 +118,7 @@
         state.customs = read('customs', null);
         var lpr = read('pricing', null);
         state.pricing = lpr || fromFile('pricing', docs[2]);
+        state.features = read('features', null) || fromFile('features', docs[3]);
       });
     }).then(function () {
       NAMES.forEach(function (n) { if (state[n] == null) { state[n] = EMPTY[n](); state.updated[n] = null; } });
@@ -160,6 +163,10 @@
     pricing: function () { return clone(state.pricing || {}); },
     savePricing: function (p) { state.pricing = clone(p || {}); if (window.XC && XC.setPricing) XC.setPricing(state.pricing); emit('pricing'); return persist('pricing'); },
     resetPricing: function () { state.pricing = {}; if (window.XC && XC.setPricing) XC.setPricing({}); emit('pricing'); return persist('pricing', true); },
+
+    // fitur situs (Ruang, Konfigurasi CUBIX, Galeri, Bisnis, Manufaktur) — bawaan mati, dinyalakan dari Developer Settings
+    features: function () { return clone(state.features || {}); },
+    saveFeatures: function (f) { state.features = clone(f || {}); emit('features'); return persist('features'); },
 
     settings: function () { return Object.assign({ position: 'bl', hidden: false }, read('settings', {})); },
     setSetting: function (k, v) { var s = DB.settings(); s[k] = v; write('settings', s); emit('settings'); },

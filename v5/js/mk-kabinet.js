@@ -28,7 +28,7 @@
       var gt = c.glassType || 'clear';
       var ledN = 0, stemN = 0, bookN = 0;
       var bottleM = function (red) { return Mc('kxBottle' + (red ? 'r' : 'g'), function () { return new T.MeshPhysicalMaterial({ color: new T.Color(red ? '#3a1416' : '#1d3527'), roughness: .12, metalness: 0, clearcoat: 1, clearcoatRoughness: .05, envMapIntensity: 1.3 }); }); };
-      var hasMetal = /^(bar|knob)$/.test(c.handle), HM = hasMetal ? METAL() : dark('#2a211b');
+      var HM = /^(bar|knob)$/.test(c.handle) ? METAL() : dark('#2a211b');
       var lowGrip = wall && wt === 'cabinet';
 
       var cells = [], regions = [];
@@ -39,10 +39,9 @@
       else if (mount === 'castor') { y0 = .08; [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (q) { leg(root, 'castor', q[0] * (W / 2 - .06), q[1] * (D / 2 - .06), .08, METAL()); }); }
       else if (mount === 'floating') y0 = s === 'tv' || s === 'nightstand' ? .3 : s === 'wardrobe' ? .12 : .4;
       else if (mount === 'wall') { y0 = cm(c.elev, 30); if (desk) y0 = Math.max(y0, .98); }
-      root.userData.hang = mount === 'floating' || mount === 'wall';   // CZ-F: panggung tanpa podium, tetap pada ketinggiannya
       var wp = wall ? c.wallPanel || 'none' : 'none';
       // dinding semu (transparan) untuk unit gantung tanpa panel: unit menempel, bukan melayang
-      if (mount === 'floating' || wall && wp === 'none') { var gh = Math.max(y0 + Hb + .32, 1.05), gw2 = box(root, W + .5, gh, .006, ghost(), 0, gh / 2, -D / 2 - .004, 0); gw2.castShadow = false; gw2.receiveShadow = false; gw2.userData.noBounds = true; }
+      if (mount === 'floating' || wall && wp === 'none') { var gh = Math.max(y0 + Hb + .32, 1.05), gw2 = box(root, W + .5, gh, .006, ghost(), 0, gh / 2, -D / 2 - .004, 0); gw2.castShadow = false; gw2.receiveShadow = false; }
       if (wall && wp !== 'none') wallPanel(wp);
       if (desk) deskTop();
 
@@ -60,6 +59,11 @@
       var lay = (c.layout || []).map(function (q) { return KB.canonCol(q, s); });
       if (!lay.length) lay = [KB.newCol(KB.SUBK[s] ? KB.SUBK[s][0] : 'door', s)];
       var nc = lay.length, ws = KB.colWidths(W, lay), ih = Hc - 2 * t, zc = -D / 2 + .01 + (D - .012) / 2, d2 = D - .012;
+      // C101: handle & aksesori per kolom (hd '' = ikut handle semua kolom)
+      var hdOf = function (i) { return (lay[i] && lay[i].hd) || c.handle || 'grip'; };
+      var hasC = function (k, i) { return !!(lay[i] && (lay[i].ac || []).indexOf(k) >= 0); };
+      var anyC = function (k) { return lay.some(function (q) { return (q.ac || []).indexOf(k) >= 0; }); };
+      var colFront = {};
       var xc = -W / 2 + t;
       lay.forEach(function (col, i) {
         var cw = ws[i], cx = xc + cw / 2;
@@ -69,7 +73,7 @@
           var h = g.h * k, r = { x: cx, y: yT - h / 2, w: cw, h: h, col: i, g: g, ci: col };
           regions.push(r); region(r);
           yT -= h;
-          if (j < m - 1) { box(root, cw, t, d2, bodyM, cx, yT - t / 2, zc, .002); box(root, cw, t, .002, EM, cx, yT - t / 2, D / 2 - .0008, 0); yT -= t; }   // CZ-G8: tepat selebar kolom, lis tidak sebidang dengan lis sekat (z-fighting)
+          if (j < m - 1) { box(root, cw + .004, t, d2, bodyM, cx, yT - t / 2, zc, .002); box(root, cw + .004, t, .002, EM, cx, yT - t / 2, D / 2 - .001, 0); yT -= t; }
         });
         xc += cw + t;
       });
@@ -85,24 +89,26 @@
       var target = null;
       var firstK = function (re) { return cells.filter(function (q) { return re.test(q.k); })[0] || null; };
       if (s === 'bar') target = firstK(/^flap$/);
-      // CZ-G6: lemari tampil tertutup (dulu pintu kiri terbuka sebagai keadaan awal); isi dilihat lewat pilih kolom / Animate
+      else if (s === 'wardrobe') target = firstK(/^(door|fold|slide)$/);
       else if (s === 'pantry') target = firstK(/^pull$/) || firstK(/^(door|glass)$/);
       var firstFront = null;
-      var perCol = {};   // CZ-G5: id gerak stabil per kolom (dulu indeks sel global → tambah kolom memindahkan status buka ke pintu lain)
-      cells.forEach(function (cl, idx) { var ck = cl.col == null ? 'n' : cl.col; perCol[ck] = (perCol[ck] || 0) + 1; cl.mid = 'c' + ck + '.' + (perCol[ck] - 1) + cl.k; front(cl, idx); });
+      cells.forEach(function (cl, idx) { front(cl, idx); });
 
       /* ---------- aksesori */
       var topY = y0 + Hc + topT;
-      if (has('lock')) { if (firstFront) keyhole(firstFront.P, firstFront.x, firstFront.y, firstFront.z); else keyhole(root, 0, y0 + Hc - t / 2, D / 2 + .002); }
+      lay.forEach(function (q, i) { var ff = colFront[i]; if (hasC('lock', i) && ff) keyhole(ff.P, ff.x, ff.y, ff.z); });
       if (has('cable')) { var gx2 = W / 2 - Math.min(.2, W * .2); cyl(root, .03, .03, .004, dark('#0c0a09'), gx2, topY + .0005, -D / 2 + .09, 28); torus(root, .031, .003, METAL(), gx2, topY + .002, -D / 2 + .09, 0, 40).rotation.x = Math.PI / 2; }
       if (has('usb')) {   // port USB / VAZRA tertanam di top, belakang kanan
         var ux = -W / 2 + Math.min(.12, W * .25), uz = -D / 2 + .06;
         box(root, .075, .004, .036, dark('#1c1a18'), ux, topY + .002, uz, .003);
         [-1, 1].forEach(function (e) { box(root, .016, .002, .005, METAL(), ux + e * .017, topY + .0045, uz, .001); });
       }
-      if (has('led') && (mount === 'floating' || wall)) { var gl0 = box(root, W * .9, .006, .006, glow(), 0, y0 - .004, D / 2 - .1, 0); gl0.castShadow = false; }
+      if (anyC('led') && (mount === 'floating' || wall)) { var gl0 = box(root, W * .9, .006, .006, glow(), 0, y0 - .004, D / 2 - .1, 0); gl0.castShadow = false; }
       if (mount === 'floating' && /^(round|hairpin|sled)$/.test(lg)) box(root, W - .01, .012, .012, METAL(), 0, y0 + .006, D / 2 - .006, .002);
-      if (s === 'wardrobe' && has('mirror')) { var mc = cells.filter(function (q) { return /^(door|slide|fold)$/.test(q.k) && q !== target; })[0]; if (mc && mc.P) box(mc.P, mc.lw - .08, mc.lh * .82, .004, mirrorM(), mc.lx, mc.ly, mc.lz + .02 + (mc.k === 'slide' ? .001 : 0), .002); }
+      if (s === 'wardrobe') lay.forEach(function (q, i) {   // cermin di pintu kolom yang memilihnya
+        if (!hasC('mirror', i)) return;
+        var mc = cells.filter(function (x) { return x.col === i && /^(door|slide|fold)$/.test(x.k) && x !== target; })[0]; if (mc && mc.P) box(mc.P, mc.lw - .08, mc.lh * .82, .004, mirrorM(), mc.lx, mc.ly, mc.lz + .02 + (mc.k === 'slide' ? .001 : 0), .002);
+      });
 
       /* ================= bagian-bagian ================= */
       function wallPanel(kind) {
@@ -140,9 +146,9 @@
         return ys;
       }
       function showcase(r, glassy) {   // lampu, cermin belakang, rak gelas — ruang terbuka / berkaca / bar
-        if (has('mback')) box(root, r.w - .006, r.h - .006, .003, mirrorM(), r.x, r.y, -D / 2 + .0115, .001);
-        if (has('led') && ledN < 8) { ledN++; var gs = box(root, r.w * .86, .006, .01, glow(), r.x, r.y + r.h / 2 - .008, D / 2 - .035, 0); gs.castShadow = false; var wp2 = mesh(new T.PlaneGeometry(r.w * .94, r.h * .94), wash(), root, true); wp2.position.set(r.x, r.y, -D / 2 + .013); wp2.castShadow = false; wp2.receiveShadow = false; }
-        if (has('stem') && stemN < 2 && r.h > .3 && /^(bar|sideboard)$/.test(s)) { stemN++; stemware(r); }
+        if (hasC('mback', r.col)) box(root, r.w - .006, r.h - .006, .003, mirrorM(), r.x, r.y, -D / 2 + .0115, .001);
+        if (hasC('led', r.col) && ledN < 8) { ledN++; var gs = box(root, r.w * .86, .006, .01, glow(), r.x, r.y + r.h / 2 - .008, D / 2 - .035, 0); gs.castShadow = false; var wp2 = mesh(new T.PlaneGeometry(r.w * .94, r.h * .94), wash(), root, true); wp2.position.set(r.x, r.y, -D / 2 + .013); wp2.castShadow = false; wp2.receiveShadow = false; }
+        if (hasC('stem', r.col) && r.h > .3 && /^(bar|sideboard)$/.test(s)) { stemN++; stemware(r); }
       }
       function stemware(r) {
         var ry = r.y + r.h / 2 - .012, rails = r.w > .4 ? [-.25, .25] : [0], depth = d2 - .06, ng = Math.max(1, Math.min(3, Math.floor(depth / .09)));
@@ -249,10 +255,10 @@
         }
         if (ty === 'wine') { wine(r, g.style); showcase(r); return; }
         if (ty === 'flap') {
-          box(root, r.w - .006, r.h - .006, .003, has('mback') || s === 'bar' ? mirrorM() : backM, r.x, r.y, -D / 2 + .0115, .001);
+          box(root, r.w - .006, r.h - .006, .003, hasC('mback', r.col) || s === 'bar' ? mirrorM() : backM, r.x, r.y, -D / 2 + .0115, .001);
           var ys3 = shelvesIn(r, g.sh, true), yb = r.y - r.h / 2;
-          if (has('led')) { var gs = box(root, r.w * .86, .006, .01, glow(), r.x, r.y + r.h / 2 - .008, D / 2 - .035, 0); gs.castShadow = false; }
-          if (has('stem') && r.h > .3) { stemN++; stemware(r); }
+          if (hasC('led', r.col)) { var gs = box(root, r.w * .86, .006, .01, glow(), r.x, r.y + r.h / 2 - .008, D / 2 - .035, 0); gs.castShadow = false; }
+          if (hasC('stem', r.col) && r.h > .3) { stemN++; stemware(r); }
           bottlesOn(r, ys3, 1);
           if (ys3.length && r.h - (ys3[0] - yb) > .1) cyl(root, .03, .022, .06, glass(true), r.x + r.w * .2, ys3[0] + .034, zc, 18);
           cells.push({ x: r.x, y: r.y, w: r.w, h: r.h, k: 'flap', col: i });
@@ -267,8 +273,8 @@
       }
 
       /* ---------- handle (z0 = muka depan bidang, relatif p) — J-grip dari material muka, tanpa batang gelap */
-      function handle(p, x, y, w, h, vertical, drawer, flip, z0) {
-        var hd = c.handle || 'grip', z = (z0 || 0) + .018;
+      function handle(p, x, y, w, h, vertical, drawer, flip, z0, hd) {
+        hd = hd || c.handle || 'grip'; var z = (z0 || 0) + .018, HM = /^(bar|knob)$/.test(hd) ? METAL() : dark('#2a211b');
         if (hd === 'push') return;
         var hy = flip ? y - h / 2 + .03 : y + h / 2 - .01;
         if (hd === 'grip') { var gw = w * .86, gy = flip ? y - h / 2 + .006 : y + h / 2 - .006; box(p, gw, .008, .012, FM, x, gy, z + .004, .002); box(p, gw - .004, .003, .003, dark('#2e2620'), x, gy + (flip ? .0055 : -.0055), z + .0015, 0); return; }
@@ -315,13 +321,14 @@
         if ((cane1 || fin === 'solid') && k !== 'fold' && !cl.gl) { var fw = cane1 ? .035 : .045, fd = cane1 ? .022 : .024, FWM = cane1 ? WOOD() : FM; [-1, 1].forEach(function (q) { box(P, fw, h, fd, FWM, lx + q * (w / 2 - fw / 2), ly, lz + fd / 2, .004); box(P, w - 2 * fw, fw, fd, FWM, lx, ly + q * (h / 2 - fw / 2), lz + fd / 2, .004); }); }
         cl.P = P; cl.lx = lx; cl.ly = ly; cl.lz = lz; cl.lw = w; cl.lh = h;
         // handle
-        var vertical = !/^(drawer|flip|tip|flap)$/.test(k), hx = lx, HP = P, hy = ly;
-        if ((k === 'door' || k === 'glass' || k === 'slide') && c.handle !== 'grip') hx = lx + (cl.hinge === 'l' ? 1 : -1) * (w / 2 - .05);
+        var vertical = !/^(drawer|flip|tip|flap)$/.test(k), hx = lx, HP = P, hy = ly, hd0 = hdOf(cl.col);
+        if ((k === 'door' || k === 'glass' || k === 'slide') && hd0 !== 'grip') hx = lx + (cl.hinge === 'l' ? 1 : -1) * (w / 2 - .05);
         if (k === 'fold') { HP = Q; hx = -hs * (w / 2 - .05); }
-        if (k === 'pull' && c.handle !== 'grip') hy = ly + h / 2 - Math.min(.35, h * .2);
-        if ((k === 'door' || k === 'glass') && h > 1.3 && c.handle !== 'grip') hy = Math.max(-h / 2 + .12, Math.min(h / 2 - .12, 1.02 - cl.y));   // handle setinggi ±1 m di pintu tinggi
-        handle(HP, hx, hy, w, h, vertical, k === 'drawer', k === 'flip' || lowGrip && (k === 'door' || k === 'glass'), lz);
+        if (k === 'pull' && hd0 !== 'grip') hy = ly + h / 2 - Math.min(.35, h * .2);
+        if ((k === 'door' || k === 'glass') && h > 1.3 && hd0 !== 'grip') hy = Math.max(-h / 2 + .12, Math.min(h / 2 - .12, 1.02 - cl.y));   // handle setinggi ±1 m di pintu tinggi
+        handle(HP, hx, hy, w, h, vertical, k === 'drawer', k === 'flip' || lowGrip && (k === 'door' || k === 'glass'), lz, hd0);
         if (!firstFront) firstFront = { P: HP, x: hx, y: hy + (k === 'drawer' ? 0 : -.07), z: lz + .018, k: k };
+        if (cl.col >= 0 && !colFront[cl.col]) colFront[cl.col] = { P: HP, x: hx, y: hy + (k === 'drawer' ? 0 : -.07), z: lz + .018 };
         // engsel (+ peredam soft close)
         if (/^(door|glass|fold|flip|tip|flap)$/.test(k)) {
           var hz = -.004, sideH = !/^(flip|tip|flap)$/.test(k), hxx = lx + (cl.hinge === 'l' ? -1 : 1) * (w / 2 - .03);
@@ -345,7 +352,7 @@
           box(P, w - .03, .012, dd, bodyM, cl.x, cl.y - h / 2 + .02, bz, .002);
           [-1, 1].forEach(function (e) { box(P, .012, h - .04, dd, bodyM, cl.x + e * (w / 2 - .02), cl.y - .01, bz, .002); box(root, .006, .012, dd + .1, chrome(), cl.x + e * (w / 2 - .008), cl.y - .02, bz - .05, .002); if (has('soft')) cyl(root, .005, .005, .05, dark('#5a5a5a'), cl.x + e * (w / 2 - .008), cl.y - .03, bz - dd / 2 - .02, 10).rotation.x = Math.PI / 2; });
           box(P, w - .03, h - .04, .012, bodyM, cl.x, cl.y - .01, lz - dd, .002);
-          if (has('tray')) {   // baki beludru bersekat
+          if (hasC('tray', cl.col)) {   // baki beludru bersekat
             var tm2 = fabric('#4b3442', 'velvet'), ty = cl.y - h / 2 + .03;
             box(P, w - .06, .006, dd - .03, tm2, cl.x, ty, bz, .002);
             [-.18, .18].forEach(function (f) { box(P, .008, Math.min(.04, h * .3), dd - .03, tm2, cl.x + f * w, ty + .018, bz, .002); });
@@ -372,7 +379,7 @@
         else if (k === 'slide') apply = function (v) { P.position.x = -sdir * cl.w * .86 * v; };
         else if (k === 'pull') apply = function (v) { P.position.z = D * .82 * v; };
         else apply = function (v) { P.position.z = dd * .78 * v; };
-        var mo = { id: cl.mid || 'f' + idx, kind: k, col: cl.col, t: open0, to: open0, apply: apply };
+        var mo = { id: 'f' + idx, kind: k, col: cl.col, t: open0, to: open0, apply: apply };
         apply(open0);
         P.userData.motion = mo; if (Q) Q.userData.motion = mo;
         motions.push(mo);

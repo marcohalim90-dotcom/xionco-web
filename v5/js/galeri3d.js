@@ -110,6 +110,9 @@
       st.cam.setViewOffset(W, Hh, W / 2 + cu * W / 2 - w / 2, Hh / 2 - cv * W / 2 - h / 2, w, h);
       st.zoomed = true;
     } else if (st.zoomed) { st.cam.clearViewOffset(); st.zoomed = false; }
+    // zf < 1 = sedikit zoom out (sudut pandang lebih lebar, jalur kamera tetap lurus) — mis. Ruang besar v12
+    var hw = zf < 0.9995 ? 2 * Math.atan(Math.tan(st.hfov * Math.PI / 360) / zf) * 180 / Math.PI : st.hfov;
+    if (Math.abs(hw - (st.curHf || 0)) > 0.01) setHfov(hw);
     // lampu terdekat (diberi bobot ke arah pandang) → kumpulan lampu
     var cp = st.cam.position;
     st.lights.forEach(function (L) {

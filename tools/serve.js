@@ -22,6 +22,7 @@ const quotes = require('./quotes');   // penawaran harga khusus (server tiruan)
 const staging = require('./staging');
 const shopImg = require('./shopimg');   // foto referensi xionco.shop (Developer Settings › Foto referensi)
 const specsApi = require('./specs');   // ukuran & material produk (Developer Settings › Ukuran & material)
+const gitver = require('./gitver');   // Developer Settings › Versi › Versi git (dipasang ke v5-b)
 const woodApi = require('./wood');   // kayu koleksi (Developer Settings › Kayu koleksi)   // aset material untuk direview (Developer Settings › Aset material)
 
 const ROOT = path.resolve(__dirname, '..');
@@ -33,6 +34,7 @@ const DB = {
   products: path.join(DATA, 'products.json'),
   checks: path.join(DATA, 'checks.json'),
   pricing: path.join(DATA, 'pricing.json'),
+  features: path.join(DATA, 'features.json'),   // fitur situs yang dinyalakan (Developer Settings › Pengaturan › Fitur situs)
   customs: path.join(DATA, 'private', 'customs.json')
 };
 const TYPES = {
@@ -98,6 +100,7 @@ function api(req, res, p) {
   if (p === '/api/specs' || p.indexOf('/api/specs/') === 0) return specsApi.handle(req, res, p, send);
   if (p === '/api/shopimg' || p.indexOf('/api/shopimg/') === 0) return shopImg.handle(req, res, p, send);
   if (p === '/api/staging' || p.indexOf('/api/staging/') === 0) return staging.handle(req, res, p, send);   // 3D AI (Tripo via fal.ai)
+  if (p === '/api/gitver' || p.indexOf('/api/gitver/') === 0) return gitver.handle(req, res, p, send, PORT);   // versi git lama → v5-b
 
   const m = p.match(/^\/api\/db\/([a-z]+)$/);
   if (!m || !DB[m[1]]) return send(res, 404, { ok: false, error: 'Tidak dikenal' });
@@ -130,6 +133,9 @@ http.createServer((req, res) => {
   let p;
   try { p = decodeURIComponent(req.url.split('?')[0]); } catch (e) { res.writeHead(400); return res.end(); }
   if (p.indexOf('/api/') === 0) return api(req, res, p);
+  // mesin waktu: v5-b = versi git yang dipilih di Developer Settings (kode + data + model apa adanya)
+  if (p === '/v5-b' || p.indexOf('/v5-b/') === 0) return isLocalHost(req) ? gitver.redirectB(req, res, PORT) : (res.writeHead(403), res.end());
+  if (p.indexOf('/gv/') === 0) return isLocalHost(req) ? gitver.serveVersion(req, res, p, TYPES) : (res.writeHead(403), res.end());
   if (p.indexOf('/data/private/') === 0 || p.indexOf('/data/history/') === 0) { res.writeHead(403); return res.end(); }
   if (p.endsWith('/')) p += 'index.html';
   const file = path.join(ROOT, p);

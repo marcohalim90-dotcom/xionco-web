@@ -23,7 +23,7 @@
   --menu-bg: #1a1612; --panel-bg: rgba(22, 19, 16, .94); --panel-solid: #171411;
   --vig: rgba(8, 6, 5, .55);
   --gold: #bfa274; --gold-hi: #dcc59c; --gold-lo: #8c7550; --gold-a: rgba(191, 162, 116, .1);
-  --t-d: #ece5d8; --t-d2: #a89f90; --t-d3: #746b5f;
+  --t-d: #ece5d8; --t-d2: #a89f90; --t-d3: #8e8476;   /* C99: 3,5:1 → 5:1 di panel (warna saja, ukuran huruf tetap) */
   --hair: rgba(236, 229, 216, .09); --hair-2: rgba(236, 229, 216, .17);
   --plate: rgba(255, 244, 228, .03); --field: rgba(255, 244, 228, .035);
   --ok: #9bb48a; --err: #c98a72;
@@ -43,7 +43,7 @@ html[data-theme="light"] {
   --menu-bg: #ece6dc; --panel-bg: rgba(240, 234, 225, .95); --panel-solid: #efe9e0;
   --vig: rgba(110, 92, 70, .2);
   --gold: #a8854c; --gold-hi: #8a6a35; --gold-lo: #c2a97c; --gold-a: rgba(168, 133, 76, .1);
-  --t-d: #231c15; --t-d2: #5c5145; --t-d3: #8b7f71;
+  --t-d: #231c15; --t-d2: #5c5145; --t-d3: #6f6457;   /* C99: 3,2:1 → 4,8:1 */
   --hair: rgba(35, 28, 21, .1); --hair-2: rgba(35, 28, 21, .19);
   --plate: rgba(35, 28, 21, .03); --field: rgba(35, 28, 21, .035);
   --box-bg: linear-gradient(180deg, rgba(244, 239, 231, .86), rgba(234, 227, 216, .82));
@@ -456,6 +456,15 @@ html.is-panel .desc { opacity: 0; transform: translateY(-50%) translateX(24px); 
 .qty button:hover { color: var(--t-d); }
 .qty svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.3; }
 .qty span { min-width: 18px; text-align: center; font: 400 var(--fs-h) var(--f); font-variant-numeric: tabular-nums; }
+/* C77: produk rakitan (VAZRA Power Track) — baris soket: nama + harga per soket | jumlah (− angka +, angka bisa diketik) */
+.kit { display: grid; gap: 8px; margin-top: 2px; }
+.kit__r { display: grid; grid-template-columns: 1fr 132px; align-items: center; gap: 12px; }
+.kit__l { display: grid; gap: 2px; font: 400 var(--fs-h) var(--f); color: var(--t-d); }
+.kit__l em { font-style: normal; font-size: var(--fs-s, 12px); color: var(--t-d2); font-variant-numeric: tabular-nums; }
+.qty input { width: 100%; min-width: 0; height: 100%; border: 0; background: none; color: inherit; text-align: center; font: 400 var(--fs-h) var(--f); font-variant-numeric: tabular-nums; -moz-appearance: textfield; appearance: textfield; }
+.qty input::-webkit-outer-spin-button, .qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.qty input:focus-visible { outline: 1px solid var(--gold, currentColor); outline-offset: -2px; border-radius: 4px; }
+.qty button:disabled { opacity: .35; cursor: default; }
 .pd .kv { margin-top: 24px; }
 .pd__desc { margin: 18px 0; white-space: pre-line; }
 
@@ -473,6 +482,9 @@ html.is-panel .desc { opacity: 0; transform: translateY(-50%) translateX(24px); 
 .cz-o__c.is-leather { background: radial-gradient(circle at 30% 28%, rgba(255, 240, 220, .35), transparent 55%), var(--c); }
 .cz-o__k { flex: none; width: 10px; height: 10px; border-radius: 2px; border: 1px solid var(--hair-2); transition: all .3s; }
 .cz-o.is-on .cz-o__k { background: var(--gold); border-color: var(--gold); }
+.cz-o__k--chk { width: 14px; height: 14px; border-radius: 3px; display: grid; place-items: center; }   /* C85: varian X / Tanpa X = kotak centang */
+.cz-o__k--chk svg { width: 11px; height: 11px; fill: none; stroke: var(--bg); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .25s; }
+.cz-o.is-on .cz-o__k--chk svg { opacity: 1; }
 
 /* kartu pilihan Customize — kotak 3:4: bidang atas 1:1 gambar garis (CSS mask, warna ikut tema) atau contoh bahan,
    seperempat bawah label. Gambar: assets/cz-icons (tools/icons/build.js) */
@@ -510,7 +522,7 @@ html.is-panel .desc { opacity: 0; transform: translateY(-50%) translateX(24px); 
 .tabs { position: sticky; top: calc(var(--pad) * -1); z-index: 5; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); margin: 0 calc(var(--pad) * -1); padding: 0 calc(var(--pad) + 34px) 0 var(--pad); background: var(--panel-solid); border-bottom: 1px solid var(--hair-2); }
 .tabs button { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; height: 50px; padding: 2px 2px 0; font: 400 8.5px/1 var(--f-h); letter-spacing: .12em; text-transform: uppercase; color: var(--t-d3); transition: color .3s; min-width: 0; }
 .tabs button span { display: block; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tabs button i { font: 300 8px/1 var(--f-b); letter-spacing: .08em; font-style: normal; color: var(--t-d3); opacity: .7; transition: color .3s, opacity .3s; }
+.tabs button i { font: 300 8px/1 var(--f-b); letter-spacing: .08em; font-style: normal; color: var(--t-d3); opacity: 1; transition: color .3s, opacity .3s; }
 .tabs .is-on i { color: var(--gold); opacity: 1; }
 .tabs button::after { content: ''; position: absolute; left: 14%; right: 14%; bottom: -1px; height: 1px; background: var(--gold-hi); transform: scaleX(0); transition: transform .5s var(--ease); }
 .tabs button:hover { color: var(--t-d2); }
@@ -533,6 +545,17 @@ html.is-panel .desc { opacity: 0; transform: translateY(-50%) translateX(24px); 
 .cz-row:hover b, .cz-row.is-on b { color: var(--gold-hi); }
 .cz-row.is-on svg { stroke: var(--gold-hi); transform: rotate(180deg) translateX(3px); }
 .cz-row + .cz-row { border-top: 1px solid var(--hair); }
+/* C100: Detail lanjutan — panah ke bawah saat terlipat, ke atas saat terbuka */
+.cz-adv { border-bottom: 1px solid var(--hair); }
+/* C101: saat terbuka, tombol menempel tepat di bawah tab selama isi Detail lanjutan digulir — tutup kapan saja */
+.cz-adv.is-open { position: sticky; top: calc(var(--pad) * -1 + 51px); z-index: 4; margin: 0 calc(var(--pad) * -1); padding: 0 var(--pad); width: calc(100% + var(--pad) * 2); background: var(--panel-solid); }
+.cz-adv svg, .cz-row.is-r.cz-adv svg { transform: rotate(90deg); }
+.cz-adv.is-open svg, .cz-row.is-r.cz-adv.is-open svg { transform: rotate(-90deg); }
+.cz-adv:hover b, .cz-adv.is-open b { color: var(--gold-hi); }
+/* C101: kotak pilihan (Box II/III) memakai scrollbar emas tipis seperti panel — bukan scrollbar bawaan terang */
+#czPicker { scrollbar-width: thin; scrollbar-color: rgba(191, 162, 116, .3) transparent; }
+#czPicker::-webkit-scrollbar { width: 3px; }
+#czPicker::-webkit-scrollbar-thumb { background: rgba(191, 162, 116, .3); }
 .cz__h + .cz-row { margin-top: 10px; }
 .rng { -webkit-appearance: none; appearance: none; width: 100%; height: 20px; background: none; cursor: pointer; }
 .rng::-webkit-slider-runnable-track { height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--gold) var(--p, 50%), var(--hair-2) var(--p, 50%)); }
@@ -543,7 +566,7 @@ html.is-panel .desc { opacity: 0; transform: translateY(-50%) translateX(24px); 
 .rng:focus-visible { outline: none; }
 .rng__ends { display: flex; justify-content: space-between; margin-top: 4px; font: 300 var(--fs-s)/1 var(--f); color: var(--t-d3); }
 .cz__sum { margin: 10px 0 18px; }
-/* footer Customize: lihat blok CZ-C (satu aturan) */
+.cz__foot { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 8px; }
 .cz__price { text-align: left; min-width: 0; }
 .cz__price em { display: block; font: 400 var(--fs-s)/1 var(--f-h); font-style: normal; letter-spacing: .22em; text-transform: uppercase; color: var(--t-d3); text-decoration: underline dotted; text-underline-offset: 3px; }
 .cz__price b { display: block; margin-top: 7px; font: 300 20px/1 var(--f-h); color: var(--gold-hi); font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -575,6 +598,10 @@ html.is-panel .desc { opacity: 0; transform: translateY(-50%) translateX(24px); 
 .stepper span { text-align: center; font: 400 var(--fs-b) var(--f); font-variant-numeric: tabular-nums; }
 .rm { font: 400 var(--fs-s) var(--f-h); letter-spacing: .18em; text-transform: uppercase; color: var(--t-d3); }
 .rm:hover { color: var(--t-d); }
+/* C99: area sentuh ≥ 44 px di ponsel tanpa mengubah ukuran tampilan (Ubah rancangan / Hapus 8 px, stepper 26 × 24) */
+.rm, .stepper button { position: relative; }
+.rm::before { content: ''; position: absolute; inset: -16px -8px; }
+.stepper button::before { content: ''; position: absolute; inset: -10px -4px; }
 
 /* ---------------------------------------------------------------- checkout */
 .co-sec { padding: 22px 0; border-top: 1px solid var(--hair-2); }
@@ -743,6 +770,8 @@ html[data-theme="light"] .modal { background: rgba(70, 52, 32, .22); }
   .tabs { padding-right: calc(var(--pad) + 26px); }
   .tabs button { height: 46px; letter-spacing: .06em; }
   .fgrid { grid-template-columns: 1fr; }
+  .cz__foot { grid-template-columns: minmax(0, 1fr) auto; }
+  .cz__foot .btn--line { display: none; }
   .modal { padding: 10px; align-items: end; }
   .modal__box { max-height: 90vh; }
   .notice { white-space: normal; width: calc(100vw - 24px); text-align: center; top: 70px; }
@@ -804,7 +833,8 @@ html[data-theme="light"] .modal { background: rgba(70, 52, 32, .22); }
 /* garis tinggi manusia (klik manusia): jalur digambar sebagian lewat stroke-dashoffset (pathLength 1) — mulus tiap frame dari world.js */
 .dims--hum path { fill: none; stroke: var(--gold-hi); stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
 .dims--hum path.dn { stroke: rgba(220, 197, 156, .7); stroke-dasharray: 1; }
-.dims--hum text { fill: var(--gold-hi); }
+.dims--hum line.dot { stroke: var(--gold-hi); stroke-width: 1.4; stroke-linecap: round; stroke-dasharray: .1 5; }   /* 26 Okt (no. 50): garis tinggi = titik-titik tipis dari puncak kepala */
+.dims--hum text { fill: var(--gold-hi); paint-order: stroke; stroke: rgba(15, 12, 10, .72); stroke-width: 3px; stroke-linejoin: round; }   /* terbaca di atas kain / kayu terang */
 
 /* pintu / laci kabinet di panggung: klik untuk buka-tutup */
 .cursor.is-door .cursor__c { --s: 36px; background: rgba(220, 197, 156, .14); border-color: var(--gold-hi); box-shadow: 0 0 0 1px rgba(15, 12, 10, .3); }
@@ -836,6 +866,7 @@ html[data-theme="light"] .modal { background: rgba(70, 52, 32, .22); }
 .lt__r .rng { grid-column: 1 / -1; }
 .lights .btn { margin-top: 6px; }
 /* ruang: beberapa furnitur di panggung */
+.cz__foot { grid-template-columns: minmax(0, 1fr) auto auto auto; }
 .btn--ic { width: var(--row); padding: 0 !important; justify-content: center; }
 .btn--ic svg { margin: 0; }
 #roomCount[data-n="0"] { display: none; }
@@ -860,6 +891,7 @@ html.lay3 .panel { right: auto; left: var(--edge); transform: translateX(calc(-1
 html.lay3 .panel.is-open { transform: none; }
 html.lay3 .picker { right: auto; left: calc(var(--edge) + var(--panel-w) + 14px); transform: translateX(-24px); }
 html.lay3 .picker.is-on { transform: none; }
+@media (max-width: 760px) { .cz__foot { grid-template-columns: minmax(0, 1fr) auto auto; } .cz__foot .btn--ic { display: inline-flex !important; } }
 
 /* ---------- Customize kabinet: gambar garis SVG di kartu + editor susunan kolom (spec-kabinet.js · app.js czLayEd) */
 .cz-card__f > .kx { position: absolute; inset: 9%; width: 82%; height: 82%; color: var(--t-d2); transition: color .3s; }
@@ -897,6 +929,7 @@ html.lay3 .picker.is-on { transform: none; }
 .bgc__pick { display: block; overflow: hidden; background: var(--sw, conic-gradient(from 90deg, #ff3b5c, #ffd23f, #a6ff3c, #22e1ff, #8b5cff, #ff2bd6, #ff3b5c)); }
 .bgc__pick input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 /* footer Customize: Simpan & Ruang ikon saja, harga tidak menabrak tombol */
+.cz__foot .btn--ic.btn--line { display: inline-flex; }
 /* label kartu ≤ 15 karakter: boleh 2 baris (tengah) agar tidak terpotong "…" di kartu sempit */
 .cz-card__l { padding: 0 4px; }
 .cz-card__l span { white-space: normal; text-align: center; line-height: 1.15; display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow-wrap: anywhere; }
@@ -931,6 +964,9 @@ html.no-dact .detail__act { display: none !important; }
 .detail.is-tiny .detail__act { flex: 0 0 44px; width: 44px; padding: 0 !important; }
 .detail.is-tiny .detail__act span { display: none; }
 /* Customize: ikon berlabel di kaki panel */
+.cz__foot .btn--ic { flex-direction: column; gap: 4px; width: 52px; padding: 0 !important; }
+.cz__price b { font-size: 18px; letter-spacing: -.01em; }
+.cz__foot .btn--ic .btn__l { font: 400 8.5px/1 var(--f-h); letter-spacing: .12em; text-transform: uppercase; }
 .cz__qty { display: flex; justify-content: space-between; align-items: center; min-height: 48px; margin-bottom: 14px; border-bottom: 1px solid var(--hair); font: 400 var(--fs-l)/1 var(--f-h); letter-spacing: .22em; text-transform: uppercase; color: var(--t-d3); }
 /* tas: tombol ubah rancangan */
 .list__r [data-edit] { color: var(--gold); }
@@ -951,6 +987,10 @@ html.no-dact .detail__act { display: none !important; }
   .pd__photo img { width: 100%; height: 100%; object-fit: contain; }
   html[data-pane="customize"] .detail { opacity: 0; pointer-events: none; }
   .pane[data-pane="customize"] .cz > .ph { display: none; }
+  .cz__foot { grid-template-columns: minmax(0, 1fr) auto auto auto !important; }
+  .cz__foot .btn--gold { padding: 1px 12px 0 !important; }
+  .cz__foot .btn--gold span { white-space: nowrap; }
+  .cz__price b { font-size: 17px; }
 }
 
 /* Pengaturan › Paket HD */
@@ -1110,7 +1150,8 @@ html.lay3 .adv { transform: translateX(-12px); }
 .adv .pc { margin: 0 0 12px; padding: 0; border: 0; }
 
 /* V1 · tab pertama "Kategori" lebih panjang dari tab lain */
-.cz__tabs { grid-template-columns: 1.4fr repeat(5, minmax(0, 1fr)); }
+.cz__tabs { grid-template-columns: repeat(6, auto); justify-content: space-between; }   /* C99: lebar tab mengikuti nama bagian (Material / Details / Summary utuh); tetap sama saat tab aktif berganti */
+.cz__tabs button { padding: 2px 1px 0; letter-spacing: .08em; }
 
 /* V3 · masuk tas: gambar barang melayang (lengkung) ke ikon tas di header, ikon tas "menangkap" */
 .fly { position: fixed; left: 0; top: 0; z-index: 95; width: 58px; height: 58px; border-radius: 50%; overflow: hidden; border: 1px solid var(--gold); background: var(--panel-solid); box-shadow: 0 12px 30px rgba(0, 0, 0, .35); pointer-events: none; will-change: transform, opacity; }
@@ -1467,249 +1508,6 @@ html.gw-on .top__logo .logo-path, html.gw-on .top__link { color: #ece5d8; }
 .panel > .panel__close { transition: background .3s, color .3s, opacity .3s, top .35s var(--ease); }
 .panel:has(.pane.is-on #czScroll.is-sc) > .panel__close { top: 9px; }
 
-/* ==========================================================================
-   UP2 · swatch tanpa kotak (24 Okt 2026) — pemilik: kotak-kotak varian "berantakan"
-   • pilihan berwarna = cakram saja (26px), berderet rapat seperti kartu kain di showroom; nama tampil di kepala baris
-     ("Fabric · Black") dan ikut berganti saat kursor melayang di atas cakram; cincin emas tipis menandai yang dipilih
-   • "Seperti foto" = cakram berisi foto produk; pilihan tanpa warna (ukuran, set) = teks polos bergaris bawah emas
-   • berlaku di panel produk, kotak Advance, dan ponsel
-   ========================================================================== */
-.og--v { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 10px; padding: 2px 0 0 2px; }
-.og--v .cz-o { position: relative; flex: none; width: 26px; height: 26px; min-height: 0; padding: 0; margin: 0; gap: 0; border: 0; border-radius: 50%; background: none; box-shadow: none; cursor: pointer; transition: transform .16s var(--ease-out, cubic-bezier(.23, 1, .32, 1)); }
-.og--v .cz-o:hover, .og--v .cz-o.is-on { background: none; border: 0; }
-.og--v .cz-o:active { transform: scale(.92); }
-@media (hover: hover) and (pointer: fine) { .og--v .cz-o:not(.is-on):hover { transform: scale(1.1); } }
-.og--v .cz-o__t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }   /* nama tetap ada untuk pembaca layar; tampil di kepala baris */
-.og--v .cz-o__c { width: 26px; height: 26px; margin: 0; box-shadow: inset 0 0 0 1px rgba(255, 244, 228, .12), 0 1px 2px rgba(0, 0, 0, .35); transition: box-shadow .2s var(--ease); }
-html[data-theme="light"] .og--v .cz-o__c { box-shadow: inset 0 0 0 1px rgba(35, 28, 21, .12), 0 1px 2px rgba(0, 0, 0, .12); }
-.og--v .cz-o:not(.is-on):hover .cz-o__c { box-shadow: inset 0 0 0 1px rgba(255, 244, 228, .12), 0 0 0 2px var(--panel-solid), 0 0 0 3px var(--hair-2); }
-.og--v .cz-o.is-on .cz-o__c { box-shadow: inset 0 0 0 1px rgba(255, 244, 228, .12), 0 0 0 2px var(--panel-solid), 0 0 0 3.5px var(--gold-hi); }
-.og--v .cz-o:focus-visible { outline: 0; }
-.og--v .cz-o:focus-visible .cz-o__c { box-shadow: 0 0 0 2px var(--panel-solid), 0 0 0 3.5px var(--gold); }
-/* "Seperti foto": cakram berisi foto produk */
-.cz-o__c--photo { background: var(--plate) var(--img, none) center / cover no-repeat; }
-.cz-o__c--photo::after { background: radial-gradient(circle at 34% 30%, rgba(255, 248, 236, .1), transparent 55%); }
-/* lebih banyak pilihan: cakram "+N" membuka Advance */
-.og--v .cz-o--more { width: auto; min-width: 26px; padding: 0 8px; border-radius: 13px; box-shadow: inset 0 0 0 1px var(--hair-2); font: 400 var(--fs-s)/26px var(--f); letter-spacing: .04em; color: var(--t-d2); }
-.og--v .cz-o--more:hover { color: var(--t-d); box-shadow: inset 0 0 0 1px var(--gold); }
-/* kepala baris: nama pilihan (atau yang sedang dilayangi) + tambahan harga */
-.og__h b em { font-style: normal; color: var(--gold-hi); margin-left: 6px; }
-.og__h b.is-peek { color: var(--t-d2); }
-/* judul grup (Elite Color · Fabric) lebih tenang, jarak rapat ke cakramnya */
-.og__g { margin: 14px 0 8px; color: var(--t-d3); letter-spacing: .2em; }
-.og__g i { color: var(--t-d3); }
-.og__h + .og__g { margin-top: 2px; }
-.og--v + .og__g { margin-top: 16px; }
-/* pilihan tanpa warna (ukuran, set, opsi): teks polos, yang dipilih bergaris bawah emas */
-.pd__var .og:not(.og--v), .adv__var .og:not(.og--v) { display: flex; flex-wrap: wrap; gap: 4px 16px; grid-auto-rows: auto; }
-.pd__var .og:not(.og--v) .cz-o, .adv__var .og:not(.og--v) .cz-o { min-height: 0; height: auto; padding: 5px 0 4px; border: 0; border-radius: 0; background: none; box-shadow: inset 0 -1px 0 transparent; color: var(--t-d2); font: 400 var(--fs-b)/1.3 var(--f); transition: color .2s, box-shadow .2s; }
-.pd__var .og:not(.og--v) .cz-o:hover, .adv__var .og:not(.og--v) .cz-o:hover { color: var(--t-d); background: none; }
-.pd__var .og:not(.og--v) .cz-o.is-on, .adv__var .og:not(.og--v) .cz-o.is-on { color: var(--t-d); background: none; box-shadow: inset 0 -1px 0 var(--gold); }
-.pd__var .og:not(.og--v) .cz-o__t > span, .adv__var .og:not(.og--v) .cz-o__t > span { display: inline; white-space: nowrap; -webkit-line-clamp: none; color: inherit; }
-.pd__var .og:not(.og--v) .cz-o__d { margin-left: 6px; }
-/* kotak Advance: cakram sedikit lebih kecil, baris lebih rapat */
-.adv__var .og--v { gap: 9px; }
-.adv__var .og--v .cz-o, .adv__var .og--v .cz-o__c { width: 24px; height: 24px; }
-.adv__var .og--v .cz-o--more { width: auto; font-size: var(--fs-s); line-height: 24px; }
-/* UP2b · judul grup tanpa angka; cincin pilihan memakai outline (bukan bayangan), jarak antar kelompok 16px */
-.og--v .cz-o:not(.is-on):hover .cz-o__c { box-shadow: inset 0 0 0 1px rgba(255, 244, 228, .12), 0 1px 2px rgba(0, 0, 0, .35); outline: 1px solid var(--hair-2); outline-offset: 2px; }
-.og--v .cz-o.is-on .cz-o__c { box-shadow: inset 0 0 0 1px rgba(255, 244, 228, .12), 0 1px 2px rgba(0, 0, 0, .35); outline: 1.5px solid var(--gold-hi); outline-offset: 2px; }
-.og--v .cz-o:focus-visible .cz-o__c { box-shadow: inset 0 0 0 1px rgba(255, 244, 228, .12); outline: 1.5px solid var(--gold); outline-offset: 2px; }
-.og--v .cz-o__c { transition: box-shadow .2s var(--ease), outline-color .2s var(--ease); }
-.pd__var .og__g i, .adv__var .og__g i { display: none; }
-.pd__var .og--v + .og__g, .adv__var .og--v + .og__g { margin-top: 16px; }
-
-/* ==========================================================================
-   CZ-B · pilihan Customize (25 Okt 2026) — satu komponen per jenis grup, sama di panel, kotak pemilih & Advance
-   • warna = cakram 30px berderet (urut gradasi), nama + selisih harga di kepala grup, berganti saat diintip
-   • bergambar = ubin seragam (gambar 1:1 + nama 2 baris), kolom 3/4 dipilih agar baris terakhir tidak menggantung
-   • teks = daftar polos, yang dipilih bergaris bawah emas; "Semua pilihan · N" = tautan, bukan kartu bergaris putus
-   • grup turunan tidak lagi menjorok (kolom sejajar dengan grup di atasnya)
-   ========================================================================== */
-.cz-g.is-dep { margin-left: 0; padding-left: 0; border-left: 0; box-shadow: none; }
-.cz-g__h b em { font-style: normal; color: var(--gold-hi); margin-left: 6px; }
-.cz-g__h b em.is-neg { color: var(--t-d2); }
-.cz-g__h b.is-peek { color: var(--t-d2); }
-/* — cakram — */
-.cz-sws { display: flex; flex-wrap: wrap; gap: 10px; padding: 3px 0 2px 3px; }
-.cz-o.cz-dsc, .cz-o.cz-dsc:hover, .cz-o.cz-dsc.is-on { position: relative; flex: none; width: 30px; height: 30px; min-width: 0; padding: 0; gap: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; transition: transform .16s cubic-bezier(.23, 1, .32, 1); }
-.cz-dsc .cz-sw { position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(255, 244, 228, .12), 0 1px 2px rgba(0, 0, 0, .35); outline: 1.5px solid transparent; outline-offset: 2px; transition: outline-color .2s var(--ease); }
-html[data-theme="light"] .cz-dsc .cz-sw { box-shadow: inset 0 0 0 1px rgba(35, 28, 21, .14), 0 1px 2px rgba(0, 0, 0, .12); }
-.cz-dsc:hover .cz-sw { outline-color: var(--hair-2); }
-.cz-dsc.is-on .cz-sw { outline-color: var(--gold-hi); }
-.cz-o.cz-dsc:focus-visible { outline: 0; }
-.cz-dsc:focus-visible .cz-sw { outline-color: var(--gold); }
-.cz-o.cz-dsc:active { transform: scale(.92); }
-@media (hover: hover) and (pointer: fine) { .cz-o.cz-dsc:not(.is-on):hover { transform: scale(1.08); } }
-.adv__acc .cz-g.is-sw { padding: 4px 0 14px; }
-/* — ubin bergambar (juga editor susunan kabinet & modul CUBIX) — */
-.cz-grid { gap: 8px; }
-.cz-grid.cz-tiles { grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); }
-.cz-grid > .cz-card { aspect-ratio: auto; height: auto; padding: 0; border: 1px solid var(--hair); border-radius: var(--r); background: var(--plate); }
-.cz-grid > .cz-card:hover { border-color: var(--hair-2); background: rgba(255, 244, 228, .045); }
-.cz-grid > .cz-card.is-on { border-color: var(--gold); background: var(--gold-a); }
-.cz-grid > .cz-card .cz-card__l { min-height: 0; border-top: 0; padding: 0 6px 9px; align-items: flex-start; }
-.cz-grid > .cz-card .cz-card__l span { height: 2.4em; font: 400 11px/1.2 var(--f); color: var(--t-d2); transition: color .2s; }
-.cz-grid > .cz-card:hover .cz-card__l span, .cz-grid > .cz-card.is-on .cz-card__l span { color: var(--t-d); }
-/* pilihan ganda: lingkaran kecil di pojok, emas bercentang saat dipilih (pengganti kotak 10px) */
-.cz-grid > .cz-card .cz-o__k { top: 7px; right: 7px; width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--hair-2); background: rgba(15, 12, 10, .45); }
-.cz-grid > .cz-card.is-on .cz-o__k { border-color: var(--gold); background: var(--gold); }
-.cz-grid > .cz-card.is-on .cz-o__k::after { content: ''; position: absolute; left: 5px; top: 2.5px; width: 4px; height: 7px; border: solid var(--panel-solid); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }
-/* — teks — */
-.cz-txs { display: flex; flex-wrap: wrap; gap: 4px 18px; }
-.cz-o.cz-tx, .cz-o.cz-tx:hover, .cz-o.cz-tx.is-on { height: auto; min-height: 0; padding: 6px 0 5px; border: 0; border-radius: 0; background: none; font: 400 11px/1.3 var(--f); white-space: nowrap; transition: color .2s, box-shadow .2s; }
-.cz-o.cz-tx { color: var(--t-d2); box-shadow: inset 0 -1px 0 transparent; }
-.cz-o.cz-tx:hover { color: var(--t-d); box-shadow: inset 0 -1px 0 var(--hair-2); }
-.cz-o.cz-tx.is-on { color: var(--t-d); box-shadow: inset 0 -1px 0 var(--gold); }
-.cz-tx.is-multi::before { content: ''; flex: none; width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--hair-2); transition: background .2s, border-color .2s; }
-.cz-tx.is-multi.is-on::before { border-color: var(--gold); background: var(--gold); }
-/* — "Semua pilihan · N" — */
-.cz-all { display: inline-flex; align-items: center; gap: 7px; margin-top: 12px; padding: 3px 0; border: 0; background: none; color: var(--t-d2); font: 400 11px/1.3 var(--f); cursor: pointer; box-shadow: inset 0 -1px 0 var(--hair-2); transition: color .2s, box-shadow .2s; }
-.cz-all svg { width: 10px; height: 10px; fill: none; stroke: currentColor; }
-.cz-all:hover, .cz-all.is-on { color: var(--gold-hi); box-shadow: inset 0 -1px 0 var(--gold); }
-html.lay3 .cz-all svg { transform: none; }
-html:not(.lay3) .cz-all svg { transform: scaleX(-1); }   /* kotak pemilih di kiri panel (Layout II): panah ke kiri */
-.picker .cz-g__h span:empty { display: none; }
-.picker .cz-g__h:has(> span:empty) { justify-content: flex-end; }   /* hanya kepala tanpa label (judul sudah di atas) */
-/* CZ-B2 · cakram dalam kolom seimbang (10 → 5 + 5), nama ubin di tengah seperti gambarnya */
-.cz-sws { display: grid; grid-template-columns: repeat(var(--per, 9), 30px); justify-content: start; }
-.cz-grid > .cz-card .cz-card__l { justify-content: center; text-align: center; }
-.cz-grid > .cz-card .cz-card__l span { text-align: center; }
-.cz-grid > .cz-card .cz-card__l { align-items: stretch; }
-.cz-grid > .cz-card .cz-card__l span { width: 100%; }
-/* nama ubin: putus di antara kata saja (bukan "Melengkun / g"); kata panjang diberi tanda hubung */
-.cz-grid > .cz-card .cz-card__l { padding: 0 4px 9px; }
-.cz-grid > .cz-card .cz-card__l span { overflow-wrap: normal; word-break: normal; -webkit-hyphens: auto; hyphens: auto; }
-
-/* ==========================================================================
-   CZ-A · struktur & tipografi Customize (25 Okt 2026) — hanya panel Customize & kotak pemilihnya
-   • teks kontrol ≥ 11–12px (token diskalakan di sini, halaman lain tetap)
-   • satu lapis huruf kapital: judul bagian saja; sub-judul & label grup = huruf biasa Inter
-   • kontras label ≥ 4,5:1 (gelap #918778 · terang #6b6155)
-   • tanpa nomor di tab & judul bagian (nomor hanya di kepala panel); nama tab = judul bagian
-   • satu gaya pemisah: garis tipis antar bagian; antar grup cukup jarak
-   ========================================================================== */
-.pane[data-pane="customize"], #czPicker { --fs-h: 12px; --fs-b: 12px; --fs-l: 11px; --fs-s: 11px; --t-d3: #918778; }
-html[data-theme="light"] .pane[data-pane="customize"], html[data-theme="light"] #czPicker { --t-d3: #6b6155; }
-/* — tab — */
-.cz__tabs { display: flex; justify-content: space-between; gap: 4px; }
-.cz__tabs button { flex: 0 1 auto; height: 46px; gap: 0; padding: 2px 2px 0; font: 400 12px/1 var(--f); letter-spacing: 0; text-transform: none; color: var(--t-d3); }
-.cz__tabs button span { overflow: visible; }
-.cz__tabs button::after { left: 0; right: 0; }
-.cz__tabs button:hover { color: var(--t-d); }
-.cz__tabs .is-on { color: var(--t-d); }
-#czTabs [data-tab].is-done span::after { content: ''; display: inline-block; width: 4px; height: 4px; margin-left: 5px; border-radius: 50%; background: var(--gold); vertical-align: 2px; }
-/* — judul bagian (satu-satunya huruf kapital) — */
-.cz__h { margin-bottom: 6px; font: 400 13px/1.2 var(--f-h); letter-spacing: .2em; }
-.cz__h i { display: none; }
-/* — sub-judul: huruf biasa, tanpa garis putus-putus — */
-.cz__sub, .cz__h + .cz__sub { margin: 30px 0 4px; padding-top: 0; border-top: 0; font: 500 13px/1.3 var(--f); letter-spacing: 0; text-transform: none; color: var(--t-d); }
-.cz__h + .cz__sub { margin-top: 14px; }
-/* — label grup / baris ringkas / editor kolom: huruf biasa — */
-.cz-g__h span, .kx-h span, .cz-row span { font: 400 12px/1.4 var(--f); letter-spacing: 0; text-transform: none; color: var(--t-d3); padding-top: 0; }
-.cz-g__h b, .kx-h b, .cz-row b { font: 400 12px/1.4 var(--f); }
-.cz-g__h { margin-bottom: 12px; }
-/* — pemisah: garis hanya antar bagian — */
-.cz__sec + .cz__sec { border-top-color: var(--hair); }
-.cz-g + .cz-g, .cz-row + .cz-g, .cz-g + .cz-row, .cz-pick--free > .cz-g + .cz-g { border-top: 0; }
-.cz-g { padding: 12px 0 14px; }
-/* — ringkasan & kontrol kecil lain — */
-.pane[data-pane="customize"] .kv dt { font: 400 12px/1.4 var(--f); letter-spacing: 0; text-transform: none; color: var(--t-d3); }
-.pane[data-pane="customize"] .kv dd { font: 400 12px/1.5 var(--f); }
-.cz__qty { font: 400 12px/1 var(--f); letter-spacing: 0; text-transform: none; }
-.cz__fresh { font: 400 11px/1 var(--f); letter-spacing: 0; text-transform: none; }
-/* — toggle Rancangan 3D / Produk asli: aktif emas, bukan pil putih — */
-.cz .seg button { font: 400 11px/1 var(--f); letter-spacing: 0; text-transform: none; }
-.cz .seg button.is-on { background: var(--gold-a); color: var(--gold-hi); box-shadow: inset 0 0 0 1px var(--gold); }
-/* — kotak pemilih: tanpa kicker "Pilih · …" — */
-#czPicker .eyebrow { display: none; }
-#czPicker .pane__t { margin-top: 0; }
-/* tab: font nomor lama (var tidak ada) */
-.tabs button i { font-family: var(--f); }
-/* CZ-A2 · sisa label kapital (Kolom, Jumlah unit), label ringkasan tidak terbungkus */
-.pane[data-pane="customize"] .row > span, #czPicker .row > span, .kx-ed__bar > span { font: 400 12px/1.4 var(--f); letter-spacing: 0; text-transform: none; color: var(--t-d3); }
-.pane[data-pane="customize"] .kv { grid-template-columns: minmax(0, 58%) minmax(0, 1fr); }
-
-/* ==========================================================================
-   CZ-D · tata letak Customize (25 Okt 2026)
-   • desktop: kotak pemilih = halaman lanjutan yang menimpa panel (posisi & ukuran dari JS czPickPlace) + tombol Kembali;
-     panggung tidak lagi menyempit / menutupi produk
-   • ponsel: lembar 60% tinggi layar menempel di bawah (safe-area), menu bawah disembunyikan selama lembar terbuka
-   ========================================================================== */
-.picker { right: auto; z-index: 36; max-height: none; display: flex; flex-direction: column; overflow-y: auto; transform: translateX(14px); }
-.picker.is-on { transform: none; }
-html.lay3 .picker, html.cz-box3 .picker { transform: translateX(14px); }
-html.lay3 .picker.is-on, html.cz-box3 .picker.is-on { transform: none; }
-.picker__back { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px; padding: 4px 0; color: var(--t-d2); font: 400 12px/1 var(--f); transition: color .2s; }
-.picker__back svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-.picker__back:hover { color: var(--gold-hi); }
-.picker .pane__t { margin: 0 40px 16px 0; }
-@media (max-width: 760px) {
-  html[data-pane="customize"].is-panel .rail { opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(24px); transition: opacity .3s, transform .4s var(--ease); }
-  html[data-pane="customize"] .panel { bottom: max(10px, env(safe-area-inset-bottom)); height: 60vh; height: 60dvh; }
-  html[data-pane="customize"].is-panel .recenter { bottom: calc(60dvh + 22px); }
-}
-
-/* ==========================================================================
-   CZ-C · footer, harga & ringkasan Customize (25 Okt 2026) — SATU aturan footer (dulu 9 tempat, 3 dengan !important)
-   desktop: harga | Simpan | Ruang | Ke tas · ponsel: harga di baris sendiri, tiga tombol di bawahnya
-   ========================================================================== */
-.cz__foot { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; grid-template-areas: "price save room add"; align-items: center; gap: 8px; }
-.cz__foot .cz__price { grid-area: price; }
-.cz__foot [data-cz-save] { grid-area: save; }
-.cz__foot [data-cz-room] { grid-area: room; }
-.cz__foot [data-cz-add] { grid-area: add; padding: 1px 16px 0; white-space: nowrap; }
-.cz__foot .btn--ic { display: inline-flex; flex-direction: column; justify-content: center; gap: 4px; width: 54px; height: 48px; padding: 0; }
-.cz__foot .btn--ic .btn__l { font: 400 11px/1 var(--f); letter-spacing: 0; text-transform: none; }
-.cz__price em { font: 400 11px/1 var(--f); letter-spacing: 0; text-transform: none; }
-.cz__price b { font-size: 19px; letter-spacing: -.01em; }
-@media (max-width: 760px) {
-  .cz__foot { grid-template-columns: auto auto minmax(0, 1fr); grid-template-areas: "price price price" "save room add"; row-gap: 10px; }
-  .cz__foot .cz__price { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-  .cz__foot .cz__price b { margin-top: 0; font-size: 18px; }
-  .cz__foot [data-cz-add] { height: 48px; }
-}
-/* Ringkasan: harga per unit & total, tanpa tombol emas kedua */
-.cz__tot { margin: 6px 0 4px; }
-.cz__tot dt, .cz__tot dd { border-bottom: 0; }
-.cz__tot dd.is-total { font: 300 20px/1.2 var(--f-h); color: var(--gold-hi); font-variant-numeric: tabular-nums; }
-.cz__totnote { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 2px 0 18px; font: 400 11px/1.4 var(--f); color: var(--t-d3); }
-.cz__totnote button { color: var(--t-d2); box-shadow: inset 0 -1px 0 var(--hair-2); padding: 2px 0; font: inherit; transition: color .2s, box-shadow .2s; }
-.cz__totnote button:hover { color: var(--gold-hi); box-shadow: inset 0 -1px 0 var(--gold); }
-
-/* ==========================================================================
-   CZ-E · interaksi & aksesibilitas Customize (25 Okt 2026)
-   • cincin fokus 2px emas (≥ 3:1 di panel gelap & terang), cakram memakai cincin pada cakramnya
-   • pilihan baru: pop 220ms ease-out (transform saja), gerak dikurangi → hanya cincin
-   • slider: jempol 16px sama di WebKit & Firefox, area sentuh 28px (44px di layar sentuh)
-   • layar sentuh: stepper, tombol kolom & cakram ≥ 36–44px
-   ========================================================================== */
-.pane[data-pane="customize"] :focus-visible, #czPicker :focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
-.pane[data-pane="customize"] .cz-o.cz-dsc:focus-visible, #czPicker .cz-o.cz-dsc:focus-visible { outline: 0; }
-.cz-dsc:focus-visible .cz-sw { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
-@keyframes czPop { 0% { transform: scale(.94); } 60% { transform: scale(1.03); } 100% { transform: scale(1); } }
-@media (prefers-reduced-motion: no-preference) { .cz-pop { animation: czPop 220ms cubic-bezier(.23, 1, .32, 1); } }
-/* cakram: kolom menyusut bila sempit (tidak pernah keluar panel) */
-.cz-sws { grid-template-columns: repeat(var(--per, 9), minmax(24px, 30px)); }
-.cz-o.cz-dsc, .cz-o.cz-dsc:hover, .cz-o.cz-dsc.is-on { width: 100%; height: auto; aspect-ratio: 1 / 1; }
-/* slider */
-.rng { height: 28px; }
-.rng::-webkit-slider-thumb { width: 16px; height: 16px; margin-top: -7px; border-radius: 4px; border-width: 3px; }
-.rng::-moz-range-thumb { width: 10px; height: 10px; border-radius: 4px; border-width: 3px; }
-.rng:focus-visible { outline: 0; }
-.rng:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 1px var(--gold), 0 0 0 4px var(--gold-a), 0 0 0 5px var(--gold-hi); }
-.rng:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 1px var(--gold), 0 0 0 4px var(--gold-a), 0 0 0 5px var(--gold-hi); }
-@media (pointer: coarse) {
-  .rng { height: 44px; }
-  .rng::-webkit-slider-thumb { width: 22px; height: 22px; margin-top: -10px; }
-  .rng::-moz-range-thumb { width: 16px; height: 16px; }
-  .pane[data-pane="customize"] .stepper { grid-template-columns: 44px 30px 44px; height: 44px; }
-  .kx-step { grid-template-columns: 44px 34px 44px; height: 44px; }
-  .cz-sws { grid-template-columns: repeat(var(--per, 6), minmax(32px, 36px)); gap: 10px; }
-  .cz-o.cz-tx, .cz-o.cz-tx:hover, .cz-o.cz-tx.is-on { min-height: 40px; padding-top: 10px; padding-bottom: 9px; }
-  .cz-all { min-height: 40px; }
-  .picker__back { min-height: 44px; }
-}
 
 /* ==========================================================================
    MOB · tata ulang ponsel (25 Okt) — preview 3D adalah yang utama
@@ -1767,3 +1565,65 @@ html.lay3 .picker.is-on, html.cz-box3 .picker.is-on { transform: none; }
   .rail .rail__label { display: block !important; position: absolute !important; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; opacity: 1; }   /* ikon saja, nama tetap terbaca pembaca layar */
   .rail__item.is-on { color: var(--gold-hi); border-color: rgba(220, 197, 156, .55); }
 }
+
+
+/* ==========================================================================
+   Susun ulang 27 Okt (A3 + pilihan pemilik) — bagian hari 26 Okt yang dipilih
+   ========================================================================== */
+/* no. 39 · foto produk utuh & di tengah (semua layar) — dulu object-fit: cover memotong sofa / meja */
+.tile__img img.is-photo, .pd__photo img, .pd__photo .gal__i img, .list__th img.is-photo, .fly img { object-fit: contain; object-position: 50% 50%; }
+.pd__photo .gal__i img { box-sizing: border-box; }
+/* tinggi kotak kartu dari aspect-ratio → img diletakkan absolut memenuhi kotak supaya object-fit: contain bekerja */
+.tile__img img.is-photo { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+/* no. 41 · tidak ada yang berubah ukuran saat diklik: nama ubin di tengah area nama setinggi tetap, terpilih tanpa tebal */
+.cz-grid > .cz-card .cz-card__l { flex: none; height: 44px; padding: 5px 6px 7px; justify-content: center; }
+.cz-grid > .cz-card .cz-card__l span { height: auto; max-height: 2.4em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-weight: 400 !important; }
+/* judul grup selalu satu baris setinggi tetap (nilai panjang tidak turun baris → ubin di bawahnya tidak bergeser) */
+.cz-g__h { align-items: center; height: 20px; min-height: 20px; }
+.cz-g__h > span { flex: 0 1 auto; min-width: 0; white-space: nowrap !important; overflow: hidden; text-overflow: ellipsis; }
+.cz-g__h > b { flex: 0 1 auto; min-width: 0; white-space: nowrap !important; overflow: hidden; text-overflow: ellipsis; }
+
+/* 27 Okt (pemilik): fitur situs yang dimatikan (Developer Settings › Pengaturan › Fitur situs · app.js applyFeats) */
+.feat-off-ruang [data-go="ruang"], .feat-off-ruang #pdRoom, .feat-off-ruang [data-cz-room],
+.feat-off-cubix [data-go="cubix"], .feat-off-cubix #pdCfg,
+.feat-off-bisnis [data-go="bisnis"], .feat-off-manufaktur [data-go="manufaktur"],
+.feat-off-ruang .rail li:has(> [data-go="ruang"]), .feat-off-cubix .rail li:has(> [data-go="cubix"]),
+.feat-off-bisnis .rail li:has(> [data-go="bisnis"]),
+.feat-off-manufaktur .rail li:has(> [data-go="manufaktur"]) { display: none !important; }
+
+/* 27 Okt: panel Informasi (Tentang · Garansi · Pengembalian · Privasi · Syarat) — tab .tabs seperti Customize, isi bacaan */
+.tabs--5 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr); }
+.tabs--5 button { padding: 2px 0 0; letter-spacing: .06em; }   /* "Pengembalian" utuh di panel 397 px (laptop pemilik) & ponsel 375 px */
+.doc { padding: 26px 0 8px; }
+.doc__t { margin: 0 0 14px; font: 400 var(--fs-s)/1.4 var(--f-h); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.doc h4 { margin: 30px 0 10px; font: 400 var(--fs-s)/1.4 var(--f-h); letter-spacing: .16em; text-transform: uppercase; color: var(--t-d); }
+.doc .txt { margin: 0 0 12px; max-width: 68ch; }
+.doc .txt b { font-weight: 500; color: var(--t-d); }
+.doc .kv { margin: 4px 0 14px; }
+.doc .kv dd { text-align: left; }
+.doc__l { list-style: disc; margin: 0 0 12px; padding: 0 0 0 18px; font: 300 var(--fs-b)/1.75 var(--f); color: var(--t-d2); max-width: 68ch; }
+.doc__l li { padding-left: 4px; margin-bottom: 6px; }
+.doc__l li::marker { color: var(--gold); }
+ol.doc__l li::marker { font: 400 var(--fs-s)/1 var(--f-h); }
+.doc__upd { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--hair-2); }
+.doc .kv--num { grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; }   /* masa garansi: nama material lebar, angka di kanan */
+.doc .kv--num dd { text-align: right; white-space: nowrap; color: var(--gold); }
+ol.doc__l { list-style: decimal; }
+
+/* 27 Okt: Customize tidak lagi pop — label harga di kartu terpilih muncul halus (kartu kini dipertahankan, bukan dibuat ulang) */
+@media (prefers-reduced-motion: no-preference) {
+  .cz-card__d { transition: opacity .25s var(--ease), transform .25s var(--ease); }
+  @starting-style { .cz-card__d { opacity: 0; transform: translateY(3px); } }
+}
+
+.cz-g.is-mph { overflow: hidden; }
+
+/* Pengaturan › Informasi (28 Okt, pemilik: "informasi masukan di dalam pengaturan"): baris tautan ke panel Informasi,
+   panel itu punya tombol kembali ke Pengaturan */
+.setinfo__h { margin-top: 30px; }
+.setinfo a { display: grid; grid-template-columns: minmax(0, 1fr) 13px; column-gap: 16px; row-gap: 3px; align-content: center; min-height: 64px; padding: 10px 0; border-bottom: 1px solid var(--hair); color: var(--t-d); }
+.setinfo span { font: 400 var(--fs-b)/1.3 var(--f); }
+.setinfo em { grid-row: 2; font: 400 var(--fs-s)/1.4 var(--f); font-style: normal; color: var(--t-d3); }
+.setinfo svg { grid-row: 1 / 3; grid-column: 2; width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.3; color: var(--t-d3); transition: transform .25s var(--ease), color .25s var(--ease); }
+@media (hover: hover) and (pointer: fine) { .setinfo a:hover svg { transform: translateX(3px); color: var(--t-d); } }
+.info__back { margin-bottom: 18px; }

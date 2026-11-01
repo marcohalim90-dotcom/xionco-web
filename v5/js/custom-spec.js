@@ -42,13 +42,15 @@
   // label pendek untuk kotak pilihan warna (tanpa nama lini kain)
   UPH.forEach(function (u) { u.colors.forEach(function (c) { c.s = c.l.replace(/^(Vienna|Cherokee|Boucle|Velvet|Linen|Chenille|Pet Friendly|Leather)\s+/i, ''); }); });
   var WOOD = [
+    // C99: mindi & sungkai = bahan utama meja XIONCO (C96); faktor 1 sampai harga beli dari pemilik (Ledger 10.13)
+    O('mindi', 'Mindi natural', 'Natural mindi', { s: 'Mindi', se: 'Mindi', hex: '#b08a62', f: 1 }), O('sungkai', 'Sungkai natural', 'Natural sungkai', { s: 'Sungkai', se: 'Sungkai', hex: '#d6bf94', f: 1 }),
     O('oak', 'Oak natural', 'Natural oak', { hex: '#c8a678', f: 1 }), O('walnut', 'Walnut', 'Walnut', { hex: '#5a3d2b', f: 1.12 }), O('teak', 'Jati (teak)', 'Teak', { hex: '#8a5a33', f: 1.15 }),
     O('ash', 'Ash putih', 'White ash', { hex: '#d8cbb4', f: 1.05 }), O('mahogany', 'Mahoni', 'Mahogany', { hex: '#6b3a2a', f: 1.05 }), O('ebony', 'Hitam (ebony stain)', 'Ebony stain', { s: 'Hitam (ebony)', hex: '#2a2522', f: 1.05 })
   ];
   var METAL = [
-    O('black', 'Besi hitam doff', 'Matte black steel', { se: 'Matte black', hex: '#1d1c1b', f: 1, rough: .6 }), O('brass', 'Kuningan', 'Brass', { hex: '#b8924f', f: 1.2, rough: .26 }),
+    O('black', 'Besi hitam doff', 'Matte black steel', { se: 'Matte black', hex: '#1d1c1b', f: 1, rough: .45 }), O('brass', 'Kuningan', 'Brass', { hex: '#b8924f', f: 1.2, rough: .26 }),
     O('champagne', 'Champagne gold', 'Champagne gold', { hex: '#c7aa78', f: 1.15, rough: .3 }), O('stainless', 'Stainless brushed', 'Brushed stainless', { s: 'Stainless', se: 'Stainless', hex: '#a9a9a6', f: 1.12, rough: .32 }),
-    O('gunmetal', 'Gunmetal', 'Gunmetal', { hex: '#4a4b4d', f: 1.05, rough: .35 }), O('ivory', 'Besi ivory', 'Ivory powder coat', { se: 'Ivory coat', hex: '#e4ddd0', f: 1, rough: .55 })
+    O('gunmetal', 'Gunmetal', 'Gunmetal', { hex: '#4a4b4d', f: 1.05, rough: .35 }), O('ivory', 'Besi ivory', 'Ivory powder coat', { se: 'Ivory coat', hex: '#e4ddd0', f: 1, rough: .5 })
   ];
   var STONE = [
     O('carrara', 'Marmer Carrara', 'Carrara marble', { hex: '#e8e5df', vein: '#9a9894', f: 1.55 }), O('calacatta', 'Marmer Calacatta', 'Calacatta marble', { hex: '#ece6dc', vein: '#b19a6c', f: 1.75 }),
@@ -518,6 +520,12 @@
     c[key] = val;
     migrate(c);
     s.groups.forEach(function (gr) { if (gr.id === key && gr.preset) Object.keys(gr.preset).forEach(function (dim) { var p = gr.preset[dim][val]; if (p != null) c[dim] = p; }); });
+    // C99: lebar menentukan kapasitas (dudukan sofa / kursi meja makan) — 3 dudukan di lebar 140 cm tidak mungkin
+    if (key === 'w') s.groups.forEach(function (gr) {
+      var pw = gr.preset && gr.preset.w, best = null; if (!pw) return;
+      opts(gr).forEach(function (o) { var p = pw[o.id]; if (p != null && p <= +val + 15 && (best == null || p > pw[best])) best = o.id; });
+      c[gr.id] = best != null ? best : opts(gr)[0].id;
+    });
     if (key === 'uph') { var u = UPH.filter(function (x) { return x.id === val; })[0]; if (u && !u.colors.some(function (x) { return x.id === c.color; })) c.color = u.colors[0].id; }
     if (key === 'mattress' && s.bed) c.w = +val + 6;
     if (key === 'leg' && /^(plinth|floating)$/.test(val)) c.mount = val;
@@ -655,12 +663,12 @@
     });
     var run = base + size;
     groups(c).forEach(function (gr) {
-      if (gr.type === 'range') { var ea = tbl.each[gr.id]; if (ea && +c[gr.id]) adds.push({ k: 'add', l: L(gr) + ' × ' + c[gr.id], v: ea * c[gr.id] }); return; }
+      if (gr.type === 'range') { var ea = tbl.each[gr.id]; if (ea && +c[gr.id]) adds.push({ k: 'add', l: L(gr) + ' × ' + c[gr.id], v: ea * c[gr.id], g: gr.id }); return; }
       var list = gr.type === 'multi' ? opts(gr, c).filter(function (o) { return (c[gr.id] || []).indexOf(o.id) >= 0; }) : [pick(gr, c)].filter(Boolean);
       list.forEach(function (o) {
         var p = optPrice(s, gr, o, c, tbl);
-        if (p.f && p.f !== 1) { var dlt = run * (p.f - 1); run += dlt; rows.push({ k: 'f', l: L(gr) + ' · ' + L(o), v: dlt }); }
-        if (p.add) adds.push({ k: 'add', l: L(gr) + ' · ' + L(o), v: p.add });
+        if (p.f && p.f !== 1) { var dlt = run * (p.f - 1); run += dlt; rows.push({ k: 'f', l: L(gr) + ' · ' + L(o), v: dlt, g: gr.id, o: o.id }); }
+        if (p.add) adds.push({ k: 'add', l: L(gr) + ' · ' + L(o), v: p.add, g: gr.id, o: o.id });   // g/o: kartu pilihan menampilkan baris rincian yang sama
       });
     });
     rows = rows.concat(adds);
@@ -692,9 +700,8 @@
   function dimsText(c) {
     var s = sub(c);
     if (s.bed) return (+c.mattress) + ' × 200 cm';
-    // CZ-C: satu format ukuran di seluruh situs, tanpa huruf W/D/H: lebar × dalam × tinggi cm (meja bulat: Ø dia × tinggi)
-    if (s.tableH && /^(round|square)$/.test(c.topShape)) return (c.topShape === 'round' ? 'Ø ' + c.dia : c.dia + ' × ' + c.dia) + ' × ' + c.h + ' cm';
-    return c.w + (c.d ? ' × ' + c.d : '') + ' × ' + c.h + ' cm';
+    if (s.tableH && /^(round|square)$/.test(c.topShape)) return (c.topShape === 'round' ? 'Ø ' : '') + c.dia + (c.topShape === 'square' ? ' × ' + c.dia : '') + ' · H ' + c.h + ' cm';
+    return 'W ' + c.w + (c.d ? ' · D ' + c.d : '') + ' · H ' + c.h + ' cm';
   }
   function colorOf(c) { var u = UPH.filter(function (x) { return x.id === c.uph; })[0]; var o = u && u.colors.filter(function (x) { return x.id === c.color; })[0]; return o || null; }
 

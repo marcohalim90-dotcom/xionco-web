@@ -76,8 +76,22 @@
     if (!s) { var v = p.variants && p.variants.length ? Math.max(0, p.variant || 0) : -1; s = vsel[p.id] = { v: v, s: v >= 0 ? subDef(p.variants[v]) : -1, touched: false }; }
     return s;
   }
+  /* 31 Okt (C77, pemilik): VAZRA Power Track = produk RAKITAN, bukan varian tunggal. Rel: Off (tanpa rel) / PW 100 / PW 50;
+     soket PWS EU & PWS USB: jumlah bebas (0 bawaan — rel datang kosong, soket ditambah pembeli). Harga = rel + n × soket.
+     Tanpa kotak Advance. Pilihan disimpan di selOf(p).kit { rail: 0|100|50, eu, usb } dan ikut ke tas (e.kit). */
+  var KIT_ID = 'vazratrack', KIT_MAX = 10;
+  function kitOf(p) { if (!p || p.id !== KIT_ID) return null; var s = selOf(p); if (!s.kit) s.kit = { rail: 100, eu: 0, usb: 0 }; return s.kit; }
+  function kitVar(p, re) { return (p.variants || []).filter(function (v) { return re.test(v.label); })[0] || {}; }
+  function kitVs(p) { return { 100: kitVar(p, /^PW\W*100/i), 50: kitVar(p, /^PW\W*50/i), eu: kitVar(p, /PWS\W*EU/i), usb: kitVar(p, /PWS\W*USB/i) }; }
+  function kitCur(p, k) {
+    var V = kitVs(p), r = k.rail ? V[k.rail] : null, n = function (x) { return Math.max(0, Math.min(KIT_MAX, x | 0)); }, eu = n(k.eu), usb = n(k.usb);
+    var price = (r ? r.price || 0 : 0) + eu * (V.eu.price || 0) + usb * (V.usb.price || 0), was = (r ? r.was || r.price || 0 : 0) + eu * (V.eu.was || V.eu.price || 0) + usb * (V.usb.was || V.usb.price || 0);
+    var lab = [k.rail ? 'PW ' + k.rail + ' cm' : T('Tanpa rel'), eu ? eu + ' × PWS EU' : '', usb ? usb + ' × PWS USB' : ''].filter(Boolean).join(' · ');
+    return { v: r || null, sub: null, price: price, was: was > price ? was : null, img: (r && r.img) || (eu ? V.eu.img : usb ? V.usb.img : null) || p.img, hex: null, label: lab, kit: { rail: k.rail, eu: eu, usb: usb } };
+  }
   function cur(p, s) {
     s = s || selOf(p);
+    if (p.id === KIT_ID) return kitCur(p, s.kit || kitOf(p));
     var v = (p.variants || [])[s.v] || null, sb = v && v.subs && v.subs[s.s] || null;
     var price = (sb && sb.price) || (v && v.price) || p.price, was = (sb && sb.was) || (v && v.was) || p.was;
     if (was && price && was <= price) was = null;
@@ -137,9 +151,10 @@
       bisnis: { n: T('04 — Bisnis'), t: 'For Business', p: T('Space plan, produk dalam jumlah besar, interior, dan built-in untuk kantor, hotel, dan retail. Penawaran dalam 1 jam.'), m: T('Cicilan 0% · garansi 3 tahun') },
       galeri: { n: T('05 — Galeri'), t: T('Galeri'), p: T('Proyek dan inspirasi: solusi kelistrikan ruang rapat, pencahayaan, plafon custom, hingga detail material.'), m: T('{n} karya terpilih', { n: XV.MUSE.length }) },
       kontak: { n: T('06 — Kontak'), t: T('Kontak'), p: T('Showroom di Jl. Ciputat Raya No. 8, Jakarta Selatan. Konsultasi privat tanpa biaya melalui WhatsApp.'), m: '+62 822-4040-8055' },
+      info: { n: T('Informasi'), t: T('Informasi'), p: T('Tentang XIONCO, garansi, pengembalian, privasi, dan syarat belanja.'), m: 'PT Halim Inti Gahara' },
       tas: { n: T('Tas belanja'), t: T('Tas Anda'), p: T('Karya yang Anda pilih. Lanjutkan ke pembayaran kapan saja.'), m: T('Harga mengikuti xionco.shop') },
       bayar: { n: T('Pembayaran'), t: T('Pembayaran'), p: T('Periksa pesanan, isi data pengiriman, lalu pilih metode pembayaran.'), m: T('Transaksi aman') },
-      setelan: { n: T('Pengaturan'), t: T('Pengaturan'), p: T('Bahasa dan tema tampilan. Tersimpan di perangkat ini.'), m: 'Maison XIONCO' },
+      setelan: { n: T('Pengaturan'), t: T('Pengaturan'), p: T('Bahasa, tampilan, dan informasi tentang XIONCO.'), m: 'Maison XIONCO' },
       cubix: { n: 'CUBIX', t: T('Konfigurasi CUBIX'), p: T('Susun modul AC, AL, OT dan meja CUBIX sesuka Anda — pilih kayu & kain, lihat harganya langsung.'), m: 'Maison XIONCO' },
       more: { n: '07 — More', t: 'More', p: T('Pengaturan, konfigurasi CUBIX, dan alat lainnya.'), m: 'Maison XIONCO' },
       profil: { n: T('Profil'), t: T('Akun Anda'), p: T('Pesanan dan permintaan custom Anda di perangkat ini.'), m: 'Maison XIONCO' },
@@ -148,7 +163,7 @@
     };
   }
   buildSections();
-  var ROUTES = ['home', 'koleksi', 'customize', 'manufaktur', 'bisnis', 'galeri', 'kontak', 'tas', 'bayar', 'setelan', 'profil', 'ruang', 'cubix', 'penawaran'];
+  var ROUTES = ['home', 'koleksi', 'customize', 'manufaktur', 'bisnis', 'galeri', 'kontak', 'info', 'tas', 'bayar', 'setelan', 'profil', 'ruang', 'cubix', 'penawaran'];
   var ALIAS = { atelier: 'customize', custom: 'customize' };   // tautan lama tetap berfungsi
 
   /* ======================================================================
@@ -270,7 +285,7 @@
   railEl.addEventListener('focusin', function () { if (!isMobile()) railEl.classList.add('is-open'); });
   railEl.addEventListener('focusout', function () { if (!railEl.contains(document.activeElement)) railEl.classList.remove('is-open'); });
   /* More: hover item More → kotak pilihan di samping rail (Pengaturan, Konfigurasi CUBIX, …); klik / ketuk juga membuka */
-  var MORE_KEYS = ['setelan', 'cubix', 'ruang'], moreBtn = $('#railMore'), moreBox = $('#moreBox'), moreT = 0;
+  var MORE_KEYS = ['setelan', 'info', 'cubix', 'ruang'], moreBtn = $('#railMore'), moreBox = $('#moreBox'), moreT = 0;
   function moreOpen(on) {
     clearTimeout(moreT);
     if (on) {
@@ -282,9 +297,20 @@
     moreBox.classList.toggle('is-on', on); moreBtn.setAttribute('aria-expanded', on ? 'true' : 'false');
   }
   var moreLater = function () { clearTimeout(moreT); moreT = setTimeout(function () { moreOpen(false); }, 220); };
-  moreBtn.addEventListener('pointerenter', function () { if (FINE && !isMobile()) moreOpen(true); });
-  moreBtn.addEventListener('pointerleave', function () { if (FINE && !isMobile()) moreLater(); });
-  moreBtn.addEventListener('click', function () { moreOpen(!moreBox.classList.contains('is-on')); });
+  /* 27 Okt (pemilik): More hanya bila ada fitur tambahan yang dinyalakan (Developer Settings › Fitur situs);
+     tanpa itu isinya tinggal Pengaturan → tombol langsung menjadi Pengaturan (ikon roda gigi, buka tanpa kotak). */
+  var moreSet = false;
+  function moreAsSettings(on) {
+    moreSet = !!on; if (moreSet) moreOpen(false);
+    moreBtn.dataset.key = moreSet ? 'setelan' : 'more';
+    moreBtn.querySelector('use').setAttribute('href', moreSet ? '#i-gear' : '#i-more');
+    moreBtn.querySelector('.rail__label').textContent = moreSet ? T('Pengaturan') : 'More';
+    if (moreSet) { moreBtn.removeAttribute('aria-haspopup'); moreBtn.removeAttribute('aria-expanded'); }
+    else { moreBtn.setAttribute('aria-haspopup', 'menu'); moreBtn.setAttribute('aria-expanded', 'false'); }
+  }
+  moreBtn.addEventListener('pointerenter', function () { if (FINE && !isMobile() && !moreSet) moreOpen(true); });
+  moreBtn.addEventListener('pointerleave', function () { if (FINE && !isMobile() && !moreSet) moreLater(); });
+  moreBtn.addEventListener('click', function () { if (moreSet) { go('setelan'); return; } moreOpen(!moreBox.classList.contains('is-on')); });
   moreBox.addEventListener('pointerenter', function () { clearTimeout(moreT); clearTimeout(railT); if (!isMobile()) railEl.classList.add('is-open'); });
   moreBox.addEventListener('pointerleave', function () { if (!FINE) return; moreLater(); railT = setTimeout(function () { railEl.classList.remove('is-open'); }, 240); setDesc(current); });
   moreBox.addEventListener('click', function (e) { if (e.target.closest('.more__item')) moreOpen(false); });
@@ -439,11 +465,19 @@
   function modelOf(p, c) { return c && c.v && p.vmodels && p.vmodels[c.v.label] || p.model || ''; }
   // bagian varian di panggung (mis. VERK Laci = kabinet laci ditempel ke meja, bukan model baru) — p.vparts { label: path }
   function partOf(p, c) { return c && c.v && p.vparts && p.vparts[c.v.label] || ''; }
-  function stageModelOf(p, c) { return p.vparts ? p.model || '' : modelOf(p, c); }
+  function stageModelOf(p, c) { return p.vparts || p.vshow ? p.model || '' : modelOf(p, c); }
+  /* 27 Okt (ROULED): p.vshow { label varian: [nama bagian di model set] } — varian = bagian dari satu set; ganti varian
+     tidak mengganti produk (world.js vsShow: bagian keluar / masuk bergeser, set ditata ke tengah) */
+  function showOf(p, c) {
+    if (!p.vshow) return null;
+    var all = []; Object.keys(p.vshow).forEach(function (k) { p.vshow[k].forEach(function (n) { if (all.indexOf(n) < 0) all.push(n); }); });
+    return { all: all, on: c && c.v && p.vshow[c.v.label] || all };
+  }
   function stageShow(p) {
+    if (p.id === KIT_ID && XW.showKit) { var kp = kitParts(p); furniture.mdl = 'kit'; if (kp.length) XW.showKit(p, kp); else XW.showProduct(p, src(p.img, 1024), src(p.img, 1024)); return; }   // C77: rel + soket sesuai pilihan (Off tanpa soket: foto produk)
     var s = selOf(p), c = cur(p, s), photo = src(s.touched ? c.img : p.img, 1024);
     var mdl = stageModelOf(p, c); furniture.mdl = mdl;
-    if (mdl) { var pr = XW.showModel(p, src(mdl), photo, c.hex, skinOf(c)); if (pr && pr.then) pr.then(function () { cbxTint(p); var pt = partOf(p, c); if (pt && XW.setPart) XW.setPart(src(pt), false); if (pcFor(p)) { if (!pcz.w0) pcInit(p); else pcApply(); } }); }
+    if (mdl) { var pr = XW.showModel(p, src(mdl), photo, c.hex, skinOf(c), showOf(p, c));if (pr && pr.then) pr.then(function () { cbxTint(p); var pt = partOf(p, c); if (pt && XW.setPart) XW.setPart(src(pt), false); if (pcFor(p)) { if (!pcz.w0) pcInit(p); else pcApply(); } }); }
     else XW.showProduct(p, photo, src(p.img, 1024));
   }
   function mapDetail(i) {
@@ -473,12 +507,29 @@
        #/p/<id>?v=<varian>&s=<sub>  → buka produk dengan varian terpilih
        #/q/<KODE>                   → penawaran harga khusus (dicek ke server)
      Parameter iklan (?utm_source=…, fbclid, gclid) di depan # dicatat & ikut ke pesanan. */
-  var deep = null;
+  var deep = null, infoWant = null;
+  /* 27 Okt (pemilik): Ruang, Konfigurasi CUBIX, Bisnis, Manufaktur disembunyikan (Galeri kembali di rel, 28 Okt: "kembalikan galeri di nav bar") — hanya dinyalakan dari
+     Developer Settings › Pengaturan › Fitur situs (data/features.json lewat XVDB, ikut online). Fitur mati: menu, tombol
+     (v5.css .feat-off-*) & alamat langsung (#/ruang …) tidak tersedia, kembali ke beranda. */
+  var FEATS = ['ruang', 'cubix', 'bisnis', 'manufaktur'];
+  // More berisi Ruang & CUBIX; di ponsel juga Manufaktur & Bisnis (di desktop keduanya langsung di rel)
+  function moreExtra() { return ['ruang', 'cubix'].some(featOn) || (isMobile() && ['manufaktur', 'bisnis'].some(featOn)); }
+  addEventListener('resize', function () { if (booted && moreSet === moreExtra()) moreAsSettings(!moreExtra()); });
+  function featOn(k) { if (FEATS.indexOf(k) < 0) return true; var f = window.XVDB && XVDB.features ? XVDB.features() : {}; return !!f[k]; }
+  function applyFeats() {
+    FEATS.forEach(function (k) { html.classList.toggle('feat-off-' + k, !featOn(k)); });
+    moreAsSettings(!moreExtra());   // kotak More tidak berisi apa-apa selain Pengaturan → More langsung jadi Pengaturan
+    if (booted && FEATS.indexOf(current) >= 0 && !featOn(current)) go('home');
+  }
   function parseHash() {
     var raw = location.hash.replace(/^#\/?/, ''), h = raw.split('?')[0], qs = new URLSearchParams(raw.split('?')[1] || ''), m;
     if ((m = h.match(/^p\/([\w-]+)/))) { deep = { p: m[1], v: qs.get('v'), s: qs.get('s') }; return 'koleksi'; }
     if ((m = h.match(/^q\/([A-Za-z0-9]{4,16})/))) { deep = { q: m[1].toUpperCase() }; return 'penawaran'; }
-    h = ALIAS[h] || h; return ROUTES.indexOf(h) >= 0 && h !== 'penawaran' ? h : 'home';
+    if ((m = h.match(/^r\/([A-Za-z0-9_-]{8,})/))) { deep = { rq: m[1] }; return 'customize'; }   // C99: tautan rancangan dari pesan Minta penawaran
+    if ((m = h.match(/^info\/([a-z]+)/))) { infoWant = m[1]; return 'info'; }   // #/info/garansi → tab Informasi › Garansi
+    h = ALIAS[h] || h;
+    if (ROUTES.indexOf(h) >= 0 && !featOn(h)) { try { history.replaceState(null, '', location.pathname + location.search + '#/'); } catch (e) {} return 'home'; }   // fitur mati: alamat ikut ke beranda
+    return ROUTES.indexOf(h) >= 0 && h !== 'penawaran' ? h : 'home';
   }
   var UTM = (function () {
     var o = {}, n = 0;
@@ -487,7 +538,7 @@
     try { return JSON.parse(sessionStorage.getItem('xv5_utm') || 'null'); } catch (e) { return null; }
   })();
   function go(id) {
-    if (ROUTES.indexOf(id) < 0) return;
+    if (ROUTES.indexOf(id) < 0 || !featOn(id)) return;
     var h = id === 'home' ? '#/' : id === 'penawaran' ? '#/q/' + (Q.code || '') : '#/' + id;
     if (location.hash !== h && !(id === 'home' && (location.hash === '' || location.hash === '#'))) location.hash = h;
     else open(id);
@@ -506,8 +557,7 @@
     var side = on ? panel.offsetWidth + 28 + 24 : descEl.offsetWidth + 28 + 24;
     var l = lay3 ? side : 100, r = lay3 ? 100 : side;   // layout III: panel / deskripsi di kiri, sidebar di kanan
     if (!on) l = r = Math.max(l, r);   // beranda: produk & kartu harga tepat di tengah layar
-    czPickPlace();   // CZ-D: kotak pemilih menimpa panel (tidak menambah inset)
-    [$('#cbxGrid'), $('#shellEd'), $('#roomAddBox')].forEach(function (pk) {
+    [$('#czPicker'), $('#cbxGrid'), $('#shellEd'), $('#roomAddBox')].forEach(function (pk) {
       if (!(on && pk && pk.classList.contains('is-on'))) return;
       if (lay3 || html.classList.contains('cz-box3')) l += pk.offsetWidth + 14; else r += pk.offsetWidth + 14;   // layout III: kotak di kanan panel kiri
     });
@@ -522,8 +572,8 @@
     var prev = current;
     current = id;
     html.classList.toggle('is-panel', id !== 'home'); html.dataset.pane = id;
-    $$('.rail__item').forEach(function (a) { a.classList.toggle('is-on', a.dataset.key === id || (a.id === 'railMore' && (MORE_KEYS.indexOf(id) >= 0 || (isMobile() && /^(manufaktur|bisnis|galeri)$/.test(id))))); });
-    $$('.more__item').forEach(function (a) { a.classList.toggle('is-on', a.dataset.moreKey === id); });
+    $$('.rail__item').forEach(function (a) { a.classList.toggle('is-on', a.dataset.key === id || (a.id === 'railMore' && (MORE_KEYS.indexOf(id) >= 0 || (isMobile() && /^(manufaktur|bisnis)$/.test(id))))); });
+    $$('.more__item').forEach(function (a) { a.classList.toggle('is-on', a.dataset.moreKey === (id === 'info' ? 'setelan' : id)); });   // Informasi = bagian dari Pengaturan
     $$('.top__ic, .top__bag').forEach(function (b) { b.classList.toggle('is-on', TOP_PANES[id] === '#' + b.id); });
     setDesc(id);
     document.title = titleOf(id);
@@ -534,7 +584,7 @@
       if (id !== 'bayar') $$('.pane', panel).forEach(function (p) { p.classList.toggle('is-on', p.dataset.pane === id); });
       else if (!$('.pane.is-on', panel)) $('.pane[data-pane="tas"]', panel).classList.add('is-on');   // checkout = overlay; panel tetap menampilkan halaman asal
       var pane = $('.pane[data-pane="' + id + '"]', panel);
-      if (ANIM && pane && prev !== id) G.fromTo($$('.pane__scroll:not(.pd) > *', pane).slice(0, 8), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .04, delay: prev === 'home' ? .35 : .2, clearProps: 'transform' });
+      if (ANIM && pane && prev !== id) G.fromTo($$('.pane__scroll:not(.pd) > *', pane).slice(0, 8), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .9, ease: 'expo.out', stagger: { each: .04, from: 'end' }, delay: prev === 'home' ? .35 : .2, clearProps: 'transform' });
     }
     // panggung
     if (id === 'customize' || id === 'ruang' || id === 'cubix') { /* panggung diatur enter.customize → czStage / enter.ruang / enter.cubix */ }
@@ -570,6 +620,22 @@
     openProduct(p);
   }
   var enter = {}, leave = {};
+  /* INFORMASI (27 Okt): Tentang · Garansi · Pengembalian · Privasi · Syarat — satu bagian tampil; alamat #/info/<bagian>
+     (tautan di Kontak & Pengaturan; 28 Okt tidak lagi di rel). Ganti bagian tidak membuka ulang panel: alamat diganti tanpa riwayat baru. */
+  var INFO = ['tentang', 'garansi', 'pengembalian', 'privasi', 'syarat'], infoCur = 'tentang';
+  function infoShow(k, push) {
+    if (INFO.indexOf(k) < 0) k = 'tentang';
+    infoCur = k;
+    $$('#infoTabs [data-info]').forEach(function (b) { var on = b.dataset.info === k; b.classList.toggle('is-on', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
+    $$('[data-info-doc]').forEach(function (d) { d.hidden = d.dataset.infoDoc !== k; });
+    if (push) { try { history.replaceState(null, '', location.pathname + location.search + '#/info/' + k); } catch (e) {} }
+  }
+  enter.info = function () { infoShow(infoWant || infoCur); infoWant = null; };
+  $('#infoTabs') && $('#infoTabs').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-info]'); if (!b) return;
+    infoShow(b.dataset.info, true);
+    var s = b.closest('.pane__scroll'); if (s) s.scrollTop = 0;
+  });
   /* ---------- PENAWARAN HARGA KHUSUS (#/q/KODE)
      Harga khusus dikunci di server: situs hanya meminta data dengan kode; saat bayar, server yang menghitung tagihan. */
   var XAPI = window.XV_API || '/api/';   // nanti: alamat server sungguhan
@@ -801,7 +867,7 @@
     $('#pdCat').textContent = T(katsOf(p)[0]) + (p.sold ? ' · ' + T('{n} terjual', { n: p.sold }) : '');
     $('#pdName').textContent = p.name;
     $('#pdType').textContent = p.type;
-    $('#pdPrice').innerHTML = c.price ? '<b>' + priceText(p, c) + '</b>' + (c.was ? '<s>' + rupiah(c.was) + '</s><span class="tag tag--gold">' + T('Hemat') + ' ' + disc + '%</span>' : '') : '<b>' + T('Melalui penawaran') + '</b>';
+    $('#pdPrice').innerHTML = c.price ? '<b>' + priceText(p, c) + '</b>' + (c.was ? '<s>' + rupiah(c.was) + '</s><span class="tag tag--gold">' + T('Hemat') + ' ' + disc + '%</span>' : '') : '<b>' + T(p.id === KIT_ID ? 'Pilih rel atau soket' : 'Melalui penawaran') + '</b>';
     renderVariants(p);
     renderPhoto(p, c);
     renderInfo(p, c, anim);
@@ -810,14 +876,22 @@
     $('#pdCustom').style.display = !p.model && (p.customizable || p.id === 'cubix') ? '' : 'none';   // model asli: dimensi langsung di kotak Advance
     $('#pdCustomE').textContent = T('Rancang di Customize');
     $('#pdCfg').hidden = !(p.series === 'cubix' || p.id === 'cubix');
+    $('#pdActs').hidden = p.id === KIT_ID; if (p.id === KIT_ID) advOpen(false);   // C77: VAZRA Power Track tanpa Advance
     pcRender();
     kQty = 1; $('#pdQty').textContent = 1;
     $('#pdWa').href = wa(T('Halo XIONCO, saya ingin tahu lebih lanjut tentang {name} ({type}).', { name: p.name, type: p.type + (c.label ? ' · ' + c.label : '') }));
     $('#pdWaText').textContent = c.price ? T('Tanya') : T('Tanya harga');
     $('#pdN').textContent = String(kI + 1).padStart(2, '0') + ' / ' + kList.length;
-    if (ANIM && anim) G.fromTo($$('#pd > *').slice(1, 7), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .7, ease: 'expo.out', stagger: .04, clearProps: 'transform' });
+    if (ANIM && anim) G.fromTo($$('#pd > *').slice(1, 7), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .7, ease: 'expo.out', stagger: { each: .04, from: 'end' }, clearProps: 'transform' });
   }
   /* label pilihan varian: kode koleksi (EC01, EL04 …) jadi baris kecil di atas nama — nama tidak pernah dipotong "…" */
+  /* 31 Okt (C85, pemilik): varian berpasangan "X" / "Tanpa X" (VERK: Laci / Tanpa Laci) ditulis sebagai SATU kotak centang X —
+     dicentang = dengan X (kabinet laci), tidak dicentang = tanpa X. Harga tambahan selalu tampil (ukuran kotak tidak berubah). */
+  function vToggle(vs) {
+    if (!vs || vs.length !== 2) return null;
+    for (var i = 0; i < 2; i++) { var o = vs[1 - i].label || '', m = /^tanpa\s+(.+)$/i.exec(o); if (m && m[1].trim().toLowerCase() === String(vs[i].label || '').trim().toLowerCase()) return { on: i, off: 1 - i }; }
+    return null;
+  }
   function vName(label, extra) {
     var m = /^([A-Z]{1,3}\d{1,3}[A-Z]?)\s+(.+)$/.exec(label || ''), code = m ? m[1] : '', name = m ? m[2] : label;
     return '<span class="cz-o__t">' + (code ? '<small class="cz-o__n">' + esc(code) + '</small>' : '') + '<span>' + esc(name) + '</span>' + (extra ? '<em class="cz-o__d">' + extra + '</em>' : '') + '</span>';
@@ -854,7 +928,31 @@
     });
     return none.concat(A.map(function (o) { return o.i; }), W.map(function (o) { return o.i; }), Cs.map(function (o) { return o.i; }));
   }
+  function renderKit(p) {
+    var k = kitOf(p), V = kitVs(p), c = kitCur(p, k), box = $('#pdVar');
+    var rb = function (r, lab) { return '<button type="button" class="cz-o' + (k.rail === r ? ' is-on' : '') + '" data-kr="' + r + '" title="' + esc(lab) + '"><span class="cz-o__t"><span>' + esc(lab) + '</span></span></button>'; };
+    var row = function (id, lab, v) { var n = c.kit[id]; return '<div class="kit__r"><span class="kit__l">' + esc(lab) + (v.price ? '<em>Rp ' + short(v.price) + ' / ' + T('soket') + '</em>' : '') + '</span>' +
+      '<div class="qty"><button type="button" data-kd="' + id + ':-1" aria-label="' + esc(T('Kurangi') + ' ' + lab) + '"' + (n <= 0 ? ' disabled' : '') + '><svg><use href="#i-minus"/></svg></button>' +
+      '<input type="number" inputmode="numeric" min="0" max="' + KIT_MAX + '" step="1" value="' + n + '" data-ki="' + id + '" aria-label="' + esc(T('Jumlah') + ' ' + lab) + '">' +
+      '<button type="button" data-kd="' + id + ':1" aria-label="' + esc(T('Tambah') + ' ' + lab) + '"' + (n >= KIT_MAX ? ' disabled' : '') + '><svg><use href="#i-plus"/></svg></button></div></div>'; };
+    box.hidden = false; $('#pdSub').innerHTML = ''; $('#pdSub').hidden = true; $('#pdAdvVar').innerHTML = ''; $('#pdAdvSub').innerHTML = '';
+    box.innerHTML = '<p class="og__h"><span>' + T('Rel') + '</span><b>' + esc(k.rail ? 'PW ' + k.rail + ' cm' : T('Tanpa rel')) + '</b></p><div class="og og--v">' + rb(0, 'Off') + rb(100, 'PW 100 cm') + rb(50, 'PW 50 cm') + '</div>' +
+      '<p class="og__h"><span>' + T('Soket') + '</span><b>' + esc([c.kit.eu ? c.kit.eu + ' × EU' : '', c.kit.usb ? c.kit.usb + ' × USB' : ''].filter(Boolean).join(' · ') || T('Belum ada')) + '</b></p>' +
+      '<div class="kit">' + row('eu', 'PWS EU', V.eu) + row('usb', 'PWS USB', V.usb) + '</div>';
+  }
+  function kitSet(p, patch) {
+    var k = kitOf(p); for (var x in patch) k[x] = x === 'rail' ? patch[x] : Math.max(0, Math.min(KIT_MAX, patch[x] | 0));
+    selOf(p).touched = true; fillPd(p, false); productDetail(p);
+    if (XW.ok && furniture.kind === 'product' && furniture.p === p) stageShow(p);
+  }
+  function kitParts(p) {   // rel tanpa soket + soket (EU lalu USB) berjarak rata di atas rel; Off: soket berjajar di lantai
+    var k = kitCur(p, kitOf(p)).kit, base = '../assets/items/vazratrack/', parts = [], n = k.eu + k.usb, L = k.rail / 100, i;
+    if (k.rail) parts.push({ url: src(base.slice(3) + 'model-rail-' + k.rail + '.glb'), pos: [0, 0, 0], rail: k.rail });
+    for (i = 0; i < n; i++) parts.push({ sock: i < k.eu ? 'eu' : 'usb', url: src(base.slice(3) + 'model-pws-' + (i < k.eu ? 'eu' : 'usb') + '.glb'), pos: k.rail ? [-L / 2 + L * (i + .5) / n, .022, 0] : [(i - (n - 1) / 2) * .09, 0, 0] });
+    return parts;
+  }
   function renderVariants(p) {
+    if (p.id === KIT_ID) { renderKit(p); return; }
     var vs = p.variants || [], s = selOf(p), c = cur(p, s);
     var box = $('#pdVar'), sub = $('#pdSub');
     if (!vs.length) { box.innerHTML = ''; sub.innerHTML = ''; box.hidden = sub.hidden = true; $('#pdAdvVar').innerHTML = ''; $('#pdAdvSub').innerHTML = ''; cbxPilRender(p); return; }
@@ -864,38 +962,41 @@
     vs.forEach(function (v, i) { var g = v.group || ''; var gg = groups.filter(function (x) { return x.g === g; })[0]; if (!gg) groups.push(gg = { g: g, i: [] }); gg.i.push(i); var pr = pOf(i); if (pr && pr < pMin) pMin = pr; });
     groups.forEach(function (gg) { gg.i = swOrder(gg.i, function (i) { return vs[i].hex; }); });   // UP4: gradasi warna di tiap grup
     var selD = s.v >= 0 && isFinite(pMin) ? pOf(s.v) - pMin : 0;   // harga tambahan hanya tampil di kotak yang dipilih
-    /* UP2/UP3: cakram saja (tanpa kotak). Panel = grup standar (Fabric, Faux leather, tanpa grup) sampai 20 cakram;
-       grup Elite Color (Elite Fabric / Elite Faux leather) hanya di kotak Advance — cakram "+N" di panel membukanya */
+    /* UP3 (dipilih ulang 27 Okt): panel = 3 teratas dari grup standar (Fabric, Faux leather, tanpa grup);
+       grup Elite Color (Elite Fabric / Elite Faux leather) hanya di kotak Advance (UP2 "cakram +N" tidak dipakai) */
     var order = [].concat.apply([], groups.map(function (gg) { return gg.i; })), colored = vs.some(function (v) { return v.hex; });
     var isElite = function (g) { return /^elite/i.test(g || ''); };
     var std = [].concat.apply([], groups.filter(function (gg) { return !isElite(gg.g); }).map(function (gg) { return gg.i; }));
-    var shown = std.slice(0, colored ? (std.length > 20 ? 19 : std.length) : 3);
+    var shown = std.slice(0, 3);
     if (s.v >= 0 && shown.indexOf(s.v) < 0) { if (isElite(vs[s.v].group)) shown.push(s.v); else shown[shown.length - 1] = s.v; }   // varian terpilih selalu terlihat (Elite terpilih ikut tampil di panel)
     var photo = src(p.img, 256), hd = function (v, d) { return esc(lab(v)) + (d > 0 ? '<em>+Rp ' + short(d) + '</em>' : ''); };
     var btn = function (i, all) {
       var v = vs[i], d = i === s.v ? selD : 0, hid = !all && shown.indexOf(i) < 0, pr = pOf(i) - (isFinite(pMin) ? pMin : 0);
       return '<button type="button" class="cz-o' + (i === s.v ? ' is-on' : '') + '" data-v="' + i + '" title="' + esc(lab(v)) + '" data-peek="' + esc(lab(v)) + (pr > 0 ? ' · +Rp ' + short(pr) : '') + '"' + (hid ? ' hidden' : '') + '>' +
         (v.hex ? '<i class="cz-o__c' + (/faux|leather|kulit/i.test(v.group) ? ' is-leather' : /fabric|kain|velvet|linen/i.test(v.group || '') ? ' is-fabric' : '') + '" style="--c:' + v.hex + '"></i>'
-          : colored && photo ? '<i class="cz-o__c cz-o__c--photo" style="--img:url(' + photo + ')"></i>' : '') + vName(v.label, d > 0 ? '+Rp ' + short(d) : '') + '</button>';
+          : '') + vName(v.label, d > 0 ? '+Rp ' + short(d) : '') + '</button>';
     };
     var rest = order.length - shown.length;   // yang hanya ada di Advance (Elite + sisa bila > 20)
     var list = function (all) {
       var gs = all ? groups.filter(function (gg) { return gg.i.some(function (i) { return shown.indexOf(i) < 0; }); }) : groups.filter(function (gg) { return gg.i.some(function (i) { return shown.indexOf(i) >= 0; }); });
       return gs.map(function (gg, gi) {
         var items = all ? gg.i : gg.i.filter(function (i) { return shown.indexOf(i) >= 0; });
-        var more = !all && rest > 0 && gi === gs.length - 1 ? '<button type="button" class="cz-o cz-o--more" data-more="v" title="' + esc(T('Elite Color & semua varian')) + '">+' + rest + '</button>' : '';
+        var more = '';
         return (gs.length > 1 && gg.g ? '<p class="og__g">' + esc(T(gg.g)) + '</p>' : '') + '<div class="og og--v">' + items.map(function (i) { return btn(i, true); }).join('') + more + '</div>';
-      }).join('') + (!all && rest > 0 && !gs.length ? '<div class="og og--v"><button type="button" class="cz-o cz-o--more" data-more="v">+' + rest + '</button></div>' : '');
+      }).join('');
     };
     var vt = T(p.vTitle || (vs[0].group ? 'Warna & material' : 'Varian'));
-    box.innerHTML = '<p class="og__h"><span>' + vt + '</span><b>' + (c.v ? hd(c.v, selD) : '') + '</b></p>' + list(false);
+    var tg = vToggle(vs), tgOn = tg && s.v === tg.on, tgD = tg ? pOf(tg.on) - pOf(tg.off) : 0;
+    box.innerHTML = '<p class="og__h"><span>' + vt + '</span><b>' + (c.v ? (tg ? esc(T(c.v.label)) : hd(c.v, selD)) : '') + '</b></p>' + (tg
+      ? '<div class="og og--v"><button type="button" class="cz-o' + (tgOn ? ' is-on' : '') + '" role="checkbox" aria-checked="' + !!tgOn + '" data-v="' + (tgOn ? tg.off : tg.on) + '"><i class="cz-o__k cz-o__k--chk"><svg aria-hidden="true"><use href="#i-check"/></svg></i>' + vName(T(vs[tg.on].label), tgD > 0 ? '+Rp ' + short(tgD) : '') + '</button></div>'
+      : list(false));
     var advAllElite = groups.filter(function (gg) { return gg.i.some(function (i) { return shown.indexOf(i) < 0; }); }).every(function (gg) { return isElite(gg.g); });
     $('#pdAdvVar').innerHTML = rest > 0 ? '<p class="og__h adv__h"><span>' + T(advAllElite ? 'Elite Color' : 'Semua varian') + ' · ' + rest + '</span><b>' + (c.v && isElite(c.v.group) ? hd(c.v, selD) : '') + '</b></p>' + list(true) : '';
     cbxPilRender(p);
-    var subs = c.v && c.v.subs || [], sw = subs.some(function (x) { return x.hex; }), sOrd = sw ? swOrder(subs.map(function (x, i) { return i; }), function (i) { return subs[i].hex; }) : subs.map(function (x, i) { return i; }), sShown = sOrd.slice(0, sw ? (subs.length > 20 ? 19 : subs.length) : subs.length);   // UP4: sub-varian berwarna juga bergradasi
+    var subs = c.v && c.v.subs || [], sw = subs.some(function (x) { return x.hex; }), sOrd = sw ? swOrder(subs.map(function (x, i) { return i; }), function (i) { return subs[i].hex; }) : subs.map(function (x, i) { return i; }), sShown = sOrd.slice(0, 3);   // UP4: sub-varian berwarna juga bergradasi
     if (s.s >= 0 && sShown.indexOf(s.s) < 0 && sShown.length) sShown[sShown.length - 1] = s.s;
     var sBtn = function (x, i, all) { return '<button type="button" class="cz-o' + (i === s.s ? ' is-on' : '') + '" data-s="' + i + '" title="' + esc(x.label) + '" data-peek="' + esc(x.label) + '"' + (!all && sw && sShown.indexOf(i) < 0 ? ' hidden' : '') + '>' + (x.hex ? '<i class="cz-o__c" style="--c:' + x.hex + '"></i>' : '') + vName(x.label) + '</button>'; }
-    var sMore = sw && subs.length > sShown.length ? '<button type="button" class="cz-o cz-o--more" data-more="s" title="' + esc(T('Semua pilihan')) + '">+' + (subs.length - sShown.length) + '</button>' : '';
+    var sMore = '';
     var pil = isCbxFab(p) && cbxPS(p).pil >= 0 ? ' · ' + cbxPilLab(p, s.v, s.pil) : '', sHead = '<span>' + T(p.sTitle || 'Ukuran & opsi') + '</span><b>' + esc((c.sub ? c.sub.label : '') + pil) + '</b>';
     sub.hidden = !subs.length;
     sub.innerHTML = subs.length ? '<p class="og__h">' + sHead + '</p><div class="og' + (sw ? ' og--v' : '') + '">' + sOrd.map(function (i) { return sBtn(subs[i], i, false); }).join('') + sMore + '</div>' : '';
@@ -1008,6 +1109,7 @@
     if (!XW.ok || !(furniture.kind === 'product' && furniture.p === p)) return;
     var c = cur(p, s);
     if (isCbxFab(p) && p.model) { cbxTint(p); return; }   // CUBIX: kain (sub-varian) & bantal
+    if (p.vshow && XW.setShow) { XW.setShow(showOf(p, c).on); return; }   // set ROULED: meja keluar / masuk, produk tetap
     if (p.vparts && XW.setPart) { var pt = partOf(p, c); XW.setPart(pt ? src(pt) : null); if (p.model) XW.setTint(c.hex, undefined, skinOf(c)); }   // bagian varian: hanya bagian itu yang muncul / hilang
     else if (p.vmodels && modelOf(p, c) !== (furniture.mdl || p.model)) { furniture.mdl = modelOf(p, c); stageShow(p); }
     else if (p.model) XW.setTint(c.hex, undefined, skinOf(c));
@@ -1015,22 +1117,10 @@
   }
   $('#pdVar').addEventListener('click', function (e) {
     var p = kList[kI]; if (!p) return;
+    if (p.id === KIT_ID) { var kr = e.target.closest('[data-kr]'), kd = e.target.closest('[data-kd]'); if (kr) kitSet(p, { rail: +kr.dataset.kr }); else if (kd) { var q = kd.dataset.kd.split(':'), o = {}; o[q[0]] = kitOf(p)[q[0]] + +q[1]; kitSet(p, o); } return; }
     var b = e.target.closest('[data-v]'); if (b) setVariant(p, { v: +b.dataset.v });
   });
-  /* UP2: cakram "+N" membuka Advance; nama cakram yang dilayangi tampil sementara di kepala baris ("Fabric · Black") */
-  ['#pdVar', '#pdSub', '#pdAdvVar', '#pdAdvSub'].forEach(function (sel) {
-    var el = $(sel); if (!el) return;
-    el.addEventListener('click', function (e) { if (e.target.closest('[data-more]')) { advOpen('adv'); } });
-    var peek = function (b, on) {
-      var head = b.closest('.pd__var, .adv__var'), h = head && head.querySelector('.og__h b'); if (!h) return;
-      if (on) { if (h.dataset.own == null) h.dataset.own = h.innerHTML; h.textContent = b.dataset.peek; h.classList.add('is-peek'); }
-      else if (h.dataset.own != null) { h.innerHTML = h.dataset.own; delete h.dataset.own; h.classList.remove('is-peek'); }
-    };
-    el.addEventListener('mouseover', function (e) { var b = e.target.closest('[data-peek]'); if (b && !b.classList.contains('is-on')) peek(b, true); });
-    el.addEventListener('mouseout', function (e) { var b = e.target.closest('[data-peek]'); if (b && !(e.relatedTarget && b.contains(e.relatedTarget))) peek(b, false); });
-    el.addEventListener('focusin', function (e) { var b = e.target.closest('[data-peek]'); if (b && !b.classList.contains('is-on')) peek(b, true); });
-    el.addEventListener('focusout', function (e) { var b = e.target.closest('[data-peek]'); if (b) peek(b, false); });
-  });
+  $('#pdVar').addEventListener('change', function (e) { var p = kList[kI], i = e.target.closest('[data-ki]'); if (p && i && p.id === KIT_ID) { var o = {}; o[i.dataset.ki] = +i.value || 0; kitSet(p, o); } });
   $('#pdAdvSub').addEventListener('click', function (e) { var b = e.target.closest('[data-s]'); if (b && kList[kI]) setVariant(kList[kI], { s: +b.dataset.s }); });
   $('#pdSub').addEventListener('click', function (e) { var b = e.target.closest('[data-s]'); if (b && kList[kI]) setVariant(kList[kI], { s: +b.dataset.s }); });
   panel.addEventListener('scroll', function (e) { var t = e.target; if (t.classList && t.classList.contains('pane__scroll')) t.classList.toggle('is-sc', t.scrollTop > 6); }, { capture: true, passive: true });
@@ -1133,7 +1223,7 @@
     if (!on) { el.innerHTML = ''; return; }
     var mg = { id: 'metal', type: 'swatch' }, cm0 = XC.find(XC.METAL, pc.metal);
     el.innerHTML = '<details class="adv__acc"' + (pc.mOpen ? ' open' : '') + '><summary><span>' + T('Warna kaki & base') + '</span><b>' + esc(cm0 ? L(cm0) : '') + '</b><svg><use href="#i-arrow"/></svg></summary>' +
-      '<div class="cz-g is-sw">' + czOpts(mg, XC.METAL, false, [pc.metal], 0) + '</div></details>';   // CZ-B: cakram, urut gradasi
+      '<div class="cz-grid">' + XC.METAL.map(function (m) { return cell(mg, m, m.id === pc.metal, false); }).join('') + '</div></details>';
     czLazy(el);
   }
   // ukuran asli diambil dari model yang tampil di panggung (ditunggu bila belum termuat)
@@ -1198,6 +1288,12 @@
     return b;
   }
   var bag = loadBag();
+  // C99: rancangan custom tidak dibayar di situs — sisa rancangan di tas pindah ke Profil › Rancangan (Minta penawaran dari sana)
+  (function () {
+    var list = store.get('xv5_designs', []), moved = 0;
+    Object.keys(bag).forEach(function (k) { var e = bag[k]; if (!e || e.type !== 'custom') return; list.unshift({ id: 'D' + Date.now().toString(36).toUpperCase() + moved, created: Date.now(), title: e.title, sub: e.sub, mat: e.mat, cfg: e.cfg, price: e.price, img: e.img, base: e.base || null }); delete bag[k]; moved++; });
+    if (moved) { store.set('xv5_designs', list.slice(0, 30)); store.set('xv5_bag2', bag); }
+  })();
   // harga rancangan custom dihitung ulang dari tabel harga terbaru (Developer Settings › Harga)
   function customUnit(cfg, fallback) { if (!cfg || !window.XC) return fallback; try { var c = JSON.parse(JSON.stringify(cfg)); c.qty = 1; return window.XC.estimate(c) || fallback; } catch (err) { return fallback; } }
   function line(e) {
@@ -1205,9 +1301,9 @@
     if (e.type === 'cubix') { var cp = cbxPrice(e.cfg); if (!cp.total) return null; return { key: e.id, custom: true, p: { id: e.id, name: e.title, type: e.sub }, c: { price: cp.total, label: e.sub, img: e.img }, q: e.q, total: cp.total * e.q, e: e }; }
     if (e.type === 'custom') { var up = customUnit(e.cfg, e.price); return { key: e.id, custom: true, p: { id: e.id, name: e.title, type: e.sub }, c: { price: up, label: e.mat ? e.sub + ' · ' + e.mat : e.sub, img: e.img }, q: e.q, total: up * e.q, e: e }; }
     var p = byId[e.id]; if (!p) return null;
-    var c = cur(p, { v: e.v, s: e.s });
+    var c = cur(p, { v: e.v, s: e.s, kit: e.kit });
     if (!c.price) return null;
-    var key = e.id + '|' + e.v + '|' + e.s;
+    var key = e.id + '|' + e.v + '|' + e.s + (e.kit ? '|r' + e.kit.rail + 'e' + e.kit.eu + 'u' + e.kit.usb : '');
     if (e.pil != null && e.pil >= 0) { var o2 = {}; for (var k2 in c) o2[k2] = c[k2]; o2.label = (c.label ? c.label + ' · ' : '') + cbxPilLab(p, e.v, e.pil); c = o2; key += '|p' + e.pil; }   // CUBIX: warna bantal
     if (e.pc) { var o = {}; for (var k in c) o[k] = c[k]; o.price = pcPrice(c.price, e.pc); o.label = (c.label ? c.label + ' · ' : '') + pcLabel(e.pc); c = o; key += '|' + e.pc.w + 'x' + e.pc.d + e.pc.metal; }
     return { key: key, p: p, c: c, q: e.q, total: c.price * e.q, e: e };
@@ -1246,10 +1342,10 @@
     if (!en) return;
     if (d) { en.q = clamp(en.q + (+d.dataset.d), 0, 99); if (!en.q) delete bag[k]; renderBag(); }
     else if (e.target.closest('[data-rm]')) { delete bag[k]; renderBag(); }
-    else if (e.target.closest('[data-edit]')) { czEditKey = k; openDesign(en); notice(T('Ubah rancangan, lalu tekan Perbarui tas')); }
+    else if (e.target.closest('[data-edit]')) { openDesign(en); }
     else if (e.target.closest('.list__th, .list__n')) { if (en.type === 'cubix') cbxOpen(en.cfg); else if (en.type === 'custom') openDesign(en); else openProduct(byId[en.id]); }
   });
-  function entryOf(p, q) { var s = selOf(p), pc = pcFor(p), e = { id: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, q: q || 1 }; if (isCbxFab(p) && cbxPS(p).pil >= 0) e.pil = cbxPS(p).pil; /* CUBIX: warna bantal beda */ if (pcChanged(pc)) e.pc = { w: pc.w, d: pc.d, w0: pc.w0, d0: pc.d0, metal: pc.metal, metal0: pc.metal0 }; return e; }
+  function entryOf(p, q) { var s = selOf(p), pc = pcFor(p), e = { id: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, q: q || 1 }; if (p.id === KIT_ID) e.kit = kitCur(p, kitOf(p)).kit; if (isCbxFab(p) && cbxPS(p).pil >= 0) e.pil = cbxPS(p).pil; /* CUBIX: warna bantal beda */ if (pcChanged(pc)) e.pc = { w: pc.w, d: pc.d, w0: pc.w0, d0: pc.d0, metal: pc.metal, metal0: pc.metal0 }; return e; }
   /* masuk tas: gambar barang melayang dari tombol yang diklik ke ikon tas di header (lengkung), lalu ikon tas "menangkap" + angka berdenyut */
   var lastTap = null;
   document.addEventListener('pointerdown', function (e) { lastTap = e.target.closest ? e.target.closest('button, a') : null; }, true);
@@ -1352,7 +1448,7 @@
       var acc = e.kind === 'acc';
       return '<li data-rid="' + e.rid + '"' + (acc ? ' class="is-acc"' : '') + '><div class="list__th">' + (acc ? accIcon(e.k) : e.img ? '<img class="is-snap" src="' + e.img + '" alt="">' : '<svg><use href="#i-ruler"/></svg>') + '</div>' +
         '<div><p class="list__n"><span>' + esc(acc ? T(ACC_BY[e.k] ? ACC_BY[e.k][1] : e.title) : e.title) + '</span>' + (e.kind === 'custom' ? '<span class="tag tag--gold">Custom</span>' : '') + '</p><p class="list__v">' + esc(acc ? T('Aksesoris · styling') : e.sub || '') + '</p>' + (acc ? '' : '<p class="list__p">' + rupiah(roomPrice(e)) + '</p>') +
-        '<div class="list__acts"><button class="mini" type="button" data-rot="-45">↺ 45°</button><button class="mini" type="button" data-rot="45">↻ 45°</button>' + (acc ? '' : '<button class="mini mini--gold" type="button" data-room-bag>' + T('Ke tas') + '</button>') + '</div></div>' +
+        '<div class="list__acts"><button class="mini" type="button" data-rot="-45">↺ 45°</button><button class="mini" type="button" data-rot="45">↻ 45°</button>' + (acc ? '' : '<button class="mini mini--gold" type="button" data-room-bag>' + T(e.kind === 'custom' ? 'Minta penawaran' : 'Ke tas') + '</button>') + '</div></div>' +
         '<div class="list__r"><button class="rm" type="button" data-room-rm>' + T('Hapus') + '</button></div></li>';
     }).join('');
     $('#roomTotal').textContent = rupiah(l.reduce(function (n, e) { return n + roomPrice(e); }, 0));
@@ -1376,7 +1472,7 @@
     if ((b = e.target.closest('[data-rot]'))) { it.ry = ((it.ry || 0) + +b.dataset.rot + 360) % 360; roomSave(l); if (XW.roomSet) XW.roomSet(it.rid, { ry: it.ry }); return; }
     if (e.target.closest('[data-room-rm]')) { roomSave(l.filter(function (x) { return x !== it; })); renderRoom(); if (XW.roomRemove && XW.roomRemove(it.rid)) roomDetail(); else roomStage(); return; }
     if (e.target.closest('[data-room-bag]')) {
-      if (it.kind === 'custom') addEntry({ id: 'cz-' + Date.now().toString(36), type: 'custom', title: it.title, sub: it.sub, mat: it.mat, cfg: it.cfg, price: roomPrice(it), img: it.img, q: 1 });
+      if (it.kind === 'custom') czQuote(it.cfg);
       else { var p = byId[it.pid]; if (p) { var en = { id: p.id, v: it.v, s: it.s, q: 1 }; if (it.pc) en.pc = it.pc; var ln = line(en); if (ln) { if (bag[ln.key]) bag[ln.key].q++; else bag[ln.key] = en; renderBag(); bump(); notice(T('{name} × {q} ditambahkan ke tas', { name: p.name, q: 1 })); } } }
     }
   });
@@ -1387,7 +1483,7 @@
      permukaan otomatis (TV → kabinet, lampu → meja samping, bantal → sofa / ranjang). sh: ubah ruangan (mis. naikkan lukisan). */
   var ROOM_PRE = {
     tamu: [
-      { l: 'Lounge', m: [['canis', -.1, -1.62, 0], ['rouled', -.1, -.15, 0], ['guise-1-seater', -.85, 1.05, 155], ['guise-1-seater', .65, 1.05, -155], ['hexter', -1.95, -.9, 0]],
+      { l: 'Lounge', m: [['canis', -.1, -1.62, 0], ['rouled-nested-coffee-table', -.1, -.15, 0], ['guise-1-seater', -.85, 1.05, 155], ['guise-1-seater', .65, 1.05, -155], ['hexter', -1.95, -.9, 0]],
         a: [['rug', null, -.1, -.1], ['tray', 1], ['vase', 1], ['books', 1], ['cushion', 0], ['throw', 0], ['lamp', 4]] },
       { l: 'Keluarga + TV', m: [['gliza-tv-cabinet-stand', -.3, -2.15, 0], ['kyrios', -.3, .95, 180], ['recta', -.3, -.05, 0], ['astral-1-seater', -2.05, -.4, 90], ['hexter', 1.25, .95, 0]],
         a: [['rug', null, -.3, .25], ['tv', 0], ['candles', 0], ['books', 0], ['tray', 2], ['lamp', 4], ['cushion', 1], ['plant', null]],
@@ -2052,12 +2148,17 @@
     var hs = current === 'cubix' ? cbxHist : current === 'ruang' ? roomHist : current === 'customize' ? czHist : null;
     if (hs && (hs.u.length || hs.r.length)) { if (hs.u.length) it.push(['undo', T('Urungkan') + '  ·  Ctrl+Z']); if (hs.r.length) it.push(['redo', T('Ulangi') + '  ·  Ctrl+Shift+Z']); it.push(null); }
     if (XW.motions && XW.motions().length && !(pick && pick.kind !== 'item' && pick.kind)) it.push(['anim', T('Animate'), XW.motions().some(function (m) { return m.to > .5; })], null);
-    var dm = dimsMode(), hk = XW.human ? XW.human() : false, fr = freeNow(), th = themeNow(), bg = bgNow();
+    var dm = dimsMode(), hk = XW.human ? XW.human() : false, fr = freeNow(), th = themeNow(), bg = bgNow(), pn = plinthNow();
     it.push({ seg: T('Ukuran'), opts: [['dims:0', 'Off', dm === 0], ['dims:1', 'Basic', dm === 1], ['dims:2', 'Advance', dm === 2]] });
-    it.push({ fly: T('Pembanding'), cur: hk === 'pria' ? T('Pria') + ' · 170' : hk === 'wanita' ? T('Wanita') + ' · 160' : hk === 'manikin' ? T('Manikin') + ' · 170' : T('Tanpa'), opts: [['human:pria', T('Pria') + ' · 170 cm', hk === 'pria'], ['human:wanita', T('Wanita') + ' · 160 cm', hk === 'wanita']] });
+    it.push({ fly: T('Pembanding'), key: 'human', cur: hk ? (({ pria: T('Pria') + ' · 170', wanita: T('Wanita') + ' · 160', anak: T('Anak') + ' · 110', manikin: T('Manikin') + ' · 170' })[hk] || T('Tanpa')) : T('Tanpa'), opts: [['human:pria', T('Pria') + ' · 170 cm', hk === 'pria'], ['human:wanita', T('Wanita') + ' · 160 cm', hk === 'wanita'], ['human:anak', T('Anak') + ' · 110 cm', hk === 'anak']] });   // 26 Okt: pisang / kaleng / bola dihapus, + anak kecil (pemilik)
     it.push({ seg: T('Putar bebas'), opts: [['free:1', 'On', fr], ['free:0', 'Off', !fr]] });
+    it.push({ seg: T('Podium'), opts: [['plinth:1', 'On', pn], ['plinth:0', 'Off', !pn]] });   // 27 Okt: podium bulat (lazy susan) muncul / hilang
+    var rl = reflNow(); it.push({ seg: T('Refleksi lantai'), opts: [['refl:0', 'Off', rl === 0], ['refl:1', 'Low', rl === 1], ['refl:2', 'Mid', rl === 2], ['refl:3', 'High', rl === 3]] });   // C77 → C78: Off / Low / Mid / High (kata pemilik)
+    var sh = XW.shell ? XW.shell() : null;   // 30 Okt (C76): produk berplafon → tinggi plafon; produk bertembok → tembok tampil / sembunyi
+    if (sh && sh.ceil) it.push({ fly: T('Tinggi plafon'), key: 'ceil', cur: String(sh.h.toFixed(1)).replace('.', ',') + ' m', opts: CEIL_HS.map(function (h) { return ['ceil:' + h, String(h.toFixed(1)).replace('.', ',') + ' m', Math.abs(sh.h - h) < .01]; }) });
+    if (sh && sh.wall) it.push({ seg: T('Tembok'), opts: [['walls:1', 'On', sh.walls], ['walls:0', 'Off', !sh.walls]] });
     it.push({ seg: T('Tema'), opts: [['theme:dark', T('Gelap'), th === 'dark'], ['theme:light', T('Terang'), th === 'light']] });
-    it.push({ seg: 'Background', opts: [['bg:default', 'Default', bg === 'default'], ['bg:studio', 'Studio', bg === 'studio'], ['bg:grid', T('Garis'), bg === 'grid']] });
+    it.push({ seg: 'Background', opts: [['bg:default', 'Default', bg === 'default'], ['bg:studio', 'Studio', bg === 'studio'], ['bg:classic', 'Classic', bg === 'classic'], ['bg:grid', T('Garis'), bg === 'grid']] });
     it.push(null, ['reset', T('Reset tampilan')]);
     return it;
   }
@@ -2066,7 +2167,7 @@
     return '<p class="ctx__h">' + T('Panggung') + '</p>' + ctxItems(pick).map(function (o) {
       if (!o) return '<hr>';
       if (o.seg) return '<div class="ctx__row"><span class="ctx__l">' + esc(o.seg) + '</span><div class="ctx__seg">' + o.opts.map(segBtn).join('') + '</div></div>';
-      if (o.fly) return '<div class="ctx__row ctx__row--fly" tabindex="0"><span class="ctx__l">' + esc(o.fly) + '</span><span class="ctx__cur" data-fly><span>' + esc(o.cur) + '</span><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span><div class="ctx__fly" role="group">' + o.opts.map(function (q) { return '<button type="button" role="menuitemradio" aria-checked="' + (q[2] ? 'true' : 'false') + '" class="more__item ' + (q[2] ? 'is-on' : '') + '" data-ctx="' + q[0] + '"><span>' + esc(q[1]) + '</span><i class="' + (q[2] ? 'is-on' : '') + '"></i></button>'; }).join('') + '</div></div>';
+      if (o.fly) return '<div class="ctx__row ctx__row--fly" tabindex="0" data-fk="' + (o.key || '') + '"><span class="ctx__l">' + esc(o.fly) + '</span><span class="ctx__cur" data-fly><span>' + esc(o.cur) + '</span><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span><div class="ctx__fly" role="group">' + o.opts.map(function (q) { return '<button type="button" role="menuitemradio" aria-checked="' + (q[2] ? 'true' : 'false') + '" class="more__item ' + (q[2] ? 'is-on' : '') + '" data-ctx="' + q[0] + '"><span>' + esc(q[1]) + '</span><i class="' + (q[2] ? 'is-on' : '') + '"></i></button>'; }).join('') + '</div></div>';
       return '<button type="button" class="more__item" role="menuitem" data-ctx="' + o[0] + '"><span>' + esc(o[1]) + '</span>' + (o.length > 2 ? '<i class="' + (o[2] ? 'is-on' : '') + '"></i>' : '') + '</button>';
     }).join('');
   }
@@ -2082,9 +2183,17 @@
   // toggle di menu: menu tetap terbuka, isinya diperbarui di tempat
   function ctxRefresh() { if (ctxEl.classList.contains('is-on')) ctxEl.innerHTML = ctxHtml(ctxPick); }
   // layar sentuh: ketuk baris Pembanding = buka / tutup kotak samping (hover tidak ada)
-  ctxEl.addEventListener('click', function (e) { var cur = e.target.closest('[data-fly]'); if (cur) cur.closest('.ctx__row--fly').classList.toggle('is-open'); });
+  ctxEl.addEventListener('click', function (e) {
+    var cur = e.target.closest('[data-fly]'); if (!cur) return;
+    if (cur.closest('[data-fk]').dataset.fk === 'human' && XW.human && XW.human()) { store.set('xv5_human', XW.human(false) || 0); renderSettings(); ctxRefresh(); return; }   // 26 Okt: menyala → sekali klik = mati (hanya baris Pembanding)
+    cur.closest('.ctx__row--fly').classList.toggle('is-open');
+  });
   function ctxClose() { ctxEl.classList.remove('is-on'); ctxPick = null; }
   XW.onContext = function (x, y, pick) { ctxOpen(x, y, pick); };
+  var CEIL_HS = [2.8, 3, 3.2, 3.5, 4, 4.5];   // C76: tinggi plafon minimal 2,8 m, sampai 4,5 m
+  if (XW.setCeil) XW.setCeil(store.get('xv5_ceil', 2.8));
+  if (XW.setFloorRefl) XW.setFloorRefl(reflNow());   // C77: lantai berefleksi tinggi (bawaan)
+  if (XW.setWalls) XW.setWalls(!!store.get('xv5_walls', 1));
   (function () { var hk = store.get('xv5_human', 0); if (XW.human && hk) XW.human(hk === 1 ? 'pria' : hk); })();   // manikin skala diingat di perangkat
   function ctxOpenAgain() { if (ctxXY && ctxPick !== undefined) { ctxEl.innerHTML = ctxHtml(ctxPick); ctxEl.classList.add('is-on'); } }
   ctxEl.addEventListener('click', function (e) {
@@ -2092,6 +2201,10 @@
     var a = b.dataset.ctx, pick = ctxPick; ctxEl.classList.remove('is-on');
     if (a.indexOf('dims:') === 0) { store.set('xv5_dims', +a.slice(5)); renderSettings(); ctxOpenAgain(); return; }
     if (a.indexOf('free:') === 0) { store.set('xv5_free', +a.slice(5)); applyFree(); ctxOpenAgain(); return; }
+    if (a.indexOf('plinth:') === 0) { store.set('xv5_plinth', +a.slice(7)); applyPlinth(); ctxOpenAgain(); return; }
+    if (a.indexOf('refl:') === 0) { reflSet(+a.slice(5)); ctxOpenAgain(); return; }
+    if (a.indexOf('ceil:') === 0) { store.set('xv5_ceil', +a.slice(5)); if (XW.setCeil) XW.setCeil(+a.slice(5)); ctxOpenAgain(); return; }
+    if (a.indexOf('walls:') === 0) { store.set('xv5_walls', +a.slice(6)); if (XW.setWalls) XW.setWalls(!!+a.slice(6)); ctxOpenAgain(); return; }
     if (a.indexOf('theme:') === 0) { setTheme(a.slice(6)); ctxOpenAgain(); return; }
     if (a.indexOf('bg:') === 0) { store.set('xv5_bg', a.slice(3)); applyBg(); renderSettings(); ctxOpenAgain(); return; }
     if (a === 'reset') { if (XW.recenter) XW.recenter(); return; }
@@ -2412,7 +2525,7 @@
   // label kotak pilihan ≤ 15: s (Indonesia) / se (English) bila label lengkap terlalu panjang; warna kain: s = tanpa nama lini
   var shortL = function (x) { return I18N && I18N.lang() === 'en' ? (x.se || (x.s && x.en === x.l ? x.s : L(x))) : (x.s || x.l); };
   var short = function (n) { var en = I18N && I18N.lang() === 'en'; return n >= 1e6 ? (n / 1e6).toFixed(1).replace(/\.0$/, '').replace('.', en ? '.' : ',') + (en ? 'M' : ' jt') : Math.round(n / 1000) + (en ? 'k' : ' rb'); };
-  var czVal = function (gr, v) { var s = I18N && I18N.lang() === 'en' ? String(v) : String(v).replace('.', ','); return gr.unit === 'pcs' ? s : s + ' ' + gr.unit; };   // CZ-C: 2,5 (bukan 2.5)
+  var czVal = function (gr, v) { return gr.unit === 'pcs' ? String(v) : v + ' ' + gr.unit; };
   /* Info layout (Pengaturan): I = semua pilihan di panel kanan · II = pilihan > 4 di kotak sebelah panel ·
      III = seperti II, kotak tepat di kanan side panel (rail) dan preview bergeser ke kanan. Mobile selalu I. */
   function czlNow() {
@@ -2423,31 +2536,29 @@
   var czLayout = function () { return isMobile() ? 'box1' : 'box' + czlNow(); };
 
   // panggung: rancangan 3D (atau produk asli bila dipilih)
-  /* CZ-F: saat slider diseret (live) model dibangun ulang berkala (throttle, jeda ≥ 5× waktu bangun terakhir, min 60 ms)
-     — dulu debounce 30 ms: selama jari bergerak model tidak berubah sama sekali, lalu melompat saat berhenti */
-  var czT = 0, czLastB = 0, czBuildMs = 8;
-  function czStage(live) {
+  var czT = 0;
+  function czStage() {
     if (current !== 'customize' || !XW.ok) return;
     clearTimeout(czT);
-    var wait = live ? Math.max(0, Math.max(60, czBuildMs * 5) - (performance.now() - czLastB)) : 30;
     czT = setTimeout(function () {
-      var t0 = czLastB = performance.now();
       if (czBase && czView === 'product' && byId[czBase.id]) showProduct(byId[czBase.id]);
-      else { stageKind = 'custom'; furniture = { kind: 'custom' }; XW.showCustom(cz, { live: !!live }); czBuildMs = czBuildMs * .7 + (performance.now() - t0) * .3; }
+      else { stageKind = 'custom'; furniture = { kind: 'custom' }; XW.showCustom(cz); }
       czDetail();
-    }, wait);
+    }, 30);
   }
   // skrip uji: pasang konfigurasi Customize langsung (mis. XVCustom({ cat: 'meja', sub: 'desk', ... }))
   window.XVCustom = function (cfg) { cz = XC.normalize(Object.assign(XC.defaults(cfg.cat, cfg.sub), cfg)); czSave(); if (current === 'customize') { czRender(); czStage(); } return JSON.parse(JSON.stringify(cz)); };
-  function czTitle(lang) {
-    var Lx = lang === 'id' ? function (o) { return o.l; } : L, sb = XC.sub(cz);
-    var g = XC.groups(cz, 'bentuk').filter(function (x) { return x.id === 'shape' || x.id === 'topShape' || x.id === 'form'; })[0], o = g && XC.pick(g, cz);
+  function czTitle(lang, c) {
+    c = c || cz;
+    var Lx = lang === 'id' ? function (o) { return o.l; } : L, sb = XC.sub(c);
+    var g = XC.groups(c, 'bentuk').filter(function (x) { return x.id === 'shape' || x.id === 'topShape' || x.id === 'form'; })[0], o = g && XC.pick(g, c);
     return Lx(sb) + (o ? ' · ' + Lx(o) : '');
   }
-  function czMat(lang) {
-    var Lx = lang === 'id' ? function (o) { return o.l; } : L, gs = XC.groups(cz, 'material');
-    for (var i = 0; i < gs.length; i++) if (gs[i].type === 'swatch') { var o = XC.pick(gs[i], cz); if (o) return Lx(o); }
-    var f = gs[0] && XC.pick(gs[0], cz); return f ? Lx(f) : '';
+  function czMat(lang, c) {
+    c = c || cz;
+    var Lx = lang === 'id' ? function (o) { return o.l; } : L, gs = XC.groups(c, 'material');
+    for (var i = 0; i < gs.length; i++) if (gs[i].type === 'swatch') { var o = XC.pick(gs[i], c); if (o) return Lx(o); }
+    var f = gs[0] && XC.pick(gs[0], c); return f ? Lx(f) : '';
   }
   var czDT = 0;
   function czDetail(throttle) {
@@ -2455,8 +2566,8 @@
     if (throttle) { if (czDT) return; czDT = setTimeout(function () { czDT = 0; czDetail(); }, 260); return; }
     setDetail({
       name: czTitle(), sub: XC.dimsText(cz), cols: [[T('Material'), czMat()]],
-      priceK: T('Harga') + ' · ' + T('rincian'), price: rupiah(czUnit() * (cz.qty || 1)), priceFn: czBreakdown,
-      act: current !== 'customize' ? { t: 'Customize', icon: 'i-ruler', fn: function () { go('customize'); } } : { t: T('Tambah ke tas'), icon: 'i-bag', fn: czAddToBag }
+      priceK: T('Estimasi · rincian'), price: rupiah(czUnit() * (cz.qty || 1)), priceFn: czBreakdown,
+      act: current !== 'customize' ? { t: 'Customize', icon: 'i-ruler', fn: function () { go('customize'); } } : { t: T('Minta penawaran'), icon: 'i-wa', fn: function () { czQuote(); } }
     });
   }
 
@@ -2467,21 +2578,14 @@
   function czFoot() {
     var el = $('#czFoot'); if (!el) return;
     var q = Math.max(1, +cz.qty || 1);
-    el.innerHTML = '<button type="button" class="cz__price" data-breakdown><em>' + (q > 1 ? T('Total {n} unit', { n: q }) : T('Harga · rincian')) + '</em><b>' + rupiah(czUnit() * q) + '</b></button>' +
+    el.innerHTML = '<button type="button" class="cz__price" data-breakdown><em>' + (q > 1 ? T('Estimasi {n} unit', { n: q }) : T('Estimasi · rincian')) + '</em><b>' + rupiah(czUnit() * q) + '</b></button>' +
       '<button class="btn btn--line btn--ic" type="button" data-cz-save title="' + T('Simpan rancangan') + '"><svg><use href="#i-heart"/></svg><span class="btn__l">' + T('Simpan') + '</span></button>' +   // ikon + label kecil
       '<button class="btn btn--line btn--ic" type="button" data-cz-room title="' + T('Tambah ke ruang') + '"><svg><use href="#i-room"/></svg><span class="btn__l">' + T('Ruang') + '</span></button>' +
-      '<button class="btn btn--gold" type="button" data-cz-add' + (czEditing() ? ' title="' + T('Perbarui rancangan di tas') + '"' : '') + '><svg><use href="#i-bag"/></svg><span>' + (czEditing() ? T('Perbarui') : T('Ke tas')) + '</span></button>';
+      '<button class="btn btn--gold" type="button" data-cz-quote title="' + T('Minta penawaran') + ' — ' + T('Kirim rancangan ke admin XIONCO lewat WhatsApp') + '"><svg><use href="#i-wa"/></svg><span>' + T('Penawaran') + '</span></button>';   // label pendek: harga di kaki panel tidak terpotong (397 px)
   }
   function czEntry() {
     return { id: 'cz-' + Date.now().toString(36), type: 'custom', title: czTitle(), sub: XC.dimsText(cz), mat: czMat(), cfg: JSON.parse(JSON.stringify(cz)), price: czUnit(), img: XW.snapshot ? XW.snapshot(220) : '', q: Math.max(1, +cz.qty || 1), base: czBase };
   }
-  var czEditKey = null;   // rancangan di tas yang sedang diubah
-  function czEditing() { return !!(czEditKey && bag[czEditKey]); }
-  function czAddToBag() {
-    if (czEditing()) { var old = bag[czEditKey], ne = czEntry(); ne.id = old.id;   /* CZ-C: jumlah = cz.qty sekarang (dulu jumlah lama menimpa) */ delete bag[czEditKey]; bag[ne.id] = ne; czEditKey = null; renderBag(); bump(); czFoot(); notice(T('Rancangan di tas diperbarui'), { t: T('Lihat tas'), fn: function () { go('tas'); } }); return; }
-    addEntry(czEntry());
-  }
-  function czBuyNow() { openPay([czEntry()], 'customize'); }
   function czSaveDesign() {
     var e = czEntry(), list = designs();
     list.unshift({ id: 'D' + Date.now().toString(36).toUpperCase(), created: Date.now(), title: e.title, sub: e.sub, mat: e.mat, cfg: e.cfg, price: e.price, img: e.img, base: czBase });
@@ -2497,7 +2601,7 @@
   $('#czFoot').addEventListener('click', function (e) {
     if (e.target.closest('[data-breakdown]')) czBreakdown();
     else if (e.target.closest('[data-cz-save]')) czSaveDesign();
-    else if (e.target.closest('[data-cz-add]')) czAddToBag();
+    else if (e.target.closest('[data-cz-quote]')) czQuote();
     else if (e.target.closest('[data-cz-room]')) { var en = czEntry(); roomAdd({ kind: 'custom', title: en.title, sub: en.sub, mat: en.mat, cfg: en.cfg, price: en.price, img: en.img }); }
   });
   $('#pdRoom').addEventListener('click', function () { advOpen(false); var p = kList[kI]; if (!p) return; var s = selOf(p), c = cur(p, s), pc = pcFor(p), e = { kind: 'product', pid: p.id, v: p.variants && p.variants.length ? s.v : -1, s: p.variants && p.variants.length ? s.s : -1, title: p.name, sub: c.label || p.type, img: src(c.img || p.img, 400) }; if (pcChanged(pc)) e.pc = { w: pc.w, d: pc.d, w0: pc.w0, d0: pc.d0, metal: pc.metal, metal0: pc.metal0 }; roomAdd(e); });
@@ -2539,7 +2643,7 @@
     return '<span class="cz-card__f"><i class="cz-sw ' + k + '" style="--c:' + x.hex + (x.vein ? ';--v:' + x.vein : '') + '"></i></span>';
   }
   /* selisih harga bila pilihan ini dipilih (dihitung dari rancangan sekarang, per unit) */
-  var czUnit0 = null;
+  var czUnit0 = null; czBD = null;
   function czDelta(gr, x, on, multi) {
     if (on || gr.id === '_cat' || gr.id === '_sub' || !window.XC) return 0;
     try {
@@ -2548,70 +2652,30 @@
       return Math.round(((XC.estimate(c) || 0) - czUnit0) / 5000) * 5000;
     } catch (e) { return 0; }
   }
-  function czSelDelta(gr, x, multi) {   // harga pilihan terpilih dibanding pilihan termurah di grupnya (per unit)
+  /* harga pilihan terpilih = baris yang sama di Rincian harga (C99: satu cara hitung; dulu dibanding pilihan termurah
+     sehingga biaya kaki walnut muncul di tiga kartu) */
+  var czBD = null;
+  function czSelDelta(gr, x) {
     if (gr.id === '_cat' || gr.id === '_sub' || !window.XC) return 0;
     try {
-      if (czUnit0 == null) { var c0 = JSON.parse(JSON.stringify(cz)); c0.qty = 1; czUnit0 = XC.estimate(c0) || 0; }
-      if (multi) { var c = JSON.parse(JSON.stringify(cz)); c.qty = 1; XC.apply(c, gr.id, (c[gr.id] || []).filter(function (id) { return id !== x.id; })); return Math.round((czUnit0 - (XC.estimate(c) || 0)) / 5000) * 5000; }
-      var mn = 0; XC.opts(gr, cz).forEach(function (o) { var d = czDelta(gr, o, false, false); if (d < mn) mn = d; });
-      return -mn;
+      if (czUnit0 == null || !czBD) { var c0 = JSON.parse(JSON.stringify(cz)); c0.qty = 1; czBD = XC.breakdown(c0); czUnit0 = czBD.total; }
+      var v = czBD.rows.reduce(function (n, r) { return r.g === gr.id && r.o === x.id ? n + r.v : n; }, 0);
+      return Math.round(v / 1000) * 1000;   // sama dengan pembulatan baris Rincian harga
     } catch (e) { return 0; }
   }
-  /* CZ-B (25 Okt) · satu komponen per jenis grup, sama di panel & kotak pemilih:
-       warna (opsi ber-hex)        → cakram berderet, urut gradasi (swOrder), nama di kepala grup
-       bergambar (ikon render/SVG) → ubin seragam (gambar 1:1 + nama maks. 2 baris), tanpa kotak harga
-       teks                        → daftar polos, yang dipilih bergaris bawah emas
-     Harga tambahan tidak lagi di dalam kartu: kepala grup menampilkan pilihan + selisihnya, dan berganti
-     sementara saat kursor / fokus berada di pilihan lain (seperti cakram katalog). */
-  function czFigure(gr, x) {
-    if (x.svg && (gr.id === 'handle' || !czIcon(gr, x))) return { k: 'ic', h: '<span class="cz-card__f">' + x.svg + '</span>' };   // SVG spesifikasi menang untuk handle (render lama salah)
-    var u = czIcon(gr, x);
-    if (u) {
-      var ua = czIconA(u), mk = function (url, c) { return '<i class="cz-card__m' + c + (CZI.seen[url] ? ' is-m" style="--m:url(\'' + url + '\')' : '') + '" data-m="' + esc(url) + '"></i>'; };
-      return { k: 'ic', h: '<span class="cz-card__f' + (ua ? ' has-a' : '') + '">' + mk(u, '') + (ua ? mk(ua, ' cz-card__a') : '') + '</span>' };
+  function cell(gr, x, on, multi) {
+    var full = L(x) + (x.add ? ' (+' + short(x.add) + ')' : ''), fig = '', kind = 'is-tx', dd = on ? czSelDelta(gr, x, multi) : 0;   // harga hanya di kartu yang dipilih
+    if (x.hex) { fig = czSwatch(gr, x); kind = 'is-sw'; }
+    else {
+      var u = czIcon(gr, x);
+      if (u) {
+        var ua = czIconA(u), mk = function (url, c) { return '<i class="cz-card__m' + c + (CZI.seen[url] ? ' is-m" style="--m:url(\'' + url + '\')' : '') + '" data-m="' + esc(url) + '"></i>'; };
+        kind = 'is-ic'; fig = '<span class="cz-card__f' + (ua ? ' has-a' : '') + '">' + mk(u, '') + (ua ? mk(ua, ' cz-card__a') : '') + '</span>';
+      }
+      else if (x.svg) { kind = 'is-ic'; fig = '<span class="cz-card__f">' + x.svg + '</span>'; }   // gambar garis SVG dari spesifikasi (pilihan tanpa render)
     }
-    if (x.svg) return { k: 'ic', h: '<span class="cz-card__f">' + x.svg + '</span>' };
-    return null;
-  }
-  function czCols(n) { if (n <= 4) return 4; var f = function (k) { return (n % k || k) / k; }; return f(3) > f(4) ? 3 : 4; }   // 3 atau 4 kolom: baris terakhir sepenuh mungkin (5 → 3 + 2, 7 → 4 + 3)   // 3 atau 4 kolom: baris terakhir tidak menggantung bila bisa
-  function czKind(gr, o) {
-    if (o.some(function (x) { return x.hex; })) return 'sw';
-    return o.length && o.every(function (x) { return czFigure(gr, x); }) ? 'ic' : 'tx';
-  }
-  function czDisc(gr, x) {   // isi cakram: warna + kesan bahan (kain, kulit, kayu, logam, batu) atau tekstur koleksi
-    var k = '', u = gr.id === 'color' || gr.id === 'color2' ? XC.find(XC.UPH, cz.uph) : null;
-    if (u) k = u.leather ? 'is-leather' : u.nap ? 'is-' + u.nap : 'is-weave';
-    else if (gr.id === 'wood' || x.grain) k = 'is-wood';
-    else if (gr.id === 'metal') k = 'is-metal';
-    else if (x.speck) k = 'is-speck';
-    else if (x.vein) k = 'is-stone';
-    if (x.tex && window.XTEX) return '<i class="cz-sw is-tex" style="--c:' + x.hex + ';background-image:url(\'' + XTEX.thumb(x.tex) + '\')"></i>';
-    return '<i class="cz-sw ' + k + '" style="--c:' + (x.hex || 'transparent') + (x.vein ? ';--v:' + x.vein : '') + '"></i>';
-  }
-  function cell(gr, x, on, multi, kind) {
-    kind = kind || (x.hex ? 'sw' : czFigure(gr, x) ? 'ic' : 'tx');
-    var name = L(x), lab = shortL(x), st = ' aria-pressed="' + (on ? 'true' : 'false') + '" data-v="' + x.id + '" data-peek="' + esc(name) + '"';
-    if (kind === 'sw') return '<button type="button" class="cz-o cz-dsc' + (on ? ' is-on' : '') + '"' + st + ' title="' + esc(name) + '" aria-label="' + esc(name) + '">' + czDisc(gr, x) + '</button>';
-    if (kind === 'ic') return '<button type="button" class="cz-o cz-card is-ic' + (on ? ' is-on' : '') + '"' + st + ' title="' + esc(name) + '">' + czFigure(gr, x).h +
-      (multi ? '<i class="cz-o__k" aria-hidden="true"></i>' : '') + '<span class="cz-card__l"><span>' + esc(lab) + '</span></span></button>';
-    return '<button type="button" class="cz-o cz-tx' + (on ? ' is-on' : '') + (multi ? ' is-multi' : '') + '"' + st + ' title="' + esc(name) + '">' + esc(lab) + '</button>';
-  }
-  /* daftar pilihan satu grup. lim: jumlah maks. yang tampil (sisanya lewat tombol "Semua N pilihan" → kotak pemilih) */
-  function czOpts(gr, o, multi, selIds, lim) {
-    var kind = czKind(gr, o), ord = o;
-    if (kind === 'sw') { var idx = swOrder(o.map(function (x, i) { return i; }), function (i) { return o[i].hex; }); ord = idx.map(function (i) { return o[i]; }); }
-    var show = ord;
-    if (lim && ord.length > lim) {
-      show = ord.slice(0, lim);
-      var si = ord.filter(function (x) { return selIds.indexOf(x.id) >= 0; })[0];
-      if (si && show.indexOf(si) < 0) show[show.length - 1] = si;
-    }
-    var on = function (x) { return selIds.indexOf(x.id) >= 0; }, rest = ord.length - show.length;
-    var grp = ' role="group" aria-label="' + esc(L(gr)) + '"', M = isMobile() ? 6 : 9;
-    var more = rest > 0 ? '<button type="button" class="cz-all' + (czPick === gr.id ? ' is-on' : '') + '" data-pick="' + gr.id + '">' + esc(T('Semua pilihan')) + ' · ' + ord.length + '<svg aria-hidden="true"><use href="#i-arrow"/></svg></button>' : '';
-    if (kind === 'sw') return '<div class="cz-sws"' + grp + ' style="--per:' + (show.length <= M ? show.length : Math.ceil(show.length / Math.ceil(show.length / M))) + '">' + show.map(function (x) { return cell(gr, x, on(x), multi, 'sw'); }).join('') + '</div>' + more;
-    if (kind === 'ic') { var cols = czCols(show.length); return '<div class="cz-grid cz-tiles"' + grp + ' style="--cols:' + cols + '">' + show.map(function (x) { return cell(gr, x, on(x), multi, 'ic'); }).join('') + '</div>' + more; }
-    return '<div class="cz-txs"' + grp + '>' + show.map(function (x) { return cell(gr, x, on(x), multi, 'tx'); }).join('') + '</div>' + more;
+    return '<button type="button" class="cz-o cz-card ' + kind + (on ? ' is-on' : '') + '" data-v="' + x.id + '" title="' + esc(full) + '">' + fig +
+      (multi ? '<i class="cz-o__k"></i>' : '') + '<span class="cz-card__l"><span>' + esc(cut15(shortL(x))) + '</span>' + (dd ? '<em class="cz-card__d' + (dd < 0 ? ' is-neg' : '') + '">' + (dd > 0 ? '+' : '−') + 'Rp ' + short(Math.abs(dd)) + '</em>' : '') + '</span></button>';
   }
   // gambar garis dimuat saat kartu mendekati area gulir (panel atau kotak pilihan Box 2)
   function czLazy(root) {
@@ -2645,27 +2709,31 @@
     return '<button type="button" class="cz-row' + (czlNow() === 3 ? ' is-r' : '') + (czPick === key && picker.classList.contains('is-on') ? ' is-on' : '') + '" data-pick="' + key + '"><span>' + esc(label) + '</span><b>' + esc(val) + '</b><svg><use href="#i-arrow"/></svg></button>';
   }
   function czDimsGroups() { return XC.groups(cz).filter(function (g) { return g.type === 'range' && g.step === 'ukuran'; }); }
-  function czDimsTitle() { var t = czDimsGroups().slice(0, 3).map(function (g) { return L(g); }), s = t.join(' · '); if (s.length > 30) s = t.map(function (x) { return x.replace(/\s*\([^)]*\)/g, ''); }).join(' · '); return s || T('Ukuran'); }
-  function czDimsText() {   // nilai baris mengikuti ukuran yang diatur di baris itu (divan: tinggi divan · tinggi headboard, bukan L × D × T)
-    var u = function (k) { return Math.round(+cz[k] || 0); }, ids = czDimsGroups().map(function (g) { return g.id; });
-    return ids.indexOf('w') >= 0 && ids.indexOf('d') >= 0 && cz.w && cz.d ? u('w') + ' × ' + u('d') + ' × ' + u('h') + ' cm' : czDimsGroups().slice(0, 3).map(function (g) { return selText(g); }).join(' · ');
+  function czDimsTitle() { return czDimsGroups().slice(0, 3).map(function (g) { return L(g); }).join(' · ') || T('Ukuran'); }
+  function czDimsText() {   // nilai mengikuti judul (czDimsTitle: 3 grup ukuran pertama) — C99: dulu ranjang menampilkan L × P × T di bawah judul tinggi divan · headboard
+    var u = function (k) { return Math.round(+cz[k] || 0); }, gs = czDimsGroups().slice(0, 3);
+    if (gs.map(function (g) { return g.id; }).join() === 'w,d,h') return u('w') + ' × ' + u('d') + ' × ' + u('h') + ' cm';
+    return gs.map(function (g) { return selText(g); }).join(' · ');
   }
   function czGroup(gr, box2) {
     if (gr.type === 'layout') return czLayEd(gr, box2);   // editor susunan kolom (kabinet)
     if (box2 && gr.id === '_sub') return '';   // Sub-kategori hanya di kotak samping (terbuka saat kartu Kategori diklik)
     var dep = czDepOn(gr) ? ' is-dep' : '';   // pilihan turunan (muncul karena pilihan di atasnya)
     var lab = L(gr) + (gr.partsL && gr.partsL.length ? ' · ' + T('untuk') + ' ' + gr.partsL.join(' & ') : '');
-    var hd = function () {   // nilai di kepala grup + selisih harga pilihan terpilih (dulu di dalam kartu)
-      if (gr.type === 'range' || gr.type === 'multi' || /^_/.test(gr.id)) return '';
-      var sel = XC.pick(gr, cz), d = sel ? czSelDelta(gr, sel, false) : 0;
-      return d > 0 ? '<em>+Rp ' + short(d) + '</em>' : '';
-    };
-    var head = function (b) { return '<p class="cz-g__h"><span>' + (gr.id === '_cat' ? '' : esc(lab)) + '</span><b' + (b ? ' data-out' : '') + '>' + esc(selText(gr) + (box2 && gr.id === '_cat' ? ' · ' + L(XC.sub(cz)) : '')) + hd() + '</b></p>'; };
-    if (gr.type === 'range') return '<div class="cz-g' + dep + '" data-g="' + gr.id + '">' + head(true) + '<input class="rng" type="range" style="--p:' + ((cz[gr.id] - gr.min) / (gr.max - gr.min) * 100).toFixed(1) + '%" min="' + gr.min + '" max="' + gr.max + '" step="' + gr.inc + '" value="' + cz[gr.id] + '" data-r="' + gr.id + '" aria-label="' + esc(L(gr)) + '" aria-valuetext="' + esc(czVal(gr, cz[gr.id])) + '"><p class="rng__ends"><span>' + esc(czVal(gr, gr.min)) + '</span><span>' + esc(czVal(gr, gr.max)) + '</span></p></div>';
-    var o = XC.opts(gr, cz), multi = gr.type === 'multi', selIds = multi ? (cz[gr.id] || []) : [cz[gr.id]], kind = czKind(gr, o);
-    // Box 2 (desktop): warna tampil hingga 20 cakram; ubin bergambar 4 (satu baris penuh); teks 8 — sisanya lewat "Semua pilihan · N" ke kotak pemilih
-    var lim = box2 && gr.id !== '_cat' && gr.id !== '_sub' ? (kind === 'sw' ? (o.length > 20 ? 19 : 0) : kind === 'ic' ? (o.length > 4 ? 4 : 0) : (o.length > 8 ? 8 : 0)) : 0;
-    return '<div class="cz-g' + dep + ' is-' + kind + '" data-g="' + gr.id + '"' + (multi ? ' data-multi' : '') + '>' + head() + czOpts(gr, o, multi, selIds, lim) + '</div>';
+    var head = function (b) { return '<p class="cz-g__h"><span>' + esc(lab) + '</span><b' + (b ? ' data-out' : '') + '>' + esc(selText(gr) + (box2 && gr.id === '_cat' ? ' · ' + L(XC.sub(cz)) : '')) + '</b></p>'; };
+    if (gr.type === 'range') return '<div class="cz-g' + dep + '" data-g="' + gr.id + '">' + head(true) + '<input class="rng" type="range" style="--p:' + ((cz[gr.id] - gr.min) / (gr.max - gr.min) * 100).toFixed(1) + '%" min="' + gr.min + '" max="' + gr.max + '" step="' + gr.inc + '" value="' + cz[gr.id] + '" data-r="' + gr.id + '" aria-label="' + esc(L(gr)) + '"><p class="rng__ends"><span>' + esc(czVal(gr, gr.min)) + '</span><span>' + esc(czVal(gr, gr.max)) + '</span></p></div>';
+    var o = XC.opts(gr, cz), multi = gr.type === 'multi';
+    if (box2 && o.length > 4 && gr.id !== '_cat' && gr.id !== '_sub') {   // 3 pilihan tampil (yang terpilih selalu ikut) + kartu "Lihat semua" yang membuka kotak samping
+      var selIds = multi ? (cz[gr.id] || []) : [cz[gr.id]], show = o.slice(0, 3), si = o.filter(function (x) { return selIds.indexOf(x.id) >= 0; })[0];
+      if (si && show.indexOf(si) < 0) show[2] = si;
+      var arrow = czlNow() === 3 ? '→' : '←';   // kotak samping di kanan panel pada Layout III
+      return '<div class="cz-g' + dep + '" data-g="' + gr.id + '"' + (multi ? ' data-multi' : '') + '>' + head() + '<div class="cz-grid">' +
+        show.map(function (x) { return cell(gr, x, selIds.indexOf(x.id) >= 0, multi); }).join('') +
+        '<button type="button" class="cz-o cz-card cz-more' + (czPick === gr.id ? ' is-on' : '') + '" data-pick="' + gr.id + '" title="' + esc(T('Lihat semua pilihan')) + '"><span class="cz-more__n">' + o.length + '</span><span class="cz-card__l"><span>' + esc(T('Lihat semua')) + ' ' + arrow + '</span></span></button></div></div>';
+    }
+    if (false) return '<button type="button" class="cz-row' + (czPick === gr.id ? ' is-on' : '') + '" data-pick="' + gr.id + '"><span>' + esc(L(gr)) + '</span><b>' + esc(selText(gr)) + '</b><svg><use href="#i-arrow"/></svg></button>';
+    return '<div class="cz-g' + dep + '" data-g="' + gr.id + '"' + (multi ? ' data-multi' : '') + '>' + head() + '<div class="cz-grid">' +
+      o.map(function (x) { return cell(gr, x, multi ? (cz[gr.id] || []).indexOf(x.id) >= 0 : x.id === cz[gr.id], multi); }).join('') + '</div></div>';
   }
   /* ---------- editor susunan kolom (kabinet): jumlah kolom → tampak depan (kolom bisa diklik, terpilih = emas)
      → isi kolom terpilih (kartu 3:4 bergambar garis) → jumlah / posisi / rak / lebar → preset. Data: cz.layout (spec-kabinet.js) */
@@ -2677,7 +2745,7 @@
     czCol = Math.max(0, Math.min(n - 1, czCol));
     var col = lay[czCol] || KB.newCol(KB.SUBK[sub][0], sub), kd = KB.KIND[col.k], max = KB.MAXC[sub] || 6;
     var Wm = (+cz.w || 100) / 100, ihM = (+cz.h || 80) / 100 - 2 * KB.T, ws = KB.colWidths(Wm, lay), ds = cz.doorStyle;
-    var card = function (act, svg, label, on, title) { return '<button type="button" class="cz-o cz-card is-ic' + (on ? ' is-on' : '') + '" data-lay="' + act + '" title="' + esc(title || label) + '"><span class="cz-card__f">' + svg + '</span><span class="cz-card__l"><span>' + esc(label) + '</span></span></button>'; };
+    var card = function (act, svg, label, on, title) { return '<button type="button" class="cz-o cz-card is-ic' + (on ? ' is-on' : '') + '" data-lay="' + act + '" title="' + esc(title || label) + '"><span class="cz-card__f">' + svg + '</span><span class="cz-card__l"><span>' + esc(cut15(label)) + '</span></span></button>'; };
     // satu kolom digambar di kotak 100×100 dengan proporsi kolom terpilih
     var colIco = function (c2) {
       var cw = ws[czCol] || .5, sc = Math.min(80 / cw, 80 / ihM), w = cw * sc, h = ihM * sc, x = 50 - w / 2, y = 50 - h / 2;
@@ -2690,14 +2758,14 @@
     var front = lay.map(function (q, i) {
       var cwc = ws[i] * 100, ihc = ihM * 100;
       return '<button type="button" class="kx-col' + (i === czCol ? ' is-on' : '') + '" data-lay="col:' + i + '" style="flex:' + q.wr + ' 1 0" title="' + esc(L({ l: 'Kolom', en: 'Column' }) + ' ' + (i + 1) + ' · ' + L(KB.KIND[q.k])) + '" aria-pressed="' + (i === czCol) + '">' +
-        KB.svgOpen('0 0 ' + cwc.toFixed(1) + ' ' + ihc.toFixed(1)) + KB.colSVG(q, sub, 0, 0, cwc, ihc, ihM, ws[i], i >= n / 2 && n > 1, ds) + '</svg></button>';
+        KB.svgOpen('0 0 ' + cwc.toFixed(1) + ' ' + ihc.toFixed(1)).replace('<svg ', '<svg preserveAspectRatio="none" ') + KB.colSVG(q, sub, 0, 0, cwc, ihc, ihM, ws[i], i >= n / 2 && n > 1, ds) + '</svg></button>';
     }).join('');
     var nums = lay.map(function (q, i) { return '<span style="flex:' + q.wr + ' 1 0"' + (i === czCol ? ' class="is-on"' : '') + '>' + (i + 1) + '</span>'; }).join('');
     var h = '<div class="cz-g kx-lay" data-g="layout" data-layg>';
     var colOnly = part === 'col', inBox = box2 && !colOnly;
     // preset susunan
     var pr = KB.PRESETS[sub] || [], curJ = JSON.stringify(lay);
-    if (pr.length && !colOnly) h += '<div data-lay-a="preset">' + H2({ l: 'Mulai dari preset susunan', en: 'Start from a layout preset' }) + '<div class="cz-grid cz-tiles" style="--cols:' + czCols(pr.length) + '">' + pr.map(function (p) {
+    if (pr.length && !colOnly) h += '<div data-lay-a="preset">' + H2({ l: 'Mulai dari preset susunan', en: 'Start from a layout preset' }) + '<div class="cz-grid">' + pr.map(function (p) {
       var cfg = { sub: sub, w: cz.w, h: cz.h, d: cz.d, mount: cz.mount, leg: cz.leg, top: cz.top, doorStyle: ds }, k2; for (k2 in p.dims || {}) cfg[k2] = p.dims[k2];
       cfg.layout = p.layout.map(function (q) { return KB.canonCol(q, sub); });
       return card('preset:' + p.id, KB.frontSVG(cfg, { base: sub === 'wall' ? 0 : 8 }), p.s || shortL(p), JSON.stringify(cfg.layout) === curJ, L(p));
@@ -2724,15 +2792,33 @@
         return card(p + ':' + o[0], svg, o[1], o[0] === cur);
       }).join('') + '</div></div>';
     });
+    // C101 (pemilik): handle & aksesori yang menempel ke kolom diatur di sini — tiap kolom boleh berbeda
+    var hg = XC.groups(cz).filter(function (g) { return g.id === 'handle'; })[0];
+    if (hg && KB.hasFront(col.k)) {
+      var allO = XC.pick(hg, cz), hFig = function (o) { var u = czIcon(hg, o); return u ? '<i class="cz-card__m' + (CZI.seen[u] ? ' is-m" style="--m:url(\'' + u + '\')' : '') + '" data-m="' + esc(u) + '"></i>' : ''; };
+      var hOpts = [['', allO]].concat(XC.opts(hg, cz).map(function (o) { return [o.id, o]; }));
+      var hCur = (hOpts.filter(function (o) { return o[0] === (col.hd || ''); })[0] || hOpts[0]);
+      h += '<div data-lay-a="hd">' + H2({ l: 'Handle kolom ' + (czCol + 1), en: 'Column ' + (czCol + 1) + ' handle' }, hCur[0] ? shortL(hCur[1]) : L({ l: 'Ikut semua kolom', en: 'Same as all columns' })) + '<div class="cz-grid">' + hOpts.map(function (o) {
+        var lab = o[0] ? shortL(o[1]) : L({ l: 'Ikut semua', en: 'Same as all' }), ttl = o[0] ? L(o[1]) : L({ l: 'Ikut handle semua kolom', en: 'Follow the all-columns handle' }) + (allO ? ' · ' + L(allO) : '');
+        return '<button type="button" class="cz-o cz-card is-ic' + ((col.hd || '') === o[0] ? ' is-on' : '') + '" data-lay="hd:' + o[0] + '" title="' + esc(ttl) + '"><span class="cz-card__f">' + (o[1] ? hFig(o[1]) : '') + '</span><span class="cz-card__l"><span>' + esc(cut15(lab)) + '</span></span></button>';
+      }).join('') + '</div></div>';
+    }
+    var acc = KB.accFor(col.k, sub).filter(function (o) { return o.id !== 'mirror' || cz.doorStyle !== 'open'; });
+    if (acc.length) {
+      var onL = acc.filter(function (o) { return (col.ac || []).indexOf(o.id) >= 0; }).map(shortL).join(', ');
+      h += '<div data-lay-a="ac">' + H2({ l: 'Aksesori kolom ' + (czCol + 1), en: 'Column ' + (czCol + 1) + ' accessories' }, onL || L({ l: 'Tanpa', en: 'None' })) + '<div class="cz-grid" data-multi>' + acc.map(function (o) {
+        var on = (col.ac || []).indexOf(o.id) >= 0, ic = KB.ICO[o.id] || '';
+        return '<button type="button" class="cz-o cz-card is-ic' + (on ? ' is-on' : '') + '" data-lay="ac:' + o.id + '" title="' + esc(L(o)) + ' (+' + short(o.add) + ')" aria-pressed="' + on + '"><span class="cz-card__f">' + ic + '</span><i class="cz-o__k"></i><span class="cz-card__l"><span>' + esc(cut15(shortL(o))) + '</span></span></button>';
+      }).join('') + '</div></div>';
+    }
     return h + '</div>';
   }
-  // buka pintu / tarik laci kolom terpilih di panggung (yang lain ditutup) — CZ-G4: satu per satu, BAWAH → ATAS, menutup terbalik;
-  // kolom laci: hanya laci paling bawah (dulu laci ATAS & semua pintu serentak); status tersimpan seperti Animate
+  // buka pintu / tarik laci kolom terpilih di panggung (yang lain ditutup)
   function czOpenCol() {
-    if (!window.XW || !XW.motions || !XW.openOnly || cz.cat !== 'kabinet') return;
+    if (!window.XW || !XW.motions || cz.cat !== 'kabinet') return;
     var ms = XW.motions().filter(function (m) { return m.col != null && m.col >= 0; }), mine = ms.filter(function (m) { return m.col === czCol; });
-    var doors = mine.filter(function (m) { return m.kind !== 'drawer'; }), pick = doors.length ? doors : mine;
-    XW.openOnly(pick.map(function (m) { return m.id; }), { one: !doors.length, scope: ms.map(function (m) { return m.id; }) });
+    var doors = mine.filter(function (m) { return m.kind !== 'drawer'; }), pick = doors.length ? doors : mine.slice(0, 1);
+    ms.forEach(function (m) { m.to = pick.indexOf(m) >= 0 ? 1 : 0; });
   }
   function czLayClick(b) {
     var KB = window.XKAB, a = b.getAttribute('data-lay'), i = a.indexOf(':'), key = a.slice(0, i), val = a.slice(i + 1);
@@ -2745,7 +2831,9 @@
       if (key === 'cols') {
         if (+val > 0 && lay.length < (KB.MAXC[sub] || 6)) { var last = lay[lay.length - 1]; lay.push(KB.canonCol(JSON.parse(JSON.stringify(last)), sub)); czCol = lay.length - 1; }
         else if (+val < 0 && lay.length > 1) { lay.pop(); czCol = Math.min(czCol, lay.length - 1); }
-      } else if (key === 'k') { lay[sel] = KB.newCol(val, sub, lay[sel].wr); reopen = true; }
+      } else if (key === 'k') { var keep = lay[sel]; lay[sel] = KB.newCol(val, sub, keep.wr); lay[sel].hd = keep.hd; lay[sel].ac = keep.ac; lay[sel] = KB.canonCol(lay[sel], sub); reopen = true; }   // handle & aksesori yang masih cocok ikut
+      else if (key === 'hd') { lay[sel].hd = val; lay[sel] = KB.canonCol(lay[sel], sub); }
+      else if (key === 'ac') { var ac = (lay[sel].ac || []).slice(), ai = ac.indexOf(val); if (ai >= 0) ac.splice(ai, 1); else ac.push(val); lay[sel].ac = ac; lay[sel] = KB.canonCol(lay[sel], sub); reopen = val === 'tray' || val === 'mirror'; }
       else if (key === 'preset') {
         var p = (KB.PRESETS[sub] || []).filter(function (x) { return x.id === val; })[0]; if (!p) return;
         for (var k2 in p.dims || {}) cz[k2] = p.dims[k2];
@@ -2840,6 +2928,23 @@
     });
     return out0.filter(function (cl) { return cl.groups.length; });
   }
+  /* C100 (pemilik): pilihan utama tampil dulu — jenis, ukuran, bentuk, kain/warna, kaki. Pilihan lain dari Bentuk, Material
+     & Detail dikumpulkan di langkah Detail sebagai "Detail lanjutan" yang terlipat (dibuka dengan satu klik). */
+  var CZ_MAIN = {
+    kursi: ['shape', 'form', 'seats', 'height', 'arm', 'armStyle', 'back', 'backStyle', 'backrest', 'backS', 'uph', 'color', 'legFinish', 'wood', 'metal', 'leg', 'base'],
+    meja: ['seats', 'topShape', 'base', 'legStyle', 'topMat', 'wood', 'stone', 'panel', 'baseMat', 'metal'],
+    kabinet: ['layout', 'doorStyle', 'doorType', 'doors', 'finish', 'wood', 'panel'],
+    divan: ['headboard', 'uph', 'color', 'wood']
+  };
+  var czAdvOpen = false;
+  function czMain(g) { var m = CZ_MAIN[cz.cat]; return !m || m.indexOf(g.id) >= 0 || (g.id === 'frame' && g.step === 'material'); }   // frame di Material = rangka kayu/besi kursi makan
+  function czPlan(step) {
+    if (!/^(bentuk|material|detail)$/.test(step) || !CZ_MAIN[cz.cat]) return planOf(step);
+    var part = function (st, main) { return planOf(st).map(function (cl) { return { title: cl.title, groups: cl.groups.filter(function (g) { return czMain(g) === main; }) }; }).filter(function (cl) { return cl.groups.length; }); };
+    if (step === 'bentuk') return part('bentuk', true);
+    if (step === 'material') return part('material', true).concat(part('detail', true));
+    return part('bentuk', false).concat(part('material', false), part('detail', false));
+  }
   function planOf0(step) {
     var catDef = XC.CATS.filter(function (x) { return x.id === cz.cat; })[0] || {}, plan = catDef.plan || CZ_PLAN[cz.cat], all = XC.groups(cz), used = {}, out = [];   // spec-*.js boleh membawa plan sendiri
     if (!plan) return [{ title: null, groups: XC.groups(cz, step) }];
@@ -2871,63 +2976,103 @@
         inner = '<dl class="kv cz__sum">' + rows.map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +
           '<dt>' + T('Estimasi produksi') + '</dt><dd>' + T('{a}–{b} hari kerja', { a: lead[0], b: lead[1] }) + '</dd><dt>' + T('Garansi') + '</dt><dd>' + T('3 tahun') + '</dd></dl>' +
           '<div class="row cz__qty"><span>' + T('Jumlah unit') + '</span><div class="stepper"><button type="button" data-czq="-1" aria-label="' + T('Kurangi') + '"><svg><use href="#i-minus"/></svg></button><span>' + (cz.qty || 1) + '</span><button type="button" data-czq="1" aria-label="' + T('Tambah') + '"><svg><use href="#i-plus"/></svg></button></div></div>' +
-          (function () { var q = Math.max(1, +cz.qty || 1), u = czUnit(); return '<dl class="kv cz__tot"><dt>' + T('Harga per unit') + '</dt><dd' + (q > 1 ? '' : ' class="is-total"') + '>' + rupiah(u) + '</dd>' + (q > 1 ? '<dt>' + T('Total {n} unit', { n: q }) + '</dt><dd class="is-total">' + rupiah(u * q) + '</dd>' : '') + '</dl>'; })() +
-          '<p class="cz__totnote"><span>' + T('Ongkir dihitung di checkout') + '</span><button type="button" data-breakdown>' + T('Rincian harga') + '</button></p>' +
-          '<div class="btns"><button class="btn btn--line" type="button" data-cz-buy><svg><use href="#i-card"/></svg><span>' + T('Beli sekarang') + '</span></button><button class="btn btn--line" type="button" data-send><svg><use href="#i-wa"/></svg><span>' + T('Tanya desainer') + '</span></button></div>';   // CZ-C: footer = satu-satunya tombol emas; tanpa Simpan dobel
+          '<div class="co-total" style="margin-bottom:16px"><button type="button" class="cz__price" data-breakdown><em>' + T('Estimasi · rincian') + '</em><b>' + rupiah(czUnit()) + '</b></button><span class="note">' + T('Harga final, ongkir & waktu produksi dikonfirmasi tim lewat penawaran') + '</span></div>' +
+          '<button class="btn btn--gold btn--full" type="button" data-cz-quote><svg><use href="#i-wa"/></svg><span>' + T('Minta penawaran') + '</span></button>' +
+          '<button class="btn btn--line btn--full" style="margin-top:10px" type="button" data-cz-pdf><svg><use href="#i-ruler"/></svg><span>' + T('Ekspor PDF') + '</span></button>';
       } else {
-        var pl = planOf(st.id), en = I18N && I18N.lang() === 'en'; czPrev = [];
-        var onlyDims = st.id === 'ukuran' && pl.every(function (cl) { return cl.groups.every(function (g) { return g.type === 'range'; }); });   // CZ-D: tanpa pilihan lain → slider langsung
-        inner = pl.length ? pl.map(function (cl) {
+        var pl = czPlan(st.id), en = I18N && I18N.lang() === 'en', adv = st.id === 'detail' && !!CZ_MAIN[cz.cat]; czPrev = [];
+        var nAdv = adv ? pl.reduce(function (n, cl) { return n + cl.groups.length; }, 0) : 0;
+        inner = adv && nAdv && !czAdvOpen ? '' : pl.length ? pl.map(function (cl) {
           var tt = cl.title && cl.title[en ? 1 : 0], nrm = function (s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); };
           if (tt && cl.groups.length === 1) { var a = nrm(tt), b = nrm(L(cl.groups[0])); if (a === b) tt = null; }   // judul = label satu-satunya grup
           return (tt ? '<p class="cz__sub">' + esc(tt) + '</p>' : '') + cl.groups.map(function (gr) {
             if (gr.id === '_cat' || gr.id === '_sub') { var save = cz[gr.id]; cz[gr.id] = _get(gr); var h = czGroup(gr, box2); if (save === undefined) delete cz[gr.id]; else cz[gr.id] = save; return h; }
-            if (box2 && !onlyDims && gr.type === 'range' && gr.step === 'ukuran') { if (czDimsGroups()[0] !== gr) return ''; czPrev.push(gr); return czRow('@dims', czDimsTitle(), czDimsText()); }   // L/D/T di Detail box
+            if (box2 && gr.type === 'range' && gr.step === 'ukuran') { if (czDimsGroups()[0] !== gr) return ''; czPrev.push(gr); return czRow('@dims', czDimsTitle(), czDimsText()); }   // L/D/T di Detail box
             var h2 = czGroup(gr, box2); czPrev.push(gr); return h2;
           }).join('');
         }).join('') : '<p class="note">' + T('Tidak ada pilihan tambahan untuk jenis ini.') + '</p>';
+        if (adv && nAdv) inner = '<button type="button" class="cz-row cz-adv' + (czAdvOpen ? ' is-open' : '') + '" data-adv aria-expanded="' + czAdvOpen + '"><span>' + T('Detail lanjutan') + '</span><b>' + (czAdvOpen ? T('Tutup') : T('{n} pilihan', { n: nAdv })) + '</b><svg><use href="#i-arrow"/></svg></button>' + inner;
       }
-      return '<section class="cz__sec" data-sec="' + st.id + '" id="cz-' + st.id + '"><h3 class="cz__h">' + esc(L(st)) + '</h3>' + inner + '</section>';
+      return '<section class="cz__sec" data-sec="' + st.id + '" id="cz-' + st.id + '"><p class="cz__h"><i>' + String(i + 1).padStart(2, '0') + '</i>' + esc(L(st)) + '</p>' + inner + '</section>';
     }).join('');
   }
-  /* CZ-E: kunci elemen fokus agar bisa dipulihkan setelah panel dibangun ulang (dulu fokus hilang tiap klik / panah slider) */
-  function czFocusKey(el) {
-    if (!el || el === document.body) return null;
-    var root = el.closest('#czPicker') ? '#czPicker ' : el.closest('#czScroll') ? '#czScroll ' : null; if (!root) return null;
-    var q = function (a) { return '[' + a + '="' + (window.CSS && CSS.escape ? CSS.escape(el.getAttribute(a)) : el.getAttribute(a)) + '"]'; };
-    if (el.hasAttribute('data-r')) return root + q('data-r');
-    if (el.hasAttribute('data-v')) { var g = el.closest('[data-g]'); return root + (g && g.id !== 'czPickGrid' ? '[data-g="' + g.getAttribute('data-g') + '"] ' : '') + q('data-v'); }
-    var ks = ['data-pick', 'data-tab', 'data-czq', 'data-lay', 'data-view', 'data-breakdown', 'data-cz-buy', 'data-send'];
-    for (var i = 0; i < ks.length; i++) if (el.hasAttribute(ks[i])) return root + (el.getAttribute(ks[i]) ? q(ks[i]) : '[' + ks[i] + ']');
-    return null;
+  /* 27 Okt (pemilik): "pada customize, smua tiba2 pop" — panel tidak lagi diganti innerHTML (kartu dibuat ulang → transisi pilihan
+     tidak pernah jalan, gambar garis berkedip). Simpul yang sama dipertahankan & hanya atribut/teksnya diubah; grup pilihan yang baru
+     muncul (mis. Sisi return) membuka, yang hilang menutup. Kartu di dalamnya masuk kiri → kanan, naik dari bawah. */
+  var MKEYS = ['data-g', 'data-sec', 'data-v', 'data-pick', 'data-tab', 'id'];
+  function mKey(n) { if (n.nodeType !== 1) return null; for (var i = 0; i < MKEYS.length; i++) { var v = n.getAttribute(MKEYS[i]); if (v != null) return n.tagName + MKEYS[i] + '=' + v; } return null; }
+  function mAttrs(a, b) {
+    for (var i = a.attributes.length - 1; i >= 0; i--) { var n = a.attributes[i].name; if (!b.hasAttribute(n)) a.removeAttribute(n); }
+    for (var j = 0; j < b.attributes.length; j++) { var at = b.attributes[j]; if (a.getAttribute(at.name) !== at.value) a.setAttribute(at.name, at.value); }
+    if (a.getAnimations && a.classList.contains('cz-g') && a.getAnimations().length) a.classList.add('is-mph');   // grup yang sedang membuka tetap terpotong rapi
+    if (a.tagName === 'INPUT' && a.value !== b.getAttribute('value') && b.hasAttribute('value') && document.activeElement !== a) a.value = b.getAttribute('value');
   }
-  var czTabsH = '', czPop = null;
+  function mKids(a, b, fx) {
+    var olds = [].filter.call(a.childNodes, function (n) { return !(n.nodeType === 1 && n.hasAttribute('data-leaving')); }), news = [].slice.call(b.childNodes);
+    var byKey = {}, used = [];
+    olds.forEach(function (n) { var k = mKey(n); if (k && !byKey[k]) byKey[k] = n; });
+    var out = news.map(function (nb) {
+      var k = mKey(nb), na = k ? byKey[k] : null;
+      if (na && (used.indexOf(na) >= 0 || na.tagName !== nb.tagName)) na = null;
+      if (!na && !k) for (var i = 0; i < olds.length; i++) { var o = olds[i]; if (used.indexOf(o) < 0 && !mKey(o) && o.nodeType === nb.nodeType && o.nodeName === nb.nodeName) { na = o; break; } }
+      if (!na) { if (fx && nb.nodeType === 1 && nb.hasAttribute('data-g')) fx.enter.push(nb); return nb; }
+      used.push(na);
+      if (na.nodeType !== 1) { if (na.nodeValue !== nb.nodeValue) na.nodeValue = nb.nodeValue; return na; }
+      if (na.isEqualNode(nb)) return na;
+      if (na instanceof SVGElement) return nb;   // gambar garis: ganti utuh
+      mAttrs(na, nb); mKids(na, nb, fx); return na;
+    });
+    olds.forEach(function (o) { if (used.indexOf(o) < 0) { if (fx && o.nodeType === 1 && o.hasAttribute('data-g')) { fx.leave.push(o); o.setAttribute('data-leaving', ''); } else a.removeChild(o); } });
+    // susun sesuai urutan baru; simpul yang sedang menutup tetap di tempatnya (sebelum tetangga berikutnya)
+    var ref = a.firstChild;
+    out.forEach(function (n) { while (ref && ref.nodeType === 1 && ref.hasAttribute('data-leaving')) ref = ref.nextSibling; if (n !== ref) a.insertBefore(n, ref); else ref = ref.nextSibling; });
+  }
+  var MPH_E = 'cubic-bezier(.22, 1, .36, 1)';   // = --ease
+  function mGroupFx(el, open) {
+    var cs = getComputedStyle(el), h = el.offsetHeight, pt = cs.paddingTop, pb = cs.paddingBottom, cards = $$('.cz-o, .rng, .cz-row', el);
+    var shut = { height: '0px', paddingTop: '0px', paddingBottom: '0px', opacity: 0 }, full = { height: h + 'px', paddingTop: pt, paddingBottom: pb, opacity: 1 };
+    el.classList.add('is-mph');
+    var an = el.animate(open ? [shut, full] : [full, shut], { duration: open ? 260 : 200, easing: MPH_E, fill: open ? 'none' : 'forwards' });
+    if (open) cards.forEach(function (c, i) { c.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 240, delay: 60 + Math.min(i, 6) * 40, easing: MPH_E, fill: 'backwards' }); });   // kiri → kanan, naik
+    var done = function () { clearTimeout(tm); an.onfinish = an.oncancel = null; if (open) el.classList.remove('is-mph'); else if (el.parentNode) el.parentNode.removeChild(el); }, tm = setTimeout(done, 700);   // cadangan: tab di latar tidak menggambar frame → event animasi tertunda
+    an.onfinish = an.oncancel = done;
+  }
+  function domMorph(live, html, anim) {
+    var tpl = document.createElement(live.tagName); tpl.innerHTML = html;
+    var first = !live.firstChild, fx = anim && !first && !REDUCED ? { enter: [], leave: [] } : null;
+    mKids(live, tpl, fx);
+    if (!fx) return;
+    if (fx.enter.length + fx.leave.length > 4) {   // ganti kategori / sub: banyak grup berubah → seluruh isi masuk pelan, bukan buka-tutup satu per satu
+      fx.leave.forEach(function (n) { n.parentNode.removeChild(n); });
+      fx.enter.forEach(function (n) { n.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: MPH_E }); });
+      return;
+    }
+    fx.enter.forEach(function (n) { mGroupFx(n, true); });
+    fx.leave.forEach(function (n) { mGroupFx(n, false); });
+  }
   function czRender(keepScroll) {
-    var fae = document.activeElement, fkey = czFocusKey(fae), fvis = !!(fae && fae.matches && fae.matches(':focus-visible'));
     var sc = $('#czScroll'), top = sc.scrollTop, base = $('#czBase'), lay = czLayout(), box2 = lay !== 'box1';
     html.classList.toggle('cz-box2', box2); html.classList.toggle('cz-box3', lay === 'box3');
     base.hidden = !czBase;
     base.innerHTML = czBase ? '<div class="cz__from"><p class="eyebrow">' + T('Custom dari') + '</p><b>' + esc(czBase.name) + '</b><span>' + esc(czBase.type) + '</span></div>' +
-      '<div class="seg seg--sm" role="group"><button type="button" data-view="design" aria-pressed="' + (czView === 'design') + '" class="' + (czView === 'design' ? 'is-on' : '') + '">' + T('Rancangan 3D') + '</button><button type="button" data-view="product" aria-pressed="' + (czView === 'product') + '" class="' + (czView === 'product' ? 'is-on' : '') + '">' + T('Produk asli') + '</button></div>' +
+      '<div class="seg seg--sm"><button type="button" data-view="design" class="' + (czView === 'design' ? 'is-on' : '') + '">' + T('Rancangan 3D') + '</button><button type="button" data-view="product" class="' + (czView === 'product' ? 'is-on' : '') + '">' + T('Produk asli') + '</button></div>' +
       '<button class="cz__fresh" type="button" data-czfresh>' + T('Mulai dari nol') + '</button>' : '';
-    var tabsH = XC.STEPS.map(function (st) { return '<button type="button" data-tab="' + st.id + '"><span>' + esc(L(st)) + '</span></button>'; }).join('');   // CZ-A: tanpa nomor, nama tab = judul bagian
-    if (tabsH !== czTabsH) { $('#czTabs').innerHTML = tabsH; czTabsH = tabsH; }   // CZ-E: tidak dibangun ulang tiap klik → garis bawah tab tidak berkedip
-    czFoot(); czUnit0 = null;
-    $('#czBody').innerHTML = czSections(box2);
+    var TAB_S = {};   // C99: nama tab = nama bagian (dulu Finish/Total berbeda dari judul Material/Ringkasan)
+    domMorph($('#czTabs'), XC.STEPS.map(function (st, i) { var sh = TAB_S[st.id], en = I18N && I18N.lang() === 'en'; return '<button type="button" data-tab="' + st.id + '" title="' + esc(L(st)) + '"><i>' + String(i + 1).padStart(2, '0') + '</i><span>' + esc(sh ? sh[en ? 1 : 0] : L(st)) + '</span></button>'; }).join(''));
+    czFoot(); czUnit0 = null; czBD = null;
+    domMorph($('#czBody'), czSections(box2), keepScroll);
     sc.scrollTop = keepScroll ? top : 0;
     czLazy($('#czBody'));
     czSpy();
     if (box2 && czPick && (czPick === '@dims' || czPick === '@col' || findGroup(czPick) && (CZ_SPECIAL[czPick] || XC.opts(findGroup(czPick), cz).length > 4))) czPickerFill(); else czPickerClose(true);
     czDetail();
-    if (fkey) { var nf = document.querySelector(fkey); if (nf && nf !== document.activeElement) { try { nf.focus({ preventScroll: true, focusVisible: fvis }); } catch (e) { nf.focus(); } } }
-    if (czPop) { var pe = document.querySelector(czPop); czPop = null; if (pe && pe.classList.contains('is-on')) { pe.classList.add('cz-pop'); setTimeout(function () { pe.classList.remove('cz-pop'); }, 420); } }   // CZ-E: umpan balik pilihan baru
   }
   // tab aktif mengikuti gulir
   function czSpy() {
     var sc = $('#czScroll'), y = sc.scrollTop + $('#czTabs').offsetHeight + 40, on = 'jenis';
     $$('.cz__sec', sc).forEach(function (s) { if (s.offsetTop <= y) on = s.dataset.sec; });
     if (sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 4) on = 'kirim';
-    $$('#czTabs [data-tab]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.tab === on); b.classList.toggle('is-done', !!czTouched[b.dataset.tab]); if (b.dataset.tab === on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    $$('#czTabs [data-tab]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.tab === on); b.classList.toggle('is-done', !!czTouched[b.dataset.tab]); });
   }
   var czTouched = {};   // langkah yang sudah diubah pengguna (tanda di tab)
   function czTouch(id) { var gr = findGroup(id); var st = id === '_cat' || id === '_sub' ? 'jenis' : gr && (czPresetGroups().indexOf(gr) >= 0 ? 'ukuran' : gr.step); if (!st) return; czTouched[st] = 1; }
@@ -2939,8 +3084,7 @@
   });
 
   /* ---------- Box 2: kotak pilihan kiri */
-  var picker = $('#czPicker'), czPickOpener = null;
-  picker.inert = true;   // CZ-E: tertutup = tidak bisa dicapai Tab / pembaca layar
+  var picker = $('#czPicker');
   var CZ_SPECIAL = { '@dims': 1, '@col': 1, '_sub': 1 };   // selalu di Detail box (tidak bergantung jumlah pilihan)
   function czPickerFill() {
     if (czPick === '@dims' || czPick === '@col') {
@@ -2948,10 +3092,10 @@
       if (!dg && !lay) return czPickerClose();
       $('#czPickE').textContent = T('Pilih') + ' · ' + L(XC.STEPS.filter(function (s0) { return s0.id === (dg ? 'ukuran' : 'bentuk'); })[0]);
       $('#czPickT').textContent = dg ? czDimsTitle() : L({ l: 'Isi kolom ' + (czCol + 1), en: 'Column ' + (czCol + 1) + ' content' });
-      var grid = $('#czPickGrid'); grid.dataset.g = czPick; grid.removeAttribute('data-multi'); czUnit0 = null;
+      var grid = $('#czPickGrid'); grid.dataset.g = czPick; grid.removeAttribute('data-multi'); czUnit0 = null; czBD = null;
       grid.innerHTML = dg ? czDimsGroups().map(function (g) { return czGroup(g, false); }).join('') : czLayEd(lay, false, 'col');
       grid.classList.add('cz-pick--free'); czLazy(grid);
-      if (!picker.classList.contains('is-on')) czPickOpen();
+      if (!picker.classList.contains('is-on')) { picker.classList.add('is-on'); picker.setAttribute('aria-hidden', 'false'); insets(); }
       return;
     }
     $('#czPickGrid').classList.remove('cz-pick--free');
@@ -2961,29 +3105,17 @@
     $('#czPickT').textContent = L(gr);
     var grid = $('#czPickGrid');
     grid.dataset.g = gr.id; if (multi) grid.setAttribute('data-multi', ''); else grid.removeAttribute('data-multi');
-    czUnit0 = null;
-    grid.innerHTML = '<div class="cz-g is-' + czKind(gr, XC.opts(gr, cz)) + '"><p class="cz-g__h"><span></span><b>' + esc(selText(gr)) + '</b></p>' + czOpts(gr, XC.opts(gr, cz), multi, multi ? (val || []) : [val], 0) + '</div>';
-    grid.classList.add('cz-pick--free');   // CZ-B: komponen yang sama dengan panel (cakram / ubin / teks), bukan kisi kartu
+    czUnit0 = null; czBD = null;
+    grid.innerHTML = XC.opts(gr, cz).map(function (x) { return cell(gr, x, multi ? (val || []).indexOf(x.id) >= 0 : x.id === val, multi); }).join('');
     czLazy(grid);
-    if (!picker.classList.contains('is-on')) czPickOpen();
+    if (!picker.classList.contains('is-on')) { picker.classList.add('is-on'); picker.setAttribute('aria-hidden', 'false'); insets(); }
   }
-  /* CZ-E: kotak pemilih = dialog non-modal — dibuka: inert lepas, fokus ke Kembali; ditutup: inert, fokus kembali ke pemicunya */
-  function czPickOpen() {
-    var ae = document.activeElement; czPickOpener = ae && !picker.contains(ae) ? (ae.getAttribute('data-pick') || null) : null;
-    picker.inert = false; picker.classList.add('is-on'); picker.setAttribute('aria-hidden', 'false'); insets();
-    var bk = picker.querySelector('.picker__back'); if (bk) { try { bk.focus({ preventScroll: true }); } catch (e) { bk.focus(); } }
-  }
-  function czPickPlace() {   // CZ-D: kotak pemilih tepat di atas panel (halaman lanjutan), bukan kolom kedua yang menyempitkan panggung
-    if (!picker || !picker.classList.contains('is-on') || isMobile()) return;
-    var r = panel.getBoundingClientRect();
-    picker.style.left = r.left + 'px'; picker.style.top = r.top + 'px'; picker.style.width = r.width + 'px'; picker.style.height = r.height + 'px';
-  }
+  // C99: pindah lebar desktop ↔ ponsel tanpa muat ulang — tata letak kotak pilihan (box1/2/3) dihitung ulang, kotak yang terbuka ditutup
+  addEventListener('resize', function () { if (current === 'customize' && (html.classList.contains('cz-box2') !== (czLayout() !== 'box1') || html.classList.contains('cz-box3') !== (czLayout() === 'box3'))) { czPickerClose(true); czRender(true); } });
   function czPickerClose(silent) {
     if (!picker.classList.contains('is-on')) { czPick = silent ? czPick : null; return; }
-    var hadFocus = picker.contains(document.activeElement), back = czPick;
-    picker.classList.remove('is-on'); picker.setAttribute('aria-hidden', 'true'); picker.inert = true;
-    if (!silent && hadFocus) setTimeout(function () { var t = document.querySelector('#czScroll [data-pick="' + (czPickOpener || back) + '"]') || document.querySelector('#czScroll .cz-all, #czScroll [data-pick]'); if (t) { try { t.focus({ preventScroll: true }); } catch (e) { t.focus(); } } }, 0);
-    if (!silent) { czPick = null; $$('.cz-row, .cz-more, .cz-all').forEach(function (r) { r.classList.remove('is-on'); }); }
+    picker.classList.remove('is-on'); picker.setAttribute('aria-hidden', 'true');
+    if (!silent) { czPick = null; $$('.cz-row, .cz-more').forEach(function (r) { r.classList.remove('is-on'); }); }
     insets();
   }
   picker.addEventListener('click', function (e) {
@@ -2992,7 +3124,6 @@
     var b = e.target.closest('[data-v]'); if (!b) return;
     var g = b.closest('#czPickGrid [data-g]:not(#czPickGrid)') || $('#czPickGrid'); czChoose(g, b.dataset.v);
   });
-  picker.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.stopPropagation(); czPickerClose(); } });   // CZ-E: Escape menutup kotak pemilih
   picker.addEventListener('input', czRangeInput);
   picker.addEventListener('change', czRangeChange);
 
@@ -3039,11 +3170,10 @@
       return;
     }
     czMark(); czTouch(id);
-    czPop = (g.id === 'czPickGrid' ? '#czPicker ' : '#czScroll [data-g="' + id + '"] ') + '[data-v="' + (window.CSS && CSS.escape ? CSS.escape(v) : v) + '"]';
     var gp = findGroup(id), before = gp && gp.preset ? Object.keys(gp.preset).map(function (d) { return cz[d]; }).join() : null;
     if (g.hasAttribute('data-multi')) { var arr = (cz[id] || []).slice(), i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); XC.apply(cz, id, arr); }
     else XC.apply(cz, id, v);
-    // CZ-D: memilih preset ukuran tidak lagi membuka kotak ukuran otomatis (kotak kini menimpa panel); notifikasi ukuran tetap tampil
+    if (gp && czLayout() !== 'box1' && gp.type !== 'range' && (gp.preset || gp.step === 'ukuran') && czDimsGroups().length) czPick = '@dims';   // pilih ukuran → L/D/T di Detail box
     if (before != null && Object.keys(gp.preset).map(function (d) { return cz[d]; }).join() !== before) notice(T('Ukuran disesuaikan ke {x}', { x: selText(gp) }), czUndoAct());
     if (czBase && czView === 'product') czView = 'design';
     var sc = $('#czScroll'), anc = g.closest && g.closest('[data-g]') && sc.contains(g) ? g.closest('[data-g]') : null, y0 = anc ? anc.getBoundingClientRect().top : 0;
@@ -3063,31 +3193,16 @@
   });
   $('#czBody').addEventListener('click', function (e) {
     var b;
-    if ((b = e.target.closest('[data-pick]'))) { var same = czPick === b.dataset.pick && picker.classList.contains('is-on'); if (same) { czPickerClose(); return; } czPick = b.dataset.pick; $$('.cz-row, .cz-more, .cz-all').forEach(function (r) { r.classList.toggle('is-on', r === b); }); czPickerFill(); return; }
+    if ((b = e.target.closest('[data-pick]'))) { var same = czPick === b.dataset.pick && picker.classList.contains('is-on'); if (same) { czPickerClose(); return; } czPick = b.dataset.pick; $$('.cz-row, .cz-more').forEach(function (r) { r.classList.toggle('is-on', r === b); }); czPickerFill(); return; }
     if (e.target.closest('[data-breakdown]')) { czBreakdown(); return; }
     if (e.target.closest('[data-send]')) { czSend(); return; }
-    if (e.target.closest('[data-cz-buy]')) { czBuyNow(); return; }
+    if (e.target.closest('[data-cz-quote]')) { czQuote(); return; }
+    if (e.target.closest('[data-cz-pdf]')) { czPdf(); return; }
+    if (e.target.closest('[data-adv]')) { czAdvOpen = !czAdvOpen; czRender(true); return; }
     if ((b = e.target.closest('[data-czq]'))) { cz.qty = clamp((+cz.qty || 1) + (+b.dataset.czq), 1, 50); czSave(); czRender(true); return; }
     if (e.target.closest('[data-cz-save]')) { czSaveDesign(); return; }
     if ((b = e.target.closest('[data-lay]'))) { if (!b.disabled) czLayClick(b); return; }   // editor susunan kolom
     if ((b = e.target.closest('[data-v]')) && b.closest('[data-g]')) czChoose(b.closest('[data-g]'), b.dataset.v);
-  });
-  /* CZ-B: intip — kursor/fokus di sebuah pilihan → kepala grupnya menampilkan nama + selisih harga pilihan itu (dihitung saat itu saja) */
-  [$('#czBody'), picker].forEach(function (root) {
-    var peek = function (b, on) {
-      var g = b.closest('.cz-g'), h = g && g.querySelector('.cz-g__h b'); if (!h) return;
-      if (!on) { if (h.dataset.own != null) { h.innerHTML = h.dataset.own; delete h.dataset.own; h.classList.remove('is-peek'); } return; }
-      if (b.classList.contains('is-on')) return;
-      var gid = (b.closest('[data-g]:not(#czPickGrid)') || $('#czPickGrid')).dataset.g, gr = findGroup(gid), x = gr && XC.opts(gr, cz).filter(function (o) { return o.id === b.dataset.v; })[0];
-      var d = gr && x ? czDelta(gr, x, false, gr.type === 'multi') : 0;
-      if (h.dataset.own == null) h.dataset.own = h.innerHTML;
-      h.innerHTML = esc(b.dataset.peek) + (d ? '<em' + (d < 0 ? ' class="is-neg"' : '') + '>' + (d > 0 ? '+' : '−') + 'Rp ' + short(Math.abs(d)) + '</em>' : '');
-      h.classList.add('is-peek');
-    };
-    root.addEventListener('mouseover', function (e) { var b = e.target.closest('[data-peek]'); if (b) peek(b, true); });
-    root.addEventListener('mouseout', function (e) { var b = e.target.closest('[data-peek]'); if (b && !(e.relatedTarget && b.contains(e.relatedTarget))) peek(b, false); });
-    root.addEventListener('focusin', function (e) { var b = e.target.closest('[data-peek]'); if (b) peek(b, true); });
-    root.addEventListener('focusout', function (e) { var b = e.target.closest('[data-peek]'); if (b) peek(b, false); });
   });
   function czRangeInput(e) {
     var r = e.target.closest('[data-r]'); if (!r) return;
@@ -3095,13 +3210,12 @@
     if (!r.dataset.m) { czMark(); czTouch(r.dataset.r); r.dataset.m = '1'; }   // satu geser = satu langkah urungkan
     cz[r.dataset.r] = +r.value;
     var out = r.parentNode.querySelector('[data-out]'); if (out && gr) out.textContent = czVal(gr, +r.value);
-    if (gr) r.setAttribute('aria-valuetext', czVal(gr, +r.value));
     if (gr) r.style.setProperty('--p', ((+r.value - gr.min) / (gr.max - gr.min) * 100).toFixed(1) + '%');
     if (czBase && czView === 'product') czView = 'design';
-    czStage(true); czDetail(true); czFoot();
+    czStage(); czDetail(true); czFoot();
     var row = $('#czBody [data-pick="@dims"] b'); if (row) row.textContent = czDimsText();
   }
-  function czRangeChange(e) { var r = e.target.closest('[data-r]'); if (r) { XC.apply(cz, r.dataset.r, +r.value); czSave(); czRender(true); czStage(); } }   // CZ-F: bangun akhir setelah XC.apply (nilai terkait bisa ikut berubah) + bingkai akhir
+  function czRangeChange(e) { var r = e.target.closest('[data-r]'); if (r) { XC.apply(cz, r.dataset.r, +r.value); czSave(); czRender(true); } }
   $('#czBody').addEventListener('input', czRangeInput);
   $('#czBody').addEventListener('change', czRangeChange);
 
@@ -3112,7 +3226,8 @@
   modal.addEventListener('click', function (e) {
     if (e.target === modal || e.target.closest('[data-modal-close]')) { closeModal(); return; }
     if (e.target.closest('[data-send]')) czSend();
-    if (e.target.closest('[data-cz-addbag]')) czAddToBag();
+    if (e.target.closest('[data-cz-quote]')) { closeModal(); czQuote(); }
+    if (e.target.closest('[data-cz-pdf]')) czPdf();
     if (e.target.closest('[data-cznew]')) { closeModal(); czFresh(); $('#czScroll').scrollTop = 0; }
   });
   modalBody.addEventListener('submit', function (e) { e.preventDefault(); if (e.target.id === 'authForm') authSubmit(e.target); else czSubmit(); });
@@ -3120,18 +3235,20 @@
     var b = e.target.closest('[data-auth]'); if (b) { authForm(b.dataset.auth); return; }
     if (e.target.closest('[data-auth-back]')) openAuth(authAfter);
   });
-  modalBody.addEventListener('input', function (e) { if (e.target.id === 'zQty') { cz.qty = clamp(parseInt(e.target.value, 10) || 1, 1, 50); czSave(); var t = $('#zTotal'); if (t) t.textContent = rupiah(XC.estimate(cz)); czDetail(true); } });
+  modalBody.addEventListener('input', function (e) { if (e.target.id === 'zQty') { cz.qty = Math.max(1, parseInt(e.target.value, 10) || 1); czSave(); var t = $('#zTotal'); if (t) t.textContent = rupiah(XC.estimate(cz)); czDetail(true); } });
 
   function czBreakdown() {
     var b = XC.breakdown(cz, L);
+    // baris tampil dibulatkan Rp 1.000; selisih ke harga per unit ditampilkan sebagai pembulatan supaya jumlahnya pas (C99)
+    var rd = b.unit - b.rows.reduce(function (n, r, i) { return n + (i && r.v < 0 ? -1 : 1) * Math.round(Math.abs(r.v) / 1000) * 1000; }, 0);
     openModal('<header class="ph"><span class="ph__n"><svg><use href="#i-card"/></svg></span><div><p class="ph__e">' + T('Rincian harga') + '</p><p class="ph__t">' + esc(czTitle()) + '</p></div></header><p class="txt" style="margin:-8px 0 12px">' + esc(XC.dimsText(cz)) + ' · ' + esc(czMat()) + '</p>' +
       '<dl class="bd">' + b.rows.map(function (r, i) { return '<dt>' + esc(r.l) + '</dt><dd>' + (i ? (r.v < 0 ? '− ' : '+ ') : '') + rupiah(Math.round(Math.abs(r.v) / 1000) * 1000) + '</dd>'; }).join('') +
-      (function () { var s = b.rows.reduce(function (n, r, i) { return n + (i ? Math.sign(r.v) : 1) * Math.round(Math.abs(r.v) / 1000) * 1000; }, 0), d = b.unit - s; return Math.abs(d) >= 1000 ? '<dt>' + T('Pembulatan') + '</dt><dd>' + (d < 0 ? '− ' : '+ ') + rupiah(Math.abs(d)) + '</dd>' : ''; })() +
-      '<dt class="bd__sub">' + T('Harga per unit') + '</dt><dd class="bd__sub">' + rupiah(b.unit) + '</dd>' +   // CZ-C: tanpa pembulatan ganda; baris rincian + pembulatan = harga per unit
+      (rd ? '<dt>' + T('Pembulatan') + '</dt><dd>' + (rd < 0 ? '− ' : '+ ') + rupiah(Math.abs(rd)) + '</dd>' : '') +
+      '<dt class="bd__sub">' + T('Per unit') + '</dt><dd class="bd__sub">' + rupiah(b.unit) + '</dd>' +
       (b.qty > 1 ? '<dt>' + T('Jumlah unit') + '</dt><dd>× ' + b.qty + '</dd>' : '') + '</dl>' +
       '<div class="co-total"><span class="eyebrow">' + T('Total') + '</span><b class="price">' + rupiah(b.total) + '</b></div>' +
-      '<p class="note" style="margin-bottom:16px">' + T('Harga final produksi. Ongkir & pemasangan dihitung di checkout sesuai alamat.') + '</p>' +
-      '<button class="btn btn--gold btn--full" type="button" data-modal-close data-cz-addbag><svg><use href="#i-bag"/></svg><span>' + T('Tambah ke tas') + '</span></button>', 'modal--sm');
+      '<p class="note" style="margin-bottom:16px">' + T('Estimasi dari website. Harga final, ongkir, pemasangan & waktu produksi dikonfirmasi tim XIONCO lewat penawaran WhatsApp.') + '</p>' +
+      '<button class="btn btn--gold btn--full" type="button" data-cz-quote><svg><use href="#i-wa"/></svg><span>' + T('Minta penawaran') + '</span></button>', 'modal--sm');
   }
   var BUDGET = ['Belum tahu', '< IDR 5 juta', 'IDR 5–15 juta', 'IDR 15–50 juta', '> IDR 50 juta'];
   function czSend() {
@@ -3141,7 +3258,7 @@
       '<form class="form" id="czForm" novalidate>' +
       '<div class="fgrid"><label class="fld"><span>' + T('Jumlah unit') + '</span><input id="zQty" inputmode="numeric" value="' + (cz.qty || 1) + '"></label>' +
       '<label class="fld"><span>' + T('Dibutuhkan pada') + '</span><input id="zDate" type="date"></label>' +
-      '<label class="fld"><span>' + T('Kisaran anggaran') + '</span><select id="zBudget">' + BUDGET.map(function (x) { return '<option value="' + esc(x) + '">' + esc(T(x)) + '</option>'; }).join('') + '</select></label>' +
+      '<label class="fld"><span>' + T('Kisaran anggaran') + '</span><select id="zBudget">' + BUDGET.map(function (x) { return '<option>' + esc(T(x)) + '</option>'; }).join('') + '</select></label>' +
       '<label class="fld"><span>' + T('Link referensi') + '</span><input id="zRef"></label>' +
       '<label class="fld fld--full"><span>' + T('Catatan (opsional)') + '</span><textarea id="zNote" rows="2"></textarea></label>' +
       '<label class="fld fld--full"><span>' + T('Nama') + '</span><input id="zName" required autocomplete="name" value="' + esc((me() || cst).name || '') + '"></label>' +
@@ -3157,7 +3274,7 @@
     $('#zName').closest('.fld').classList.toggle('is-err', !name);
     $('#zPhone').closest('.fld').classList.toggle('is-err', phone.length < 8);
     if (!name || phone.length < 8) { msgEl.textContent = T('Mohon lengkapi nama dan nomor WhatsApp yang valid.'); msgEl.classList.add('is-err'); return; }
-    cz.qty = clamp(parseInt(v('zQty'), 10) || 1, 1, 50);
+    cz.qty = Math.max(1, parseInt(v('zQty'), 10) || 1);
     var est = XC.estimate(cz), sb = XC.sub(cz), idRows = XC.summary(cz, function (o) { return o.l; }), rows = XC.summary(cz, L);
     var data = {
       qty: cz.qty, w: cz.w || '', d: cz.d || '', h: cz.h || '', deadline: v('zDate'), budget: $('#zBudget').value, refs: v('zRef'), notes: v('zNote'),
@@ -3181,7 +3298,7 @@
     var msg = T('Halo XIONCO, saya {name} ({phone}) ingin custom:', { name: name, phone: phone }) + '\n' +
       (czBase ? '• ' + T('Berdasarkan') + ': ' + czBase.name + ' — ' + czBase.type + '\n' : '') +
       rows.map(function (r) { return '• ' + r[0] + ': ' + r[1]; }).join('\n') +
-      '\n• ' + T('Jumlah unit') + ': ' + data.qty + (data.deadline ? '\n• ' + T('Dibutuhkan pada') + ': ' + data.deadline : '') + '\n• ' + T('Kisaran anggaran') + ': ' + T(data.budget) +
+      '\n• ' + T('Jumlah unit') + ': ' + data.qty + (data.deadline ? '\n• ' + T('Dibutuhkan pada') + ': ' + data.deadline : '') + '\n• ' + T('Kisaran anggaran') + ': ' + data.budget +
       (data.custCity ? '\n• ' + T('Kota') + ': ' + data.custCity : '') + (data.refs ? '\n• ' + T('Referensi') + ': ' + data.refs : '') + (v('zNote') ? '\n• ' + T('Catatan') + ': ' + v('zNote') : '') +
       '\n\n' + T('Estimasi di website') + ': ' + rupiah(est);
     window.open(wa(msg), '_blank', 'noopener');
@@ -3190,6 +3307,78 @@
       T('Tim kami membalas dalam 1 jam kerja melalui WhatsApp. Rancangan juga tersimpan di Profil.') + '</p>' +
       '<button class="btn btn--line btn--full" type="button" data-cznew><svg><use href="#i-plus"/></svg><span>' + T('Buat rancangan baru') + '</span></button>' +
       '<button class="btn btn--dark btn--full" type="button" data-modal-close><span>' + T('Selesai') + '</span></button></div>', 'modal--done');
+  }
+
+  /* ---------- C99: Minta penawaran — rancangan custom tidak dibayar di situs.
+     Pelanggan menekan Minta penawaran → WhatsApp admin terbuka dengan kalimat pembuka + tautan rancangan (#/r/<kode>),
+     pelanggan tinggal menekan Kirim. Admin membuka tautan itu → rancangan tampil di Customize + Ekspor PDF (spesifikasi & foto). */
+  var b64u = {
+    enc: function (t) { return btoa(unescape(encodeURIComponent(t))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); },
+    dec: function (t) { t = t.replace(/-/g, '+').replace(/_/g, '/'); while (t.length % 4) t += '='; return decodeURIComponent(escape(atob(t))); }
+  };
+  // kode = hanya isian yang berbeda dari bawaan jenisnya, supaya tautan pendek
+  function czCode(cfg, base) {
+    var c = XC.normalize(JSON.parse(JSON.stringify(cfg))), d = XC.defaults(c.cat, c.sub), o = { cat: c.cat, sub: c.sub };
+    Object.keys(c).forEach(function (k) { if (k !== 'cat' && k !== 'sub' && JSON.stringify(c[k]) !== JSON.stringify(d[k])) o[k] = c[k]; });
+    if (base && base.id) o._b = base.id;
+    return b64u.enc(JSON.stringify(o));
+  }
+  function czDecode(code) {
+    try {
+      var o = JSON.parse(b64u.dec(code)), b = o._b; delete o._b;
+      if (!o.cat || !o.sub) return null;
+      var p = b && byId[b];
+      return { cfg: XC.normalize(Object.assign(XC.defaults(o.cat, o.sub), o)), base: p ? { id: p.id, name: p.name, type: p.type, price: p.price } : null };
+    } catch (e) { return null; }
+  }
+  function czRef(code) { var h = 0; for (var i = 0; i < code.length; i++) h = (h * 31 + code.charCodeAt(i)) >>> 0; return 'RQ-' + h.toString(36).toUpperCase().slice(0, 6); }
+  function czLink(code) { return location.origin + location.pathname + '#/r/' + code; }
+  function czQuote(cfg, base) {
+    var c = XC.normalize(JSON.parse(JSON.stringify(cfg || cz))), qty = Math.max(1, +c.qty || 1), code = czCode(c, cfg ? base : czBase), ref = czRef(code);
+    var msg = T('Halo XIONCO, saya ingin minta penawaran untuk rancangan custom ini:') + '\n' +
+      '• ' + czTitle(null, c) + ' · ' + XC.dimsText(c) + (qty > 1 ? ' · ' + T('{n} unit', { n: qty }) : '') + '\n' +
+      '• ' + T('Kode') + ': ' + ref + '\n' +
+      '• ' + T('Lihat rancangan') + ': ' + czLink(code) + '\n\n' +
+      T('Mohon info harga final dan waktu produksinya. Terima kasih.');
+    var reqs = store.get('xv5_requests', []);
+    reqs.unshift({ id: ref, created: Date.now(), name: czTitle(null, c), type: XC.dimsText(c), data: { matColor: czMat(null, c), w: c.w, d: c.d, h: c.h }, estimate: XC.estimate(c), link: czLink(code) });
+    store.set('xv5_requests', reqs.slice(0, 50));
+    window.open(wa(msg), '_blank', 'noopener');
+    notice(T('WhatsApp terbuka dengan pesan siap kirim — tinggal tekan Kirim'));
+  }
+  // admin membuka tautan rancangan: ringkasan + Ekspor PDF
+  function czQuoteView(ref) {
+    var rows = XC.summary(cz, L), lead = CZ_LEAD[cz.cat] || CZ_LEAD.kursi;
+    openModal('<header class="ph"><span class="ph__n"><svg><use href="#i-wa"/></svg></span><div><p class="ph__e">' + T('Permintaan penawaran') + ' · ' + esc(ref) + '</p><p class="ph__t">' + esc(czTitle()) + '</p></div></header>' +
+      '<p class="txt" style="margin:-8px 0 12px">' + esc(XC.dimsText(cz)) + ' · ' + esc(czMat()) + (czBase ? ' · ' + T('Berdasarkan') + ' ' + esc(czBase.name) : '') + '</p>' +
+      '<dl class="kv cz__sum">' + rows.map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +
+      '<dt>' + T('Jumlah unit') + '</dt><dd>' + Math.max(1, +cz.qty || 1) + '</dd><dt>' + T('Estimasi website') + '</dt><dd>' + rupiah(XC.estimate(cz)) + '</dd>' +
+      '<dt>' + T('Estimasi produksi') + '</dt><dd>' + T('{a}–{b} hari kerja', { a: lead[0], b: lead[1] }) + '</dd></dl>' +
+      '<button class="btn btn--gold btn--full" type="button" data-cz-pdf><svg><use href="#i-ruler"/></svg><span>' + T('Ekspor PDF') + '</span></button>' +
+      '<button class="btn btn--line btn--full" type="button" data-modal-close><span>' + T('Lihat 3D') + '</span></button>', 'modal--sm');
+  }
+  // PDF: halaman cetak (spesifikasi bahasa Indonesia + foto panggung) → dialog cetak › Simpan sebagai PDF
+  function czPdf() {
+    var w = window.open('', '_blank'); if (!w) { notice(T('Izinkan pop-up untuk ekspor PDF')); return; }
+    var code = czCode(cz, czBase), ref = czRef(code), img = XW.snapshot ? XW.snapshot(1400) : '', rows = XC.summary(cz), lead = CZ_LEAD[cz.cat] || CZ_LEAD.kursi;
+    var tgl = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }), ttl = czTitle('id'), e = esc;
+    var html = '<!doctype html><html lang="id"><head><meta charset="utf-8"><title>XIONCO ' + ref + ' — ' + e(ttl) + '</title>' +
+      '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&family=Inter:wght@400;500&display=swap">' +
+      '<style>@page{size:A4;margin:14mm}*{box-sizing:border-box}html,body{margin:0;background:#f4efe6;color:#1e1915;font:400 11px/1.5 Inter,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}' +
+      'main{max-width:182mm;margin:0 auto;padding:10mm 0}header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid #a8864f;padding-bottom:8px;margin-bottom:14px}' +
+      '.b{font:600 18px/1 "Josefin Sans",sans-serif;letter-spacing:.32em}.m{text-align:right;color:#5d5348;font-size:10px}h1{font:600 20px/1.2 "Josefin Sans",sans-serif;margin:0 0 2px;letter-spacing:.04em}' +
+      '.s{color:#5d5348;margin:0 0 12px}img{display:block;width:100%;max-height:118mm;object-fit:cover;border-radius:4px;margin-bottom:14px;background:#1e1915}' +
+      'table{width:100%;border-collapse:collapse}td{padding:5px 0;border-bottom:1px solid #ddd3c4;vertical-align:top}td:first-child{color:#5d5348;width:42%}' +
+      '.t td{font-weight:500}.f{margin-top:14px;color:#5d5348;font-size:9.5px;word-break:break-all}</style></head><body><main>' +
+      '<header><div class="b">XIONCO</div><div class="m">Permintaan penawaran · ' + ref + '<br>' + tgl + '</div></header>' +
+      '<h1>' + e(ttl) + '</h1><p class="s">' + e(XC.dimsText(cz)) + ' · ' + e(czMat('id')) + (czBase ? ' · Berdasarkan ' + e(czBase.name) : '') + '</p>' +
+      (img ? '<img src="' + img + '" alt="">' : '') +
+      '<table>' + rows.map(function (r) { return '<tr><td>' + e(r[0]) + '</td><td>' + e(r[1]) + '</td></tr>'; }).join('') +
+      '<tr><td>Jumlah unit</td><td>' + Math.max(1, +cz.qty || 1) + '</td></tr><tr class="t"><td>Estimasi website</td><td>' + rupiah(XC.estimate(cz)) + '</td></tr>' +
+      '<tr><td>Estimasi produksi</td><td>' + lead[0] + '–' + lead[1] + ' hari kerja</td></tr></table>' +
+      '<p class="f">Harga final, ongkir & waktu produksi dikonfirmasi tim XIONCO. Rancangan: ' + e(czLink(code)) + '</p>' +
+      '</main><script>window.onload=function(){setTimeout(function(){window.print()},400)}<\/script></body></html>';
+    w.document.open(); w.document.write(html); w.document.close();
   }
 
   // buka Customize: kosong, dari produk (Custom di halaman produk), atau CUBIX
@@ -3237,9 +3426,18 @@
     czSave();
     if (current !== 'customize') go('customize'); else { czRender(); czStage(); }
   }
-  enter.customize = function () { czRender(); czStage(); };
+  enter.customize = function () {
+    if (deep && deep.rq) {
+      var code = deep.rq, r = czDecode(code); deep = null;
+      if (r) { czBase = r.base; czView = 'design'; czPick = null; cz = r.cfg; czSave(); czRender(); czStage(); setTimeout(function () { czQuoteView(czRef(czCode(cz, czBase))); }, 700); return; }
+      notice(T('Tautan rancangan tidak bisa dibaca'));
+    }
+    czRender(); czStage();
+  };
   leave.customize = function () { dimEl.classList.remove('is-on'); czPickerClose(); if (stageKind === 'custom') czDetail(); };
+  applyFeats();
   window.addEventListener('xvdb:change', function (e) {
+    if (e.detail && e.detail.what === 'features') applyFeats();
     if (e.detail && e.detail.what === 'settings' && current === 'customize') czRender(true);
     if (e.detail && e.detail.what === 'pricing') { if (cz) { czFoot(); if (stageKind === 'custom') czDetail(); if (current === 'customize') czRender(true); } renderBag(); if (current === 'bayar') renderCo(true); }
   });
@@ -3323,10 +3521,15 @@
   enter.setelan = function () { if (XW.lightMarkers) XW.lightMarkers(moodNow() === 'manual'); };
   leave.setelan = function () { if (XW.lightMarkers) XW.lightMarkers(false); };
 
-  var bgNow = function () { var b = store.get('xv5_bg', 'default'); return /^(studio|grid)$/.test(b) ? b : 'default'; };
+  var bgNow = function () { var b = store.get('xv5_bg', 'default'); return /^(studio|classic|grid)$/.test(b) ? b : 'default'; };
   // putar bebas (menu klik kanan): on = geser latar mengubah arah kamera & klik tengah menggeser; off = geser di mana pun hanya memutar objek kiri-kanan
   var freeNow = function () { return store.get('xv5_free', 1) !== 0; };
   function applyFree() { if (XW.ok && XW.setFree) XW.setFree(freeNow()); }
+  var plinthNow = function () { return store.get('xv5_plinth', 1) !== 0; };
+  /* C78: refleksi lantai 4 tingkat (0 Off · 1 Low · 2 Mid · 3 High, bawaan High) — Pengaturan & klik kanan. Kunci lama xv5_refl (0/1/2 = Off/Rendah/Tinggi) dipetakan. */
+  function reflNow() { var v = store.get('xv5_refl4', null); if (v == null) { var o = store.get('xv5_refl', null); v = o == null ? 3 : [0, 1, 3][o] != null ? [0, 1, 3][o] : 3; } return Math.max(0, Math.min(3, v | 0)); }
+  function reflSet(v) { store.set('xv5_refl4', v); if (XW.setFloorRefl) XW.setFloorRefl(v); }
+  function applyPlinth() { if (XW.ok && XW.setPlinthOn) XW.setPlinthOn(plinthNow()); }
   // Garis & Neon: warna pilihan per jenis; kotak warna tetap terbuka saat warna diganti
   var BG_DEF = { grid: '#e8e2d6', neon: '#22e1ff' };   // garis: satu warna untuk pengguna (pemilik 25 Okt)
   var BG_SW = ['#22e1ff', '#2f7bff', '#8b5cff', '#ff2bd6', '#ff3b5c', '#ff7a1a', '#ffd23f', '#a6ff3c', '#2bffb0', '#bfa274', '#e8e2d6', '#6f6a64'];
@@ -3357,11 +3560,12 @@
   function renderSettings() {
     $$('#setMood [data-mood]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.mood === moodNow()); });
     renderLights();
-    $$('#setLang [data-lang]').forEach(function (b) { b.classList.toggle('is-on', I18N ? b.dataset.lang === I18N.lang() : b.dataset.lang === 'id'); });
+    $$('#setLang [data-lang]').forEach(function (b) { b.classList.toggle('is-on', I18N ? b.dataset.lang === I18N.lang() : b.dataset.lang === 'en'); });
     $$('#setTheme [data-theme]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.theme === themeNow()); });
     $$('#setBg [data-bg]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.bg === bgNow()); });
     renderBgC();
     $$('#setLook [data-look]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.look === lookNow()); });
+    $$('#setRefl [data-refl]').forEach(function (b) { b.classList.toggle('is-on', +b.dataset.refl === reflNow()); });
     $$('#setDims [data-dims]').forEach(function (b) { b.classList.toggle('is-on', +b.dataset.dims === store.get('xv5_dims', 0)); });
     $$('#setCzl [data-czl]').forEach(function (b) { b.classList.toggle('is-on', +b.dataset.czl === czlNow()); });
     var hk = XW.human ? XW.human() : false; $$('#setHuman [data-hum]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.hum === String(hk || 0)); });
@@ -3418,6 +3622,7 @@
   $('#setCzl').addEventListener('click', function (e) { var b = e.target.closest('[data-czl]'); if (!b) return; store.set('xv5_czl', +b.dataset.czl); czPickerClose(); renderSettings(); insets(); });
   // manusia skala dari Pengaturan (tanpa klik kanan — juga untuk layar sentuh)
   $('#setHuman') && $('#setHuman').addEventListener('click', function (e) { var b = e.target.closest('[data-hum]'); if (!b || !XW.human) return; var k = b.dataset.hum === '0' ? false : b.dataset.hum; store.set('xv5_human', XW.human(k) || 0); renderSettings(); });
+  $('#setRefl').addEventListener('click', function (e) { var b = e.target.closest('[data-refl]'); if (b) { reflSet(+b.dataset.refl); renderSettings(); } });
   $('#setDims').addEventListener('click', function (e) { var b = e.target.closest('[data-dims]'); if (!b) return; store.set('xv5_dims', +b.dataset.dims); renderSettings(); });
   $('#setLang').addEventListener('click', function (e) { var b = e.target.closest('[data-lang]'); if (b && I18N) I18N.set(b.dataset.lang); });
   $('#setTheme').addEventListener('click', function (e) { var b = e.target.closest('[data-theme]'); if (b) setTheme(b.dataset.theme); });
@@ -3455,7 +3660,7 @@
     } else if (pfTab === 'rancangan') {
       html += ds.length ? '<ul class="list">' + ds.map(function (d) {
         return '<li data-ds="' + d.id + '"><div class="list__th" data-ds-open>' + (d.img ? '<img class="is-snap" src="' + d.img + '" alt="">' : '<svg><use href="#i-ruler"/></svg>') + '</div><div><p class="list__n"><span>' + esc(d.title) + '</span></p><p class="list__v">' + esc(d.sub + (d.mat ? ' · ' + d.mat : '')) + '</p><p class="list__p">' + rupiah(customUnit(d.cfg, d.price)) + '</p>' +
-          '<div class="list__acts"><button class="mini mini--gold" type="button" data-ds-bag>' + T('Ke tas') + '</button><button class="mini" type="button" data-ds-open>' + T('Buka') + '</button></div></div>' +
+          '<div class="list__acts"><button class="mini mini--gold" type="button" data-ds-quote>' + T('Minta penawaran') + '</button><button class="mini" type="button" data-ds-open>' + T('Buka') + '</button></div></div>' +
           '<div class="list__r"><button class="rm" type="button" data-ds-rm>' + T('Hapus') + '</button></div></li>';
       }).join('') + '</ul>' : '<div class="empty-card is-on"><p class="txt">' + T('Belum ada rancangan tersimpan. Simpan dari Customize — kembali kapan saja.') + '</p><a class="btn btn--line" href="#/customize" data-go="customize"><span>Customize</span></a></div>';
     } else if (pfTab === 'alamat') {
@@ -3484,7 +3689,7 @@
     if (li) {
       var d = designs().filter(function (x) { return x.id === li.dataset.ds; })[0]; if (!d) return;
       if (e.target.closest('[data-ds-rm]')) { store.set('xv5_designs', designs().filter(function (x) { return x.id !== d.id; })); renderProfile(); return; }
-      if (e.target.closest('[data-ds-bag]')) { addEntry({ id: 'cz-' + Date.now().toString(36), type: 'custom', title: d.title, sub: d.sub, mat: d.mat, cfg: XC.normalize(JSON.parse(JSON.stringify(d.cfg))), price: customUnit(d.cfg, d.price), img: d.img, q: 1 }); return; }
+      if (e.target.closest('[data-ds-quote]')) { czQuote(d.cfg, d.base); return; }
       if (e.target.closest('[data-ds-open]')) { openDesign(d); return; }
     }
     var ad = e.target.closest('[data-ad]');
@@ -3737,23 +3942,10 @@
   var humSvg = $('#humLine'), humHtml = '';
   function renderHum(h) {
     var html = '';
-    if (h && h.t > 0 && h.a.v && h.b.v) {
-      var f = function (n) { return n.toFixed(1); }, t = h.t;
-      // jalur: kaki → kepala → mendatar ke objek; digambar sebagian menurut t (pathLength 1)
-      html += '<path pathLength="1" style="stroke-dashoffset:' + f(1 - t) + '" d="M' + f(h.a.x) + ' ' + f(h.a.y) + ' L' + f(h.b.x) + ' ' + f(h.b.y) + ' L' + f(h.c.x) + ' ' + f(h.c.y) + '"/>';
-      var tk = 5, dx = h.b.x - h.a.x, dy = h.b.y - h.a.y, ln = Math.hypot(dx, dy) || 1, nx = -dy / ln, ny = dx / ln;
-      html += '<line class="t" style="opacity:' + f(Math.min(1, t * 4)) + '" x1="' + f(h.a.x + nx * tk) + '" y1="' + f(h.a.y + ny * tk) + '" x2="' + f(h.a.x - nx * tk) + '" y2="' + f(h.a.y - ny * tk) + '"/>';
-      var tb = Math.max(0, Math.min(1, (t - h.up) / .08));   // ujung atas: tanda & label setelah garis sampai kepala
-      html += '<line class="t" style="opacity:' + f(tb) + '" x1="' + f(h.b.x + nx * tk) + '" y1="' + f(h.b.y + ny * tk) + '" x2="' + f(h.b.x - nx * tk) + '" y2="' + f(h.b.y - ny * tk) + '"/>';
-      var lx = h.b.x + (h.b.x >= h.c.x ? -10 : 10), anchor = h.b.x >= h.c.x ? 'end' : 'start';   // label di sisi objek, di atas garis mendatar (tidak menutupi kepala)
-      html += '<text style="opacity:' + f(tb) + '" x="' + f(lx) + '" y="' + f(h.b.y - 8) + '" text-anchor="' + anchor + '"><tspan class="k">' + esc(T('Manusia')) + '</tspan><tspan dx="6">' + h.hcm + ' cm</tspan></text>';
-      // garis turun ke puncak objek: setelah garis mendatar lewat di atasnya
-      if (h.d1.v && h.d2.v) {
-        var t2 = Math.max(0, Math.min(1, (t - .72) / .28));
-        html += '<path class="dn" pathLength="1" style="stroke-dashoffset:' + f(1 - t2) + '" d="M' + f(h.d2.x) + ' ' + f(h.d2.y) + ' L' + f(h.d1.x) + ' ' + f(h.d1.y) + '"/>';
-        html += '<line class="t" style="opacity:' + f(t2 >= 1 ? 1 : 0) + '" x1="' + f(h.d1.x - tk) + '" y1="' + f(h.d1.y) + '" x2="' + f(h.d1.x + tk) + '" y2="' + f(h.d1.y) + '"/>';
-        html += '<text style="opacity:' + f(Math.max(0, (t2 - .6) / .4)) + '" x="' + f(h.d1.x + 10) + '" y="' + f((h.d1.y + h.d2.y) / 2) + '" dominant-baseline="middle"><tspan class="k">' + esc(T('Objek')) + '</tspan><tspan dx="6">' + h.ocm + ' cm</tspan><tspan class="k" dx="8">−' + (h.hcm - h.ocm) + '</tspan></text>';
-      }
+    if (h && h.t > 0 && h.b.v && h.c.v) {   // 26 Okt (pemilik): cukup garis titik-titik tipis dari puncak kepala, mendatar ke arah objek
+      var f = function (n) { return n.toFixed(1); }, t = h.t, ex = h.b.x + (h.c.x - h.b.x) * t, ey = h.b.y + (h.c.y - h.b.y) * t, rt = h.c.x >= h.b.x;
+      html += '<line class="dot" x1="' + f(h.b.x) + '" y1="' + f(h.b.y) + '" x2="' + f(ex) + '" y2="' + f(ey) + '"/>';
+      html += '<text style="opacity:' + f(Math.min(1, t * 2)) + '" x="' + f(h.b.x + (rt ? 6 : -6)) + '" y="' + f(h.b.y - 9) + '" text-anchor="' + (rt ? 'start' : 'end') + '"><tspan class="k">' + esc(T(h.lab || 'Manusia')) + '</tspan><tspan dx="6">' + h.hcm + ' cm</tspan></text>';
     }
     if (html !== humHtml) { humHtml = html; humSvg.innerHTML = html; }
     humSvg.classList.toggle('is-on', !!html);
@@ -3831,7 +4023,7 @@
      pemilik untuk menyamakan layout (lokal saja, tidak online) — nanti diganti render
      ruang XIONCO. Bila frame tidak ada (mis. di situs online) → Galeri karya seperti biasa.
      ====================================================================== */
-  var GW = { set: 'g1', n: 165, on: false, ok: null, pos: 0, target: 0, imgs: [], raf: 0, w: 0, h: 0,
+  var GW = { set: 'g1', n: 165, on: false, ok: null, pos: 0, target: 0, imgs: [], bm: {}, shown: -1, raf: 0, w: 0, h: 0,
     rooms: [[0, 'Lobi'], [12, 'Ruang keluarga'], [38, 'Ruang biliar'], [70, 'Kamar tidur'], [100, 'Ruang seni'], [128, 'Bar'], [150, 'Lounge']] };
   var gwEl = $('#gwalk'), gwC = $('#gwalkC'), gwX = gwC.getContext('2d');
   function gwSrc(i, set) { return '../assets/galeri/' + (set || GW.set) + '/' + String(i).padStart(3, '0') + '.webp'; }
@@ -3844,7 +4036,7 @@
   try { gwWant = new URLSearchParams(location.search).get('galset'); } catch (e) {}
   function gwFind(id) { for (var i = 0; i < GW_SETS.length; i++) if (GW_SETS[i].id === id) return GW_SETS[i]; return null; }
   function gwUse(s, quiet) {
-    GW.set = s.id; GW.n = s.n; GW.rooms = s.rooms; GW.imgs = []; GW.pos = GW.target = 0; gwNav();
+    GW.set = s.id; GW.n = s.n; GW.rooms = s.rooms; GW.imgs = []; GW.pos = GW.target = 0; gwBmClear(); gwNav();
     GW.live = s.type === '3d' && !!window.XG3; GW.liveSet = s; GW.dirty = true;
     $('#gwalk3').hidden = !GW.live; gwC.hidden = GW.live;
     if (GW.live && GW.on) gw3Load();
@@ -3889,32 +4081,70 @@
   }
   function gwLoad() {
     if (GW.live) { gw3Load(); return; }
-    if (GW.imgs.length) return;
-    var order = [], i;
-    for (i = 0; i < GW.n; i += 8) order.push(i);                      // kerangka dulu (tiap frame ke-8), sisanya menyusul
-    for (i = 0; i < GW.n; i++) if (i % 8) order.push(i);
-    var set = GW.set, imgs = GW.imgs = new Array(GW.n);
-    order.forEach(function (k, j) { setTimeout(function () {
-      if (GW.imgs !== imgs) return;                                  // versi sudah diganti (mis. sets.json selesai dimuat) → jangan muat frame lama
-      var im = new Image(); im.decoding = 'async'; im.src = gwSrc(k, set); imgs[k] = im;
-    }, j < 21 ? 0 : 20 + j * 6); });
+    if (!GW.imgs.length) { GW.imgs = new Array(GW.n); GW.imgs.busy = 0; }
+    gwFill(Math.round(GW.pos), 1);
+  }
+  // Jendela frame di sekitar posisi: 30 ke arah gerak + 10 di belakang dimuat BERURUTAN dari yang terdekat (6 sekaligus),
+  // tiap frame didekode dulu (decode()). Frame lebih dari 40 dari posisi dilepas (paling banyak ±80 frame ≈ 300 MB): dulu SEMUA frame disimpan terdekode —
+  // 519 frame 1280×720 ≈ 1,9 GB → Safari/HP memuat ulang tab (crash) menjelang akhir jalur (C72). Berkasnya tetap di
+  // cache HTTP, jadi kembali cepat saat digulir balik.
+  var GW_AHEAD = 30, GW_BEHIND = 10, GW_DROP = 40, GW_PAR = 6;  function gwFill(c, dir) {
+    var imgs = GW.imgs, n = GW.n, set = GW.set, s = dir < 0 ? -1 : 1, k, d, i, j;
+    if (GW.live || !imgs.length) return;
+    for (k in imgs) {
+      if (!/^\d+$/.test(k)) continue;
+      d = ((k - c) % n + n) % n; if (Math.min(d, n - d) <= GW_DROP) continue;
+      if (!imgs[k]._done) continue;                                     // masih dimuat: dilepas setelah selesai
+      imgs[k].src = ''; delete imgs[k];
+    }
+    for (i = 0, j = 1; i <= GW_AHEAD && imgs.busy < GW_PAR; i++) {
+      gwOne(imgs, (((c + s * i) % n) + n) % n, set);
+      if (i % 3 === 2 && j <= GW_BEHIND) gwOne(imgs, (((c - s * j++) % n) + n) % n, set);
+    }
+  }
+  function gwOne(imgs, k, set) {
+    if (imgs[k] || imgs.busy >= GW_PAR) return;
+    var im = new Image(), done = function () {
+      if (im._done) return;
+      im._ok = !!im.naturalWidth; im._done = true; imgs.busy--;
+      if (GW.imgs === imgs) gwFill(Math.round(GW.pos), GW.target - GW.pos);   // versi sudah diganti → berhenti
+    };
+    imgs.busy++; im.decoding = 'async'; im.src = gwSrc(k, set); imgs[k] = im;
+    // decode() dulu; bila browser menunda dekode (tab/panel tersembunyi) pemuatan tidak boleh macet → 0,5 s setelah termuat lanjut
+    im.onload = function () { setTimeout(done, 500); }; im.onerror = done;
+    if (im.decode) im.decode().then(done, function () {});
+  }
+  // Jendela ImageBitmap terdekode di sekitar posisi (lebih jauh ke arah gerak): menggambar bitmap tidak
+  // mendekode ulang di utas utama, jadi tiap frame jalan tepat waktu. Di luar jendela dilepas (memori).
+  function gwBmClear() { for (var k in GW.bm) if (GW.bm[k] !== 'wait') GW.bm[k].close(); GW.bm = {}; GW.shown = -1; }
+  function gwKeep(c, dir) {
+    if (!window.createImageBitmap) return;
+    var bm = GW.bm, imgs = GW.imgs, want = {}, i, k, im;
+    for (i = c - (dir < 0 ? 18 : 6); i <= c + (dir < 0 ? 6 : 18); i++) {
+      k = ((i % GW.n) + GW.n) % GW.n; want[k] = 1; im = imgs[k];
+      if (bm[k] || !im || !im._ok) continue;
+      bm[k] = 'wait';
+      (function (k) { createImageBitmap(im).then(function (b) {
+        if (GW.imgs !== imgs || GW.bm[k] !== 'wait') { b.close(); return; } GW.bm[k] = b;
+      }, function () { if (GW.bm[k] === 'wait') delete GW.bm[k]; }); })(k);
+    }
+    for (k in bm) if (!want[k]) { if (bm[k] !== 'wait') bm[k].close(); delete bm[k]; }
   }
   function gwFrame(k) {
-    k = ((k % GW.n) + GW.n) % GW.n;
-    var im = GW.imgs[k];
-    if (im && im.complete && im.naturalWidth) return im;
-    for (var d = 1; d < 8; d++) {                                    // frame belum siap → pakai yang terdekat
-      var a = GW.imgs[(k - d + GW.n) % GW.n]; if (a && a.complete && a.naturalWidth) return a;
+    var b = GW.bm[k]; if (b && b !== 'wait') return b;
+    var im = GW.imgs[k]; if (im && im._ok) return im;
+    for (var d = 1; d < 8; d++) {                                    // frame belum siap → pakai yang terdekat di belakangnya
+      im = GW.imgs[(k - d + GW.n) % GW.n]; if (im && im._ok) return im;
     }
     return null;
   }
   function gwSize() {
     var dpr = Math.min(devicePixelRatio || 1, 2);
-    GW.w = gwC.width = Math.round(innerWidth * dpr); GW.h = gwC.height = Math.round(innerHeight * dpr);
+    GW.w = gwC.width = Math.round(innerWidth * dpr); GW.h = gwC.height = Math.round(innerHeight * dpr); GW.shown = -1;
     if (GW.live && window.XG3) { XG3.resize(innerWidth, innerHeight); GW.dirty = true; }
   }
   function gwCover(im, a) {
-    var r = Math.max(GW.w / im.naturalWidth, GW.h / im.naturalHeight), w = im.naturalWidth * r, h = im.naturalHeight * r;
+    var iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height, r = Math.max(GW.w / iw, GW.h / ih), w = iw * r, h = ih * r;
     gwX.globalAlpha = a; gwX.drawImage(im, (GW.w - w) / 2, (GW.h - h) / 2, w, h);
   }
   function gwRoomAt(p) { var r = 0; GW.rooms.forEach(function (x, i) { if (p >= x[0]) r = i; }); return r; }
@@ -3922,10 +4152,14 @@
   function gwDraw() {
     if (GW.live) { if (GW.dirty && XG3.frame(GW.pos)) GW.dirty = false; }
     else {
-      var k = Math.floor(GW.pos), t = GW.pos - k, a = gwFrame(k), b = gwFrame(k + 1);
-      if (a) gwCover(a, 1);
-      if (b && b !== a && t > .02) gwCover(b, t);
-      gwX.globalAlpha = 1;
+      // Satu frame utuh (terdekat), tanpa mencampur dua frame: campuran membuat gambar dobel & blur (C53).
+      // Digambar ulang hanya bila frame berganti; frame pengganti dicoba lagi sampai frame aslinya siap.
+      var k = ((Math.round(GW.pos) % GW.n) + GW.n) % GW.n;
+      if (k !== GW.shown) {
+        gwFill(k, GW.target - GW.pos); gwKeep(k, GW.target - GW.pos);
+        var f = gwFrame(k);
+        if (f) { gwCover(f, 1); if (f === GW.bm[k] || f === GW.imgs[k]) GW.shown = k; }
+      }
     }
     var p = ((GW.pos % GW.n) + GW.n) % GW.n, r = gwRoomAt(p);
     $('#gwalkBar').style.transform = 'scaleX(' + (p / GW.n) + ')';
@@ -4069,7 +4303,7 @@
   try { gl = XW.init ? XW.init($('#world'), Object.assign({ mobile: isMobile() || !FINE, reduced: REDUCED }, gfxOpts(gfxNow()))) : false; } catch (err) { gl = false; }
   if (!gl || !XW.ok) html.classList.add('no-webgl');
   XW.onLost = function () { html.classList.add('no-webgl'); };
-  if (XW.ok) { applyLighting(); if (themeNow() === 'light') XW.setTheme('light', 0); applyBg(); applyLook(); applyFree(); }
+  if (XW.ok) { applyLighting(); if (themeNow() === 'light') XW.setTheme('light', 0); applyBg(); applyLook(); applyFree(); applyPlinth(); }
   // kayu koleksi global (Developer Settings › Kayu koleksi) — semua komponen berlabel gelap / terang / natural
   if (XW.ok && XW.setWood) fetch('../data/wood.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) { if (j && j.classes) XW.setWood(j.classes); }).catch(function () {});
   cubixDetail();

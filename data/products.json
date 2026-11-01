@@ -8208,7 +8208,7 @@
       "model": "assets/items/trapezo/model.glb"
     },
     {
-      "status": "aktif",
+      "status": "arsip",
       "dims": "141 × 99 × 46 cm",
       "leadTime": "",
       "customizable": true,
@@ -8271,7 +8271,7 @@
           "subs": []
         }
       ],
-      "variant": 0,
+      "variant": 2,
       "sold": 37,
       "desc": "Dua meja bulat yang saling bersarang.",
       "url": "https://xionco.shop/products/rouled-nested-coffee-table",
@@ -8281,10 +8281,18 @@
       "shopId": 26,
       "shopName": "ROULED - Nested Coffee Table",
       "bg": "white",
-      "model": "assets/items/rouled/model-70.glb",
-      "vmodels": {
-        "Diameter 55": "assets/items/rouled/model-55.glb",
-        "Complete Set": "assets/items/rouled/model.glb"
+      "model": "assets/items/rouled/model-set.glb",
+      "vshow": {
+        "Diameter 70": [
+          "t70"
+        ],
+        "Diameter 55": [
+          "t55"
+        ],
+        "Complete Set": [
+          "t70",
+          "t55"
+        ]
       }
     },
     {
@@ -22068,7 +22076,7 @@
           "subs": []
         }
       ],
-      "variant": 0,
+      "variant": 2,
       "sold": 37,
       "desc": "ROULED - Nested Coffee Table / Meja Tamu Tumpuk Minimalis | XIONCO\nWhat's in the box?\nDiameter 70 1 x Meja Tamu ø70\nDiameter 55 1 x Meja Tamu ø55\nComplete Set 1 x Meja Tamu ø55 1 x Meja Tamu ø70",
       "url": "https://xionco.shop/products/rouled-nested-coffee-table",
@@ -22078,10 +22086,18 @@
       "shopId": 141,
       "shopName": "ROULED - Nested Coffee Table",
       "bg": "white",
-      "model": "assets/items/rouled/model-70.glb",
-      "vmodels": {
-        "Diameter 55": "assets/items/rouled/model-55.glb",
-        "Complete Set": "assets/items/rouled/model.glb"
+      "model": "assets/items/rouled/model-set.glb",
+      "vshow": {
+        "Diameter 70": [
+          "t70"
+        ],
+        "Diameter 55": [
+          "t55"
+        ],
+        "Complete Set": [
+          "t70",
+          "t55"
+        ]
       }
     },
     {

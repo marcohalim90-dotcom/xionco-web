@@ -10,6 +10,8 @@
        pos posisi/model   top | mid | bottom (laci / rak / kaca) · even | grad (tinggi laci) · grid | diamond (rak anggur)
        sh  jumlah rak     rak di dalam pintu / rak terbuka (0–6)
        wr  lebar relatif  .6 | 1 | 1.5 | 2
+       hd  handle kolom   '' = ikut handle semua kolom · push | grip | bar | knob | tab | recessed   (C101)
+       ac  aksesori kolom [led, mback, stem, tray, mirror, lock] — hanya yang cocok dengan isi kolom (C101)
    Jumlah pintu / laci / rak dsb. diturunkan dari susunan (kelompok tersembunyi nDoor, nDrawer, …
    dengan addEach → harga per buah, dapat diatur di Developer Settings › Harga). Disinkronkan di
    XC.addMigrate('kabinet') — juga mengubah konfigurasi lama (doorType / doors / drawers / niches).
@@ -79,6 +81,21 @@
     return O('wr', 'Lebar kolom', 'Column width');
   }
   var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  /* C101 (pemilik): yang langsung berhubungan dengan satu kolom diatur di editor isi kolom — handle & aksesori.
+     Handle semua kolom (Detail) tetap jadi bawaan; kolom dengan hd '' mengikutinya. */
+  var HD_IDS = ['push', 'grip', 'bar', 'knob', 'tab', 'recessed'];
+  var SHOWK = /^(open|glass|dOpen|oDoor|gDoor|wine|wDoor|flap)$/, DRK = /^(drawers|combo|dOpen|hangDr|shelfDr)$/;
+  var FRONTK = /^(door|glass|drawers|combo|dOpen|oDoor|gDoor|flip|tip|hang|hang2|hangDr|shelf|shelfDr|wDoor|flap|pull)$/;   // kolom berpintu / berlaci (punya handle)
+  var COL_ACC = [
+    O('led', 'Lampu LED', 'LED lighting', { add: 500000, ok: function (k) { return SHOWK.test(k); } }),
+    O('mback', 'Cermin belakang', 'Mirrored back', { s: 'Cermin dalam', se: 'Mirror back', add: 450000, ok: function (k, sub) { return SHOWK.test(k) && /^(bar|bookshelf|sideboard|wall|tv)$/.test(sub); } }),
+    O('stem', 'Rak gelas gantung', 'Stemware rack', { s: 'Rak gelas', se: 'Stemware', add: 350000, ok: function (k, sub) { return /^(glass|gDoor|flap|open|oDoor)$/.test(k) && /^(bar|sideboard)$/.test(sub); } }),
+    O('tray', 'Baki beludru di laci', 'Velvet drawer tray', { s: 'Baki beludru', se: 'Velvet tray', add: 250000, ok: function (k) { return DRK.test(k); } }),
+    O('mirror', 'Cermin di pintu', 'Mirrored door', { s: 'Cermin pintu', se: 'Mirror door', add: 600000, ok: function (k, sub) { return sub === 'wardrobe' && /^(door|hang|hang2|hangDr|shelf|shelfDr|drawers)$/.test(k); } }),
+    O('lock', 'Kunci', 'Lock', { add: 150000, ok: function (k) { return FRONTK.test(k); } })
+  ];
+  var COL_IDS = COL_ACC.map(function (o) { return o.id; });
+  function accFor(k, sub) { return COL_ACC.filter(function (o) { return o.ok(k, sub); }); }
   function kindsFor(sub) { return (SUBK[sub] || SUBK.tv).map(function (id) { return KIND[id]; }); }
   // satu kolom → bentuk kanonik (kunci k, n, pos, sh, wr selalu ada & berurutan tetap)
   function canonCol(col, sub) {
@@ -90,7 +107,9 @@
     var pos = has('pos') ? (d.pos.indexOf(col.pos) >= 0 ? col.pos : d.pos[0]) : '';
     var sh = has('sh') ? clamp(Math.round(col.sh == null || isNaN(+col.sh) ? d.sh : +col.sh), 0, d.shMax || 6) : 0;
     var wr = +col.wr; wr = WR.some(function (o) { return +o.id === wr; }) ? wr : 1;
-    return { k: k, n: n, pos: pos, sh: sh, wr: wr };
+    var hd = FRONTK.test(k) && HD_IDS.indexOf(col.hd) >= 0 ? col.hd : '';
+    var ac = Array.isArray(col.ac) ? accFor(k, sub).filter(function (o) { return col.ac.indexOf(o.id) >= 0; }).map(function (o) { return o.id; }) : [];
+    return { k: k, n: n, pos: pos, sh: sh, wr: wr, hd: hd, ac: ac };
   }
   function newCol(k, sub, wr) { var d = KIND[k]; return canonCol({ k: k, n: d.n ? d.n[2] : 0, pos: d.pos ? d.pos[0] : '', sh: d.sh || 0, wr: wr || 1 }, sub); }
   var C = function (k, o) { var r = { k: k }; if (o) for (var q in o) r[q] = o[q]; return r; };
@@ -150,14 +169,28 @@
     { id: 'nHang', l: 'Gantungan baju', en: 'Hanging rails', addEach: 150000 },
     { id: 'nWine', l: 'Rak anggur', en: 'Wine racks', addEach: 650000 },
     { id: 'nFlap', l: 'Bar flap', en: 'Bar flaps', addEach: 900000 },
-    { id: 'nPull', l: 'Pull-out pantry', en: 'Pantry pull-outs', addEach: 2400000 }
+    { id: 'nPull', l: 'Pull-out pantry', en: 'Pantry pull-outs', addEach: 2400000 },
+    // C101: aksesori dihitung per kolom (dulu satu harga per kabinet); handle push / tab khusus kolom = satu kali bila bukan handle semua kolom
+    { id: 'nLed', l: 'Lampu LED (kolom)', en: 'LED lighting (columns)', addEach: 500000 },
+    { id: 'nMback', l: 'Cermin belakang (kolom)', en: 'Mirrored backs (columns)', addEach: 450000 },
+    { id: 'nStem', l: 'Rak gelas gantung (kolom)', en: 'Stemware racks (columns)', addEach: 350000 },
+    { id: 'nTray', l: 'Baki beludru (kolom)', en: 'Velvet trays (columns)', addEach: 250000 },
+    { id: 'nMirror', l: 'Cermin di pintu (kolom)', en: 'Mirrored doors (columns)', addEach: 600000 },
+    { id: 'nLock', l: 'Kunci (kolom)', en: 'Locks (columns)', addEach: 150000 },
+    { id: 'nHdPush', l: 'Handle push to open khusus kolom', en: 'Push-to-open on some columns', addEach: 200000 },
+    { id: 'nHdTab', l: 'Handle tab kulit khusus kolom', en: 'Leather tabs on some columns', addEach: 100000 }
   ];
+  var ACC_CNT = { led: 'nLed', mback: 'nMback', stem: 'nStem', tray: 'nTray', mirror: 'nMirror', lock: 'nLock' };
   function counts(c) {
     var o = {}; CNT.forEach(function (x) { o[x.id] = 0; });
     var lay = c.layout || [], Wm = (+c.w || 100) / 100, ih = (+c.h || 80) / 100 - 2 * T_BOARD, ws = colWidths(Wm, lay);
     var ds = c.doorStyle || 'swing', wardOpen = c.sub === 'wardrobe' && ds === 'open', wardSlide = c.sub === 'wardrobe' && ds === 'sliding';
+    var hdAll = c.handle || 'grip';
     lay.forEach(function (col, i) {
       var L = leavesOf(ws[i]);
+      (col.ac || []).forEach(function (a) { if (ACC_CNT[a] && !(a === 'mirror' && wardOpen)) o[ACC_CNT[a]]++; });
+      if (col.hd === 'push' && hdAll !== 'push') o.nHdPush = 1;
+      if (col.hd === 'tab' && hdAll !== 'tab') o.nHdTab = 1;
       if (col.k === 'wine' || col.k === 'wDoor') o.nWine++;
       if (col.k === 'pull') o.nPull++;
       segs(col, ih, c.sub).forEach(function (s) {
@@ -173,6 +206,7 @@
     return o;
   }
   // teks ringkasan susunan (panel, WhatsApp, Developer Settings)
+  var HD_L = { push: O('push', 'Push to open', 'Push to open'), grip: O('grip', 'Grip J', 'J-grip'), bar: O('bar', 'Batang', 'Bar'), knob: O('knob', 'Knob', 'Knob'), tab: O('tab', 'Tab kulit', 'Leather tab'), recessed: O('recessed', 'Coakan', 'Recessed') };
   function layoutText(c, L) {
     L = L || function (o) { return o.l; };
     var en = L({ l: 0, en: 1 }) === 1, lay = c.layout || [];
@@ -182,6 +216,8 @@
       if (d.p && d.p.indexOf('pos') >= 0 && POS[col.pos]) x.push(L(POS[col.pos]).toLowerCase());
       if (d.p && d.p.indexOf('sh') >= 0 && col.sh) x.push(col.sh + ' ' + (en ? (col.sh > 1 ? 'shelves' : 'shelf') : 'rak'));
       if (col.wr !== 1) x.push(L(WR.filter(function (o) { return +o.id === col.wr; })[0] || WR[1]).toLowerCase());
+      if (col.hd) x.push((en ? 'handle ' : 'handle ') + L(HD_L[col.hd]).toLowerCase());
+      (col.ac || []).forEach(function (a) { var o = COL_ACC.filter(function (q) { return q.id === a; })[0]; if (o) x.push(L({ l: o.s || o.l, en: o.se || o.en }).toLowerCase()); });
       return t + (x.length ? ' (' + x.join(', ') + ')' : '');
     });
     return lay.length + ' ' + (en ? (lay.length > 1 ? 'columns' : 'column') : 'kolom') + ': ' + parts.join(' · ');
@@ -293,13 +329,6 @@
   // ikon garis kecil untuk pilihan baru (tanpa gambar render) — kotak 100×100
   function ico(body) { return svgOpen('0 0 100 100') + body + '</svg>'; }
   var ICO = {
-    // CZ-B (25 Okt): ikon handle — muka pintu/laci dengan jenis handle (gambar render lama salah: meja / garis tegak)
-    hPush: ico(R(26, 14, 48, 72) + '<circle cx="50" cy="50" r="3.2" vector-effect="non-scaling-stroke"/>' + Pth('M41 41a13 13 0 0 1 18 0M41 59a13 13 0 0 0 18 0', true)),
-    hGrip: ico(R(26, 14, 48, 72) + Pth('M26 22h48M26 22v-3h48v3') + Ln(30, 26, 70, 26, true)),
-    hBar: ico(R(26, 14, 48, 72) + Pth('M63 34v32') + Ln(63, 34, 66, 34) + Ln(63, 66, 66, 66)),
-    hKnob: ico(R(26, 14, 48, 72) + '<circle cx="64" cy="50" r="3.6" vector-effect="non-scaling-stroke"/>'),
-    hTab: ico(R(26, 14, 48, 72) + Pth('M46 14v-5h8v5M46 9q4 3 8 0')),
-    hRecessed: ico(R(26, 14, 48, 72) + '<rect x="58" y="40" width="9" height="20" rx="4.5" vector-effect="non-scaling-stroke"/>' + Ln(60.5, 43, 60.5, 57, true)),
     swing: ico(R(22, 20, 56, 62) + Ln(50, 20, 50, 82) + Pth('M50 82 L32 90 L32 28 L50 20', true) + Ln(44, 46, 44, 56) + Ln(56, 46, 56, 56)),
     sliding: ico(R(18, 20, 64, 62) + R(22, 24, 30, 54) + R(48, 24, 30, 54) + Pth('M30 51h12m-4-4 4 4-4 4', true) + Ln(66, 46, 66, 56)),
     folding: ico(R(18, 20, 64, 62) + Pth('M18 22l14 6v52l-14 2M32 28l14-6v60l-14-2', false) + Ln(64, 46, 64, 56) + Ln(50, 22, 50, 82)),
@@ -401,8 +430,8 @@
     );
     if (extra.wall) gs.push(WALLPANEL_G);
     gs.push(
-      { id: 'handle', step: 'detail', type: 'chips', l: 'Handle', en: 'Handles', opts: [O('push', 'Tanpa handle (push to open)', 'Handleless (push-to-open)', { s: 'Push to open', se: 'Push to open', add: 200000, svg: ICO.hPush }), O('grip', 'Profil grip (J)', 'J-profile grip', { se: 'J-grip', svg: ICO.hGrip }), O('bar', 'Handle batang', 'Bar handle', { svg: ICO.hBar }),
-        O('knob', 'Knob', 'Knob', { svg: ICO.hKnob }), O('tab', 'Tab kulit', 'Leather tab', { add: 100000, svg: ICO.hTab }), O('recessed', 'Coakan (recessed)', 'Recessed pull', { s: 'Coakan', se: 'Recessed', svg: ICO.hRecessed })] },
+      { id: 'handle', step: 'detail', type: 'chips', l: 'Handle semua kolom', en: 'Handles (all columns)', opts: [O('push', 'Tanpa handle (push to open)', 'Handleless (push-to-open)', { s: 'Push to open', se: 'Push to open', add: 200000 }), O('grip', 'Profil grip (J)', 'J-profile grip', { se: 'J-grip' }), O('bar', 'Handle batang', 'Bar handle'),
+        O('knob', 'Knob', 'Knob'), O('tab', 'Tab kulit', 'Leather tab', { add: 100000 }), O('recessed', 'Coakan (recessed)', 'Recessed pull', { s: 'Coakan', se: 'Recessed' })] },
       g('metal', { l: 'Finishing handle / besi', en: 'Handle / metal finish', when: function (c) { return /^(bar|knob)$/.test(c.handle) || c.mount === 'legs' && /^(round|hairpin|sled|openFrame)$/.test(c.leg) || c.mount === 'castor'; } })
     );
     if (!extra.wall) gs.push(
@@ -411,12 +440,8 @@
         O('block', 'Blok kotak', 'Block', { svg: ICO.block }), O('round', 'Besi bulat', 'Round metal'), O('hairpin', 'Hairpin', 'Hairpin'), O('sled', 'Sled', 'Sled'), O('openFrame', 'Rangka besi', 'Metal frame base', { se: 'Metal frame', add: 450000, svg: ICO.openFrame })], when: function (c) { return c.mount === 'legs'; } },
       g('legH', { when: function (c) { return c.mount === 'legs'; } })
     );
-    gs.push({ id: 'interior', step: 'detail', type: 'multi', l: 'Isi dalam & aksesori', en: 'Interior & accessories', opts: [
-      O('led', 'Lampu LED', 'LED lighting', { add: 500000, svg: ICO.led }), O('soft', 'Soft close', 'Soft-close hinges & runners', { se: 'Soft close', add: 300000, svg: ICO.soft }), O('lock', 'Kunci', 'Lock', { add: 150000, svg: ICO.lock }),
-      O('mirror', 'Cermin di pintu', 'Mirrored door', { s: 'Cermin pintu', se: 'Mirror door', add: 600000, svg: ICO.mirror, when: function (c) { return c.sub === 'wardrobe' && c.doorStyle !== 'open'; } }),
-      O('mback', 'Cermin belakang', 'Mirrored back', { s: 'Cermin dalam', se: 'Mirror back', add: 450000, svg: ICO.mback, when: function (c) { return /^(bar|bookshelf|sideboard|wall|tv)$/.test(c.sub) && layHas(/^(open|glass|gDoor|oDoor|dOpen|wine|wDoor|flap)$/)(c); } }),
-      O('stem', 'Rak gelas gantung', 'Stemware rack', { s: 'Rak gelas', se: 'Stemware', add: 350000, svg: ICO.stem, when: function (c) { return /^(bar|sideboard)$/.test(c.sub) && layHas(/^(glass|gDoor|flap|open|oDoor)$/)(c); } }),
-      O('tray', 'Baki beludru di laci', 'Velvet drawer tray', { s: 'Baki beludru', se: 'Velvet tray', add: 250000, svg: ICO.tray, when: hasDrawers }),
+    gs.push({ id: 'interior', step: 'detail', type: 'multi', l: 'Aksesori kabinet', en: 'Cabinet accessories', opts: [
+      O('soft', 'Soft close', 'Soft-close hinges & runners', { se: 'Soft close', add: 300000, svg: ICO.soft }),
       O('usb', 'Port USB / VAZRA', 'USB / VAZRA power port', { s: 'USB / VAZRA', se: 'USB / VAZRA', add: 350000, svg: ICO.usb, when: IN(/^(nightstand|tv|wall|sideboard|dresser)$/) }),
       O('cable', 'Lubang kabel', 'Cable outlet', { se: 'Cable outlet', add: 80000, svg: ICO.cable, when: IN(/^(tv|wall|sideboard)$/) }),
       O('deskDr', 'Laci bawah meja', 'Under-desk drawer', { s: 'Laci meja', se: 'Desk drawer', add: 450000, svg: ICO.deskDr, when: function (c) { return c.sub === 'wall' && c.wallType === 'desk'; } })] });
@@ -517,7 +542,8 @@
   // nilai turunan bawaan (jumlah pintu/laci …) + salinan susunan per sub
   cat.subs.forEach(function (s) {
     s.def.layout = s.def.layout.map(function (q) { return canonCol(q, s.id); });
-    var cc = counts({ sub: s.id, w: s.dims.w[3], h: s.dims.h[3], layout: s.def.layout, doorStyle: s.def.doorStyle });
+    moveAcc(s.def, s.id);
+    var cc = counts({ sub: s.id, w: s.dims.w[3], h: s.dims.h[3], layout: s.def.layout, doorStyle: s.def.doorStyle, handle: s.def.handle });
     for (var k in cc) s.def[k] = cc[k];
   });
 
@@ -570,6 +596,15 @@
     }
     return L;
   }
+  // C101: aksesori lama (satu untuk seluruh kabinet) → kolom yang cocok; kunci & cermin pintu cukup satu kolom, rak gelas maks 2
+  function moveAcc(c, sid) {
+    if (!Array.isArray(c.interior) || !c.interior.some(function (x) { return COL_IDS.indexOf(x) >= 0; })) return;
+    c.interior.filter(function (x) { return COL_IDS.indexOf(x) >= 0; }).forEach(function (a) {
+      var lim = a === 'lock' || a === 'mirror' ? 1 : a === 'stem' ? 2 : 99, put = 0;
+      c.layout.forEach(function (q) { if (put < lim && accFor(q.k, sid).some(function (o) { return o.id === a; }) && q.ac.indexOf(a) < 0) { q.ac.push(a); put++; } });
+    });
+    c.interior = c.interior.filter(function (x) { return COL_IDS.indexOf(x) < 0; });
+  }
   function sync(c) {
     if (!c || c.cat !== 'kabinet') return c;
     var s = cat.subs.filter(function (x) { return x.id === c.sub; })[0] || cat.subs[0], sid = s.id;
@@ -586,7 +621,8 @@
     }
     var src = Array.isArray(c.layout) && c.layout.length ? c.layout : s.def.layout;
     c.layout = src.slice(0, MAXC[sid] || 6).map(function (q) { return canonCol(q, sid); });
-    var cc = counts({ sub: sid, w: c.w || s.dims.w[3], h: c.h || s.dims.h[3], layout: c.layout, doorStyle: c.doorStyle || 'swing' });
+    moveAcc(c, sid);
+    var cc = counts({ sub: sid, w: c.w || s.dims.w[3], h: c.h || s.dims.h[3], layout: c.layout, doorStyle: c.doorStyle || 'swing', handle: c.handle });
     for (var k in cc) if (c[k] !== cc[k]) c[k] = cc[k];
     return c;
   }
@@ -594,7 +630,7 @@
 
   window.XKAB = {
     KINDS: KINDS, KIND: KIND, SUBK: SUBK, MAXC: MAXC, POS: POS, WR: WR, PRESETS: PRESETS, ICO: ICO, T: T_BOARD,
-    kindsFor: kindsFor, canonCol: canonCol, newCol: newCol, paramL: paramL, segs: segs, colWidths: colWidths, leavesOf: leavesOf, slidePanels: slidePanels,
+    kindsFor: kindsFor, canonCol: canonCol, HD_IDS: HD_IDS, COL_ACC: COL_ACC, accFor: accFor, hasFront: function (k) { return FRONTK.test(k); }, newCol: newCol, paramL: paramL, segs: segs, colWidths: colWidths, leavesOf: leavesOf, slidePanels: slidePanels,
     counts: counts, layoutText: layoutText, sync: sync, colSVG: colSVG, frontSVG: frontSVG, svgOpen: svgOpen, R: R, Ln: Ln
   };
 })();

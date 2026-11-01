@@ -86,8 +86,8 @@
     mats.floor = softFloor(new T.MeshStandardMaterial({ color: col('#17130f'), roughness: .38, metalness: 0, envMapIntensity: .22 }));
     var floor = new T.Mesh(new T.CircleGeometry(60, 96), mats.floor);
     floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor); O.floor = floor;
-    var wall = O.wall = new T.Mesh(new T.CylinderGeometry(15, 15, 14, 128, 1, true), new T.MeshBasicMaterial({ map: canvasTex(16, 512, backdrop), side: T.BackSide, toneMapped: false }));
-    wall.position.y = 7; scene.add(wall);
+    var wall = O.wall = new T.Mesh(new T.CylinderGeometry(36, 36, 34, 160, 1, true), new T.MeshBasicMaterial({ map: canvasTex(16, 512, backdrop), side: T.BackSide, toneMapped: false }));
+    wall.position.y = 17; scene.add(wall);   // 27 Okt (pemilik): latar lebih besar — jari-jari 15 → 36 m, kamera tidak keluar ruang saat zoom out penuh
     // cahaya hangat lembut di belakang panggung
     // tekstur halo memudar ke bawah → tidak ada garis tajam di tempat bidang halo memotong lantai
     var haloTex = radial([[0, 'rgba(201,160,108,.34)'], [.45, 'rgba(150,110,70,.1)'], [1, 'rgba(0,0,0,0)']]), hc = haloTex.image, hg = hc.getContext('2d'), hf = hg.createLinearGradient(0, hc.height, 0, 0);
@@ -104,7 +104,7 @@
     O.plinth.scale.set(2, 1, 2);
     scene.add(O.plinth);
     O.blobTex = radial([[0, 'rgba(0,0,0,.75)'], [.5, 'rgba(0,0,0,.35)'], [1, 'rgba(0,0,0,0)']]);
-    buildHorizon(); buildStudio(); buildGrid();
+    buildHorizon(); buildStudio(); buildClassic(); buildGrid();
   }
   /* ---------------------------------------------------------------- background: Default & Studio
      Default = ruang gelap/terang dengan dinding melingkar; horizon dilunakkan: lantai memudar ke warna
@@ -123,36 +123,73 @@
   function buildHorizon() {
     var wc = col(THEMES[themeName].wall[2]);
     // lantai → warna dinding (cincin transparan di lantai, mulai r ±7,6 m)
-    O.hzFloor = new T.Mesh(new T.CircleGeometry(15.2, 128), new T.MeshBasicMaterial({ color: wc, map: fadeTex(true), transparent: true, depthWrite: false, toneMapped: false }));
+    O.hzFloor = new T.Mesh(new T.CircleGeometry(36.5, 160), new T.MeshBasicMaterial({ color: wc, map: fadeTex(true), transparent: true, depthWrite: false, toneMapped: false }));
     O.hzFloor.rotation.x = -Math.PI / 2; O.hzFloor.position.y = .004; O.hzFloor.renderOrder = -1; O.hzFloor.userData.noPick = true; scene.add(O.hzFloor);
     // kabut di kaki dinding: pita melingkar yang memudar ke atas
-    O.hzBand = new T.Mesh(new T.CylinderGeometry(14.9, 14.9, 5, 128, 1, true), new T.MeshBasicMaterial({ color: wc, map: fadeTex(false), transparent: true, depthWrite: false, side: T.BackSide, toneMapped: false }));
-    O.hzBand.position.y = 2.5; O.hzBand.userData.noPick = true; scene.add(O.hzBand);
+    O.hzBand = new T.Mesh(new T.CylinderGeometry(35.8, 35.8, 8, 160, 1, true), new T.MeshBasicMaterial({ color: wc, map: fadeTex(false), transparent: true, depthWrite: false, side: T.BackSide, toneMapped: false }));
+    O.hzBand.position.y = 4; O.hzBand.userData.noPick = true; scene.add(O.hzBand);
   }
   function buildStudio() {
     // profil: lantai datar → lengkung (r 2,6 m) → dinding tegak; diputar 360° jadi mangkuk mulus
-    var R = 11, cv = 2.6, Hh = 9, pts = [new T.Vector2(0, 0), new T.Vector2(R - cv, 0)];
+    var R = 34, cv = 6, Hh = 28, pts = [   // 27 Okt (pemilik): latar lebih besar (dulu R 11 m → tepi mangkuk terlihat saat zoom out)
+     new T.Vector2(0, 0), new T.Vector2(R - cv, 0)];
     for (var i = 1; i <= 16; i++) { var a = i / 16 * Math.PI / 2; pts.push(new T.Vector2(R - cv + Math.sin(a) * cv, cv - Math.cos(a) * cv)); }
     pts.push(new T.Vector2(R, Hh));
-    var geo = new T.LatheGeometry(pts, 128);
+    var geo = new T.LatheGeometry(pts, 160);
     O.studio = new T.Mesh(geo, softFloor(new T.MeshStandardMaterial({ color: col(STUDIO[themeName]), roughness: .92, metalness: 0, side: T.BackSide, envMapIntensity: .35 })));
     O.studio.receiveShadow = true; O.studio.visible = false; O.studio.userData.noPick = true; scene.add(O.studio);
+  }
+  /* 31 Okt (C81, pemilik): Classic = latar foto produk klasik — dinding hitam, lantai abu muda yang paling terang di kaki kamera
+     dan meredup ke belakang objek sampai hitam di cakrawala (tanpa garis). Mangkuk mulus seperti Studio; gradasi dihitung per piksel
+     dari posisi kamera (uCam) sehingga tetap benar saat diputar. Tetap menerima bayangan (PCSS lantai). Sama di tema gelap & terang. */
+  var CLASSIC = { hi: '#c0c8d2', lo: '#07080b' };   // sedikit dingin: menetralkan cahaya panggung yang hangat (diukur: bawah layar ±178,177,178)
+  function buildClassic() {
+    var R = 34, cv = 6, Hh = 28, pts = [], i;
+    for (i = 0; i <= 56; i++) pts.push(new T.Vector2((R - cv) * i / 56, 0));   // lantai rapat → gradasi halus
+    for (i = 1; i <= 16; i++) { var a = i / 16 * Math.PI / 2; pts.push(new T.Vector2(R - cv + Math.sin(a) * cv, cv - Math.cos(a) * cv)); }
+    pts.push(new T.Vector2(R, Hh));
+    var m = softFloor(new T.MeshStandardMaterial({ color: 0xffffff, roughness: .9, metalness: 0, side: T.BackSide, envMapIntensity: .3, fog: false }));
+    var U = { uCam: { value: new T.Vector2(0, 5) }, uHi: { value: col(CLASSIC.hi) }, uLo: { value: col(CLASSIC.lo) }, uKd: { value: .45 }, uKe: { value: .42 } };
+    m.onBeforeCompile = function (sh) {
+      Object.assign(sh.uniforms, U);
+      sh.vertexShader = 'varying vec3 vCW;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n vCW = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+      sh.fragmentShader = 'uniform vec2 uCam; uniform vec3 uHi; uniform vec3 uLo; uniform float uKd; uniform float uKe; varying vec3 vCW;\n' + sh.fragmentShader.replace('#include <color_fragment>',
+        '#include <color_fragment>\n float cL = max(length(uCam), 2.5), cD = distance(vCW.xz, uCam);\n' +
+        ' float cG = (1.0 - smoothstep(.1 * cL, 1.7 * cL, cD)) * (1.0 - smoothstep(.02, 2.5, vCW.y));\n' +
+        ' vec3 cC = mix(uLo, uHi, cG * cG * (3.0 - 2.0 * cG)); diffuseColor.rgb *= cC * uKd;');
+      sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n totalEmissiveRadiance += cC * uKe;');   // separuh cahaya sendiri → abu netral, tidak ikut warna lampu panggung
+    };
+    O.classic = new T.Mesh(new T.LatheGeometry(pts, 160), m); O.classic.userData.cU = U;
+    O.classic.receiveShadow = true; O.classic.visible = false; O.classic.userData.noPick = true; scene.add(O.classic);
   }
   /* Garis = jaring garis halus di lantai & dinding (warna pilihan) · Neon = jaring bercahaya digital
      (warna pilihan) + halo & garis podium ikut menyala. Garis dibuat di shader (anti-alias fwidth). */
   var GRIDV = 'varying vec3 vW; void main() { vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }';
-  var GRIDF = 'uniform vec3 uC; uniform float uOp, uGlow, uWall; varying vec3 vW;\n' +
-    'float ln(vec2 p, float w) { vec2 q = abs(fract(p - 0.5) - 0.5) / fwidth(p); return 1.0 - min(min(q.x, q.y) / w, 1.0); }\n' +
+  /* 26 Okt (pemilik): garis muncul ditarik SATU PER SATU dengan jeda per garis, dan ditarik mundur saat latar diganti.
+     uT 0 → 1 = progres gambar. Urutan tetap (aturan pemilik): lantai — garis memanjang ke belakang dari kiri → kanan,
+     lalu garis melintang dari depan → belakang (bawah → atas di layar), masing-masing ditarik dari kiri / depan;
+     tembok — garis tegak kiri → kanan ditarik dari BAWAH → ATAS, lalu garis datar dari bawah → atas ditarik kiri → kanan.
+     Arah kiri/kanan mengikuti kamera (uRt / uFw dibulatkan ke sumbu grid, uA0 = arah pandang di tembok). */
+  var GRIDF = 'uniform vec3 uC; uniform float uOp, uGlow, uWall, uT, uA0; uniform vec2 uRt, uFw; varying vec3 vW;\n' +
+    'float l1(float c, float w) { float q = abs(fract(c - 0.5) - 0.5) / fwidth(c); return 1.0 - min(q / w, 1.0); }\n' +
+    'float fam(float c) { float a = l1(c / 0.5, 1.0) * 0.28 + l1(c / 2.5, 1.4) * 0.75; if (uGlow > 0.5) a += l1(c / 2.5, 7.0) * 0.22 + l1(c / 0.5, 4.0) * 0.06; return a; }\n' +
+    'float pen(float k, float u, float s0, float s1) { float t = clamp((uT - s0) / (s1 - s0), 0.0, 1.0), g = clamp((t - k * 0.6) / 0.4, 0.0, 1.0); g = 1.0 - pow(1.0 - g, 3.0); return 1.0 - smoothstep(g * 1.02 - 0.03, g * 1.02, u); }\n' +
+    'float rel(float a) { return mod(a - uA0 + 3.14159265, 6.2831853) - 3.14159265; }\n' +
     'void main() {\n' +
-    ' vec2 p = uWall > 0.5 ? vec2(atan(vW.z, vW.x) * 14.8, vW.y) : vW.xz;\n' +
-    ' float minor = ln(p / 0.5, 1.0), major = ln(p / 2.5, 1.4);\n' +
-    ' float fade = uWall > 0.5 ? smoothstep(10.0, 0.5, vW.y) * smoothstep(-0.2, 0.6, vW.y) : 1.0 - smoothstep(4.0, 14.5, length(vW.xz));\n' +
-    ' float a = (minor * 0.28 + major * 0.75) * fade;\n' +
-    ' if (uGlow > 0.5) a += ln(p / 2.5, 7.0) * 0.22 * fade + ln(p / 0.5, 4.0) * 0.06 * fade;\n' +
+    ' float a;\n' +
+    ' if (uWall > 0.5) {\n' +
+    '  float ang = atan(vW.z, vW.x), px = ang * 14.8, fade = smoothstep(10.0, 0.5, vW.y) * smoothstep(-0.2, 0.6, vW.y);\n' +
+    '  float kV = clamp((rel(floor(px / 0.5 + 0.5) * 0.5 / 14.8) + 1.5) / 3.0, 0.0, 1.0), kH = clamp(floor(vW.y / 0.5 + 0.5) * 0.5 / 9.0, 0.0, 1.0);\n' +
+    '  a = max(fam(px) * pen(kV, clamp(vW.y / 9.0, 0.0, 1.0), 0.0, 0.62), fam(vW.y) * pen(kH, clamp((rel(ang) + 1.5) / 3.0, 0.0, 1.0), 0.38, 1.0)) * fade;\n' +
+    ' } else {\n' +
+    '  vec2 v = vec2(dot(vW.xz, uRt), dot(vW.xz, uFw));\n' +
+    '  float fade = 1.0 - smoothstep(4.0, 14.5, length(vW.xz)), cx = floor(v.x / 0.5 + 0.5) * 0.5, cy = floor(v.y / 0.5 + 0.5) * 0.5;\n' +
+    '  a = max(fam(v.x) * pen(clamp((cx + 7.0) / 14.0, 0.0, 1.0), clamp((6.0 - v.y) / 20.0, 0.0, 1.0), 0.0, 0.62), fam(v.y) * pen(clamp((6.0 - cy) / 20.0, 0.0, 1.0), clamp((v.x + 9.0) / 18.0, 0.0, 1.0), 0.38, 1.0)) * fade;\n' +
+    ' }\n' +
     ' gl_FragColor = vec4(uC * (1.0 + uGlow * 0.8), a * uOp);\n' +
     '}';
   function gridMat(wall) {
-    return new T.ShaderMaterial({ uniforms: { uC: { value: col('#bfa274') }, uOp: { value: .5 }, uGlow: { value: 0 }, uWall: { value: wall ? 1 : 0 } }, vertexShader: GRIDV, fragmentShader: GRIDF,
+    return new T.ShaderMaterial({ uniforms: { uC: { value: col('#bfa274') }, uOp: { value: .5 }, uGlow: { value: 0 }, uWall: { value: wall ? 1 : 0 }, uT: { value: 1 }, uA0: { value: -Math.PI / 2 }, uRt: { value: new T.Vector2(1, 0) }, uFw: { value: new T.Vector2(0, 1) } }, vertexShader: GRIDV, fragmentShader: GRIDF,
       extensions: { derivatives: true }, transparent: true, depthWrite: false, toneMapped: false, side: wall ? T.BackSide : T.FrontSide });
   }
   function buildGrid() {
@@ -181,15 +218,41 @@
     [O.hzFloor, O.hzBand].forEach(function (m) { if (m) tw(m.material.color, { r: wc.r, g: wc.g, b: wc.b, duration: d == null ? 1.2 : d }); });
     if (O.studio) { var sc = col(STUDIO[themeName]); tw(O.studio.material.color, { r: sc.r, g: sc.g, b: sc.b, duration: d == null ? 1.2 : d }); }
   }
-  XW.setBackground = function (name, hex) {
-    bgName = /^(studio|grid|neon)$/.test(name) ? name : 'default';
-    if (hex) bgHex = hex;
+  /* 26 Okt (pemilik, no. 47): garis latar ditarik keluar SATU PER SATU (lantai dulu kiri → kanan & depan → belakang,
+     lalu tembok dari BAWAH → ATAS) dan ditarik mundur dengan urutan terbalik saat latar diganti. Pergantian lain langsung. */
+  var BGQ = { id: 0 }, gdir = new T.Vector3();
+  function seqTo(obj, vars, cb) { if (G) G.killTweensOf(obj); return tw(obj, Object.assign({}, vars, cb ? { onComplete: cb } : {})); }
+  function lined(b) { return b === 'grid' || b === 'neon'; }
+  function gridAim() {
+    camera.getWorldDirection(gdir);
+    var f = Math.abs(gdir.x) > Math.abs(gdir.z) ? [Math.sign(gdir.x), 0] : [0, Math.sign(gdir.z) || -1];   // arah pandang dibulatkan ke sumbu grid
+    [O.gridFloor, O.gridWall].forEach(function (m) { var u = m.material.uniforms; u.uFw.value.set(-f[0], -f[1]); u.uRt.value.set(-f[1], f[0]); u.uA0.value = Math.atan2(gdir.z, gdir.x); });
+  }
+  function gridPen(on, cb) {
+    var f = O.gridFloor.material.uniforms.uT, w = O.gridWall.material.uniforms.uT;
+    gridAim();
+    if (on) { seqTo(f, { value: 1, duration: 1.1, ease: 'none' }); seqTo(w, { value: 1, duration: 1.1, delay: .45, ease: 'none' }, cb); }   // lantai dulu, lalu tembok (bawah → atas)
+    else { seqTo(w, { value: 0, duration: .6, ease: 'none' }); seqTo(f, { value: 0, duration: .6, delay: .25, ease: 'none' }, cb); }   // menutup terbalik: tembok dulu, lalu lantai
+  }
+  function bgApply(nb, later) {
+    bgName = nb;
+    [O.gridFloor, O.gridWall].forEach(function (m) { if (!m) return; if (G) G.killTweensOf(m.material.uniforms.uT); m.material.uniforms.uT.value = lined(nb) && !later ? 1 : 0; });
     gridLook();
-    var st0 = bgName === 'studio';
-    if (O.studio) O.studio.visible = st0;
+    var st0 = bgName === 'studio' || bgName === 'classic';
+    if (O.studio) O.studio.visible = bgName === 'studio';
+    if (O.classic) O.classic.visible = bgName === 'classic';
     [O.wall, O.halo, O.hzFloor, O.hzBand].forEach(function (m) { if (m) m.visible = !st0; });
     if (mats.floor && O.floor) O.floor.visible = !st0;
-    if (O.plinth) O.plinth.visible = !st0;   // studio foto: furnitur langsung di lantai, tanpa podium
+    if (O.plinth) O.plinth.visible = st.kind !== 'room';   // 27 Okt: podium mengikuti klik kanan › Podium di semua latar (dulu Studio selalu tanpa podium)
+    floorLift(0);
+  }
+  XW.setBackground = function (name, hex) {
+    var nb = /^(studio|classic|grid|neon)$/.test(name) ? name : 'default', ob = bgName, my = ++BGQ.id;
+    if (hex) bgHex = hex;
+    if (nb === ob) { gridLook(); return; }
+    if (!G || XW.reduced || frame < 30) { bgApply(nb); return; }   // awal / gerak dikurangi: langsung
+    var next = function () { if (my !== BGQ.id) return; bgApply(nb, true); if (lined(nb)) gridPen(true); };
+    if (lined(ob)) gridPen(false, next); else next();
   };
   XW.background = function () { return bgName; };
   XW.setBackgroundColor = function (hex) { bgHex = hex; gridLook(); };
@@ -393,6 +456,36 @@
       sc.onload = function () { ok(!!T.Reflector); }; sc.onerror = function () { ok(false); }; document.head.appendChild(sc);
     }));
   }
+  /* 31 Okt (C77): LANTAI BEREFLEKSI — pantulan nyata (Reflector) setipis lantai, transparan (Off / Rendah .2 / Tinggi .42),
+     memudar 2,5 → 9 m dari tengah supaya cakrawala tetap lembut; tidak di Ruang & Peta. Klik kanan › Refleksi lantai. */
+  var FR = { lv: 3, m: null, busy: false, w: 0, h: 0 }, FR_OP = [0, .14, .27, .42];   // C78: Off / Low / Mid / High
+  /* C78 (pemilik: "reflexi pada lantai terlalu pixelated, seharusnya lebih jernih"): dulu tekstur pantulan 512 × 512 (kualitas < 2)
+     direntang ke seluruh layar lebar → kotak-kotak, paling terlihat di tema gelap. Sekarang = ukuran gambar kanvas (maks. 2048)
+     + MSAA 4×, ikut berubah saat jendela / kualitas grafis berubah. */
+  function frSize() { var v = renderer.getDrawingBufferSize(new T.Vector2()), k = Math.min(1, 2048 / Math.max(v.x, v.y, 1)); return [Math.max(256, Math.round(v.x * k)), Math.max(256, Math.round(v.y * k))]; }
+  var FR_SH = { uniforms: { color: { value: null }, tDiffuse: { value: null }, textureMatrix: { value: null }, uOp: { value: .42 } },
+    vertexShader: 'uniform mat4 textureMatrix; varying vec4 vUv; varying vec3 vW; void main() { vUv = textureMatrix * vec4(position, 1.0); vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }',
+    fragmentShader: 'uniform vec3 color; uniform sampler2D tDiffuse; uniform float uOp; varying vec4 vUv; varying vec3 vW; void main() { vec4 b = texture2DProj(tDiffuse, vUv); float f = 1.0 - smoothstep(2.5, 9.0, length(vW.xz)); gl_FragColor = vec4(b.rgb * color, uOp * f);\n#include <encodings_fragment>\n}' };
+  function floorRefl() {
+    if (FR.m || FR.busy || !FR.lv) return; FR.busy = true;
+    needReflector().then(function (ok) {
+      FR.busy = false; if (!ok || FR.m) return;
+      var n = frSize(); FR.w = n[0]; FR.h = n[1];
+      var m = new T.Reflector(new T.CircleGeometry(9.5, 96), { textureWidth: n[0], textureHeight: n[1], color: 0xffffff, clipBias: .002, shader: FR_SH, multisample: 4 });
+      m.material.transparent = true; m.material.depthWrite = false; m.material.uniforms.uOp.value = FR_OP[FR.lv];
+      m.rotation.x = -Math.PI / 2; m.renderOrder = -1; m.userData.noPick = true; scene.add(m); FR.m = m;
+      /* C82 (pemilik: "bayangan di bawah tembok ini kenapa berantakan?"): tembok & plafon panggung tidak ikut dipantulkan —
+         pantulannya jadi bidang terang bersudut tajam di lantai depan tembok. Produk tetap terpantul. */
+      var rb = m.onBeforeRender, hid = [];
+      m.onBeforeRender = function (r, s, c) {
+        var sp = item && item.userData.spin;
+        if (sp) sp.traverse(function (o) { if ((o.userData.shellWall || o.userData.shellCeil) && o.visible) { o.visible = false; hid.push(o); } });
+        rb.call(this, r, s, c);
+        while (hid.length) hid.pop().visible = true;
+      };
+    });
+  }
+  XW.setFloorRefl = function (lv) { FR.lv = Math.max(0, Math.min(3, lv | 0)); if (FR.m) FR.m.material.uniforms.uOp.value = FR_OP[FR.lv]; else if (scene) floorRefl(); };
   /* latar pantulan cermin: ruang studio kosong terang (seperti foto produk akrilik xionco.shop) — dilukis di kanvas
      equirect 2048×1024: dinding abu muda dengan sudut ruang, lantai lebih terang, lampu tabung di plafon, rak besi gelap. */
   var mirBg = null;
@@ -493,6 +586,65 @@
       tpl.parent.add(c); st0.clones.push(c);
     }
     m.userData._tileN = n;
+    velvetUV(m);
+  }
+  /* 27 Okt (pemilik: KYRIOS "banyak belang", tabeng bawah bergaris): UV beludru dari SketchUp tidak seragam — ujung kiri
+     ±0,5 ulangan/m, ujung kanan ±0,2, tiap ubin alur ±2,7 dengan arah berbeda → serat kain tampil sebagai tambalan & garis
+     tiap sambungan ubin (17,6 cm). Kini UV kotak per muka di ruang MODEL setelah ubin disusun (ubin & ujung bersambung),
+     kerapatan sama di semua bagian. Tekstur beludru hampir rata → peralihan bidang proyeksi tidak terlihat. */
+  /* Normal beludru juga dihitung ulang lintas semua ubin & ujung: normal impor terinterpolasi di titik potong tile.py
+     (panel depan yang datar menyimpang 6–40°, sebagian terbalik) → pita gelap per ubin di tabeng bawah. Halus bila
+     sudut antar-muka < 65° (panel datar, zig-zag sisi dalam lengan), tetap tajam di sudut badan & lembah alur. */
+  var VELVET_UV = 2.5, VELVET_CREASE = Math.cos(65 * Math.PI / 180), velvetOwn = typeof WeakSet !== 'undefined' ? new WeakSet() : null;   // ulangan tekstur per meter · geometri salinan milik velvetUV
+  function velvetUV(m) {
+    if (!velvetOwn) return;
+    var inv = new T.Matrix4(), a = new T.Vector3(), b = new T.Vector3(), c = new T.Vector3(), e1 = new T.Vector3(), e2 = new T.Vector3();
+    m.updateMatrixWorld(true); inv.copy(m.matrixWorld).invert();
+    var list = [];   // { g, rel, pm: posisi model, fn: normal muka per sudut pertama, fa: luas muka }
+    m.traverse(function (o) {
+      if (!o.isMesh || !/velvet/i.test(o.material && o.material.name || '')) return;
+      for (var q = o; q && q !== m; q = q.parent) if (!q.visible) return;   // ubin templat (tersembunyi) dilewati
+      var g = o.geometry;
+      if (!velvetOwn.has(g)) { g = g.index ? g.toNonIndexed() : g.clone(); velvetOwn.add(g); o.geometry = g; }   // salinan sendiri per ubin (ubin hasil clone berbagi geometri)
+      var rel = new T.Matrix4().multiplyMatrices(inv, o.matrixWorld);
+      var P = g.attributes.position, n = P.count, uv = new Float32Array(n * 2), pm = new Float32Array(n * 3), fa = new Float32Array(n / 3);
+      var fnv = new Float32Array(n);   // normal muka di indeks sudut pertama muka (t, t+1, t+2)
+      for (var t = 0; t < n; t += 3) {
+        a.fromBufferAttribute(P, t).applyMatrix4(rel); b.fromBufferAttribute(P, t + 1).applyMatrix4(rel); c.fromBufferAttribute(P, t + 2).applyMatrix4(rel);
+        e1.subVectors(b, a); e2.subVectors(c, a); e1.cross(e2);
+        var L = e1.length(), ax = Math.abs(e1.x), ay = Math.abs(e1.y), az = Math.abs(e1.z);
+        fa[t / 3] = L / 2; if (L > 0) e1.divideScalar(L);
+        fnv[t] = e1.x; fnv[t + 1] = e1.y; fnv[t + 2] = e1.z;
+        [a, b, c].forEach(function (p, k) {
+          var u = ax >= ay && ax >= az ? p.z : p.x, v = ay >= ax && ay >= az ? p.z : p.y;
+          uv[(t + k) * 2] = u * VELVET_UV; uv[(t + k) * 2 + 1] = v * VELVET_UV;
+          pm[(t + k) * 3] = p.x; pm[(t + k) * 3 + 1] = p.y; pm[(t + k) * 3 + 2] = p.z;
+        });
+      }
+      g.setAttribute('uv', new T.BufferAttribute(uv, 2));
+      list.push({ g: g, rel: rel, pm: pm, fn: fnv, fa: fa });
+    });
+    // titik sama (0,5 mm) di semua mesh beludru → normal = rata-rata berbobot luas muka yang sudutnya < 65°
+    var at = new Map(), key = function (pm, i) { return Math.round(pm[i * 3] * 2000) + ',' + Math.round(pm[i * 3 + 1] * 2000) + ',' + Math.round(pm[i * 3 + 2] * 2000); };
+    list.forEach(function (e, li) { for (var i = 0; i < e.pm.length / 3; i++) { var k = key(e.pm, i), arr = at.get(k); if (!arr) at.set(k, arr = []); arr.push(li, i - i % 3); } });
+    var nm = new T.Matrix3(), s = new T.Vector3();
+    list.forEach(function (e, li) {
+      nm.getNormalMatrix(new T.Matrix4().copy(e.rel).invert());   // model → lokal mesh
+      var N = new Float32Array(e.pm.length);
+      for (var i = 0; i < e.pm.length / 3; i++) {
+        var f = i - i % 3, fx = e.fn[f], fy = e.fn[f + 1], fz = e.fn[f + 2], arr = at.get(key(e.pm, i));
+        s.set(0, 0, 0);
+        for (var j = 0; j < arr.length; j += 2) {
+          var o2 = list[arr[j]], g2 = arr[j + 1], gx = o2.fn[g2], gy = o2.fn[g2 + 1], gz = o2.fn[g2 + 2];
+          if (fx * gx + fy * gy + fz * gz < VELVET_CREASE) continue;
+          var w = o2.fa[g2 / 3]; s.x += gx * w; s.y += gy * w; s.z += gz * w;
+        }
+        if (s.lengthSq() < 1e-20) s.set(fx, fy, fz);
+        s.applyMatrix3(nm).normalize();
+        N[i * 3] = s.x; N[i * 3 + 1] = s.y; N[i * 3 + 2] = s.z;
+      }
+      e.g.setAttribute('normal', new T.BufferAttribute(N, 3));
+    });
   }
   /* ---------------------------------------------------------------- KAYU KOLEKSI (data/wood.json · Developer Settings › Kayu koleksi)
      Komponen GLB berlabel kelas (extras material xc_wood = gelap | terang | natural, dari tools/glb/finish.py) memakai
@@ -584,6 +736,9 @@
         if (!mt || !('envMapIntensity' in mt) || list.indexOf(mt) >= 0) return;
         // pantulan lingkungan disamakan dengan CUBIX (kain .5, logam 1.1) — nilai bawaan GLB (1) membuat kain gelap tampak abu-abu
         if (mt.userData.env0 == null) mt.userData.env0 = mt.metalness > .5 ? 1.1 : .5;
+        // beludru (KYRIOS velvet): GLB roughness .55 → pantulan mengilap seperti kulit, pita terang per alur. Nilai skill
+        // xionco-furniture-3d: velvet rough .7–.9, sheen .8–1; warna kilau mengikuti varian (applyWB)
+        if (mt.isMeshPhysicalMaterial && /velvet/i.test(mt.name || '')) { mt.roughness = .82; mt.sheen = 1; mt.sheenRoughness = .5; mt.userData.velvet = true; }
         list.push(mt);
       });
     });
@@ -665,11 +820,19 @@
     tw(obj.position, { y: -1.8, duration: XW.reduced ? 0 : .7, ease: 'power3.in', onComplete: function () { obj.visible = false; if (done) done(); } });
   }
   // podium jauh lebih lebar dari objek (±1,3 × diagonal tapak) dan selalu mengikuti ukurannya
+  /* 27 Okt (pemilik): Panggung On/Off (klik kanan). Off = podium turun & mengecil, lantai naik setinggi podium (LIFT)
+     supaya furnitur tetap menapak, bukan melayang 6 cm. Berlaku di semua latar (Default, Studio, Garis). */
+  var PLN = { on: true, last: null };
+  function floorLift(dur) {
+    var up = !PLN.on && st.kind !== 'room' && st.kind !== 'map' ? LIFT : 0, d = dur == null ? .8 : dur;
+    [[O.floor, 0], [O.hzFloor, .004], [O.gridFloor, .006], [O.studio, 0], [O.classic, 0]].forEach(function (q) { if (q[0]) tw(q[0].position, { y: q[1] + up, duration: d, delay: up ? .25 : 0, ease: 'power2.inOut' }); });
+  }
   function setPlinth(b, visible, dur) {
+    PLN.last = [b, visible];
+    visible = visible && PLN.on;
     b = typeof b === 'number' ? { w: b, d: b * .45 } : b || { w: 1, d: .5 };
     var dg = Math.sqrt(b.w * b.w + b.d * b.d), small = dg < .6;   // barang kecil (gelas, bantal, baterai): podium mengecil
-    var r = visible ? clamp(dg / 2 * 1.3 + (small ? dg * .35 : .24), small ? .3 : st.kind === 'custom' ? .62 : .95, 3.4) : .001, d = dur == null ? 1.1 : dur;   // CZ-F: kursi/nakas Customize tidak berdiri di podium raksasa
-    st.plR = r;
+    var r = visible ? clamp(dg / 2 * 1.3 + (small ? dg * .35 : .24), small ? .3 : .95, 3.4) : .001, d = dur == null ? 1.1 : dur;
     tw(O.plinth.scale, { x: r, z: r, duration: d, ease: 'power3.inOut' });
     tw(O.plinth.position, { y: visible ? 0 : -.2, duration: d * .8, ease: 'power3.inOut' });
   }
@@ -677,18 +840,19 @@
     var prev = item;
     st.kind = kind; item = obj;
     st.mapT = kind === 'map' ? 1 : 0;
-    if (prev !== obj && obj.userData.spin) { st.spin = 0; st.spinV = 0; obj.userData.spin.rotation.y = 0; }
+    if (prev !== obj && obj.userData.spin) { st.spin = 0; st.spinV = 0; st.auto = 0; st.autoV = 0; obj.userData.spin.rotation.y = 0; }   // C86: putar otomatis mulai dari depan
     if (prev !== obj) { st.zoom = 1; st.recenter = false; st.px = st.py = 0; st.camYawT = 0; st.camPitchT = 0; st.orbitMoved = false; }   // sudut kamera (geser latar) tidak terbawa ke produk berikutnya (Z0/Z4: bisa tampak belakang)
     if (prev && prev !== obj && prev !== O.map) sink(prev, function () { if (prev.userData.dispose) prev.userData.dispose(); });
     if (obj === O.map) { O.map.position.y = 0; O.map.visible = true; }
     else if (prev !== obj) rise(obj, prev && prev !== O.map ? .45 : .1);
-    setPlinth(obj.userData.bounds, kind !== 'map' && !obj.userData.hang);   // CZ-F: unit gantung/menempel dinding tanpa podium
+    setPlinth(obj.userData.bounds, kind !== 'map');
     var lamp = obj.userData.lamp;
-    tw(LAMPK, { k: lamp && !lamp.dark ? .3 : 1, duration: 1.6, ease: 'power2.inOut' });   // dekor dinding (cermin): panggung tidak diredupkan
+    tw(LAMPK, { k: lamp && lamp.on && !lamp.dark ? lamp.dim || .3 : 1, duration: 1.6, ease: 'power2.inOut' });   // C78: lampu mulai mati → panggung normal; menyala → diredupkan
     if (lamp && prev !== obj) lamp.props.forEach(function (mt) { mt.opacity = 0; tw(mt, { opacity: 1, duration: 1.6, delay: .7, ease: 'power2.out', onComplete: function () { if (mt.userData.solid) { mt.transparent = false; mt.needsUpdate = true; } } }); });
-    if (lamp && lamp.wall) setPlinth(obj.userData.bounds, false);   // podium tidak menembus dinding
+    if (lamp && lamp.wall) setPlinth(obj.userData.plinthB || obj.userData.bounds, true);   // C77 (pemilik): barang bertembok SELALU berpodium — tembok berdiri di atas podium
     // ruang (beberapa furnitur): tanpa podium, sorot utama lebih lebar
-    O.plinth.visible = kind !== 'room' && bgName !== 'studio';
+    O.plinth.visible = kind !== 'room';   // 27 Okt: Studio juga memakai podium bila Podium On
+    floorLift(prev === obj ? .8 : 0);
     if (RS.g) RS.g.visible = RS.on && kind === 'room';
     L.key.angle = kind === 'room' ? 1.05 : .5;
     humanPlace();
@@ -710,8 +874,35 @@
      Model CC0 (assets/library/mannequin, lihat LICENSE.txt): pria & wanita (Blender Studio Human Base Meshes, primitive),
      manikin kayu (burning_barb). Dua lapis: kedalaman dulu, lalu warna opacity .5 → tampak satu lapis. Berdiri di kanan objek. */
   var HUM = { g: null, on: false, kind: 'pria', hw: .3, h: 1.7, req: 0, local: null, key: '', at: 0, line: false, anim: { t: 0 }, box: null };
-  var HUM_URL = { pria: 'mannequin/pria.glb', wanita: 'mannequin/wanita.glb', manikin: 'mannequin/manikin.glb' };
-  var HUM_H = { pria: 1.7, wanita: 1.6, manikin: 1.7 };   // tinggi pembanding (m): pria 170, wanita 160 (pemilik 25 Okt)
+  var HUM_URL = { pria: 'mannequin/pria.glb', wanita: 'mannequin/wanita.glb', manikin: 'mannequin/manikin.glb', anak: 'mannequin/manikin.glb' };
+  var HUM_H = { pria: 1.7, wanita: 1.6, manikin: 1.7, anak: 1.1 };   // tinggi pembanding (m): pria 170, wanita 160 (pemilik 25 Okt); anak ±5 tahun 110 (26 Okt)
+  var HUM_LAB = { anak: 'Anak' };   // label garis tinggi (dewasa: "Manusia")
+  /* 26 Okt (pemilik): pembanding anak kecil — dari manikin CC0 yang sama, proporsi diubah menjadi anak ±5 tahun:
+     kepala ±1/5 tinggi badan (dewasa ±1/7,5), kaki lebih pendek, badan sedikit lebih berisi. Diubah per titik dalam ruang dunia
+     menurut pita tinggi (t = 0 kaki … 1 ubun-ubun), lalu dinormalkan ke 110 cm oleh humanSkin. */
+  function childWarp(src) {
+    var g = new T.Group(), gs = [];
+    src.updateMatrixWorld(true);
+    src.traverse(function (m) { if (m.isMesh) { var q = m.geometry.clone(); q.applyMatrix4(m.matrixWorld); gs.push(q); } });
+    var bx = new T.Box3(); gs.forEach(function (q) { q.computeBoundingBox(); bx.union(q.boundingBox); });
+    var y0 = bx.min.y, Hh = Math.max(.01, bx.max.y - y0), cx = (bx.min.x + bx.max.x) / 2, cz = (bx.min.z + bx.max.z) / 2;
+    var KT = [[0, 0], [.47, .40], [.86, .80], [1, 1]];   // tinggi dewasa → anak: kaki .47 → .40, leher .86 → .80
+    var remap = function (t) { for (var i = 1; i < KT.length; i++) if (t <= KT[i][0]) { var a = KT[i - 1], b = KT[i]; return a[1] + (t - a[0]) / (b[0] - a[0]) * (b[1] - a[1]); } return t; };
+    var sm = function (a, b, t) { t = Math.max(0, Math.min(1, (t - a) / (b - a))); return t * t * (3 - 2 * t); };
+    var kw = function (t) { return 1 + .08 * sm(.42, .55, t) + (1.42 - 1.08) * sm(.84, .9, t); };   // badan +8 %, kepala ×1,42 (relatif tinggi)
+    var hc = null;
+    gs.forEach(function (q) {
+      var p = q.attributes.position;
+      for (var i = 0; i < p.count; i++) {
+        var x = p.getX(i), y = p.getY(i), z = p.getZ(i), t = (y - y0) / Hh, k = kw(t), t2 = remap(t);
+        if (t > .86) t2 = .80 + (t - .86) / .14 * .20;   // kepala: tinggi kepala .14 → .20 dari badan
+        p.setXYZ(i, cx + (x - cx) * k, y0 + t2 * Hh, cz + (z - cz) * k);
+      }
+      p.needsUpdate = true; q.computeVertexNormals(); q.computeBoundingBox(); q.computeBoundingSphere();
+      g.add(new T.Mesh(q));
+    });
+    return g;
+  }
   XW.humanHeight = function (k) { return Math.round((HUM_H[k || HUM.kind] || 1.7) * 100); };
   function humanSkin(src, h) {
     var g = new T.Group(), depthM = new T.MeshBasicMaterial({ colorWrite: false });
@@ -728,12 +919,13 @@
   }
   function humanLoad(kind) {
     var my = ++HUM.req;
-    return getModel(src0(LIB + HUM_URL[kind])).then(function (sc) {
+    var put = function (wrap) {
       if (my !== HUM.req) return;
       if (HUM.g) { scene.remove(HUM.g); HUM.g = null; }
-      HUM.g = humanSkin(sc, HUM_H[kind]); HUM.h = HUM_H[kind]; HUM.hw = HUM.g.userData.hw; scene.add(HUM.g); humanPlace();
+      HUM.g = wrap; HUM.h = HUM_H[kind]; HUM.hw = wrap.userData.hw; scene.add(HUM.g); HS.item = null; humanPlace();
       if (item && st.kind !== 'map') frameItem(null, 1.1);
-    }, function () {});
+    };
+    return getModel(src0(LIB + HUM_URL[kind])).then(function (sc) { put(humanSkin(kind === 'anak' ? childWarp(sc) : sc, HUM_H[kind])); }, function () {});
   }
   // kotak pembatas di ruang lokal root (putaran root diabaikan) — dari boundingBox tiap mesh, murah
   var lbM = new T.Matrix4(), lbB = new T.Box3(), lbInv = new T.Matrix4();
@@ -760,19 +952,30 @@
     if (HUM.local && Math.abs(HUM.local.x - nl.x) < .01 && Math.abs(HUM.local.z - nl.z) < .01) return HUM.local;
     HUM.local = nl; return nl;
   }
-  var humV = new T.Vector3();
+  /* 27 Okt (pemilik): ganti produk → manusia TIDAK ikut tenggelam & muncul bersama produk. Tetap menapak di lantai
+     (turun-naik produk tidak diikuti) dan bergeser mulus ke samping produk baru; putaran produk tetap diikuti. */
+  var humV = new T.Vector3(), HS = { t: 1, item: null, l: null, from: new T.Vector3(), ry0: 0 };
   function humanFollow(force) {
     if (!HUM.g || !HUM.g.visible || !item) return;
-    var l = humanLocal(force);
-    if (l.room) { HUM.g.position.set(l.x, LIFT, l.z); HUM.g.rotation.y = l.ry; return; }
-    var sp = item.userData.spin || item;
-    humV.set(l.x, 0, l.z); sp.localToWorld(humV);
-    var iy = item.getWorldPosition(new T.Vector3()).y;
-    HUM.g.position.set(humV.x, LIFT + iy, humV.z); HUM.g.rotation.y = l.ry + (item.userData.spin ? sp.rotation.y : 0);
+    var l = humanLocal(force), ty, tr;
+    if (l.room) { humV.set(l.x, 0, l.z); ty = LIFT; tr = l.ry; }
+    else {
+      var sp = item.userData.spin || item;
+      humV.set(l.x, 0, l.z); sp.localToWorld(humV);
+      ty = LIFT + Math.max(0, item.getWorldPosition(new T.Vector3()).y); tr = l.ry + (item.userData.spin ? sp.rotation.y : 0);
+    }
+    // produk berganti, atau tapak produk yang sama berubah (varian set ROULED, nesting dibuka): geser dari posisi sekarang
+    var moved = HS.item !== item || HS.l && HS.l !== l && !l.room;
+    if (moved && HS.item && G && !XW.reduced) { HS.from.copy(HUM.g.position); HS.ry0 = HUM.g.rotation.y; HS.t = 0; G.killTweensOf(HS); tw(HS, { t: 1, duration: 1.1, delay: HS.item !== item ? .15 : 0, ease: 'power3.inOut' }); }
+    HS.item = item; HS.l = l;
+    if (HS.t < 1) { var k = HS.t; humV.set(lerp(HS.from.x, humV.x, k), 0, lerp(HS.from.z, humV.z, k)); ty = lerp(HS.from.y, ty, k); tr = lerp(HS.ry0, tr, k); }
+    HUM.g.position.set(humV.x, ty, humV.z); HUM.g.rotation.y = tr;
   }
   function humanPlace() {
     if (!HUM.g) return;
-    var vis = HUM.on && !!item && st.kind !== 'map'; HUM.g.visible = vis;
+    var vis = HUM.on && !!item && st.kind !== 'map';
+    if (vis && !HUM.g.visible) HS.item = null;   // baru tampil lagi: langsung di tempat, tanpa geser dari posisi lama
+    HUM.g.visible = vis;
     if (!vis) { if (HUM.line) humanLine(false); return; }
     humanFollow(true);
   }
@@ -806,7 +1009,7 @@
     hmA.set(ax, floorY, az); hmB.set(ax, topY, az); hmC.set(ax + dx * far, topY, az + dz * far);
     // garis turun ke puncak objek: di atas pusat objek
     sp.getWorldPosition(hmD); var cx = hmD.x, cz = hmD.z;
-    var o = { t: HUM.anim.t, a: project(hmA), b: project(hmB), c: project(hmC), hcm: Math.round(HUM.h * 100), ocm: Math.round((oTop - floorY) * 100) };
+    var o = { t: HUM.anim.t, a: project(hmA), b: project(hmB), c: project(hmC), hcm: Math.round(HUM.h * 100), lab: HUM_LAB[HUM.kind] || 'Manusia', ocm: Math.round((oTop - floorY) * 100) };
     hmD.set(cx, oTop, cz); o.d1 = project(hmD); hmD.set(cx, topY, cz); o.d2 = project(hmD);
     o.up = HUM.h / (HUM.h + far);   // bagian tegak dari seluruh panjang jalur
     return o;
@@ -871,19 +1074,9 @@
     var r = f(t.r), g = f(t.g), b = f(t.b), l = .2126 * r + .7152 * g + .0722 * b;
     WB.setRGB(r / l, g / l, b / l);
   }
-  /* CZ-G1: Customize = white balance penuh terhadap cahaya yang benar-benar menyinari (lampu kunci + isi + hemi + lingkungan),
-     bukan 65 % dari tint suasana → kain abu tetap abu (dulu graphite #4d4d4d tampil cokelat-taupe di suasana senja) */
-  var WBC = new T.Color(1, 1, 1), WBC_K = 1;
-  function setWBC() {
-    var m = MOODS[moodName] || MOODS.senja, parts = [[col(m.keyC), m.key], [col('#e9d8c2'), m.fill], [col('#d8c7ad'), m.hemi], [col(m.tint), m.env * 1.4]];
-    var s = [0, 0, 0]; parts.forEach(function (p) { s[0] += p[0].r * p[1]; s[1] += p[0].g * p[1]; s[2] += p[0].b * p[1]; });
-    var l = .2126 * s[0] + .7152 * s[1] + .0722 * s[2], f = function (v) { return 1 + (l / Math.max(v, .02) - 1) * WBC_K; };
-    var r = f(s[0]), g = f(s[1]), b = f(s[2]), n = .2126 * r + .7152 * g + .0722 * b;
-    WBC.setRGB(r / n, g / n, b / n);
-  }
-  function wbTarget(mt) {   // warna akhir: warna varian (kain) atau warna asli material, dikali WB (Customize: WBC)
+  function wbTarget(mt) {   // warna akhir: warna varian (kain) atau warna asli material, dikali WB
     var u = mt.userData, c = u.tint ? col(u.tint).multiplyScalar(u.tintTex ? TINT_GAIN : 1) : u.col0.clone();
-    return c.multiply(u.wbc ? WBC : WB);
+    return c.multiply(WB);
   }
   function applyWB(obj, dur) {
     if (!obj || !obj.userData.mats) return;
@@ -892,6 +1085,10 @@
       if (mt.metalness > .5) return;
       var c = wbTarget(mt);
       if (dur) tw(mt.color, { r: c.r, g: c.g, b: c.b, duration: dur, ease: 'power2.inOut' }); else mt.color.copy(c);
+      if (mt.userData.velvet && mt.sheenColor && !mt.userData.leather) {   // kilau beludru = warna kain lebih terang (seperti kain CUBIX)
+        var sc = { r: Math.min(1, c.r * 1.6 + .05), g: Math.min(1, c.g * 1.6 + .05), b: Math.min(1, c.b * 1.6 + .05) };
+        if (dur) tw(mt.sheenColor, Object.assign({ duration: dur, ease: 'power2.inOut' }, sc)); else mt.sheenColor.setRGB(sc.r, sc.g, sc.b);
+      }
     });
   }
   /* pelapis kain ↔ kulit mengikuti varian (Faux leather / Elite Faux leather = kulit; Fabric / Elite Fabric = kain):
@@ -1098,7 +1295,7 @@
     envFor(MOODS[name] || MOODS.senja).then(function (t) { if (moodName === name && LOOK.hdr) scene.environment = t; }, function () {});
   }
   var mood = Object.assign({}, MOODS.senja);
-  setWB(MOODS.senja.tint); setWBC();
+  setWB(MOODS.senja.tint);
   function buildLights() {
     L.hemi = new T.HemisphereLight(col('#d8c7ad'), col('#140f0b'), .22); scene.add(L.hemi);
     L.key = new T.SpotLight(col('#ffd6aa'), 1.55, 0, .5, .9, 1);
@@ -1114,7 +1311,7 @@
     moodName = MOODS[name] ? name : 'senja'; setEnv(moodName);
     tw(mood, { key: m.key, hemi: m.hemi, fill: m.fill, env: m.env, exp: m.exp, halo: m.halo, duration: d, ease: 'power2.inOut' });
     tw(L.key.color, { r: c.r, g: c.g, b: c.b, duration: d });
-    setWB(m.tint); setWBC(); if (item) item.traverse(function (o) { if (o.userData.mats) applyWB(o, d); });
+    setWB(m.tint); if (item) item.traverse(function (o) { if (o.userData.mats) applyWB(o, d); });
   }
 
   /* ---------------------------------------------------------------- layar penuh (dipakai bayangan kontak & pasca-proses) */
@@ -1158,11 +1355,11 @@
   }
   function updateContact() {
     if (!CS.plane) return;
-    var three = /^(cubix|cubixcfg|custom|model)$/.test(st.kind), on = csOn() && item && item.visible && three && item.position.y > -.45;
+    var three = /^(cubix|cubixcfg|custom|model)$/.test(st.kind), on = CS.on && item && item.visible && three && item.position.y > -.45;
     CS.plane.visible = !!on;
     if (!on) { CS.sig = ''; return; }
     var b = item.userData.bounds || cubixBounds(), S = Math.sqrt(b.w * b.w + b.d * b.d) + .8, sp = item.userData.spin;
-    var sig = [item.uuid, item.position.y.toFixed(3), sp ? sp.rotation.y.toFixed(3) : '', S.toFixed(2), item.userData.built ? (item.userData.built.group || item).uuid : '', item.userData.part ? item.userData.part.uuid : ''].join('|');
+    var sig = [item.uuid, item.position.y.toFixed(3), sp ? sp.rotation.y.toFixed(3) : '', S.toFixed(2), item.userData.built ? (item.userData.built.group || item).uuid : '', item.userData.part ? item.userData.part.uuid : '', item.userData.vs ? item.userData.vs.sig : '', st.kind === 'custom' ? MPH.n : ''].join('|');
     if (item.userData.built && item.userData.built.motions) item.userData.built.motions.forEach(function (m) { sig += ',' + (m.lin == null ? m.t : m.lin).toFixed(3); });
     if (item === O.cubix) Object.keys(slots).forEach(function (k) { var p = slots[k].position; sig += ',' + k + p.x.toFixed(3) + p.y.toFixed(3); });
     if (sig === CS.sig) return;
@@ -1243,6 +1440,11 @@
     PP.a.texture.generateMipmaps = PP.b.texture.generateMipmaps = false;
   }
   function draw() {
+    if (O.classic && O.classic.visible) O.classic.userData.cU.uCam.value.set(camera.position.x, camera.position.z);   // C81: lantai Classic terang di sisi kamera
+    if (FR.m) {
+      FR.m.visible = FR.lv > 0 && st.kind !== 'room' && st.kind !== 'map'; FR.m.position.y = (O.floor ? O.floor.position.y : 0) + .0015;
+      if (FR.m.visible) { var fz = frSize(); if (fz[0] !== FR.w || fz[1] !== FR.h) { FR.w = fz[0]; FR.h = fz[1]; FR.m.getRenderTarget().setSize(FR.w, FR.h); } }   // C78: tajam di ukuran layar mana pun
+    }
     if (!PP.on || !PP.rt) { renderer.setRenderTarget(null); renderer.render(scene, camera); return; }
     renderer.setRenderTarget(PP.rt); renderer.render(scene, camera);
     var ao = PP.mix > .01;
@@ -1278,11 +1480,9 @@
     var k = 1 - Math.pow(.001, dt);
     mouse.sx = lerp(mouse.sx, mouse.x, k * .5); mouse.sy = lerp(mouse.sy, mouse.y, k * .5);
     L.key.intensity = mood.key * LAMPK.k; L.hemi.intensity = mood.hemi * (.4 + .6 * LAMPK.k); L.fill.intensity = mood.fill * LAMPK.k;   // LAMPK < 1: lampu menyala, panggung redup
-    var neu = TONE.custom === 'neutral' && st.kind === 'custom';   // CZ-G1: Customize = PBR Neutral (program shader berganti otomatis saat jenis panggung berubah)
-    renderer.toneMapping = neu ? T.CustomToneMapping : T.ACESFilmicToneMapping;
-    O.halo.material.opacity = mood.halo * theme.halo; renderer.toneMappingExposure = mood.exp * theme.exp * (RS.on && st.kind === 'room' ? .8 : 1) * (neu ? TONE.k : 1);   // ruangan: interior terang → paparan diturunkan
+    O.halo.material.opacity = mood.halo * theme.halo; renderer.toneMappingExposure = mood.exp * theme.exp * (RS.on && st.kind === 'room' ? .8 : 1);   // ruangan: interior terang → paparan diturunkan
     mats.fabric.envMapIntensity = .5 * mood.env / .42 * theme.env;
-    if (item && item.userData.mats) item.userData.mats.forEach(function (mt) { mt.envMapIntensity = mt.userData.env0 * mood.env / .42 * theme.env * (.35 + .65 * LAMPK.k); });
+    if (item && item.userData.mats) item.userData.mats.forEach(function (mt) { if (mt.userData.env0 == null) mt.userData.env0 = mt.metalness > .5 ? 1.1 : .5; mt.envMapIntensity = mt.userData.env0 * mood.env / .42 * theme.env * (.35 + .65 * LAMPK.k); });
     // geser titik pusat pandang agar objek berada di tengah ruang kosong
     inset.x = lerp(inset.x, (inset.r - inset.l) / 2, k * 1.1);
     inset.y = lerp(inset.y, (inset.b - inset.t) / 2, k * 1.1);
@@ -1291,7 +1491,14 @@
       st.spinV = lerp(st.spinV, 0, k * .5); st.spin += st.spinV * dt;
       if (st.recenter) { st.spin = lerp(st.spin, 0, k * .7); if (Math.abs(st.spin) < .002) { st.spin = 0; st.recenter = false; } }
     }
-    if (item && item.userData.spin) item.userData.spin.rotation.y = st.spin;
+    /* 31 Okt (C86, pemilik: "saat ada podium, semua barang auto rotate pelan"): barang di podium berputar sendiri pelan
+       (±0,1 rad/s, satu putaran ±1 menit), berhenti halus selama digeser & 2,5 s sesudahnya. Tidak untuk barang bertembok /
+       gantung, Customize, Ruang, Peta, atau gerak dikurangi. Sudut terpisah (st.auto) → tidak memunculkan tombol Reset. */
+    var lp = item && item.userData.lamp, autoOn = !XW.reduced && PLN.on && PLN.last && PLN.last[1] && item && item.userData.spin && /^(model|product|cubix)$/.test(st.kind)
+      && !(lp && (lp.wall || lp.mount === 'ceiling')) && !st.drag && now - st.lastDrag > 2500;
+    st.autoV = lerp(st.autoV || 0, autoOn ? .1 : 0, k * (autoOn ? .25 : 1.2)); st.auto = ((st.auto || 0) + st.autoV * dt) % (Math.PI * 2);
+    if (st.recenter) st.auto = lerp(st.auto, st.auto > Math.PI ? Math.PI * 2 : 0, k * .7);
+    if (item && item.userData.spin) item.userData.spin.rotation.y = st.spin + st.auto;
     humanFollow();
     if (RS.g && RS.g.visible) { var fk = .85 + Math.sin(clock * 9.1) * .07 + Math.sin(clock * 23.7) * .05; RS.g.traverse(function (o) { if (!o.userData.flame) return; if (o.isLight) o.intensity = .9 * fk; else o.material.opacity = .8 * fk; }); }
     if (item && item.userData.built && item.userData.built.motions) item.userData.built.motions.forEach(function (m) {
@@ -1315,7 +1522,12 @@
       routeGeo.setDrawRange(0, Math.floor(routeCount * st.route / 36) * 36);
       pulse.position.copy(curve.getPointAt((clock * .16) % 1)); pulse.material.opacity = st.route * .9;
     }
-    if (orbit) controls.update();
+    if (orbit) {
+      var cyo = ceilNow(), tg = controls.target, dd = camera.position.distanceTo(tg) || 1;
+      if (cyo) { controls.minPolarAngle = Math.max(.2, Math.acos(clamp((cyo - .2 - tg.y) / dd, -1, 1))); controls.maxPolarAngle = Math.min(2.7, Math.acos(clamp((.12 - tg.y) / dd, -1, 1))); }   // C76: tidak tembus plafon, boleh dari bawah
+      else { controls.minPolarAngle = .55; controls.maxPolarAngle = 1.48; }
+      controls.update();
+    }
     else {
       st.camYaw = lerp(st.camYaw, st.camYawT, k * 1.4); st.camPitch = lerp(st.camPitch, st.camPitchT, k * 1.4);
       var yaw = view.yaw + st.camYaw + mouse.sx * .05 + (st.kind !== 'map' ? Math.sin(clock * .11) * .03 : 0), pitch = clamp(view.pitch + st.camPitch, .02, 1.3) - mouse.sy * .025;
@@ -1323,6 +1535,12 @@
       var dist = view.dist * st.zoomC;
       st.pxC = lerp(st.pxC, st.px, k); st.pyC = lerp(st.pyC, st.py, k);
       var vtx = view.tx + Math.cos(yaw) * st.pxC, vty = view.ty + st.pyC, vtz = view.tz - Math.sin(yaw) * st.pxC;   // geser: sumbu kanan kamera & atas
+      var cyl = ceilNow();
+      if (cyl) {   // C76: ada plafon → kamera tidak pernah menembus plafon; boleh turun (melihat lampu dari bawah) sampai 12 cm di atas lantai
+        pitch = clamp(view.pitch + st.camPitch, -1.35, 1.3) - mouse.sy * .025;
+        st.pitchMax = Math.asin(clamp((cyl - .2 - vty) / dist, -1, 1)); st.pitchMin = Math.asin(clamp((.12 - vty) / dist, -1, 1));
+        pitch = clamp(pitch, st.pitchMin, st.pitchMax);
+      }
       camera.position.set(vtx + Math.sin(yaw) * Math.cos(pitch) * dist, vty + Math.sin(pitch) * dist, vtz + Math.cos(yaw) * Math.cos(pitch) * dist);
       camera.lookAt(vtx, vty, vtz);
     }
@@ -1342,9 +1560,9 @@
     Lb.beacons = st.map > .6 ? beacons.map(function (b) { return project(b.localToWorld(new T.Vector3(0, b.userData.h * b.scale.y + .05, 0))); }) : null;
     if (XW.onFrame) XW.onFrame(Lb);
     var three = /^(cubix|cubixcfg|custom|model)$/.test(st.kind);
-    var roomAO = RS.on && st.kind === 'room' || st.kind === 'custom';   // CZ-G7: Customize juga selalu ber-AO (furnitur menapak), bila perangkat mampu   // ruangan mewah: bayangan sudut (AO) selalu aktif bila perangkat mampu
+    var roomAO = RS.on && st.kind === 'room';   // ruangan mewah: bayangan sudut (AO) selalu aktif bila perangkat mampu
     PP.mix = lerp(PP.mix, (LOOK.ao && three || roomAO) && item && Math.abs(item.position.y) < .05 ? 1 : 0, k * 1.2);
-    if (item) item.children.forEach(function (o) { if (o.userData.blob) o.visible = !(csOn() && three); });
+    if (item) item.children.forEach(function (o) { if (o.userData.blob) o.visible = !o.userData.blobOff && !(CS.on && three); });   // C82: blobOff = disembunyikan tetap (barang bertembok / gantung)
     updateContact();
     draw();
   }
@@ -1577,17 +1795,6 @@
     if (!renderer || !renderer.getContext()) return false;
     renderer.outputEncoding = T.sRGBEncoding;
     renderer.toneMapping = T.ACESFilmicToneMapping;
-    /* CZ-G1: Khronos PBR Neutral (Apache-2.0) — r147 belum punya NeutralToneMapping, dipasang lewat CustomToneMapping.
-       Warna dasar di bawah ±0,76 tidak digeser rona/kejenuhannya (ACES menggeser) → warna 3D = swatch. Dipakai di panggung
-       Customize (XW.tone); katalog tetap ACES sampai pemilik memutuskan (warna katalog sudah dikalibrasi di bawah ACES). */
-    T.ShaderChunk.tonemapping_pars_fragment = T.ShaderChunk.tonemapping_pars_fragment.replace('vec3 CustomToneMapping( vec3 color ) { return color; }',
-      'vec3 CustomToneMapping( vec3 color ) {\n' +
-      '\tconst float StartCompression = 0.8 - 0.04; const float Desaturation = 0.15;\n' +
-      '\tcolor *= toneMappingExposure;\n' +
-      '\tfloat x = min( color.r, min( color.g, color.b ) ); float offset = x < 0.08 ? x - 6.25 * x * x : 0.04; color -= offset;\n' +
-      '\tfloat peak = max( color.r, max( color.g, color.b ) ); if ( peak < StartCompression ) return color;\n' +
-      '\tfloat d = 1. - StartCompression; float newPeak = 1. - d * d / ( peak + d - StartCompression ); color *= newPeak / peak;\n' +
-      '\tfloat g = 1. - 1. / ( Desaturation * ( peak - newPeak ) + 1. ); return mix( color, vec3( newPeak ), g );\n}');
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap;
     scene = new T.Scene();
     scene.background = col('#0f0c0a');
@@ -1598,7 +1805,7 @@
     if (window.XTEX) XTEX.setAnisotropy(Math.min(8, renderer.capabilities.getMaxAnisotropy()));
     try { ppInit(); } catch (e) { PP.ok = false; }
     mats.brass = new T.MeshStandardMaterial({ color: col('#b8924f'), metalness: 1, roughness: .28, envMapIntensity: 1 });
-    buildLights(); buildRoom(); buildContact(); buildSofa(); buildMap();
+    buildLights(); buildRoom(); buildContact(); buildSofa(); buildMap(); floorRefl();
     // lantai & podium tetap memantulkan ruang lama → tampilan panggung gelap tidak berubah oleh HDRI
     if (O.roomEnv) { mats.floor.envMap = O.roomEnv; O.disc.material.envMap = O.roomEnv; }
     O.map.userData.bounds = { w: 12, h: 1, d: 4 };
@@ -1656,6 +1863,12 @@
        di latar = geser tampilan (pan) */
     var mid = null;
     XW.free = true;
+    XW.setPlinthOn = function (on) {
+      PLN.on = on !== false;
+      if (PLN.last) setPlinth(PLN.last[0], PLN.last[1], .9);
+      floorLift();
+      return PLN.on;
+    };
     XW.setFree = function (on) {
       XW.free = !!on;
       if (!XW.free) { st.camYawT = 0; st.camPitchT = 0; st.px = 0; st.py = 0; st.cam = false; if (mid && mid.k === 'pan') mid = null; }
@@ -1742,10 +1955,11 @@
       if (st.cam) {
         var cx = e.clientX - dx0, cy = e.clientY - dy0, lim = camLimit(); dx0 = e.clientX; dy0 = e.clientY;
         st.camYawT = clamp(st.camYawT - cx * .005, -lim, lim);
-        st.camPitchT = clamp(st.camPitchT + cy * .004, -view.pitch + .02, 1.3 - view.pitch);
+        var cyl = ceilNow();   // ada plafon: geser ke bawah sampai melihat lampu dari bawah, ke atas berhenti di plafon (C76)
+        st.camPitchT = cyl ? clamp(st.camPitchT + cy * .004, (st.pitchMin != null ? st.pitchMin : -1.35) - view.pitch, (st.pitchMax != null ? st.pitchMax : 1.3) - view.pitch) : clamp(st.camPitchT + cy * .004, -view.pitch + .02, 1.3 - view.pitch);
         st.lastDrag = performance.now(); return;
       }
-      if (!e.buttons && e.target === canvas && XW.onHover && performance.now() - hoverT > 90) { hoverT = performance.now(); XW.onHover(humanAt(e.clientX, e.clientY) ? 'human' : hit(e.clientX, e.clientY), motionAt(e.clientX, e.clientY)); }
+      if (!e.buttons && e.target === canvas && XW.onHover && performance.now() - hoverT > 90) { hoverT = performance.now(); XW.onHover(humanAt(e.clientX, e.clientY) ? 'human' : hit(e.clientX, e.clientY), motionAt(e.clientX, e.clientY) || (lampAt(e.clientX, e.clientY) ? { lamp: true } : null)); }   // C78: lampu = kursor ketuk (cincin)
     }, { passive: true });
     var up = function (e) {
       delete ptrs[e.pointerId];
@@ -1780,6 +1994,7 @@
         else if (st.kind === 'cubixcfg' && !cfgAt(e.clientX, e.clientY)) { CFG.sel = null; cfgMark(); if (XW.onCfgPick) XW.onCfgPick(null); }
         else if (mo) { toggleMotion(mo); if (XW.onMotion) XW.onMotion(mo); }
         else if (humanAt(e.clientX, e.clientY)) humanLine(!HUM.line);
+        else if (lampAt(e.clientX, e.clientY)) lampSet(!item.userData.lamp.on);   // C78: ketuk lampu = nyala / mati
         else { var k = hit(e.clientX, e.clientY); if (k && XW.onPick) XW.onPick(k); }
       }
       down = null;
@@ -1833,6 +2048,139 @@
      lampu menyala (bagian lampu bercahaya + sumber cahaya + pendar) dan cahaya panggung diredupkan (LAMPK) agar
      fokus ke lampu. Hanya untuk tampilan produk tunggal — Ruang memakai makeModel tanpa ini. */
   var CEIL_Y = 2.4, WALL_Y = 1.45, TABLE_H = .5, LAMP_C = col('#ffcf9a'), LAMPK = { k: 1 }, WALL_C = '#b3b1ad';   // dinding abu muda
+  /* 30 Okt (C76): ruang produk katalog — plafon minimal 2,8 m, diatur di klik kanan sampai 4,5 m; tembok pendek BERKETEBALAN
+     (12 cm, lebar ≤ 1 m, setinggi plafon, kaki di lantai) dan bisa disembunyikan di klik kanan. */
+  var SHELL = { h: 2.8, walls: true }, WALL_T = .12;
+  function wallW(w) { return w > .95 ? w + .1 : Math.max(.6, Math.min(1, w + .4)); }   // ≤ 1 m; produk lebih lebar dari 95 cm: selebar produk + 10 cm
+  /* 31 Okt (C83, pemilik): "dinding di buat memiliki profile yang bagus, jangan terlalu flat" — denah tembok bersudut depan
+     membulat (bullnose r 1,6 cm) + plint dua undak di kaki (7 cm menonjol 1,2 cm, lalu tali 1,2 cm menonjol 0,6 cm) yang
+     membungkus muka & sisi. Badan tembok setinggi 1 satuan, tinggi diatur lewat scale.y (radius sudut tetap). */
+  function wallPlan(w, d, r, e) {   // denah: muka depan di y = −e, belakang di y = d; sudut depan membulat
+    var s = new T.Shape(), x = w / 2 + e, f = -e; r += e;
+    s.moveTo(-x, d); s.lineTo(-x, f + r); s.absarc(-x + r, f + r, r, Math.PI, Math.PI * 1.5, false);
+    s.lineTo(x - r, f); s.absarc(x - r, f + r, r, Math.PI * 1.5, Math.PI * 2, false); s.lineTo(x, d); s.closePath();
+    return s;
+  }
+  function wallPrism(w, h, e, r) {   // denah diekstrusi tegak: alas di y = 0, muka depan di z = e
+    var geo = new T.ExtrudeGeometry(wallPlan(w, WALL_T, r, e), { depth: h, bevelEnabled: false, curveSegments: 10 });
+    geo.rotateX(-Math.PI / 2); return geo;
+  }
+  /* 31 Okt (C84, pemilik): "profile kotak2 di dinding, ada 2 atas bawah, ada di samping dan atas juga" — bingkai list kotak
+     (boiserie): DUA panel di muka (bawah setinggi lambri ±86 cm, atas sampai 28 cm di bawah plafon), panel yang sama di kedua
+     sisi tembok, dan list atas (kornis dua undak) di bawah plafon. List dua lapis: dasar 3 cm × 0,7 cm + manik 1,2 cm × 1,3 cm.
+     Panel atas & kornis ikut Tinggi plafon (userData.wfit). Cermin / saklar ikut berpanel (C87: tembok mundur 1,6 cm, cermin tergantung di depan list). */
+  var WBOX = new T.BoxGeometry(1, 1, 1);
+  function fitY(o, fy) {   // fy(H) → [y0, y1] (bentang) atau angka (posisi alas)
+    o.userData.wfit = function (H, dur) {
+      var q = fy(H), to = typeof q === 'number' ? { py: q } : { sy: q[1] - q[0], py: (q[0] + q[1]) / 2 };
+      if (dur) { if (to.sy != null) tw(o.scale, { y: to.sy, duration: dur, ease: 'power2.inOut' }); tw(o.position, { y: to.py, duration: dur, ease: 'power2.inOut' }); }
+      else { if (to.sy != null) o.scale.y = to.sy; o.position.y = to.py; }
+    };
+    o.userData.wfit(SHELL.h); return o;
+  }
+  function wallPanels(wg, mt, zf, w, R, fit) {   // fit { y0, y1 }: barang di tembok → panel atas membingkainya (C87)
+    var strip = function (face, a0, a1, fy, d) {   // face f = muka (a = x), l / r = sisi (a = z); d = tebal menonjol
+      var s = new T.Mesh(WBOX, mt);
+      if (face === 'f') { s.scale.set(a1 - a0, 1, d); s.position.set((a0 + a1) / 2, 0, zf + d / 2); }
+      else { var sx = face === 'r' ? 1 : -1; s.scale.set(d, 1, a1 - a0); s.position.set(sx * (w / 2 + d / 2), 0, (a0 + a1) / 2); }
+      wg.add(fitY(s, fy));
+    };
+    var frame = function (face, a0, a1, y0, top, sw, d) {   // top(H) = tepi atas panel; tiang di antara palang (tidak bertumpuk → tanpa z-fight)
+      strip(face, a0, a1, function () { return [y0, y0 + sw]; }, d);
+      strip(face, a0, a1, function (H) { var t = top(H); return [t - sw, t]; }, d);
+      [a0, a1 - sw].forEach(function (a) { strip(face, a, a + sw, function (H) { return [y0 + sw, top(H) - sw]; }, d); });
+    };
+    var ub = LIFT + .98, ut = function (H) { return H - .28; }, t0 = fit ? fit.y1 + .1 : 0;
+    if (fit) { ub = Math.max(LIFT + .16, Math.min(ub, fit.y0 - .1)); ut = function (H) { return Math.min(H - .14, Math.max(H - .28, t0)); }; }
+    var lt = ub - .12, panels = [];   // bawah (lambri), atas — panel bawah dilewati bila terlalu pendek (< 25 cm, cermin panjang)
+    if (lt - (LIFT + .16) >= .25) panels.push([LIFT + .16, function () { return lt; }]);
+    panels.push([lt - (LIFT + .16) >= .25 ? ub : LIFT + .16, ut]);
+    panels.forEach(function (p) {
+      var a0 = -w / 2 + .07, a1 = w / 2 - .07;
+      frame('f', a0, a1, p[0], p[1], .03, .007);   // list dasar
+      frame('f', a0 + .009, a1 - .009, p[0] + .009, function (H) { return p[1](H) - .009; }, .012, .013);   // manik di tengah list
+      ['l', 'r'].forEach(function (f) { frame(f, zf - WALL_T + .022, zf - R - .014, p[0], p[1], .012, .006); });   // sisi: list tunggal
+    });
+    [[.06, .012, .06], [.012, .006, .072]].forEach(function (q) {   // kornis: pita atas, lalu tali di bawahnya
+      var c = new T.Mesh(wallPrism(w, q[0], q[1], R), mt); c.position.z = zf; wg.add(fitY(c, function (H) { return H - q[2]; }));
+    });
+  }
+  function shellWall(spin, zf, w, props, fit) {   // muka depan di zf (tepat di belakang produk), tebal ke belakang
+    var wg = new T.Group(), R = .016;
+    var m = new T.Mesh(wallPrism(w, 1, 0, R).translate(0, -.5, 0), propMat(WALL_C));
+    m.scale.set(1, SHELL.h - LIFT, 1); m.position.set(0, LIFT + (SHELL.h - LIFT) / 2, zf);   // berdiri di atas podium (C77)
+    m.userData.wallSlab = true;
+    var sk = new T.MeshStandardMaterial({ color: col('#9f9c97'), roughness: .62, metalness: 0, envMapIntensity: .2, transparent: true, opacity: 0 }); sk.userData.solid = true;
+    [[.07, .012, 0], [.012, .006, .07]].forEach(function (q) {   // plint: undak bawah, lalu tali di atasnya
+      var p = new T.Mesh(wallPrism(w, q[0], q[1], R), sk); p.position.set(0, LIFT + q[2], zf); wg.add(p);
+    });
+    wallPanels(wg, m.material, zf, w, R, fit);
+    wg.add(m);
+    wg.traverse(function (o) { if (o.isMesh) { o.userData.noPick = true; o.castShadow = true; o.receiveShadow = true; } });
+    wg.userData.shellWall = true; wg.visible = SHELL.walls;
+    spin.add(wg); props.push(m.material, sk);
+    // bayangan kontak di lantai depan kaki tembok (lantai produk bertembok = LIFT) → tembok menapak, tidak tampak melayang
+    var cs = new T.Mesh(new T.PlaneGeometry(w + .12, .34), new T.MeshBasicMaterial({ map: wallContactTex(), color: 0x000000, transparent: true, opacity: 0, depthWrite: false }));
+    cs.rotation.x = -Math.PI / 2; cs.position.set(0, LIFT + .002, zf + .17); cs.renderOrder = 2;
+    cs.userData.noPick = true; cs.userData.shellWall = true; cs.visible = SHELL.walls; spin.add(cs); props.push(cs.material);
+    return m;
+  }
+  var wcTex = null;
+  function wallContactTex() {   // gradasi: pekat di kaki tembok, memudar 34 cm ke depan; tepi kiri-kanan melembut
+    if (wcTex) return wcTex;
+    var c = document.createElement('canvas'); c.width = 64; c.height = 128; var g = c.getContext('2d'), d = g.createImageData(64, 128);
+    for (var y = 0; y < 128; y++) for (var x = 0; x < 64; x++) {
+      var v = 1 - y / 127, u = Math.min(x, 63 - x) / 10, a = Math.pow(v, 2.2) * .62 * Math.min(1, u); d.data[(y * 64 + x) * 4 + 3] = Math.round(a * 255);   // baris atas kanvas = sisi tembok (bidang diputar −90° di X)
+    }
+    g.putImageData(d, 0, 0); return (wcTex = new T.CanvasTexture(c));
+  }
+  /* 31 Okt (C78, pemilik): "lampu bisa di nyalakan apabila di klik … klik sekali lagi off" — semua lampu (juga cincin LED soket
+     VAZRA) tampil MATI; ketuk lampu di panggung → menyala (bagian lampu bercahaya, sumber cahaya, pendar; panggung diredupkan),
+     ketuk lagi → mati. lamp.k 0..1 = tingkat nyala; e.k (per bagian, soket VAZRA) menimpa lamp.k. */
+  function lampCtl(lamp, em, lights, glows) {
+    lamp.k = 0; lamp.on = false; lamp.glows = glows || [];
+    lamp.em = em.map(function (mt) { return { mt: mt, i0: mt.emissiveIntensity, c0: mt.color.clone() }; });
+    lamp.lights = (lights || []).map(function (l) { return { l: l, i0: l.intensity }; });
+    lamp.apply = function () {
+      lamp.em.forEach(function (e) { var k = e.k == null ? lamp.k : e.k; e.mt.emissiveIntensity = e.i0 * k; if (e.c0) e.mt.color.copy(e.c0).multiplyScalar(.4 + .6 * k); if (e.mt.userData.glow) e.mt.userData.glow.forEach(function (m) { if (m.uniforms) m.uniforms.uK.value = k; else m.opacity = k; }); });   // mati: diffuser opal redup (tidak tampak menyala)
+      lamp.lights.forEach(function (e) { e.l.intensity = e.i0 * lamp.k; });   // intensitas, bukan visible: jumlah lampu tetap → shader tidak dikompilasi ulang
+      lamp.glows.forEach(function (mt) { mt.opacity = lamp.k; });
+    };
+    lamp.apply(); return lamp;
+  }
+  function lampSet(on, dur) {
+    var lamp = item && item.userData.lamp; if (!lamp || !lamp.apply) return;
+    lamp.on = on; dur = dur == null ? .9 : dur;
+    if (lamp.kit) lamp.em.forEach(function (e, i) { tw(e, { k: on ? 1 : 0, duration: .35, delay: (on ? i : lamp.em.length - 1 - i) * .06, ease: on ? 'power2.out' : 'power2.in', overwrite: 'auto', onUpdate: lamp.apply }); });   // kiri → kanan, mati kanan → kiri
+    else tw(lamp, { k: on ? 1 : 0, duration: dur, ease: on ? 'power2.out' : 'power2.inOut', overwrite: 'auto', onUpdate: lamp.apply });
+    if (!lamp.dark) tw(LAMPK, { k: on ? lamp.dim || .3 : 1, duration: dur * 1.5, ease: 'power2.inOut', overwrite: 'auto' });
+    if (XW.onLamp) XW.onLamp(on);
+  }
+  function lampAt(x, y) { var lamp = item && item.userData.lamp; return !!(lamp && lamp.apply && (lamp.kit ? lamp.em.length : 1) && hit(x, y)); }
+  XW.lampToggle = function () { var lamp = item && item.userData.lamp; if (lamp && lamp.apply) lampSet(!lamp.on); };
+  /* 31 Okt (C79, pemilik): "lampu yang menyala seharusnya pada spiral putihnya … cahayanya dari dalam putih, binar soft, 3000–4000K".
+     Titik-titik pendar lembut disebar di sepanjang permukaan pemancar (jarak 1 cm), dua lapis: inti putih hangat ±4000K yang rapat
+     + halo 3500K yang lebar → cahaya tampak keluar dari dalam pita dan mengikuti bentuknya (bukan bulatan / garis lurus). */
+  var softT = null;
+  function softTex() { return softT || (softT = radialTex([[0, 'rgba(255,255,255,.85)'], [.3, 'rgba(255,255,255,.5)'], [.62, 'rgba(255,255,255,.14)'], [1, 'rgba(255,255,255,0)']])); }
+  function shapeGlow(spin, meshes, layers, cell) {
+    var inv = new T.Matrix4(), v = new T.Vector3(), seen = {}, pos = []; cell = cell || .006;
+    spin.updateMatrixWorld(true); inv.copy(spin.matrixWorld).invert();
+    meshes.forEach(function (o) {
+      var pa = o.geometry && o.geometry.attributes.position; if (!pa) return;
+      for (var i = 0; i < pa.count; i++) {
+        v.fromBufferAttribute(pa, i).applyMatrix4(o.matrixWorld).applyMatrix4(inv);
+        var key = Math.round(v.x / cell) + ',' + Math.round(v.y / cell) + ',' + Math.round(v.z / cell); if (seen[key]) continue; seen[key] = 1;
+        pos.push(v.x, v.y, v.z);
+      }
+    });
+    if (!pos.length) return [];
+    var geo = new T.BufferGeometry(); geo.setAttribute('position', new T.Float32BufferAttribute(pos, 3));
+    return (layers || [[.055, '#fff1de', .2], [.15, '#ffc489', .055]]).map(function (L) {   // [ukuran m, warna (inti ±4000K · halo 3500K), kekuatan]
+      var mt = new T.PointsMaterial({ map: softTex(), size: L[0], sizeAttenuation: true, color: col(L[1]).multiplyScalar(L[2]), transparent: true, opacity: 0, blending: T.AdditiveBlending, depthWrite: false });
+      var pt = new T.Points(geo, mt); pt.userData.noPick = true; pt.renderOrder = 30; pt.frustumCulled = false; spin.add(pt); return pt;
+    });
+  }
   function lampMount(p) {
     if (!p || (p.cat !== 'lighting' && (p.kats || []).indexOf('Lightings') < 0)) return null;
     var t = [p.name, p.type, p.shopName].join(' ').toLowerCase();
@@ -1843,9 +2191,9 @@
     if (/\bterra\b|floor|standing|lantai/.test(t)) return 'floor';
     return 'auto';   // tanpa nama seri: tinggi < 70 cm → meja, selain itu lantai
   }
-  var glowTex = null, lineTex = null;
+  var glowT = null, lineTex = null;   // 26 Okt (no. 52): dulu "glowTex" — menimpa function glowTex() (ruangan dengan cove / perapian gagal dibangun)
   function radialTex(stops) { var c = document.createElement('canvas'); c.width = c.height = 256; var g = c.getContext('2d'), r = g.createRadialGradient(128, 128, 0, 128, 128, 128); stops.forEach(function (s) { r.addColorStop(s[0], s[1]); }); g.fillStyle = r; g.fillRect(0, 0, 256, 256); return new T.CanvasTexture(c); }
-  function glow() { return glowTex || (glowTex = radialTex([[0, 'rgba(255,226,180,.9)'], [.2, 'rgba(255,205,150,.35)'], [.55, 'rgba(255,190,130,.06)'], [1, 'rgba(255,180,120,0)']])); }
+  function glow() { return glowT || (glowT = radialTex([[0, 'rgba(255,226,180,.9)'], [.2, 'rgba(255,205,150,.35)'], [.55, 'rgba(255,190,130,.06)'], [1, 'rgba(255,180,120,0)']])); }
   // pendar garis (lampu aksen batang): terang di sumbu, cepat memudar ke samping & di kedua ujung
   function lineGlow() {
     if (lineTex) return lineTex;
@@ -1874,9 +2222,9 @@
     var spin = g.userData.spin, m = spin.children[0], box = new T.Box3(), sz = new T.Vector3(), props = [];
     m.updateMatrixWorld(true); box.setFromObject(m); box.getSize(sz);
     m.position.y += Math.max(.3, 1.5 - sz.y / 2) - box.min.y; m.updateMatrixWorld(true); box.setFromObject(m);
-    var wl = new T.Mesh(new T.PlaneGeometry(6, 3.4), propMat(WALL_C)); wl.userData.noPick = true; wl.receiveShadow = true;
-    wl.position.set(0, 1.7, box.min.z - .003); spin.add(wl); props.push(wl.material);
-    g.children.forEach(function (o) { if (o.userData.blob) o.visible = false; });
+    shellWall(spin, box.min.z - .019, wallW(sz.x), props, { y0: box.min.y, y1: box.max.y });   // C87 (pemilik: "kenapa masih ada tembok yang tidak ada profile kotak?"): cermin / saklar kini berpanel juga — tembok mundur 1,6 cm, cermin tergantung di depan list (tidak menembus)
+    g.userData.plinthB = { w: wallW(sz.x) + .25, d: Math.max(.35, sz.z + .3) };   // podium menampung tembok (C77)
+    g.children.forEach(function (o) { if (o.userData.blob) { o.visible = false; o.userData.blobOff = true; } });
     var y0 = Math.max(0, box.min.y - LIFT - (sz.y > .4 ? .3 : .08));
     g.userData.bounds = { w: Math.max(sz.x, sz.x > .4 ? .9 : .3), h: box.max.y + (sz.y > .4 ? .3 : .08) - LIFT - y0, d: sz.z, y0: y0, pitch: -.06, yaw: -.12, lamp: true };
     g.userData.lamp = { mount: 'wall', props: props, line: null, wall: true, dark: true };
@@ -1888,18 +2236,18 @@
     if (mount === 'auto') mount = sz.y < .7 ? 'table' : 'floor';
     // lampu dinding menghadap samping (tipis di X, mis. cincin) → diputar agar muka menghadap depan, dinding di belakang
     if (mount === 'wall' && sz.x < sz.z * .5 && !p.modelRot) { m.rotation.y += Math.PI / 2; m.updateMatrixWorld(true); box.setFromObject(m); box.getSize(sz); var c0 = box.getCenter(new T.Vector3()); m.position.x -= c0.x; m.position.z -= c0.z; m.updateMatrixWorld(true); box.setFromObject(m); }
-    var bottom = mount === 'wall' ? Math.max(.25, WALL_Y - sz.y / 2) : mount === 'ceiling' ? Math.max(.35, CEIL_Y - sz.y) : mount === 'table' ? LIFT + TABLE_H : LIFT;
+    var bottom = mount === 'wall' ? Math.max(.25, WALL_Y - sz.y / 2) : mount === 'ceiling' ? Math.max(.35, SHELL.h - sz.y) : mount === 'table' ? LIFT + TABLE_H : LIFT;
     m.position.y += bottom - box.min.y; m.updateMatrixWorld(true); box.setFromObject(m);
     var props = [], add = function (o) { o.userData.noPick = true; o.castShadow = false; o.receiveShadow = true; spin.add(o); if (o.material && o.material.transparent) props.push(o.material); return o; };
     var blob = g.children.filter(function (o) { return o.userData.blob; })[0];
-    if (mount === 'wall') {   // dinding plester padat di belakang lampu (lantai sampai atas bingkai)
-      var wl = add(new T.Mesh(new T.PlaneGeometry(6, 3.4), propMat(WALL_C)));
-      wl.position.set(0, 1.7, box.min.z - .003);
-      if (blob) blob.visible = false;
+    var WW = wallW(sz.x), ceilTop = 0;
+    if (mount === 'wall') {   // tembok pendek berketebalan di belakang lampu (lantai sampai plafon)
+      shellWall(spin, box.min.z - .003, WW, props, { y0: box.min.y, y1: box.max.y });   // C87: panel atas membingkai lampu
+      if (blob) { blob.visible = false; blob.userData.blobOff = true; }   // C82: tidak dimunculkan lagi tiap frame (noda terpotong di kaki tembok)
     } else if (mount === 'ceiling') {   // plafon di atas lampu gantung
-      var cl = add(new T.Mesh(new T.PlaneGeometry(6, 6), propMat('#3c342d')));
-      cl.rotation.x = Math.PI / 2; cl.position.y = box.max.y + .002;
-      if (blob) blob.visible = false;
+      var cl = add(new T.Mesh(new T.PlaneGeometry(16, 16), propMat('#3c342d')));
+      cl.rotation.x = Math.PI / 2; cl.position.y = ceilTop = box.max.y + .002; cl.userData.shellCeil = true;
+      if (blob) { blob.visible = false; blob.userData.blobOff = true; }
     } else if (mount === 'table') {   // meja samping kecil
       var r = Math.max(.19, Math.max(sz.x, sz.z) / 2 + .08);
       var tm = new T.MeshStandardMaterial({ color: col('#3d2c22'), roughness: .5, metalness: 0 }), mm = new T.MeshStandardMaterial({ color: col('#1b1815'), roughness: .35, metalness: .8 });
@@ -1909,14 +2257,18 @@
       if (blob) blob.scale.set(r * 2.6, r * 2.6, 1);
     }
     // menyala: material lampu (LED / diffuser / kap / cat terang) bercahaya; sumber cahaya di bagian lampu
-    var em = new T.Box3();
+    var em = new T.Box3(), ems = [], emo = [], cl = new Map(), mlist = g.userData.mats || [];
     m.traverse(function (o) {
       if (!o.isMesh) return;
-      (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (mt) {
+      (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (mt, mi) {
         if (!mt || !mt.color) return;
         var nm = (mt.name || '').toLowerCase(), light = (mt.color.r + mt.color.g + mt.color.b) / 3 > .5;
         if (/led|diffuser|lamp|light|bulb|kap|shade|acryl|opal|emit/.test(nm) || (mt.userData.role === 'paint' && light) || (mt.emissive && mt.emissive.r + mt.emissive.g + mt.emissive.b > .2)) {
+          if (!cl.has(mt)) { var c2 = mt.clone(); c2.userData = Object.assign({}, mt.userData); cl.set(mt, c2); var li = mlist.indexOf(mt); if (li >= 0) mlist[li] = c2; }   // C78: klon — nyala/mati tidak menyentuh model di cache
+          var mc = cl.get(mt); if (Array.isArray(o.material)) o.material[mi] = mc; else o.material = mc; mt = mc;
           mt.emissive = LAMP_C.clone(); mt.emissiveIntensity = 2.4; if (mt.emissiveMap === undefined) mt.emissiveMap = null; mt.needsUpdate = true;
+          if (ems.indexOf(mt) < 0) ems.push(mt);
+          if (emo.indexOf(o) < 0) emo.push(o);
           em.expandByObject(o);
         }
       });
@@ -1925,21 +2277,21 @@
     if (em.isEmpty() && (mount === 'floor' || mount === 'table') && sz.y > .5) { var cx = (box.min.x + box.max.x) / 2, cz = (box.min.z + box.max.z) / 2; em.set(new T.Vector3(cx - .008, box.min.y + sz.y * .2, cz - .008), new T.Vector3(cx + .008, box.max.y - .01, cz + .008)); }
     var esz = em.isEmpty() ? null : em.getSize(new T.Vector3()), ec = em.isEmpty() ? null : em.getCenter(new T.Vector3());
     var dims = esz ? [['x', esz.x], ['y', esz.y], ['z', esz.z]].sort(function (a, b2) { return b2[1] - a[1]; }) : null;
-    var line = dims && dims[0][1] > .2 && dims[0][1] > dims[1][1] * 4 ? dims[0][0] : null;   // batang: sumbu terpanjang ≥ 4× lainnya
+    var line = dims && dims[0][1] > .2 && dims[0][1] > dims[1][1] * 4 && (dims[1][1] < .06 || dims[2][1] < .02) ? dims[0][0] : null;   // batang: sumbu terpanjang ≥ 4× lainnya DAN tipis (< 6 cm) atau pipih (< 2 cm) — heliks S88 (±19 × 19 cm) bukan batang (C77)
     var pos = ec ? ec.clone() : new T.Vector3(0, mount === 'ceiling' ? box.min.y + .04 : mount === 'wall' ? (box.min.y + box.max.y) / 2 : box.max.y - sz.y * .08, 0);
     if (mount === 'ceiling' && ec && !line) pos.y = em.min.y + .02;
     var wallZ = box.min.z;
     var wash = line === 'y' && (mount === 'wall' || mount === 'floor'), floorWall = false;
     if (wash && mount === 'floor') {   // lampu lantai tongkat: dinding abu di belakangnya (seperti foto referensi)
       wallZ = box.min.z - .03; floorWall = true;
-      var fw = add(new T.Mesh(new T.PlaneGeometry(6, 3.4), propMat(WALL_C))); fw.position.set(0, 1.7, wallZ);
+      shellWall(spin, wallZ, WW, props);
     }
     if (line) {   // aksen garis: cahaya hanya sepanjang batang (tidak membulat ke mana-mana)
       var Ln = esz[line], n = Math.max(2, Math.min(6, Math.round(Ln / .22))), tot = wash ? .3 : mount === 'ceiling' ? 3.4 : mount === 'wall' ? 3.6 : 2.2;
       if (wash) {   // sapuan lembut di dinding sepanjang batang (bukan lingkaran)
         var wh = mount === 'floor' ? (em.max.y - LIFT) * 1.3 + .3 : Ln * 1.6 + .5, wm = new T.MeshBasicMaterial({ map: washTex(), transparent: true, blending: T.AdditiveBlending, depthWrite: false, opacity: 0, color: col('#ffffff').multiplyScalar(.3) });
-        var wp = new T.Mesh(new T.PlaneGeometry(Math.max(1.6, Ln * 1.2), wh), wm); wp.userData.noPick = true; wp.renderOrder = 5;
-        wp.position.set(pos.x, mount === 'floor' ? LIFT + wh * .38 : pos.y, wallZ + .004); spin.add(wp); props.push(wm);   // lantai: pita mulai dari lantai
+        var wp = new T.Mesh(new T.PlaneGeometry(Math.min(WW - .04, Math.max(1.6, Ln * 1.2)), wh), wm); wp.userData.noPick = true; wp.userData.shellWall = true; wp.visible = SHELL.walls; wp.renderOrder = 5;   // sapuan cahaya tidak melewati tepi tembok pendek
+        wp.position.set(pos.x, mount === 'floor' ? LIFT + wh * .38 : pos.y, wallZ + .018); spin.add(wp); props.push(wm);   // lantai: pita mulai dari lantai
       }
       for (var i = 0; i < n; i++) {
         var q = pos.clone(); q[line] = em.min[line] + Ln * (i + .5) / n;
@@ -1949,7 +2301,7 @@
       }
       // strip LED: garis tipis bercahaya sepanjang batang (sisi depan / bawah), tidak terpengaruh cahaya panggung
       var th = wash ? .0035 : Math.max(.003, Math.min(.01, (dims[1][1] || .01) / 2 + .0015));
-      var strip = new T.Mesh(new T.CylinderGeometry(th, th, Ln, 12), new T.MeshBasicMaterial({ color: col('#ffe6c2') })); strip.userData.noPick = true; strip.position.copy(pos);
+      var strip = new T.Mesh(new T.CylinderGeometry(th, th, Ln, 12), new T.MeshBasicMaterial({ color: col('#ffe6c2'), transparent: true, opacity: 0 })); strip.userData.noPick = true; strip.position.copy(pos); props.push(strip.material);   // C78: ikut nyala/mati
       if (line === 'x') strip.rotation.z = Math.PI / 2; else if (line === 'z') strip.rotation.x = Math.PI / 2;
       if (wash) strip.position.z = (mount === 'wall' ? em.max.z - .016 : pos.z - .008) - th * .4;   // LED di sisi belakang batang (menghadap dinding)
       else if (mount === 'wall') strip.position.z = em.max.z - th * .5; else if (mount === 'ceiling') strip.position.y = em.min.y + th * .5;
@@ -1963,6 +2315,11 @@
         spin.add(pg);
       });
       props.push(gm);
+    } else if (esz && esz.y > .5 && mount === 'floor') {   // C77: pemancar tinggi berbentuk (heliks S88): bentuk pemancar SENDIRI yang menyala —
+      for (var hi = 0; hi < 4; hi++) {                      //   4 titik cahaya sepanjang tinggi, tanpa garis lurus / pendar bulat besar
+        var hpl = new T.PointLight(LAMP_C, .5, 1.6, 2); hpl.position.set(ec.x, em.min.y + esz.y * (hi + .5) / 4, ec.z); spin.add(hpl);
+      }
+      shapeGlow(spin, emo).forEach(function (q) { props.push(q.material); });   // C79: binar lembut mengikuti bentuk spiral
     } else {
       var pl = new T.PointLight(LAMP_C, mount === 'ceiling' ? 2.2 : 1.6, mount === 'wall' ? .9 : 2.6, 2); pl.position.copy(pos); if (mount === 'wall') pl.position.z = Math.max(wallZ + .08, pos.z); spin.add(pl);
       if (mount === 'ceiling') { var sp = new T.SpotLight(LAMP_C, 2.4, 5, .9, .85, 1.6); sp.position.copy(pos); sp.target.position.set(pos.x, 0, pos.z); spin.add(sp, sp.target); }
@@ -1970,20 +2327,24 @@
       var gs = esz ? Math.max(.14, Math.min(Math.max(esz.x, esz.y, esz.z), .6) * 1.15) : .26;
       gl.scale.set(gs, gs, 1); gl.position.copy(pos); gl.userData.noPick = true; gl.renderOrder = 30; spin.add(gl); props.push(gl.material);
     }
-    if (mount === 'ceiling') { var up = new T.PointLight(LAMP_C, .7, 1.4, 2); up.position.set(pos.x, CEIL_Y - .22, pos.z + .12); spin.add(up); }   // plafon ikut terang lembut
+    if (mount === 'ceiling') { var up = new T.PointLight(LAMP_C, .7, 1.4, 2); up.position.set(pos.x, ceilTop - .22, pos.z + .12); spin.add(up); }   // plafon ikut terang lembut
     // bingkai kamera: fokus ke lampu (bukan lantai); plafon dilihat sedikit dari bawah
     var y0 = mount === 'table' || mount === 'floor' ? 0 : Math.max(0, box.min.y - LIFT - (mount === 'ceiling' ? .12 : .3));   // gantung: bingkai dari bawah lampu sampai plafon
-    g.userData.bounds = { w: Math.max(b.w, mount === 'wall' ? .9 : mount === 'table' ? r * 2 : b.w), h: (mount === 'ceiling' ? CEIL_Y + .05 : box.max.y + (mount === 'wall' ? .3 : 0)) - LIFT - y0, d: b.d, y0: y0, pitch: mount === 'ceiling' ? -.24 : mount === 'wall' ? -.1 : null, lamp: true };
-    g.userData.lamp = { mount: mount, props: props, line: line, wall: mount === 'wall' || floorWall };
+    g.userData.bounds = { w: Math.max(b.w, mount === 'wall' ? .9 : mount === 'table' ? r * 2 : b.w), h: (mount === 'ceiling' ? ceilTop + .05 : box.max.y + (mount === 'wall' ? .3 : 0)) - LIFT - y0, d: b.d, y0: y0, pitch: mount === 'ceiling' ? -.13 : mount === 'wall' ? -.1 : null, lamp: true };
+    var lights = []; spin.traverse(function (o) { if (o.isLight) lights.push(o); });
+    g.userData.lamp = lampCtl({ mount: mount, props: props.filter(function (mt) { return mt.userData.solid; }), line: line, wall: mount === 'wall' || floorWall }, ems, lights, props.filter(function (mt) { return !mt.userData.solid; }));   // C78: mulai mati
+    if (mount === 'ceiling') g.userData.ceilY = ceilTop;   // kamera dijaga di bawah plafon (C76)
     if (floorWall) g.userData.bounds.w = Math.max(g.userData.bounds.w, 1.1);
+    if (mount === 'wall' || floorWall) g.userData.plinthB = { w: WW + .25, d: Math.max(.35, sz.z + .3) };   // podium menampung tembok (C77)
     if (wash) g.userData.bounds.yaw = -.1;   // dinding hampir menghadap kamera (seperti foto referensi)
   }
   // model 3D asli; bila gagal dimuat (belum ada / rusak / dibuka dari file://) kembali ke foto
-  XW.showModel = function (p, url, photo, hexStr, kind) {
+  XW.showModel = function (p, url, photo, hexStr, kind, show) {   // show { all: [nama bagian], on: [yang tampil] } — set ROULED (vshow)
     var my = ++req;
     return getModel(url).then(function (s) {
       if (my !== req) return;
       var g = makeModel(s, p);
+      if (show && show.all && show.all.length) { vsInit(g, show.all); vsShow(g, show.on || show.all, false); }
       setupMirrors(g);
       stageLamp(g, p); stageWallDecor(g, p);
       g.visible = false; scene.add(g);
@@ -1995,6 +2356,112 @@
       if (photo) return XW.showProduct(p, photo);
     });
   };
+  /* 31 Okt (C77): produk rakitan (VAZRA Power Track) — beberapa GLB digabung jadi satu model: parts [{ url, pos: [x, y, z] }]
+     (koordinat GLB: meter, y ke atas). Selebihnya sama dengan showModel (lampu/dinding, podium, muncul). */
+  /* 31 Okt (C78): rel sama → TIDAK dibangun ulang ("pw stay"): soket baru turun dari atas ke rel, bergeser sedikit ke tempatnya,
+     berputar mengunci (seperempat putaran), lalu cincin LED menyala; dihapus = kebalikannya (mati → putar balik → geser → naik).
+     Beberapa sekaligus: satu per satu, kiri → kanan (hapus: kanan → kiri); soket lain bergeser ke jarak barunya. */
+  /* C80 (pemilik: "cahaya pada power track terlalu rusak, tidak soft lingkarannya, dan ada garis putus2"): pendar titik-titik C79
+     (sampel tiap 3 mm → berbintik) + cincin geometri 1,6 mm yang lebih tipis dari satu piksel (→ putus-putus) diganti SATU bidang
+     datar di muka soket dengan shader cincin: inti tajam yang lebarnya minimal ±1 piksel (fwidth) + halo Gauss lembut, dihitung
+     per piksel → lingkaran utuh & halus di jarak mana pun. Cincin geometri tetap (warna opal), pendarnya dari shader. */
+  var RING_SH = {
+    vertexShader: 'varying vec2 vP; void main() { vP = position.xy; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: 'uniform vec3 uC; uniform vec3 uH; uniform float uR; uniform float uW; uniform float uS; uniform float uK; varying vec2 vP;\n' +
+      'void main() { float d = abs(length(vP) - uR); float px = fwidth(length(vP)); float w = max(uW, px * .9);\n' +
+      ' float core = exp(-(d * d) / (w * w)) * min(1.0, uW / w * 1.6); float halo = exp(-(d * d) / (uS * uS));\n' +
+      ' vec3 c = uC * core + uH * halo * .55; float a = uK * clamp(max(core, halo * .55), 0.0, 1.0); if (a < .004) discard; gl_FragColor = vec4(c * uK, 1.0); }'
+  };
+  function kitRing(c) {   // cincin LED per soket: bahan diklon supaya tiap soket bisa menyala sendiri
+    var out = [], meshes = [], inv = new T.Matrix4(), M = new T.Matrix4(), top = -1e9;
+    c.updateMatrixWorld(true); inv.copy(c.matrixWorld).invert();
+    c.traverse(function (o) {
+      if (!o.isMesh) return;
+      if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
+      top = Math.max(top, o.geometry.boundingBox.clone().applyMatrix4(M.multiplyMatrices(inv, o.matrixWorld)).max.y);
+      if (!o.material || !o.material.emissive) return;
+      var mt = o.material; if (mt.emissive.r + mt.emissive.g + mt.emissive.b < .2 && !/led/i.test(mt.name || '')) return;
+      meshes.push(o);
+    });
+    meshes.forEach(function (o) {
+      var mt = o.material, c2 = mt.clone(); c2.userData = Object.assign({}, mt.userData, { env0: .5 }); o.material = c2; out.push(c2);
+      var bb = o.geometry.boundingBox.clone().applyMatrix4(M.multiplyMatrices(inv, o.matrixWorld)), cen = bb.getCenter(new T.Vector3());
+      var R0 = (bb.max.x - bb.min.x + bb.max.z - bb.min.z) / 4 - .0008;   // jari-jari tengah cincin (± 2,14 cm)
+      var sm = new T.ShaderMaterial({ uniforms: { uC: { value: col('#fffaf3') }, uH: { value: col('#ffe9d2') }, uR: { value: R0 }, uW: { value: .0009 }, uS: { value: .0055 }, uK: { value: 0 } },
+        vertexShader: RING_SH.vertexShader, fragmentShader: RING_SH.fragmentShader, extensions: { derivatives: true }, transparent: true, depthWrite: false, blending: T.AdditiveBlending, toneMapped: false });
+      var pl = new T.Mesh(new T.PlaneGeometry((R0 + .02) * 2, (R0 + .02) * 2), sm); pl.rotation.x = -Math.PI / 2; pl.position.set(cen.x, top + .0006, cen.z);
+      pl.userData.noPick = true; pl.renderOrder = 30; pl.castShadow = pl.receiveShadow = false; c.add(pl);
+      c2.userData.glow = [sm];
+    });
+    return out;
+  }
+  function kitLamp(g, K) {   // cincin semua soket = satu lampu (ketuk = nyala / mati); menyala → panggung diredupkan (C79)
+    var lamp = g.userData.lamp || (g.userData.lamp = lampCtl({ kit: true, dim: .18, props: [] }, []));   // C79: cincin menyala → lampu utama panggung diredupkan (dulu tidak) agar cincinnya terlihat
+    var old = lamp.em || [];
+    lamp.em = []; K.socks.forEach(function (sk) { sk.rings.forEach(function (mt) { var e = old.filter(function (q) { return q.mt === mt; })[0] || { mt: mt, i0: mt.userData.i0 != null ? mt.userData.i0 : (mt.userData.i0 = mt.emissiveIntensity || 1), c0: mt.userData.c0 || (mt.userData.c0 = mt.color.clone()), k: lamp.on ? 1 : 0 }; lamp.em.push(e); sk.e = sk.e || []; if (sk.e.indexOf(e) < 0) sk.e.push(e); }); });
+    lamp.apply(); return lamp;
+  }
+  XW.showKit = function (p, parts) {
+    var my = ++req, K = item && item.userData.kit;
+    var railOf = function (ps) { var r = ps.filter(function (q) { return q.rail != null; })[0]; return r ? r.rail : 0; };
+    if (K && K.p === p && K.rail === railOf(parts) && item.visible) return kitStep(item, K, parts.filter(function (q) { return q.sock; }), my);
+    var wasOn = !!(K && K.p === p && item.userData.lamp && item.userData.lamp.on);
+    return Promise.all(parts.map(function (q) { return getModel(q.url); })).then(function (ss) {
+      if (my !== req) return;
+      var grp = new T.Group();
+      ss.forEach(function (s, i) { var c = s.clone(true); c.position.fromArray(parts[i].pos); c.userData.kitSock = parts[i].sock || null; grp.add(c); });
+      var g = makeModel(grp, p), m = g.userData.spin.children[0];
+      var K2 = g.userData.kit = { p: p, rail: railOf(parts), m: m, socks: [] };
+      m.children.forEach(function (c) { if (c.userData.kitSock) { var r = kitRing(c); r.forEach(function (mt) { g.userData.mats.push(mt); }); K2.socks.push({ kind: c.userData.kitSock, obj: c, rings: r }); } });
+      setupMirrors(g); stageLamp(g, p); stageWallDecor(g, p);
+      g.userData.bounds.pitch = .5;   // C78: dilihat dari atas → cincin LED di muka soket terlihat (rel cuma 2,2 cm; sudut bawaan .17 hampir sejajar)
+      kitLamp(g, K2); if (wasOn) { g.userData.lamp.on = true; g.userData.lamp.em.forEach(function (e) { e.k = 1; }); g.userData.lamp.apply(); }
+      g.visible = false; scene.add(g);
+      present('model', g);
+    });
+  };
+  function kitStep(g, K, want, my) {   // want: [{ url, pos, sock: 'eu'|'usb' }] urutan akhir (EU lalu USB)
+    var kinds = ['eu', 'usb'], keep = [], add = [], drop = [];
+    kinds.forEach(function (kd) {
+      var have = K.socks.filter(function (sk) { return sk.kind === kd && !sk.leaving; }), need = want.filter(function (q) { return q.sock === kd; });
+      need.forEach(function (q, i) { if (i < have.length) keep.push({ sk: have[i], q: q }); else add.push(q); });
+      for (var i = need.length; i < have.length; i++) drop.push(have[i]);
+    });
+    if (!add.length && !drop.length) return Promise.resolve();
+    return Promise.all(add.map(function (q) { return getModel(q.url); })).then(function (ss) {
+      if (my !== req || item !== g) return;
+      var lamp = g.userData.lamp, U = g.userData.unit || 1, H = .42 / U, n = Math.max(1, want.length), side0 = Math.min(.04, Math.max(.012, ((K.rail ? K.rail / 100 / n : .09) - .066) * .5));   // satuan GLB (m); H = 42 cm di dunia
+      var t0 = 0;
+      // 1) dihapus: kanan → kiri, satu per satu — cincin mati → putar balik → geser → naik & hilang
+      drop.sort(function (a, b) { return b.obj.position.x - a.obj.position.x; }).forEach(function (sk, j) {
+        sk.leaving = true; var o = sk.obj, d = j * .32, side = side0;
+        G && G.killTweensOf([o.position, o.rotation]);
+        (sk.e || []).forEach(function (e) { tw(e, { k: 0, duration: .25, delay: d, ease: 'power2.in', overwrite: 'auto', onUpdate: lamp.apply }); });
+        tw(o.rotation, { y: Math.PI / 2, duration: .4, delay: d + .2, ease: 'power2.inOut' });
+        tw(o.position, { x: o.position.x + side, duration: .3, delay: d + .58, ease: 'power2.inOut' });
+        tw(o.position, { y: o.position.y + H, duration: .45, delay: d + .86, ease: 'power3.in', onComplete: function () { K.m.remove(o); K.socks.splice(K.socks.indexOf(sk), 1); kitLamp(g, K); if (!K.socks.length && lamp.on && item === g) lampSet(false); } });   // soket terakhir dilepas → panggung terang lagi
+        t0 = Math.max(t0, d + 1.2);
+      });
+      if (!drop.length) t0 = 0;
+      // 2) yang tetap: bergeser ke jarak baru (setelah yang dihapus pergi; saat menambah: bersamaan dengan soket baru turun)
+      keep.forEach(function (kq) { var o = kq.sk.obj; tw(o.position, { x: kq.q.pos[0], z: kq.q.pos[2], duration: .5, delay: t0, ease: 'power2.inOut', overwrite: 'auto' }); });
+      // 3) baru: kiri → kanan, satu per satu — turun dari atas ke rel → geser ke tempatnya → putar mengunci → cincin menyala
+      add.forEach(function (q, j) {
+        var src = ss[j], o = src.clone(true), rings = kitRing(o), d = t0 + j * .38, x = q.pos[0], y = q.pos[1], z = q.pos[2];
+        var last = want.indexOf(q) === want.length - 1, side = (last ? 1 : -1) * side0;
+        o.userData.kitSock = q.sock; o.traverse(function (m2) { if (m2.isMesh) m2.castShadow = m2.receiveShadow = true; });
+        rings.forEach(function (mt) { g.userData.mats.push(mt); });
+        o.position.set(x + side, y + H, z); o.rotation.y = Math.PI / 2; K.m.add(o);
+        var sk = { kind: q.sock, obj: o, rings: rings }; K.socks.push(sk); kitLamp(g, K); (sk.e || []).forEach(function (e) { e.k = 0; }); lamp.apply();
+        tw(o.position, { y: y, duration: .6, delay: d, ease: 'power3.out' });
+        tw(o.position, { x: x, duration: .35, delay: d + .62, ease: 'power2.inOut' });
+        tw(o.rotation, { y: 0, duration: .45, delay: d + .98, ease: 'power2.inOut' });
+        (sk.e || []).forEach(function (e) { tw(e, { k: 1, duration: .35, delay: d + 1.4, ease: 'power2.out', onUpdate: lamp.apply, onComplete: function () { if (!lamp.on) lampSet(true); } }); });   // soket terpasang → rel menyala
+      });
+      K.socks.sort(function (a, b) { return kinds.indexOf(a.kind) - kinds.indexOf(b.kind); });
+      applyWB(g);
+    });
+  }
   // foto kecil objek di panggung (thumbnail rancangan di tas & profil) — persegi di tengah ruang kosong
   XW.snapshot = function (size) {
     if (!renderer) return '';
@@ -2102,6 +2569,118 @@
     ap();
     tw(st, { a: on ? 1 : 0, duration: on ? .85 : .5, ease: on ? 'power3.out' : 'power2.in', onUpdate: ap, onComplete: function () { if (on) mts.forEach(function (mt) { mt.transparent = false; mt.opacity = 1; mt.needsUpdate = true; }); if (done) done(); } });
   }
+  /* 27 Okt (pemilik, ROULED): varian = bagian dari SATU set (products.json vshow { label varian: [nama node] }).
+     Ganti varian TIDAK mengganti produk; tiap meja muncul dari BAWAH dan pergi menyamping sambil TURUN (seperti
+     pergantian produk, tanpa memudar → tanpa kedip):
+       55 ↔ 70                : seperti ganti produk — yang lama turun, lalu yang baru naik (tidak bersamaan)
+       70 → Complete Set      : 55 naik di samping 70, lalu masuk ke dalam 70
+       55 → Complete Set      : 55 menepi, 70 naik, lalu 55 masuk ke dalam 70
+       Complete Set → 70 / 55 : 55 keluar dari 70, lalu yang tidak dipakai menyamping sambil turun
+     Tata letak (pusat set, podium, kamera) langsung ke tujuan; meja yang tampil dikompensasi sehingga tidak melompat.
+     Gerak nesting (xc_motion meja dalam) hanya di set lengkap: Animate = 55 masuk penuh ke bawah 70, lalu keluar lagi. */
+  var VS = { drop: 1.6, side: .3, gap: .05 };   // turun/naik dari bawah lantai, geser menyamping, celah saat menepi (m)
+  function vsInit(g, names) {
+    if (g.userData.vs) return g.userData.vs;
+    var m = g.userData.spin.children[0], vs = { m: m, base: m.position.clone(), parts: {}, names: [], inner: null, all: (g.userData.built && g.userData.built.motions || []).slice(), lock: false, sig: 0 };
+    names.forEach(function (n) {
+      var node = m.getObjectByName(n); if (!node || vs.parts[n]) return;
+      var piv = new T.Group(), own = [], twin = function (mt) { var c = mt.clone(); c.userData = Object.assign({}, mt.userData); own.push(c); return c; };
+      node.parent.add(piv); piv.add(node);
+      node.traverse(function (q) { if (q.isMesh) q.material = Array.isArray(q.material) ? q.material.map(twin) : twin(q.material); });   // material sendiri per bagian
+      if (node.userData.xc_motion) {   // meja dalam (nesting): sedikit didahulukan di depth → cincin dasar yang bersilang di lantai tidak berkedip
+        vs.inner = n; own.forEach(function (mt) { mt.polygonOffset = true; mt.polygonOffsetFactor = -1; mt.polygonOffsetUnits = -2; });
+      }
+      vs.parts[n] = { piv: piv, on: true, tl: null }; vs.names.push(n);
+    });
+    var used = [];   // daftar material panggung = yang benar-benar dipakai mesh (salinan per bagian)
+    g.traverse(function (q) { if (q.isMesh && !q.userData.blob) (Array.isArray(q.material) ? q.material : [q.material]).forEach(function (mt) { if (mt && 'envMapIntensity' in mt && used.indexOf(mt) < 0) used.push(mt); }); });
+    g.userData.mats = used;
+    return (g.userData.vs = vs);
+  }
+  function vsMark(p, on) { p.piv.traverse(function (q) { if (q.isMesh) q.userData.gone = !on; }); }
+  // tapak bagian: set di posisi dasar, pivot di 0, gerak di posisi tujuan (ruang spin, putaran pengguna diabaikan)
+  function vsBox(g, names) {
+    var vs = g.userData.vs, spin = g.userData.spin, mp = vs.m.position.clone(), ry = spin.rotation.y, pv = [];
+    vs.m.position.copy(vs.base); spin.rotation.y = 0;
+    vs.names.forEach(function (n) { var p = vs.parts[n]; pv.push(p.piv.position.clone()); p.piv.position.set(0, 0, 0); });
+    vs.all.forEach(function (mo) { mo.apply(ease(mo.to)); });
+    g.updateMatrixWorld(true);
+    var box = new T.Box3(), gp = g.position;
+    names.forEach(function (n) { if (vs.parts[n]) vs.parts[n].piv.traverse(function (q) { if (q.isMesh) box.expandByObject(q); }); });
+    var c = box.getCenter(new T.Vector3()), sz = box.getSize(new T.Vector3());
+    vs.m.position.copy(mp); spin.rotation.y = ry;
+    vs.names.forEach(function (n, i) { vs.parts[n].piv.position.copy(pv[i]); });
+    vs.all.forEach(function (mo) { mo.apply(ease(mo.lin == null ? mo.t : mo.lin)); });
+    g.updateMatrixWorld(true);
+    return { x: c.x - gp.x, z: c.z - gp.z, x0: box.min.x - gp.x, x1: box.max.x - gp.x, w: sz.x, h: sz.y, d: sz.z };
+  }
+  /* set ke tengah + podium, bayangan, kamera mengikuti tapak baru. dur 0 = langsung (sebelum tampil);
+     snap = pusat set langsung pindah (vsShow mengompensasi meja yang tampil), selain itu pusat ikut bergeser (nesting) */
+  function vsLayout(g, names, dur, snap) {
+    var vs = g.userData.vs, b = vsBox(g, names), bump = function () { vs.sig++; };
+    var tx = vs.base.x - b.x, tz = vs.base.z - b.z;   // geser m (dari posisi dasar) sehingga pusat tapak = pusat panggung
+    g.userData.bounds = { w: b.w, h: b.h, d: b.d };
+    var blob = g.children.filter(function (o) { return o.userData.blob; })[0];
+    if (G) G.killTweensOf(vs.m.position);
+    if (!dur || snap) { vs.m.position.x = tx; vs.m.position.z = tz; }
+    else tw(vs.m.position, { x: tx, z: tz, duration: dur, ease: 'power3.inOut', onUpdate: bump });   // bergeser di layar: ease-in-out
+    if (!dur) { if (blob) blob.scale.set(b.w * 1.12, b.d * 1.2, 1); return; }
+    if (blob) tw(blob.scale, { x: b.w * 1.12, y: b.d * 1.2, duration: dur, ease: 'power3.inOut' });
+    setPlinth(g.userData.bounds, true, .9); frameItem(g.userData.bounds, 1.1);
+  }
+  function vsShow(g, names, anim) {
+    var vs = g.userData.vs; if (!vs) return;
+    names = names.filter(function (n) { return vs.parts[n]; }); if (!names.length) names = vs.names.slice();
+    var full = vs.names.every(function (n) { return names.indexOf(n) >= 0; }), inner = vs.inner;
+    var now = vs.names.filter(function (n) { return vs.parts[n].piv.visible; }), fromSet = vs.names.every(function (n) { return now.indexOf(n) >= 0; });
+    vs.lock = !full;
+    if (!full) vs.all.forEach(function (mo) { mo.to = 0; mo.hold = 0; });   // keluar dari set: nesting ditutup (bersamaan)
+    vs.names.forEach(function (n) { var p = vs.parts[n]; if (p.tl) { p.tl.kill(); p.tl = null; } p.on = names.indexOf(n) >= 0; });
+    if (anim === false || !G || XW.reduced || !inner) {
+      vs.names.forEach(function (n) { var p = vs.parts[n]; p.piv.position.set(0, 0, 0); p.piv.visible = p.on; vsMark(p, p.on); });
+      if (!full) vs.all.forEach(function (mo) { mo.lin = mo.t = 0; mo.apply(0); });
+      vsLayout(g, names, anim === false ? 0 : 1, true);
+      return;
+    }
+    var s = vs.m.scale.x || 1, mOld = vs.m.position.clone();
+    vsLayout(g, names, 1, true);
+    var dx = (mOld.x - vs.m.position.x) / s, dz = (mOld.z - vs.m.position.z) / s, D = VS.drop / s, bump = function () { vs.sig++; };
+    now.forEach(function (n) { var q = vs.parts[n].piv.position; q.x += dx; q.z += dz; });   // tetap di tempatnya di layar
+    var enter = names.filter(function (n) { return now.indexOf(n) < 0; }), leave = now.filter(function (n) { return names.indexOf(n) < 0; }),
+        stay = names.filter(function (n) { return now.indexOf(n) >= 0; }), others = vs.names.filter(function (n) { return n !== inner; });
+    var tl = {}, P = function (n) { return vs.parts[n].piv.position; };
+    vs.names.forEach(function (n) { tl[n] = vs.parts[n].tl = G.timeline({ onUpdate: bump }); });
+    var out = function () {   // geser x (ruang m) agar meja dalam tepat lepas dari meja lain (menjauh)
+      var a = vsBox(g, [inner]), b = vsBox(g, others), side = a.x <= b.x ? -1 : 1;
+      return (side < 0 ? b.x0 - a.x1 - VS.gap : b.x1 - a.x0 + VS.gap) / s;
+    };
+    var away = function (n, ref) { return (vsBox(g, [n]).x <= vsBox(g, ref).x ? -1 : 1) * VS.side / s; };
+    var rise = function (n, x, at, dur) {   // muncul dari bawah lantai
+      var p = vs.parts[n]; p.piv.visible = true; vsMark(p, true); P(n).set(x, -D, 0);
+      tl[n].to(P(n), { y: 0, duration: dur || 1.05, ease: 'power3.out' }, at);
+    };
+    var sink = function (n, side, at) {   // menyamping sambil turun, lalu disembunyikan
+      tl[n].to(P(n), { x: '+=' + side, y: -D, duration: .8, ease: 'power3.in', onComplete: function () { vs.parts[n].piv.visible = false; vsMark(vs.parts[n], false); } }, at);
+    };
+    var home = function (n, at, dur) { tl[n].to(P(n), { x: 0, y: 0, z: 0, duration: dur || 1, ease: 'power3.inOut' }, at); };
+    if (full) {   // ke set lengkap: meja luar naik, meja dalam masuk ke dalamnya
+      var o = out(), innerStays = stay.indexOf(inner) >= 0;
+      enter.forEach(function (n) { if (n !== inner) rise(n, 0, innerStays ? .35 : 0); });
+      stay.forEach(function (n) { if (n !== inner) home(n, 0); });
+      if (!innerStays) { rise(inner, o, .15); home(inner, 1.0); }
+      else { tl[inner].to(P(inner), { x: o, y: 0, z: 0, duration: .75, ease: 'power3.inOut' }, 0); home(inner, 1.15); }
+    } else if (fromSet && now.indexOf(inner) >= 0) {   // dari set ke satu meja: meja dalam keluar dari pelukan dulu
+      tl[inner].to(P(inner), { x: P(inner).x + out(), duration: .75, ease: 'power3.inOut' }, 0);
+      if (leave.indexOf(inner) >= 0) { sink(inner, away(inner, others), .7); stay.forEach(function (n) { home(n, .6); }); }
+      else { home(inner, .95); leave.forEach(function (n) { sink(n, away(n, [inner]), .75); }); }   // turun setelah meja dalam lepas (tidak bersilangan)
+    } else {   // satu meja ↔ satu meja (pemilik 27 Okt: "seperti biasa, hilang dulu baru muncul") = sama dengan ganti produk:
+      // yang lama turun lurus (sink .7 dtk power3.in), yang baru naik setelah jeda .45 dtk (rise)
+      leave.forEach(function (n) { tl[n].to(P(n), { y: -D, duration: .7, ease: 'power3.in', onComplete: function () { vs.parts[n].piv.visible = false; vsMark(vs.parts[n], false); } }, 0); });
+      enter.forEach(function (n) { rise(n, 0, leave.length ? .45 : 0, 1.25); });   // rise produk: 1,25 dtk
+      stay.forEach(function (n) { home(n, 0); });
+    }
+  }
+  XW.setShow = function (names, anim) { if (item && st.kind === 'model' && item.userData.vs) vsShow(item, names || [], anim); };
   XW.setPart = function (url, anim) {
     var g = item; if (!g || st.kind !== 'model' || !g.userData.spin) return Promise.resolve();
     var m = g.userData.spin.children[0], old = g.userData.part;
@@ -2124,7 +2703,7 @@
       var twin = function (mt) {   // material dasar dengan peran sama → salinan (tekstur dipakai bersama)
         var r = mt.userData.role, w = mt.userData.xc_wood;
         var b = base.filter(function (x) { return w ? x.userData.xc_wood === w : r && x.userData.role === r && !x.userData.xc_wood; })[0];
-        var c = (b || mt).clone(); c.userData = Object.assign({}, (b || mt).userData); return c;
+        var c = (b || mt).clone(); c.userData = Object.assign({}, (b || mt).userData); if (c.userData.env0 == null) c.userData.env0 = c.metalness > .5 ? 1.1 : .5; return c;   // C85: tanpa env0 → envMapIntensity NaN → bidang hitam pekat (dalam laci VERK)
       };
       pr.traverse(function (q) {
         if (!q.isMesh) return; q.castShadow = q.receiveShadow = true;
@@ -2143,6 +2722,25 @@
     });
   };
   // kembali ke posisi awal: zoom normal, putaran 0, bingkai kamera semula
+  /* C76: plafon & tembok produk (klik kanan) */
+  function ceilNow() { return item && item.userData.ceilY && /^(model|product)$/.test(st.kind) ? item.userData.ceilY : 0; }
+  XW.shell = function () { var u = item ? item.userData : {}; return { ceil: !!u.ceilY, wall: !!(u.lamp && u.lamp.wall), h: SHELL.h, walls: SHELL.walls }; };
+  XW.setWalls = function (on) {
+    SHELL.walls = !!on;
+    if (item && item.userData.spin) item.userData.spin.traverse(function (o) { if (o.userData.shellWall) o.visible = SHELL.walls; });
+  };
+  XW.setCeil = function (h) {   // tinggi plafon 2,8–4,5 m: plafon, lampu gantung & cahayanya naik/turun bersama; tembok ikut setinggi plafon
+    SHELL.h = clamp(+h || 2.8, 2.8, 4.5);
+    var g = item, sp = g && g.userData.spin; if (!sp) return;
+    sp.traverse(function (o) { if (o.userData.wfit) o.userData.wfit(SHELL.h, .6); });   // C84: panel atas & kornis ikut plafon
+    sp.traverse(function (o) { if (o.userData.wallSlab) { tw(o.scale, { y: SHELL.h - LIFT, duration: .6, ease: 'power2.inOut' }); tw(o.position, { y: LIFT + (SHELL.h - LIFT) / 2, duration: .6, ease: 'power2.inOut' }); } });
+    if (!g.userData.ceilY) return;
+    var m = sp.children[0], bx = new T.Box3().setFromObject(m), top = Math.max(SHELL.h, bx.max.y - bx.min.y + .35) + .002, dy = top - g.userData.ceilY;
+    if (Math.abs(dy) < .001) return;
+    sp.children.forEach(function (o) { tw(o.position, { y: o.position.y + dy, duration: .6, ease: 'power2.inOut' }); });
+    g.userData.ceilY = top; var b = g.userData.bounds; if (b) b.y0 += dy;
+    frameItem(null, .9);
+  };
   XW.recenter = function () {
     st.zoom = 1; st.spinV = 0; st.recenter = true; st.orbitMoved = false; st.camYawT = 0; st.camPitchT = 0; st.px = st.py = 0;
     if (orbit) {
@@ -2163,6 +2761,7 @@
   var ease = function (v) { return v < .5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2; };
   function motionAt(x, y) {
     if (!item || !(item.userData.custom || item.userData.built) || !item.visible || !camera) return null;
+    if (item.userData.vs && item.userData.vs.lock) return null;   // set tidak lengkap (satu meja ROULED): nesting tidak bisa dibuka
     ndc.set(x / W * 2 - 1, -(y / H) * 2 + 1);
     ray.setFromCamera(ndc, camera);
     var hits = ray.intersectObject(item, true);
@@ -2191,8 +2790,11 @@
   function toggleMotion(m) {
     var to = m.to > .5 ? 0 : 1;
     (m.group ? XW.motions().filter(function (q) { return q.group === m.group; }) : [m]).forEach(function (q) { q.k = 1; moveTo(q, to, 0); });   // group: satu mekanisme (sofa bed) bergerak bersama
+    vsRelayout();
   }
-  XW.motions = function () { return item && item.userData.built && item.userData.built.motions || []; };
+  // set ROULED: nesting dibuka / ditutup → set ditata ulang ke tengah (podium & kamera ikut), bersamaan dengan geraknya
+  function vsRelayout() { var vs = item && item.userData.vs; if (vs && !vs.lock) vsLayout(item, vs.names.filter(function (n) { return vs.parts[n].on; }), 1.1); }
+  XW.motions = function () { return item && !(item.userData.vs && item.userData.vs.lock) && item.userData.built && item.userData.built.motions || []; };
   /* Animate (klik kanan): semua bagian dibuka; sekali lagi → ditutup. Tidak serentak: bergiliran menurut order
      (pintu/kabinet dulu, laci menyusul), jeda & tempo tiap bagian berbeda → ada dinamikanya; menutup = urutan terbalik. */
   /* letak tiap bagian dalam posisi TERTUTUP, di bingkai tampilan model (spin): x = kiri → kanan, y = tinggi (urutan: bawah → atas) */
@@ -2233,56 +2835,137 @@
       if (m.group) gT[m.group] = t;
       prev = w;
     });
+    vsRelayout();
     return open;
   };
-  /* CZ-G4: buka hanya bagian terpilih (mis. kolom kabinet). Tidak serentak: bagian lain (dalam scope) yang terbuka ditutup dulu
-     dari ATAS ke BAWAH / kanan ke kiri (kebalikan urutan buka), lalu yang terpilih dibuka satu per satu dari KIRI ke KANAN,
-     BAWAH ke ATAS (aturan pemilik). opt.one: hanya bagian pertama dalam urutan itu (laci paling bawah). Status disimpan. */
-  XW.openOnly = function (ids, opt) {
-    opt = opt || {};
-    var ms = XW.motions(); if (!ms.length) return 0;
-    var sp = motionSpots(ms), byPos = function (a, b) { return a.r - b.r || (Math.abs(a.x - b.x) > .04 ? a.x - b.x : 0) || (Math.abs(a.y - b.y) > .01 ? a.y - b.y : 0) || a.i - b.i; };
-    var all = ms.map(function (m, i) { return { m: m, i: i, r: rankOf(m), x: sp[i].x, y: sp[i].y }; }).filter(function (w) { return !opt.scope || opt.scope.indexOf(w.m.id) >= 0; });
-    var want = all.filter(function (w) { return ids.indexOf(w.m.id) >= 0; }).sort(byPos);
-    if (opt.one) want = want.slice(0, 1);
-    var on = want.map(function (w) { return w.m; });
-    var closing = all.filter(function (w) { return on.indexOf(w.m) < 0 && w.m.to > .5; }).sort(byPos).reverse();
-    var opening = want.filter(function (w) { return w.m.to < .5; });
-    var t = 0, prev = null;
-    closing.concat(opening).forEach(function (w) {
-      var to = on.indexOf(w.m) >= 0 ? 1 : 0;
-      if (prev) t += Math.max(.3, mdur(prev.m) * .42);
-      w.m.k = 1; w.m.to = to; w.m.hold = t; motionMem.s[w.m.id] = to; prev = w;
-    });
-    return opening.length;
-  };
   XW.toggleMotion = function (id) { var m = XW.motions().filter(function (q) { return q.id === id; })[0]; if (m) toggleMotion(m); return !!m; };
-  // CZ-F: kotak ukuran tanpa mesh noBounds (dinding semu unit gantung): bingkai & podium mengikuti furniturnya saja
-  function boundsOf(root) {
-    var bx = new T.Box3(), tb = new T.Box3(); root.updateWorldMatrix(true, true);
-    root.traverse(function (o) { if (!o.isMesh || o.userData.noBounds) return; var gg = o.geometry; if (!gg.boundingBox) gg.computeBoundingBox(); tb.copy(gg.boundingBox).applyMatrix4(o.matrixWorld); bx.union(tb); });
-    return bx;
+  /* 27 Okt (pemilik): "perubahan transisi pada setiap produk harusnya mulus, bukan tiba2 ganti frame. pada customize, smua tiba2 pop."
+     Customize membangun ulang model tiap pilihan → bagian lama & baru dicocokkan (letak, ukuran, arah):
+     sama → diam; bergeser / berubah ukuran → meluncur dari bentuk lama; bagian baru → tumbuh dari BAWAH ke ATAS (yang rendah dulu);
+     bagian yang hilang → menyusut turun (yang tinggi dulu, urutan terbalik). Tanpa transparansi (ganti shader = kedip). */
+  var MPH = { tl: null, ghosts: [], n: 0 };
+  var mv3 = new T.Vector3(), mq = new T.Quaternion();
+  function mphParts(group) {
+    var out = [];
+    group.updateWorldMatrix(true, true);   // dari induk teratas: matriks induk bisa basi (panggung naik / tab di latar)
+    group.traverse(function (o) {
+      if (!o.isMesh || !o.visible || !o.geometry) return;
+      for (var q = o.parent; q && q !== group; q = q.parent) if (!q.visible) return;
+      var g = o.geometry; if (!g.boundingBox) g.computeBoundingBox();
+      var bb = g.boundingBox, c = bb.getCenter(new T.Vector3()), s = bb.getSize(new T.Vector3()).multiply(o.scale);
+      var wc = c.clone().applyMatrix4(o.matrixWorld), wq = o.getWorldQuaternion(new T.Quaternion()), t = o.userData.mphT, wcT = wc, sT = s;
+      // morph sebelumnya terputus: cocokkan menurut bentuk tujuannya, mulai dari bentuk saat ini (gerak berlanjut, tidak tumbuh ulang dari nol)
+      if (t) { sT = bb.getSize(new T.Vector3()).multiply(t.S); wcT = o.parent.localToWorld(c.clone().multiply(t.S).applyQuaternion(o.quaternion).add(t.P)); }
+      out.push({ o: o, gc: c, s: s, wc: wc, wq: wq, bb: bb, sT: sT, wcT: wcT, wb: bb.clone().applyMatrix4(o.matrixWorld) });
+    });
+    return out;
+  }
+  // sumbu lokal yang paling tegak (untuk tumbuh dari bawah): { k: 0|1|2, sgn: ±1 }
+  function mphUp(o) {
+    var best = 1, bv = 0, sg = 1;
+    for (var k = 0; k < 3; k++) { mv3.set(k === 0 ? 1 : 0, k === 1 ? 1 : 0, k === 2 ? 1 : 0).applyQuaternion(o.getWorldQuaternion(mq)); if (Math.abs(mv3.y) > bv) { bv = Math.abs(mv3.y); best = k; sg = mv3.y < 0 ? -1 : 1; } }
+    return { k: best, sgn: sg };
+  }
+  var AX = ['x', 'y', 'z'];
+  // bagian baru / hilang yang saling menempel = satu blok (mis. pedestal: badan + laci + alas) → tumbuh / menekan bersama dari alas bloknya
+  function mphClusters(list) {
+    var par = list.map(function (_, i) { return i; }), f = function (i) { while (par[i] !== i) i = par[i] = par[par[i]]; return i; }, e = .015;
+    for (var i = 0; i < list.length; i++) for (var j = i + 1; j < list.length; j++) {
+      var a = list[i].p.wb, b = list[j].p.wb;
+      if (a.min.x - e <= b.max.x && b.min.x - e <= a.max.x && a.min.y - e <= b.max.y && b.min.y - e <= a.max.y && a.min.z - e <= b.max.z && b.min.z - e <= a.max.z) par[f(i)] = f(j);
+    }
+    var cl = {};
+    list.forEach(function (g, i) { var r = f(i), c = cl[r] = cl[r] || { items: [], y: 1e9, x: 0 }; c.items.push(g); c.y = Math.min(c.y, g.p.wb.min.y); c.x += g.p.wc.x; });
+    return Object.keys(cl).map(function (k) { var c = cl[k]; c.x /= c.items.length; c.items.forEach(function (g) { g.yb = c.y; }); return c; })
+      .sort(function (a, b) { return Math.abs(a.y - b.y) > .02 ? a.y - b.y : a.x - b.x; });   // bawah → atas, lalu kiri → kanan
+  }
+  // tekan tegak berjangkar di alas blok (s = 0 … 1): pusat bagian turun ke alas, tinggi ikut s
+  function mphSquash(g, s) {
+    s = Math.max(.001, s);
+    var p = g.p, o = p.o, a = AX[p.up.k], S = g.S1.clone(); S[a] = g.S1[a] * s;
+    var P = g.P1.clone().add(p.gc.clone().multiply(g.S1).sub(p.gc.clone().multiply(S)).applyQuaternion(o.quaternion));
+    o.scale.copy(S); o.position.copy(P.add(g.upL.clone().multiplyScalar(g.yb + (p.wc.y - g.yb) * s - p.wc.y)));
+  }
+  function mphUpL(o, wc) { var w = wc.clone(); return o.parent.worldToLocal(w.clone().add(new T.Vector3(0, 1, 0))).sub(o.parent.worldToLocal(w)); }
+  function mphKill(final) {
+    if (MPH.tl) { MPH.tl.kill(); MPH.tl = null; }
+    if (final) MPH.ghosts.splice(0).forEach(function (gh) { if (gh.group.parent) gh.group.parent.remove(gh.group); gh.dispose(); });
+  }
+  function morphBuilt(oldB, newB, spin) {
+    var A = mphParts(oldB.group), B = mphParts(newB.group);
+    if (!A.length || !B.length || A.length * B.length > 360000) return false;
+    var box = new T.Box3().setFromObject(newB.group).union(new T.Box3().setFromObject(oldB.group)), diag = Math.max(.3, box.getSize(mv3).length());
+    var ln = function (a, b) { return Math.abs(Math.log((b + .005) / (a + .005))); };
+    var pairs = [];
+    B.forEach(function (b, j) {
+      A.forEach(function (a, i) {
+        if (Math.abs(a.wq.dot(b.wq)) < .995) return;
+        var cost = a.wcT.distanceTo(b.wc) / diag + (ln(a.sT.x, b.s.x) + ln(a.sT.y, b.s.y) + ln(a.sT.z, b.s.z)) * .35;
+        if (cost < .5) pairs.push([cost, i, j]);
+      });
+    });
+    pairs.sort(function (p, q) { return p[0] - q[0]; });
+    var mA = [], mB = [];
+    pairs.forEach(function (p) { if (mA[p[1]] == null && mB[p[2]] == null) { mA[p[1]] = p[2]; mB[p[2]] = p[1]; } });
+    var moves = [], grows = [], shrinks = [], tints = [];
+    B.forEach(function (b, j) {
+      var o = b.o, P1 = o.position.clone(), S1 = o.scale.clone();
+      o.userData.mphT = { P: P1, S: S1 };
+      if (mB[j] == null) { b.up = mphUp(o); grows.push({ p: b, P1: P1, S1: S1, upL: mphUpL(o, b.wc) }); return; }
+      var a = A[mB[j]];
+      var ma = a.o.material, mb = o.material;
+      if (ma && mb && !Array.isArray(ma) && !Array.isArray(mb) && ma.color && mb.color && !ma.color.equals(mb.color) && !tints.some(function (t) { return t.m === mb; })) tints.push({ m: mb, from: ma.color.clone() });
+      if (a.wc.distanceTo(b.wc) < 5e-4 && ln(a.s.x, b.s.x) + ln(a.s.y, b.s.y) + ln(a.s.z, b.s.z) < 2e-3) return;
+      var S0 = new T.Vector3(S1.x * (b.s.x > 1e-4 ? a.s.x / b.s.x : 1), S1.y * (b.s.y > 1e-4 ? a.s.y / b.s.y : 1), S1.z * (b.s.z > 1e-4 ? a.s.z / b.s.z : 1));
+      var L0 = o.parent.worldToLocal(a.wc.clone()), P0 = L0.sub(b.gc.clone().multiply(S0).applyQuaternion(o.quaternion));
+      moves.push({ o: o, P0: P0, S0: S0, P1: P1, S1: S1 });
+    });
+    A.forEach(function (a, i) { if (mA[i] == null) { a.up = mphUp(a.o); shrinks.push({ p: a, P1: a.o.position.clone(), S1: a.o.scale.clone(), upL: mphUpL(a.o, a.wc) }); } else a.o.visible = false; });
+    MPH.last = { a: A.length, b: B.length, pairs: pairs.length, moves: moves.length, grows: grows.length, shrinks: shrinks.length, tints: tints.length };
+    if (!moves.length && !grows.length && !shrinks.length && !tints.length) return false;
+    // bagian lama yang menyusut tetap di grup lamanya sampai selesai; sisanya disembunyikan
+    var ghost = { group: oldB.group, dispose: function () { oldB.dispose(); } };
+    MPH.ghosts.push(ghost);
+    var tl = G.timeline({ onComplete: function () { MPH.tl = null; B.forEach(function (b) { delete b.o.userData.mphT; }); mphKill(true); } }), D = .55, late = grows.length ? .14 : 0;   // yang baru mulai dulu, yang lama menyusul hilang → tak ada saat furnitur melayang tanpa penopang
+    var lerpV = function (o, P0, S0, P1, S1, t) { o.position.lerpVectors(P0, P1, t); o.scale.lerpVectors(S0, S1, t); };
+    moves.forEach(function (m) { lerpV(m.o, m.P0, m.S0, m.P1, m.S1, 0); });
+    if (moves.length) { var pm = { t: 0 }; tl.to(pm, { t: 1, duration: D, ease: 'power3.inOut', onUpdate: function () { moves.forEach(function (m) { lerpV(m.o, m.P0, m.S0, m.P1, m.S1, pm.t); }); } }, 0); }
+    var block = function (c, from, to, at, dur, ease, end) { var q = { s: from }; c.items.forEach(function (g) { mphSquash(g, from); }); tl.to(q, { s: to, duration: dur, ease: ease, onUpdate: function () { c.items.forEach(function (g) { mphSquash(g, q.s); }); }, onComplete: end && function () { c.items.forEach(end); } }, at); };
+    // menutup: urutan terbalik (atas dulu, kanan dulu), satu blok per giliran
+    mphClusters(shrinks).reverse().forEach(function (c, i) { block(c, 1, 0, late + Math.min(.2, i * .07), .32, 'power2.out', function (g) { g.p.o.visible = false; }); });
+    // tumbuh: blok paling bawah dulu, lalu kiri → kanan; satu per satu
+    mphClusters(grows).forEach(function (c, i) { block(c, 0, 1, Math.min(.32, i * .08), .5, 'power3.out'); });
+    tints.forEach(function (t) {
+      var m = t.m, tgt = m.color.clone(), last = t.from.clone(), q = { t: 0 };
+      m.color.copy(last);
+      tl.to(q, { t: 1, duration: .45, ease: 'power2.inOut', onUpdate: function () {
+        if (!m.color.equals(last)) tgt.multiply(new T.Color(m.color.r / Math.max(1e-4, last.r), m.color.g / Math.max(1e-4, last.g), m.color.b / Math.max(1e-4, last.b)));   // material diubah dari luar (tekstur termuat: warna ×0,9)
+        m.color.copy(t.from).lerp(tgt, q.t); last.copy(m.color);
+      } }, 0);
+    });
+    tl.eventCallback('onUpdate', function () { MPH.n++; });
+    MPH.tl = tl;
+    return true;
   }
   function buildCustom(g, cfg) {
-    var spin = g.userData.spin, prevB = g.userData.bounds;
-    if (g.userData.built) { spin.remove(g.userData.built.group); g.userData.built.dispose(); }
+    var spin = g.userData.spin, prevB = g.userData.bounds, oldB = g.userData.built;
+    mphKill(true);   // morph sebelumnya: keadaan saat ini (setengah jalan) jadi titik awal morph berikutnya
+    if (oldB && (XW.reduced || !G || !g.visible || item !== g)) { spin.remove(oldB.group); oldB.dispose(); oldB = null; }
     if (!customKit) customKit = { T: T, rbox: rbox, col: col };
     var b = window.XMAKER.build(cfg, customKit), mv = b.motions || [];
     mv.forEach(function (m) { m.apply(0); });   // ukur dalam keadaan tertutup
-    var hang = !!b.group.userData.hang, box3 = boundsOf(b.group), size = box3.getSize(new T.Vector3()), c = box3.getCenter(new T.Vector3());
+    var box3 = new T.Box3().setFromObject(b.group), size = box3.getSize(new T.Vector3()), c = box3.getCenter(new T.Vector3());
     var mkey = cfg.cat + '.' + cfg.sub;
     if (motionMem.key !== mkey) motionMem = { key: mkey, s: {} };
     mv.forEach(function (m) { if (motionMem.s[m.id] != null) m.t = m.to = motionMem.s[m.id]; m.lin = m.t; m.apply(ease(m.t)); });
-    b.group.position.set(-c.x, LIFT - (hang ? 0 : box3.min.y), -c.z);   // CZ-F: unit gantung tetap pada ketinggiannya (dulu meja dinding turun ke lantai)
+    b.group.position.set(-c.x, LIFT - box3.min.y, -c.z);
     spin.add(b.group);
-    g.userData.built = b;
-    g.userData.bounds = { w: size.x, h: size.y, d: size.z, y0: hang ? Math.max(0, box3.min.y) : 0 };
-    g.userData.hang = hang;
-    g.userData.blob.material.opacity = hang ? (box3.min.y > .5 ? 0 : .16) : .4;   // bayangan kontak hanya untuk yang menapak
+    g.userData.built = b; g.userData.ckey = mkey;
+    if (oldB && !morphBuilt(oldB, b, spin)) { spin.remove(oldB.group); oldB.dispose(); }
+    g.userData.bounds = { w: size.x, h: size.y, d: size.z };
     var list = [];
     b.group.traverse(function (o) { if (!o.isMesh) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (mt) { if (mt && 'envMapIntensity' in mt && list.indexOf(mt) < 0) { mt.userData.env0 = mt.metalness > .5 ? 1.1 : .5; list.push(mt); } }); });
     g.userData.mats = list;
-    list.forEach(function (mt) { mt.userData.wbc = true; }); applyWB(g);   // CZ-G1: model Customize ikut white balance (dulu tidak sama sekali)
     g.userData.blob.scale.set(size.x * 1.15, size.z * 1.2, 1);
     return !prevB || Math.abs(prevB.w - size.x) / size.x > .06 || Math.abs(prevB.h - size.y) / size.y > .06;
   }
@@ -3103,17 +3786,13 @@
     for (var i = 0; i < hits.length; i++) { if (hits[i].object.userData.noPick || hits[i].object.userData.blob) continue; for (var o = hits[i].object; o; o = o.parent) if (o.userData.uid) return o; }
     return null;
   }
-  XW.showCustom = function (cfg, opt) {
+  XW.showCustom = function (cfg) {
     if (!window.XMAKER) { if (window.XNeedMaker) window.XNeedMaker().then(function () { if (window.XMAKER) XW.showCustom(cfg); }); return; }
-    if (st.kind === 'custom' && item && item.userData.custom) {
+    if (st.kind === 'custom' && item && item.userData.custom && item.userData.ckey === cfg.cat + '.' + cfg.sub) {   // ganti kategori / jenis: transisi produk (turun – naik), bukan morph
       req++;
-      var hang0 = item.userData.hang, live = !!(opt && opt.live);
-      buildCustom(item, cfg);
-      var nb = item.userData.bounds, fb = item.userData.frameB;
-      setPlinth(nb, !item.userData.hang, live ? .35 : .6);
-      // CZ-F: dulu hanya membingkai ulang bila beda > 6 % dari build sebelumnya: geser pelan tidak pernah memicu, objek keluar bingkai
-      var moved = !fb || ['w', 'h', 'd'].some(function (k) { return Math.abs(nb[k] - fb[k]) / Math.max(.05, nb[k]) > .025; });
-      if (moved || hang0 !== item.userData.hang) frameItem(nb, live ? .55 : .9, live ? 'power2.out' : null);
+      var big = buildCustom(item, cfg);
+      setPlinth(item.userData.bounds, true, .6);
+      if (big) frameItem(item.userData.bounds, .9);
       return;
     }
     var my = ++req, g = new T.Group(), spin = new T.Group();
@@ -3121,7 +3800,7 @@
     var blob = new T.Mesh(new T.PlaneGeometry(1, 1), new T.MeshBasicMaterial({ map: O.blobTex, transparent: true, depthWrite: false, opacity: .4 }));
     blob.rotation.x = -Math.PI / 2; blob.position.y = LIFT + .002; blob.userData.noPick = blob.userData.blob = true; g.add(blob);
     g.userData = { spin: spin, custom: true, blob: blob };
-    g.userData.dispose = function () { scene.remove(g); if (g.userData.built) g.userData.built.dispose(); blob.geometry.dispose(); blob.material.dispose(); };
+    g.userData.dispose = function () { if (item !== g) mphKill(true); scene.remove(g); if (g.userData.built) g.userData.built.dispose(); blob.geometry.dispose(); blob.material.dispose(); };
     buildCustom(g, cfg);
     if (my !== req) return;
     g.visible = false; scene.add(g);
@@ -3210,16 +3889,15 @@
   };
   XW.mapOverview = function () { XW.mapFocusI = null; if (st.kind === 'map') frameItem(null, 1.6); };
   XW.kind = function () { return st.kind; };
-  XW._item = function () { return item; };   // uji panggung (skrip)
+  XW._item = function () { return item; };
+  XW._morph = function () { return MPH.last; };   // uji morph Customize (skrip)   // uji panggung (skrip)
   XW._debug = function () { return { view: Object.assign({}, view), inset: Object.assign({}, inset), cam: camera.position.toArray().map(function (v) { return +v.toFixed(2); }), W: W, H: H }; };
   XW.pause = function (v) { XW.paused = !!v; };
   // kualitas manual (mis. dari pengujian / pengaturan); lock = jangan turun otomatis
-  // CZ-G7: bayangan kontak selalu aktif di Customize (dulu ikut tampilan Klasik = mati) bila kualitas > 0
-  function csOn() { return CS.on || st.kind === 'custom' && XW.quality > 0 && !!CS.plane; }
   XW.setLook = function (o) { o = o || {}; ['hdr', 'contact', 'ao'].forEach(function (k) { if (o[k] != null) LOOK[k] = !!o[k]; }); setEnv(moodName); setQuality(XW.quality); return Object.assign({}, LOOK); };
   XW.look = function () { return Object.assign({}, LOOK); };
   XW.setQuality = function (q, lock) { XW.qLock = !!lock; setQuality(q); };
-  XW.info = function () { return { q: XW.quality, post: PP.on, ao: +PP.mix.toFixed(2), contact: csOn(), pr: renderer.getPixelRatio(), dtAvg: +dtAvg.toFixed(1), env: scene.environment && scene.environment.isTexture && envC[(MOODS[moodName] || {}).hdr + (MOODS[moodName] || {}).tint] === scene.environment ? moodName : 'room-env', calls: renderer.info.render.calls, tris: renderer.info.render.triangles }; };
+  XW.info = function () { return { q: XW.quality, post: PP.on, ao: +PP.mix.toFixed(2), contact: CS.on, pr: renderer.getPixelRatio(), dtAvg: +dtAvg.toFixed(1), env: scene.environment && scene.environment.isTexture && envC[(MOODS[moodName] || {}).hdr + (MOODS[moodName] || {}).tint] === scene.environment ? moodName : 'room-env', calls: renderer.info.render.calls, tris: renderer.info.render.triangles }; };
   // ukur biaya GPU per frame (ms): n frame digambar beruntun lalu dipaksa selesai (readPixels)
   XW.bench = function (n) {
     n = n || 40; var gl = renderer.getContext(), px = new Uint8Array(4);

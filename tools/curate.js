@@ -15,7 +15,8 @@ const path = require('path');
 
 const HIDE = ['x-coin', 'capra', 'capra-signature-series',
   'astral-1-seater', 'aether-k60',   // diarsip (data tetap ada) — dua terakhir: duplikat lokal SKP tanpa foto/harga dari ASTRAL 1 Seater & AETHER K60
-  'cubix'];   // CUBIX Modular (kartu studio) — CUBIX sudah ada di More › Konfigurasi CUBIX & produk seri CUBIX (pemilik, 20 Okt)
+  'cubix',    // CUBIX Modular (kartu studio) — CUBIX sudah ada di More › Konfigurasi CUBIX & produk seri CUBIX (pemilik, 20 Okt)
+  'rouled'];  // ROULED ganda (toko #26 "Nesting coffee table") — pemilik 27 Okt: pertahankan rouled-nested-coffee-table (toko #141)
 // kategori xionco.shop untuk produk lokal (tanpa halaman toko) / produk yang kategorinya kosong di toko
 const KATS_OF = { seats: ['Sofa'], tables: ['Table'], bedframe: ['Bed'], cabinet: ['Cabinet'], lighting: ['Lightings'], decor: ['Accent'], smart: ['Smart'] };
 
@@ -129,8 +130,14 @@ function curate(items) {
   // Z2 · model AI bentuk kotak diganti model prosedural rapi (tools/glb/furniture.py) — model.glb menang atas model-ai.glb
   ['astral-ottoman', 'geom', 'scandus-dining-table', 'vazratrack', 'sf3s-101-1-seater', 'sf3s-101-2-seater', 'sf3s-101-3-seater'].forEach((id) => { const f = 'assets/items/' + id + '/model.glb'; if (byId[id] && has(f)) { byId[id].model = f; delete byId[id].modelRot; } });
   [['geom', ['Hitam', 'Abu-abu']], ['vazratrack', ['Pw 50 cm', 'PWS• Usb', 'PWS• Eu']]].forEach(([id, vs]) => { const vm = {}; vs.forEach((v) => { const f = 'assets/items/' + id + '/model-' + v.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.glb'; if (has(f)) vm[v] = f; }); if (byId[id] && Object.keys(vm).length) byId[id].vmodels = vm; });
-  // ROULED: satu meja per varian (ø70 / ø55), Complete Set = dua meja bersarang
-  ['rouled', 'rouled-nested-coffee-table'].forEach((id) => { const p = byId[id]; if (!p || !has('assets/items/rouled/model-70.glb')) return; p.model = 'assets/items/rouled/model-70.glb'; p.vmodels = { 'Diameter 55': 'assets/items/rouled/model-55.glb', 'Complete Set': 'assets/items/rouled/model.glb' }; });
+  /* ROULED (27 Okt, pemilik): satu model set (tools/glb/compose-set.js: meja ø70 + ø55 bersarang, serat sama, nesting xc_motion);
+     varian = meja yang tampil (vshow) → ganti varian tidak mengganti produk. Varian awal = Complete Set. */
+  ['rouled', 'rouled-nested-coffee-table'].forEach((id) => {
+    const p = byId[id]; if (!p || !has('assets/items/rouled/model-set.glb')) return;
+    p.model = 'assets/items/rouled/model-set.glb'; delete p.vmodels;
+    p.vshow = { 'Diameter 70': ['t70'], 'Diameter 55': ['t55'], 'Complete Set': ['t70', 't55'] };
+    const vi = (p.variants || []).findIndex((v) => v.label === 'Complete Set'); if (vi >= 0) p.variant = vi;
+  });
   // POEL tanpa headboard: satu model per lebar varian
   if (byId['poel-platform-bed-no-headrest']) { const vm = {}; [120, 160, 180, 200].forEach((w) => { const f = 'assets/items/poel-platform-bed-no-headrest/model-' + w + 'cm.glb'; if (has(f)) vm[w + ' cm'] = f; }); if (Object.keys(vm).length) byId['poel-platform-bed-no-headrest'].vmodels = vm; }
   const Y4ROT = {"capra-deluxe-2s":180,"capra-signature-1s":-90,"delune-series-sw14":-90,"aieru-wood-dining-stool":90};   // Y4: model AI yang menghadap salah arah (derajat, sama seperti modelRot panggung)
