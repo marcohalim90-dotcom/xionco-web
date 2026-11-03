@@ -812,11 +812,16 @@
 
   /* ---------------------------------------------------------------- panggung: ganti objek */
   var item = null, req = 0;
+  /* C105: objek yang sama dipakai ulang (O.cubix): CUBIX → produk lain → CUBIX < .7 dtk dulu menyisakan tween sink yang
+     onComplete-nya menyembunyikan CUBIX sesudah rise. Tween posisi lama dimatikan dulu; yang sedang turun naik dari tempatnya. */
   function rise(obj, delay) {
-    obj.visible = true; obj.position.y = -1.6;
+    var mid = obj.visible && obj.position.y < -.001 && obj.position.y > -1.6;   // masih turun (sink terputus)
+    if (G) G.killTweensOf(obj.position, 'y');
+    obj.visible = true; if (!mid) obj.position.y = -1.6;
     tw(obj.position, { y: 0, duration: XW.reduced ? 0 : 1.25, delay: delay || 0, ease: 'power3.out' });
   }
   function sink(obj, done) {
+    if (G) G.killTweensOf(obj.position, 'y');   // C105
     tw(obj.position, { y: -1.8, duration: XW.reduced ? 0 : .7, ease: 'power3.in', onComplete: function () { obj.visible = false; if (done) done(); } });
   }
   // podium jauh lebih lebar dari objek (±1,3 × diagonal tapak) dan selalu mengikuti ukurannya
@@ -842,7 +847,7 @@
     st.mapT = kind === 'map' ? 1 : 0;
     if (prev !== obj && obj.userData.spin) { st.spin = 0; st.spinV = 0; st.auto = 0; st.autoV = 0; obj.userData.spin.rotation.y = 0; }   // C86: putar otomatis mulai dari depan
     if (prev !== obj) { st.zoom = 1; st.recenter = false; st.px = st.py = 0; st.camYawT = 0; st.camPitchT = 0; st.orbitMoved = false; }   // sudut kamera (geser latar) tidak terbawa ke produk berikutnya (Z0/Z4: bisa tampak belakang)
-    if (prev && prev !== obj && prev !== O.map) sink(prev, function () { if (prev.userData.dispose) prev.userData.dispose(); });
+    if (prev && prev !== obj && prev !== O.map) sink(prev, function () { if (prev.userData.dispose) prev.userData.dispose(); });   // C105: prev === obj (tampil lagi) tidak pernah di-sink
     if (obj === O.map) { O.map.position.y = 0; O.map.visible = true; }
     else if (prev !== obj) rise(obj, prev && prev !== O.map ? .45 : .1);
     setPlinth(obj.userData.bounds, kind !== 'map');
@@ -1069,18 +1074,61 @@
   /* white balance produk: cahaya kunci Senja/Malam oranye → kain abu tampak cokelat, kayu tampak merah.
      Warna material model katalog dikoreksi sebagian ke arah netral (panggung & Customize tetap hangat). Logam tidak. */
   var WB = new T.Color(1, 1, 1), WB_K = .65;
+  /* C106 (3 Nov): white balance CAHAYA untuk produk (bukan lagi hanya albedo). Diukur (median piksel muka depan yang kena
+     lampu kunci vs hex swatch, ΔE Lab): KYRIOS Graphite #4d4d4d tampil #615447 (b* +9,6, ΔE 10,8), Customize Vienna Graphite
+     #685440 (ΔE 16,3, tanpa WB sama sekali), kuningan #b67329 / #a4601c (tembaga, ΔE 19–24). Sebab: lampu kunci Senja #ffd6aa
+     jauh lebih hangat daripada tint lingkungan #ffe6cc yang dipakai setWB, dan logam memantulkan warna lampu apa adanya.
+     Sekarang, pada material produk saja (shader, onBeforeCompile): tiap lampu spot/arah + hemisfer dinetralkan ke
+     luminansnya sendiri (terang tetap, rona hilang), IBL dibagi tint suasana (difus t^1,25, spekular t^2: RoomEnvironment yang
+     diwarnai memantulkan dinding ber-tint dua kali; diukur), F0 logam dikalibrasi (gain (0,7 / env)^0,66: Senja 1,4, Siang 1, Malam 1,6;
+     desaturasi 0) agar kuningan terbaca kuningan di bawah ACES (toe ACES menggelapkan & menjingga-kan pantulan logam redup). Lantai, latar, podium, halo & lampu titik (lampu produk, api) tetap
+     mengikuti suasana → karakter Siang/Senja/Malam tetap. Tone mapping tidak diubah (keputusan pemilik).
+     Tidak dinetralkan (jalur lama: cahaya hangat + WB albedo .65): kayu berlabel xc_wood (kalibrasi kayu dibuat di bawah
+     cahaya ini; diukur netral → sideboard ΔE 0,5 → 7) dan tekstur foto tanpa tint (AI / "Seperti foto"). Manual: mati
+     (warna lampu pilihan pemilik tetap). Swatch kain terang (varian katalog) diberi angkat kroma kecil untuk bahu ACES
+     (lihat wbTarget). Uji / kalibrasi: XW.wbc(k, desat, gain). */
+  var WBL = { k: 0, kT: 1, dif: { value: new T.Color(1, 1, 1) }, spec: { value: new T.Color(1, 1, 1) }, met: { value: new T.Vector2(0, 1.4) }, tint: '#ffffff', mg: null };
+  var WBP = new T.Color(1, 1, 1);   // WB albedo untuk material produk yang cahayanya dinetralkan (1 = tanpa koreksi albedo)
+  function wbOk(mt) { var u = mt.userData; return !u.xc_wood && (mt.metalness > .5 || !!u.tint || !!u.leather || !!u.xcCz || !mt.map); }
+  function wbEnv() {   // kompensasi tint lingkungan: difus t^1,25, spekular t^2 (HDRI: t^1, bola HDRI hanya dikali tint sekali)
+    var t = col(WBL.tint), p = LOOK.hdr ? [1, 1] : [1.25, 2];
+    [WBL.dif.value, WBL.spec.value].forEach(function (c, i) { var v = [t.r, t.g, t.b].map(function (x) { return Math.pow(1 / Math.max(x, .05), p[i]); }), l = .2126 * v[0] + .7152 * v[1] + .0722 * v[2]; c.setRGB(v[0] / l, v[1] / l, v[2] / l); });
+  }
+  function wbLight(mt) {   // pasang sekali; kekuatan per material (xcWbK) diisi tiap frame di loop
+    if (!mt || mt.__xcU || !mt.isMeshStandardMaterial || mt.userData.xc_wood) return;   // bukan di userData: material.clone() menyalin userData (JSON), bukan onBeforeCompile
+    var U = mt.__xcU = { value: 0 }, ob = mt.onBeforeCompile, key0 = mt.customProgramCacheKey !== T.Material.prototype.customProgramCacheKey ? mt.customProgramCacheKey() : ob.toString();
+    mt.onBeforeCompile = function (sh, r) {
+      if (ob) ob.call(this, sh, r);
+      sh.uniforms.xcWbK = U; sh.uniforms.xcWbDif = WBL.dif; sh.uniforms.xcWbSpec = WBL.spec; sh.uniforms.xcWbMet = WBL.met;
+      var N = '\n\t\tdirectLight.color = xcWbN( directLight.color );', C = T.ShaderChunk;
+      var lb = C.lights_fragment_begin.replace('getSpotLightInfo( spotLight, geometry, directLight );', 'getSpotLightInfo( spotLight, geometry, directLight );' + N).replace('getDirectionalLightInfo( directionalLight, geometry, directLight );', 'getDirectionalLightInfo( directionalLight, geometry, directLight );' + N);
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float xcWbK; uniform vec3 xcWbDif; uniform vec3 xcWbSpec; uniform vec2 xcWbMet;\nvec3 xcWbN( vec3 c ) { return mix( c, vec3( dot( c, vec3( .2126, .7152, .0722 ) ) ), xcWbK ); }')
+        .replace('#include <lights_physical_fragment>', '#include <lights_physical_fragment>\n\tvec3 xcSc = mix( material.specularColor, vec3( dot( material.specularColor, vec3( .2126, .7152, .0722 ) ) ), xcWbMet.x ) * xcWbMet.y;\n\tmaterial.specularColor = mix( material.specularColor, min( xcSc, vec3( 1.0 ) ), metalnessFactor * xcWbK );')
+        .replace('#include <lights_fragment_begin>', lb + '\n#if defined( RE_IndirectDiffuse )\n\tirradiance = xcWbN( irradiance );\n#endif')
+        .replace('#include <lights_fragment_maps>', '#include <lights_fragment_maps>\n#if defined( RE_IndirectDiffuse )\n\tiblIrradiance *= mix( vec3( 1.0 ), xcWbDif, xcWbK );\n#endif\n#if defined( RE_IndirectSpecular )\n\tradiance *= mix( vec3( 1.0 ), xcWbSpec, xcWbK );\n\tclearcoatRadiance *= mix( vec3( 1.0 ), xcWbSpec, xcWbK );\n#endif');
+    };
+    mt.customProgramCacheKey = function () { return 'xcwb1|' + key0; };
+    mt.needsUpdate = true;
+  }
   function setWB(tintHex) {
     var t = col(tintHex || '#ffffff'), f = function (v) { return 1 + (1 / Math.max(v, .05) - 1) * WB_K; };
     var r = f(t.r), g = f(t.g), b = f(t.b), l = .2126 * r + .7152 * g + .0722 * b;
     WB.setRGB(r / l, g / l, b / l);
+    WBP.copy(WB).lerp(new T.Color(1, 1, 1), WBL.kT); WBL.tint = tintHex || '#ffffff'; wbEnv();   // C106
   }
-  function wbTarget(mt) {   // warna akhir: warna varian (kain) atau warna asli material, dikali WB
-    var u = mt.userData, c = u.tint ? col(u.tint).multiplyScalar(u.tintTex ? TINT_GAIN : 1) : u.col0.clone();
-    return c.multiply(WB);
+  function wbTarget(mt) {   // warna akhir: warna varian (kain) atau warna asli material, dikali WB (C106: WBP bila cahayanya dinetralkan)
+    var u = mt.userData, c = u.tint ? col(u.tint).multiplyScalar(u.tintTex ? TINT_GAIN : 1) : u.col0.clone(), ok = mt.__xcU && wbOk(mt);
+    c.multiply(ok ? WBP : WB);
+    if (ok && u.tint && WBL.kT > 0 && mt.metalness <= .5) {   // C106: bahu ACES memudarkan swatch terang (dulu tertutup cahaya hangat): diukur Custard #ead592 ΔE 16,5 → 5,3, beige #c9b79c 6,3 → 4,2; gelap/abu tidak berubah
+      var t = col(u.tint), x = clamp((.2126 * t.r + .7152 * t.g + .0722 * t.b - .3) / .45, 0, 1), S = 1 + .4 * WBL.kT * x * x * (3 - 2 * x), l = .2126 * c.r + .7152 * c.g + .0722 * c.b;
+      c.setRGB(Math.max(0, l + (c.r - l) * S), Math.max(0, l + (c.g - l) * S), Math.max(0, l + (c.b - l) * S));
+    }
+    return c;
   }
   function applyWB(obj, dur) {
     if (!obj || !obj.userData.mats) return;
     obj.userData.mats.forEach(function (mt) {
+      wbLight(mt);   // C106
       if (!mt.userData.col0) mt.userData.col0 = mt.color.clone();
       if (mt.metalness > .5) return;
       var c = wbTarget(mt);
@@ -1213,7 +1261,11 @@
   }
   // CZ-G1: tone mapping panggung Customize ('neutral' | 'aces') + faktor paparan Neutral (ACES r147 sudah mengali 1/0,6 di dalam)
   var TONE = { custom: 'aces', k: 1.2 };   // diukur 25 Okt: ACES + WB penuh paling dekat ke swatch (Neutral tidak lebih akurat & membuat latar jingga)
-  XW.wbc = function (k) { if (k != null) { WBC_K = +k; setWBC(); if (item && item.userData.custom) applyWB(item); } return { k: WBC_K, wbc: WBC.toArray().map(function (v) { return +v.toFixed(3); }) }; };   // uji kalibrasi
+  XW.wbc = function (k, ms, mg) {   // uji kalibrasi — C106: WBC lama sudah tidak ada (dulu ReferenceError); k = kekuatan WB cahaya produk 0..1, ms/mg = desaturasi/gain F0 logam
+    if (ms != null) WBL.met.value.x = +ms; if (mg !== undefined) WBL.mg = mg == null ? null : +mg;   // mg null = kembali otomatis
+    if (k != null) { WBL.kT = clamp(+k, 0, 1); setWB(WBL.tint); if (item) item.traverse(function (o) { if (o.userData.mats) applyWB(o); }); }
+    return { k: +WBL.k.toFixed(3), kT: WBL.kT, met: WBL.met.value.toArray(), wb: WB.toArray().map(function (v) { return +v.toFixed(3); }), dif: WBL.dif.value.toArray().map(function (v) { return +v.toFixed(3); }), spec: WBL.spec.value.toArray().map(function (v) { return +v.toFixed(3); }) };
+  };
   XW.tone = function (mode, k) { if (mode) TONE.custom = mode; if (k != null) TONE.k = +k; return { custom: TONE.custom, k: TONE.k }; };
   // uji & label: titik dunia → piksel layar (memperhitungkan pergeseran pusat pandang)
   XW.project = function (x, y, z) { var v = new T.Vector3(x, y, z); camera.updateMatrixWorld(); v.project(camera); return { x: (v.x + 1) / 2 * W, y: (1 - v.y) / 2 * H, lift: LIFT }; };
@@ -1311,7 +1363,7 @@
     moodName = MOODS[name] ? name : 'senja'; setEnv(moodName);
     tw(mood, { key: m.key, hemi: m.hemi, fill: m.fill, env: m.env, exp: m.exp, halo: m.halo, duration: d, ease: 'power2.inOut' });
     tw(L.key.color, { r: c.r, g: c.g, b: c.b, duration: d });
-    setWB(m.tint); if (item) item.traverse(function (o) { if (o.userData.mats) applyWB(o, d); });
+    WBL.kT = 1; setWB(m.tint); if (item) item.traverse(function (o) { if (o.userData.mats) applyWB(o, d); });   // C106: suasana → cahaya produk dinetralkan
   }
 
   /* ---------------------------------------------------------------- layar penuh (dipakai bayangan kontak & pasca-proses) */
@@ -1469,7 +1521,7 @@
     requestAnimationFrame(loop);
     if (document.hidden || XW.paused) { last = now; return; }
     // tidak ada sentuhan/gerak ≥ 10 dtk → render setengah kecepatan (GPU lebih dingin, baterai awet)
-    var idle = now - XW.lastInput > 10000 && !st.drag;
+    var idle = now - XW.lastInput > 10000 && !st.drag && !(st.autoV > .001);   // C105: podium berputar otomatis → tetap 60 fps (setengah kecepatan = patah-patah)
     if (idle && (idleT ^= 1)) return;
     var dt = Math.min(.05, (now - (last || now)) / 1000); last = now; frame++; clock += dt;
     if (!idle) dtAvg = lerp(dtAvg, dt * 1000, .05);
@@ -1482,7 +1534,9 @@
     L.key.intensity = mood.key * LAMPK.k; L.hemi.intensity = mood.hemi * (.4 + .6 * LAMPK.k); L.fill.intensity = mood.fill * LAMPK.k;   // LAMPK < 1: lampu menyala, panggung redup
     O.halo.material.opacity = mood.halo * theme.halo; renderer.toneMappingExposure = mood.exp * theme.exp * (RS.on && st.kind === 'room' ? .8 : 1);   // ruangan: interior terang → paparan diturunkan
     mats.fabric.envMapIntensity = .5 * mood.env / .42 * theme.env;
-    if (item && item.userData.mats) item.userData.mats.forEach(function (mt) { if (mt.userData.env0 == null) mt.userData.env0 = mt.metalness > .5 ? 1.1 : .5; mt.envMapIntensity = mt.userData.env0 * mood.env / .42 * theme.env * (.35 + .65 * LAMPK.k); });
+    if (item && item.userData.mats) item.userData.mats.forEach(function (mt) { if (mt.userData.env0 == null) mt.userData.env0 = mt.metalness > .5 ? 1.1 : .5; mt.envMapIntensity = mt.userData.env0 * mood.env / .42 * theme.env * (.35 + .65 * LAMPK.k); wbLight(mt); if (mt.__xcU) mt.__xcU.value = wbOk(mt) ? WBL.k : 0; });   // C106: WB cahaya per material (Customize & bagian baru ikut)
+    WBL.k = lerp(WBL.k, WBL.kT, k * .4);
+    WBL.met.value.y = WBL.mg != null ? WBL.mg : clamp(Math.pow(.7 / Math.max(.05, mood.env * theme.env), .66), 1, 1.6);   // C106: gain F0 logam mengikuti terang lingkungan (Siang 1 · Senja 1,4 · Malam maks 1,6), diukur
     // geser titik pusat pandang agar objek berada di tengah ruang kosong
     inset.x = lerp(inset.x, (inset.r - inset.l) / 2, k * 1.1);
     inset.y = lerp(inset.y, (inset.b - inset.t) / 2, k * 1.1);
@@ -2634,7 +2688,11 @@
     var full = vs.names.every(function (n) { return names.indexOf(n) >= 0; }), inner = vs.inner;
     var now = vs.names.filter(function (n) { return vs.parts[n].piv.visible; }), fromSet = vs.names.every(function (n) { return now.indexOf(n) >= 0; });
     vs.lock = !full;
-    if (!full) vs.all.forEach(function (mo) { mo.to = 0; mo.hold = 0; });   // keluar dari set: nesting ditutup (bersamaan)
+    if (!full) {   // keluar dari set: nesting ditutup — C105: bergiliran .12 dtk, urutan Animate dibalik (bukan bersamaan)
+      var op = vs.all.filter(function (mo) { return mo.to > .5 || (mo.lin == null ? mo.t : mo.lin) > .0005; }), osp = op.length && g === item ? motionSpots(op) : [];
+      vs.all.forEach(function (mo) { mo.to = 0; mo.hold = 0; });
+      op.map(function (mo, i) { return { m: mo, i: i, r: rankOf(mo), x: osp[i] ? osp[i].x : 0, y: osp[i] ? osp[i].y : 0 }; }).sort(byPos).reverse().forEach(function (w, k) { w.m.hold = k * .12; });
+    }
     vs.names.forEach(function (n) { var p = vs.parts[n]; if (p.tl) { p.tl.kill(); p.tl = null; } p.on = names.indexOf(n) >= 0; });
     if (anim === false || !G || XW.reduced || !inner) {
       vs.names.forEach(function (n) { var p = vs.parts[n]; p.piv.position.set(0, 0, 0); p.piv.visible = p.on; vsMark(p, p.on); });
@@ -2649,6 +2707,7 @@
     var enter = names.filter(function (n) { return now.indexOf(n) < 0; }), leave = now.filter(function (n) { return names.indexOf(n) < 0; }),
         stay = names.filter(function (n) { return now.indexOf(n) >= 0; }), others = vs.names.filter(function (n) { return n !== inner; });
     var tl = {}, P = function (n) { return vs.parts[n].piv.position; };
+    var lr = function (ns) { return ns.map(function (n, i) { return { n: n, i: i, x: vsBox(g, [n]).x, y: 0 }; }).sort(function (a, b) { return lrBU(a, b) || a.i - b.i; }).map(function (w) { return w.n; }); };   // C105: meja kiri → kanan (lrBU)
     vs.names.forEach(function (n) { tl[n] = vs.parts[n].tl = G.timeline({ onUpdate: bump }); });
     var out = function () {   // geser x (ruang m) agar meja dalam tepat lepas dari meja lain (menjauh)
       var a = vsBox(g, [inner]), b = vsBox(g, others), side = a.x <= b.x ? -1 : 1;
@@ -2665,18 +2724,18 @@
     var home = function (n, at, dur) { tl[n].to(P(n), { x: 0, y: 0, z: 0, duration: dur || 1, ease: 'power3.inOut' }, at); };
     if (full) {   // ke set lengkap: meja luar naik, meja dalam masuk ke dalamnya
       var o = out(), innerStays = stay.indexOf(inner) >= 0;
-      enter.forEach(function (n) { if (n !== inner) rise(n, 0, innerStays ? .35 : 0); });
+      lr(enter.filter(function (n) { return n !== inner; })).forEach(function (n, i) { rise(n, 0, (innerStays ? .35 : 0) + i * .12); });   // C105: naik satu per satu, kiri → kanan
       stay.forEach(function (n) { if (n !== inner) home(n, 0); });
       if (!innerStays) { rise(inner, o, .15); home(inner, 1.0); }
       else { tl[inner].to(P(inner), { x: o, y: 0, z: 0, duration: .75, ease: 'power3.inOut' }, 0); home(inner, 1.15); }
     } else if (fromSet && now.indexOf(inner) >= 0) {   // dari set ke satu meja: meja dalam keluar dari pelukan dulu
       tl[inner].to(P(inner), { x: P(inner).x + out(), duration: .75, ease: 'power3.inOut' }, 0);
       if (leave.indexOf(inner) >= 0) { sink(inner, away(inner, others), .7); stay.forEach(function (n) { home(n, .6); }); }
-      else { home(inner, .95); leave.forEach(function (n) { sink(n, away(n, [inner]), .75); }); }   // turun setelah meja dalam lepas (tidak bersilangan)
+      else { home(inner, .95); lr(leave).reverse().forEach(function (n, i) { sink(n, away(n, [inner]), .75 + i * .12); }); }   // turun setelah meja dalam lepas (tidak bersilangan); C105: kanan → kiri, bergiliran
     } else {   // satu meja ↔ satu meja (pemilik 27 Okt: "seperti biasa, hilang dulu baru muncul") = sama dengan ganti produk:
       // yang lama turun lurus (sink .7 dtk power3.in), yang baru naik setelah jeda .45 dtk (rise)
-      leave.forEach(function (n) { tl[n].to(P(n), { y: -D, duration: .7, ease: 'power3.in', onComplete: function () { vs.parts[n].piv.visible = false; vsMark(vs.parts[n], false); } }, 0); });
-      enter.forEach(function (n) { rise(n, 0, leave.length ? .45 : 0, 1.25); });   // rise produk: 1,25 dtk
+      lr(leave).reverse().forEach(function (n, i) { tl[n].to(P(n), { y: -D, duration: .7, ease: 'power3.in', onComplete: function () { vs.parts[n].piv.visible = false; vsMark(vs.parts[n], false); } }, i * .12); });   // C105: kanan → kiri, bergiliran
+      lr(enter).forEach(function (n, i) { rise(n, 0, (leave.length ? .45 : 0) + i * .12, 1.25); });   // rise produk: 1,25 dtk; C105: kiri → kanan, + .12 dtk per meja
       stay.forEach(function (n) { home(n, 0); });
     }
   }
@@ -2777,6 +2836,9 @@
      needs: bagian ini butuh bagian lain terbuka dulu (laci di balik pintu geser) → buka: pintu dulu; tutup: laci dulu */
   var mdur = function (m) { return (m.dur || .75) * (m.k || 1); };
   var rankOf = function (m) { return m.order != null ? m.order : /drawer|laci/i.test(m.kind + (m.raw || '')) ? 2 : 1; };
+  // C105: satu urutan untuk Animate, morph Customize & meja ROULED: kiri → kanan, satu kolom dari bawah → atas (menutup = kebalikannya)
+  var lrBU = function (a, b) { return (Math.abs(a.x - b.x) > .04 ? a.x - b.x : 0) || (Math.abs(a.y - b.y) > .01 ? a.y - b.y : 0); };
+  var byPos = function (a, b) { return a.r - b.r || lrBU(a, b) || a.i - b.i; };
   function moveTo(m, to, t0) {   // jadwalkan m ke posisi to mulai detik t0 (setelah syaratnya); hasil: detik selesai
     var ms = XW.motions(), t = t0;
     if (to === 0) ms.forEach(function (q) { if (q.needs && q.needs === m.raw && q.to > .5) t = Math.max(t, moveTo(q, 0, t0) - mdur(q) * .15); });
@@ -2819,7 +2881,7 @@
      keluar satu per satu dengan jeda sama. Menutup = urutan terbalik. */
   XW.animate = function () {
     var ms = XW.motions(); if (!ms.length) return null;
-    var sp = motionSpots(ms), byPos = function (a, b) { return a.r - b.r || (Math.abs(a.x - b.x) > .04 ? a.x - b.x : 0) || (Math.abs(a.y - b.y) > .01 ? a.y - b.y : 0) || a.i - b.i; };
+    var sp = motionSpots(ms);   // C105: byPos bersama (lihat lrBU)
     var seen = {}, want = ms.map(function (m, i) { return { m: m, i: i, r: rankOf(m), x: sp[i].x, y: sp[i].y }; }).sort(byPos);
     want.forEach(function (w) { w.on = !w.m.excl || !seen[w.m.excl]; if (w.m.excl) seen[w.m.excl] = 1; });   // rel ganda: hanya yang pertama dibuka
     var open = want.some(function (w) { return w.on && w.m.to < .5; });
@@ -2868,16 +2930,17 @@
   }
   var AX = ['x', 'y', 'z'];
   // bagian baru / hilang yang saling menempel = satu blok (mis. pedestal: badan + laci + alas) → tumbuh / menekan bersama dari alas bloknya
-  function mphClusters(list) {
+  function mphClusters(list, spin) {
     var par = list.map(function (_, i) { return i; }), f = function (i) { while (par[i] !== i) i = par[i] = par[par[i]]; return i; }, e = .015;
     for (var i = 0; i < list.length; i++) for (var j = i + 1; j < list.length; j++) {
       var a = list[i].p.wb, b = list[j].p.wb;
       if (a.min.x - e <= b.max.x && b.min.x - e <= a.max.x && a.min.y - e <= b.max.y && b.min.y - e <= a.max.y && a.min.z - e <= b.max.z && b.min.z - e <= a.max.z) par[f(i)] = f(j);
     }
     var cl = {};
-    list.forEach(function (g, i) { var r = f(i), c = cl[r] = cl[r] || { items: [], y: 1e9, x: 0 }; c.items.push(g); c.y = Math.min(c.y, g.p.wb.min.y); c.x += g.p.wc.x; });
+    list.forEach(function (g, i) { var r = f(i), c = cl[r] = cl[r] || { items: [], y: 1e9, x: 0, i: i }; c.items.push(g); c.y = Math.min(c.y, g.p.wb.min.y); c.x += spin ? spin.worldToLocal(g.p.wc.clone()).x : g.p.wc.x; });
+    // C105: urutan sama dengan XW.animate (lrBU, bingkai spin): kolom kiri → kanan, tiap kolom dari alas bawah → atas
     return Object.keys(cl).map(function (k) { var c = cl[k]; c.x /= c.items.length; c.items.forEach(function (g) { g.yb = c.y; }); return c; })
-      .sort(function (a, b) { return Math.abs(a.y - b.y) > .02 ? a.y - b.y : a.x - b.x; });   // bawah → atas, lalu kiri → kanan
+      .sort(function (a, b) { return lrBU(a, b) || a.i - b.i; });
   }
   // tekan tegak berjangkar di alas blok (s = 0 … 1): pusat bagian turun ke alas, tinggi ikut s
   function mphSquash(g, s) {
@@ -2932,9 +2995,11 @@
     if (moves.length) { var pm = { t: 0 }; tl.to(pm, { t: 1, duration: D, ease: 'power3.inOut', onUpdate: function () { moves.forEach(function (m) { lerpV(m.o, m.P0, m.S0, m.P1, m.S1, pm.t); }); } }, 0); }
     var block = function (c, from, to, at, dur, ease, end) { var q = { s: from }; c.items.forEach(function (g) { mphSquash(g, from); }); tl.to(q, { s: to, duration: dur, ease: ease, onUpdate: function () { c.items.forEach(function (g) { mphSquash(g, q.s); }); }, onComplete: end && function () { c.items.forEach(end); } }, at); };
     // menutup: urutan terbalik (atas dulu, kanan dulu), satu blok per giliran
-    mphClusters(shrinks).reverse().forEach(function (c, i) { block(c, 1, 0, late + Math.min(.2, i * .07), .32, 'power2.out', function (g) { g.p.o.visible = false; }); });
-    // tumbuh: blok paling bawah dulu, lalu kiri → kanan; satu per satu
-    mphClusters(grows).forEach(function (c, i) { block(c, 0, 1, Math.min(.32, i * .08), .5, 'power3.out'); });
+    // C105: jeda dipadatkan (bukan dipotong) → blok ke-5 dst. tidak lagi mulai bersamaan; total tetap ±.35 / .4 dtk
+    var cS = mphClusters(shrinks, spin).reverse(), cG = mphClusters(grows, spin);
+    cS.forEach(function (c, i) { block(c, 1, 0, late + i * Math.min(.07, .35 / cS.length), .32, 'power2.out', function (g) { g.p.o.visible = false; }); });
+    // tumbuh: kolom kiri → kanan, tiap kolom dari bawah → atas; satu per satu
+    cG.forEach(function (c, i) { block(c, 0, 1, i * Math.min(.08, .4 / cG.length), .5, 'power3.out'); });
     tints.forEach(function (t) {
       var m = t.m, tgt = m.color.clone(), last = t.from.clone(), q = { t: 0 };
       m.color.copy(last);
@@ -2964,7 +3029,7 @@
     if (oldB && !morphBuilt(oldB, b, spin)) { spin.remove(oldB.group); oldB.dispose(); }
     g.userData.bounds = { w: size.x, h: size.y, d: size.z };
     var list = [];
-    b.group.traverse(function (o) { if (!o.isMesh) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (mt) { if (mt && 'envMapIntensity' in mt && list.indexOf(mt) < 0) { mt.userData.env0 = mt.metalness > .5 ? 1.1 : .5; list.push(mt); } }); });
+    b.group.traverse(function (o) { if (!o.isMesh) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (mt) { if (mt && 'envMapIntensity' in mt && list.indexOf(mt) < 0) { mt.userData.env0 = mt.metalness > .5 ? 1.1 : .5; mt.userData.xcCz = true; wbLight(mt); list.push(mt); } }); });   // C106: warna Customize = hex swatch → cahaya dinetralkan (wbOk)
     g.userData.mats = list;
     g.userData.blob.scale.set(size.x * 1.15, size.z * 1.2, 1);
     return !prevB || Math.abs(prevB.w - size.x) / size.x > .06 || Math.abs(prevB.h - size.y) / size.y > .06;
@@ -3853,6 +3918,7 @@
     MAN.on = !!(cfg && cfg.lights);
     L.rim.intensity = MAN.on ? 0 : .3;
     if (!MAN.on) { setMood(moodName); return; }
+    WBL.kT = 0; setWB(WBL.tint); if (item) item.traverse(function (o) { if (o.userData.mats) applyWB(o, .8); });   // C106: Manual = warna lampu (Kelvin) pilihan pemilik tetap → WB albedo lama, cahaya tidak dinetralkan
     var amb = cfg.ambient == null ? 1 : +cfg.ambient, shadows = 0;
     tw(mood, { key: 0, fill: 0, hemi: .22 * amb, env: .42 * amb, exp: 1, halo: .7, duration: .8, ease: 'power2.inOut' });
     MAN.marks = new T.Group(); MAN.marks.visible = MAN.showMarks; scene.add(MAN.marks);
@@ -3894,7 +3960,7 @@
   XW._debug = function () { return { view: Object.assign({}, view), inset: Object.assign({}, inset), cam: camera.position.toArray().map(function (v) { return +v.toFixed(2); }), W: W, H: H }; };
   XW.pause = function (v) { XW.paused = !!v; };
   // kualitas manual (mis. dari pengujian / pengaturan); lock = jangan turun otomatis
-  XW.setLook = function (o) { o = o || {}; ['hdr', 'contact', 'ao'].forEach(function (k) { if (o[k] != null) LOOK[k] = !!o[k]; }); setEnv(moodName); setQuality(XW.quality); return Object.assign({}, LOOK); };
+  XW.setLook = function (o) { o = o || {}; ['hdr', 'contact', 'ao'].forEach(function (k) { if (o[k] != null) LOOK[k] = !!o[k]; }); wbEnv(); setEnv(moodName); setQuality(XW.quality); return Object.assign({}, LOOK); };   // C106: wbEnv — HDRI t^1, Klasik t^1,25 / t^2
   XW.look = function () { return Object.assign({}, LOOK); };
   XW.setQuality = function (q, lock) { XW.qLock = !!lock; setQuality(q); };
   XW.info = function () { return { q: XW.quality, post: PP.on, ao: +PP.mix.toFixed(2), contact: CS.on, pr: renderer.getPixelRatio(), dtAvg: +dtAvg.toFixed(1), env: scene.environment && scene.environment.isTexture && envC[(MOODS[moodName] || {}).hdr + (MOODS[moodName] || {}).tint] === scene.environment ? moodName : 'room-env', calls: renderer.info.render.calls, tris: renderer.info.render.triangles }; };

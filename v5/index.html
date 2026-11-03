@@ -151,6 +151,8 @@
 <div class="gwalk" id="gwalk" aria-hidden="true">
   <canvas class="gwalk__c" id="gwalkC"></canvas>
   <canvas class="gwalk__c" id="gwalk3" hidden></canvas>
+  <div class="gwspots" id="gwSpots"></div>
+  <div class="gwcard" id="gwCard" role="dialog" aria-hidden="true" aria-label="Info produk"></div>
   <span class="gwalk__ln gwalk__ln--t"></span><span class="gwalk__ln gwalk__ln--l"></span><span class="gwalk__ln gwalk__ln--r"></span>
   <p class="gwalk__t">Galeri<small id="gwalkVer"></small></p>
   <nav class="gwalk__nav" id="gwalkNav" aria-label="Ruang"></nav>
@@ -175,7 +177,7 @@
       <!-- cari & filter (kategori xionco.shop) — menempel saat daftar digulir -->
       <div class="kbar" id="kBar">
         <div class="kbar__row">
-          <label class="srch"><svg><use href="#i-search"/></svg><input id="kSearch" type="search" placeholder="Cari sofa, meja, lampu…" autocomplete="off" aria-label="Cari di koleksi"></label>
+          <label class="srch"><svg><use href="#i-search"/></svg><input id="kSearch" type="search" placeholder="Cari sofa, meja, lampu…" data-ph-m="Cari…" autocomplete="off" aria-label="Cari di koleksi"></label>
           <button class="kflt" type="button" id="kFlt" aria-expanded="false" aria-controls="kFltBox"><svg><use href="#i-filter"/></svg><span>Filter</span><em id="kFltN"></em></button>
         </div>
         <div class="kact" id="kAct" hidden></div>
@@ -514,7 +516,7 @@
         <div class="row"><span>Efek render</span><div class="seg" id="setLook"><button type="button" data-look="classic">Klasik</button><button type="button" data-look="real">Realistis</button></div></div>
         <div class="row"><span>Info layout</span><div class="seg" id="setCzl"><button type="button" data-czl="1" title="Semua pilihan di panel kanan">I</button><button type="button" data-czl="2" title="Pilihan panjang di kotak sebelah panel">II</button><button type="button" data-czl="3" title="Cermin II: sidebar kanan, panel kiri">III</button></div></div>
         <div class="row"><span title="Pembanding ukuran: pria 170 cm · wanita 160 cm · anak 110 cm">Pembanding</span><div class="seg" id="setHuman"><button type="button" data-hum="0">Tanpa</button><button type="button" data-hum="pria">Pria</button><button type="button" data-hum="wanita">Wanita</button><button type="button" data-hum="anak">Anak</button></div></div>
-        <div class="row"><span title="Otomatis: mulai ringan, naik ke kualitas penuh bila perangkat lancar">Grafis</span><div class="seg" id="setGfx"><button type="button" data-gfx="auto">Otomatis</button><button type="button" data-gfx="lite">Ringan</button><button type="button" data-gfx="hd">Tinggi</button></div></div>
+        <div class="row"><span title="Otomatis: mulai ringan, naik ke kualitas penuh bila perangkat lancar">Grafis</span><div class="seg" id="setGfx"><button type="button" data-gfx="auto">Otomatis</button><button type="button" data-gfx="lite">Ringan</button><button type="button" data-gfx="hd">Tinggi&#8288;</button></div></div>
         <div class="row row--hd"><span title="Simpan semua model 3D & tekstur di perangkat agar tampil seketika">Paket HD</span><div class="hd"><button class="hd__btn" type="button" id="setHd">Unduh</button><button class="hd__rm" type="button" id="setHdRm" hidden>Hapus</button></div></div>
         <div class="hdbar" id="setHdBar" hidden><i></i></div>
         <div class="row"><span title="Basic: lebar, dalam, tinggi · Advance: semua ukuran (dudukan, kaki, lengan, tebal top …) dari data toko dan diukur dari model 3D">Ukuran</span><div class="seg" id="setDims"><button type="button" data-dims="0">Off</button><button type="button" data-dims="1">Basic</button><button type="button" data-dims="2">Advance</button></div></div>

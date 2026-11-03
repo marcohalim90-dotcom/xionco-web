@@ -476,7 +476,7 @@
  {
   "id": "g12",
   "type": "3d",
-  "title": "galery1 · v12",
+  "title": "Inspirational Museum · 3D langsung",
   "note": "Warna per ruang · furnitur · plafon tinggi · 3D langsung",
   "n": 519,
   "thumb": "thumb.jpg",
@@ -509,11 +509,12 @@
     479,
     "Ruang barat"
    ]
-  ]
+  ],
+  "spots": "g12"
  },
  {
   "id": "g12d1",
-  "title": "galery1 · v12 Render",
+  "title": "Inspirational Museum",
   "note": "Render HD Room 1–6 (Cycles) · furnitur & tekstur nyata",
   "n": 519,
   "rooms": [
@@ -546,7 +547,9 @@
     "Ruang barat"
    ]
   ],
-  "thumb": "060.webp"
+  "thumb": "060.webp",
+  "public": true,
+  "spots": "g12"
  },
  {
   "id": "b1",

@@ -1,0 +1,1199 @@
+{
+ "note": "C108 · titik furnitur Galeri v12. kind \"product\": furnitur regular, pid = produk katalog yang dibuka. kind \"custom\": furnitur bukan regular, cfg = rancangan Customize yang mirip (Lihat detail membuka Customize dengan pilihan ini; beli lewat Minta penawaran), img = foto rancangan. p = titik di ruang (three, meter), q = titik cadangan, v = rentang frame tampak (raycast dari jalur kamera, tidak tembus dinding).",
+ "items": [
+  {
+   "id": "lobby-chair-b",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kursi",
+    "sub": "armchair",
+    "shape": "barrel",
+    "base": "legs",
+    "w": 95,
+    "d": 90,
+    "h": 81,
+    "uph": "boucle",
+    "color": "cream",
+    "legFinish": "metal",
+    "metal": "black",
+    "leg": "splay",
+    "pillows": 1,
+    "pillowColor": "contrast"
+   },
+   "img": "spots/lobby-chair-b.webp",
+   "p": [
+    3.2,
+    0.581,
+    -5.485
+   ],
+   "v": [
+    [
+     0,
+     58
+    ]
+   ]
+  },
+  {
+   "id": "meja-kerja-lobi",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "executive",
+    "form": "desk",
+    "topShape": "rect",
+    "base": "pedCyl",
+    "front": "fluted",
+    "w": 230,
+    "d": 90,
+    "h": 76,
+    "topMat": "glass",
+    "body": "paint",
+    "panel": "navy"
+   },
+   "img": "spots/meja-kerja-lobi.webp",
+   "p": [
+    1.8,
+    0.736,
+    -4.185
+   ],
+   "v": [
+    [
+     0,
+     61
+    ]
+   ],
+   "q": [
+    [
+     1.8,
+     0.736,
+     -4.875
+    ],
+    [
+     1.8,
+     0.736,
+     -3.495
+    ]
+   ]
+  },
+  {
+   "id": "lobby-chair-a",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kursi",
+    "sub": "armchair",
+    "shape": "barrel",
+    "base": "legs",
+    "w": 95,
+    "d": 90,
+    "h": 75,
+    "uph": "vienna",
+    "color": "red",
+    "legFinish": "metal",
+    "metal": "black",
+    "leg": "splay"
+   },
+   "img": "spots/lobby-chair-a.webp",
+   "p": [
+    3.2,
+    0.539,
+    -2.885
+   ],
+   "v": [
+    [
+     3,
+     65
+    ]
+   ]
+  },
+  {
+   "id": "coffee_table_round",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "side",
+    "topShape": "round",
+    "base": "legs3",
+    "legStyle": "round",
+    "dia": 45,
+    "h": 55,
+    "topMat": "duco",
+    "panel": "charcoal",
+    "baseMat": "metal",
+    "metal": "black"
+   },
+   "img": "spots/coffee_table_round.webp",
+   "p": [
+    4.1,
+    0.53,
+    -5.835
+   ],
+   "v": [
+    [
+     7,
+     53
+    ]
+   ]
+  },
+  {
+   "id": "r1-sideboard",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kabinet",
+    "sub": "sideboard",
+    "w": 180,
+    "d": 45,
+    "h": 78,
+    "finish": "gloss",
+    "panel": "navy",
+    "handle": "bar",
+    "mount": "legs",
+    "leg": "straight",
+    "metal": "brass"
+   },
+   "img": "spots/r1-sideboard.webp",
+   "p": [
+    6.656,
+    0.648,
+    -6.16
+   ],
+   "v": [
+    [
+     28,
+     57
+    ]
+   ],
+   "q": [
+    [
+     6.116,
+     0.648,
+     -6.16
+    ],
+    [
+     7.196,
+     0.648,
+     -6.16
+    ]
+   ]
+  },
+  {
+   "id": "kabinet-bawah",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kabinet",
+    "sub": "bookshelf",
+    "w": 280,
+    "d": 36,
+    "h": 260,
+    "finish": "duco",
+    "panel": "charcoal",
+    "handle": "push",
+    "mount": "plinth"
+   },
+   "img": "spots/kabinet-bawah.webp",
+   "p": [
+    0.24,
+    0.4,
+    -4.185
+   ],
+   "v": [
+    [
+     51,
+     60
+    ]
+   ],
+   "q": [
+    [
+     0.24,
+     0.4,
+     -5.346
+    ],
+    [
+     0.24,
+     0.4,
+     -3.024
+    ]
+   ]
+  },
+  {
+   "id": "r2-sofa-c",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kursi",
+    "sub": "sofa",
+    "shape": "chaisekiri",
+    "w": 310,
+    "d": 95,
+    "uph": "linen",
+    "color": "sand",
+    "legFinish": "metal",
+    "metal": "champagne",
+    "pillows": 2,
+    "pillowColor": "contrast"
+   },
+   "img": "spots/r2-sofa-c.webp",
+   "p": [
+    8.151,
+    0.648,
+    -7.98
+   ],
+   "v": [
+    [
+     52,
+     85
+    ]
+   ],
+   "q": [
+    [
+     7.146,
+     0.648,
+     -7.98
+    ],
+    [
+     9.156,
+     0.648,
+     -7.98
+    ]
+   ]
+  },
+  {
+   "id": "r2-coffee",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "coffee",
+    "w": 130,
+    "d": 75,
+    "h": 36,
+    "topShape": "softrect",
+    "topMat": "stone",
+    "stone": "nero",
+    "base": "plinth",
+    "baseMat": "stone",
+    "metal": "brass"
+   },
+   "img": "spots/r2-coffee.webp",
+   "p": [
+    7.601,
+    0.277,
+    -8.78
+   ],
+   "v": [
+    [
+     54,
+     94
+    ]
+   ]
+  },
+  {
+   "id": "kabinet-rak-bawah",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kabinet",
+    "sub": "bookshelf",
+    "w": 130,
+    "d": 33,
+    "h": 260,
+    "finish": "duco",
+    "panel": "charcoal",
+    "handle": "push",
+    "mount": "plinth",
+    "layout": [
+     {
+      "k": "oDoor",
+      "n": 0,
+      "pos": "top",
+      "sh": 5,
+      "wr": 1,
+      "hd": "",
+      "ac": [
+       "led"
+      ]
+     },
+     {
+      "k": "oDoor",
+      "n": 0,
+      "pos": "top",
+      "sh": 5,
+      "wr": 1,
+      "hd": "",
+      "ac": [
+       "led"
+      ]
+     }
+    ]
+   },
+   "img": "spots/kabinet-rak-bawah.webp",
+   "p": [
+    6.292,
+    0.446,
+    -8.35
+   ],
+   "v": [
+    [
+     55,
+     98
+    ]
+   ]
+  },
+  {
+   "id": "r2-media",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kabinet",
+    "sub": "tv",
+    "w": 260,
+    "d": 40,
+    "h": 40,
+    "finish": "duco",
+    "panel": "charcoal",
+    "handle": "push",
+    "mount": "floating",
+    "metal": "brass",
+    "layout": [
+     {
+      "k": "door",
+      "n": 0,
+      "pos": "",
+      "sh": 1,
+      "wr": 1
+     },
+     {
+      "k": "drawers",
+      "n": 2,
+      "pos": "even",
+      "sh": 0,
+      "wr": 1
+     },
+     {
+      "k": "open",
+      "n": 0,
+      "pos": "",
+      "sh": 0,
+      "wr": 1
+     },
+     {
+      "k": "drawers",
+      "n": 2,
+      "pos": "even",
+      "sh": 0,
+      "wr": 1
+     },
+     {
+      "k": "door",
+      "n": 0,
+      "pos": "",
+      "sh": 1,
+      "wr": 1
+     }
+    ]
+   },
+   "img": "spots/r2-media.webp",
+   "p": [
+    6.378,
+    0.548,
+    -10.78
+   ],
+   "v": [
+    [
+     61,
+     113
+    ]
+   ],
+   "q": [
+    [
+     6.378,
+     0.548,
+     -11.56
+    ],
+    [
+     6.378,
+     0.548,
+     -10
+    ]
+   ]
+  },
+  {
+   "id": "r2-ottoman-c",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kursi",
+    "sub": "ottoman",
+    "w": 100,
+    "d": 75,
+    "h": 42,
+    "shape": "kotak",
+    "tuft": "biscuit",
+    "storage": "lid",
+    "uph": "linen",
+    "color": "sand",
+    "leg": "straight",
+    "legFinish": "metal",
+    "metal": "champagne"
+   },
+   "img": "spots/r2-ottoman-c.webp",
+   "p": [
+    7.751,
+    0.316,
+    -9.83
+   ],
+   "v": [
+    [
+     61,
+     101
+    ]
+   ]
+  },
+  {
+   "id": "r2-console",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "console",
+    "w": 170,
+    "d": 40,
+    "h": 78,
+    "base": "arch",
+    "topMat": "wood",
+    "wood": "walnut",
+    "baseMat": "wood"
+   },
+   "img": "spots/r2-console.webp",
+   "p": [
+    7.896,
+    0.58,
+    -13.18
+   ],
+   "v": [
+    [
+     87,
+     98
+    ]
+   ],
+   "q": [
+    [
+     7.383,
+     0.58,
+     -13.18
+    ],
+    [
+     8.409,
+     0.58,
+     -13.18
+    ]
+   ]
+  },
+  {
+   "id": "gliza",
+   "kind": "product",
+   "pid": "gliza-tv-cabinet-stand",
+   "p": [
+    6.556,
+    0.323,
+    -15.2
+   ],
+   "v": [
+    [
+     104,
+     197
+    ]
+   ],
+   "q": [
+    [
+     6.556,
+     0.323,
+     -16.058
+    ],
+    [
+     6.556,
+     0.323,
+     -14.342
+    ]
+   ]
+  },
+  {
+   "id": "r3-wing",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kursi",
+    "sub": "armchair",
+    "shape": "wingback",
+    "base": "legs",
+    "arm": "none",
+    "back": "tight",
+    "backTuft": "biscuit",
+    "w": 85,
+    "d": 85,
+    "h": 112,
+    "seatH": 42,
+    "uph": "boucle",
+    "color": "stone",
+    "legFinish": "wood",
+    "wood": "ash",
+    "leg": "splay",
+    "legH": 18,
+    "pillows": 0,
+    "stitch": "clean"
+   },
+   "img": "spots/r3-wing.webp",
+   "p": [
+    6.836,
+    0.824,
+    -17.38
+   ],
+   "v": [
+    [
+     116,
+     171
+    ]
+   ]
+  },
+  {
+   "id": "bangku-drum",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "side",
+    "topShape": "round",
+    "base": "drum",
+    "dia": 38,
+    "h": 50,
+    "topMat": "duco",
+    "panel": "sage",
+    "baseMat": "wood",
+    "wood": "x-kayu-grey-lati-veneer"
+   },
+   "img": "spots/bangku-drum.webp",
+   "p": [
+    7.096,
+    0.36,
+    -17.95
+   ],
+   "v": [
+    [
+     123,
+     160
+    ]
+   ]
+  },
+  {
+   "id": "meja-samping-koridor-b",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "side",
+    "topShape": "round",
+    "base": "pedestal",
+    "dia": 46,
+    "h": 60,
+    "topMat": "wood",
+    "wood": "walnut",
+    "baseMat": "wood"
+   },
+   "img": "spots/meja-samping-koridor-b.webp",
+   "p": [
+    0.34,
+    0.432,
+    -21.33
+   ],
+   "v": [
+    [
+     149,
+     154
+    ]
+   ]
+  },
+  {
+   "id": "aether-k40",
+   "kind": "product",
+   "pid": "aether-k40",
+   "p": [
+    4.496,
+    1.202,
+    -19.09
+   ],
+   "v": [
+    [
+     151,
+     156
+    ],
+    [
+     166,
+     177
+    ],
+    [
+     238,
+     337
+    ]
+   ]
+  },
+  {
+   "id": "kr-settee",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kursi",
+    "sub": "sofa",
+    "shape": "lurus",
+    "seats": "2",
+    "w": 170,
+    "d": 90,
+    "h": 84,
+    "arm": "english",
+    "back": "tight",
+    "uph": "linen",
+    "color": "natural",
+    "legFinish": "wood",
+    "wood": "walnut",
+    "leg": "turned"
+   },
+   "img": "spots/kr-settee.webp",
+   "p": [
+    0.53,
+    0.624,
+    -20.15
+   ],
+   "v": [
+    [
+     157,
+     165
+    ],
+    [
+     456,
+     490
+    ]
+   ],
+   "q": [
+    [
+     0.53,
+     0.624,
+     -20.66
+    ],
+    [
+     0.53,
+     0.624,
+     -19.64
+    ]
+   ]
+  },
+  {
+   "id": "r5-side",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "side",
+    "topShape": "round",
+    "base": "cone",
+    "topMat": "stone",
+    "stone": "nero",
+    "baseMat": "metal",
+    "metal": "brass",
+    "dia": 40,
+    "h": 50
+   },
+   "img": "spots/r5-side.webp",
+   "p": [
+    9.436,
+    0.378,
+    -10.13
+   ],
+   "v": [
+    [
+     184,
+     188
+    ]
+   ]
+  },
+  {
+   "id": "kabinet-oak-r6",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kabinet",
+    "sub": "tv",
+    "w": 115,
+    "d": 42,
+    "h": 52,
+    "finish": "solid",
+    "wood": "oak",
+    "handle": "push",
+    "mount": "plinth"
+   },
+   "img": "spots/kabinet-oak-r6.webp",
+   "p": [
+    -1.075,
+    0.534,
+    -6.83
+   ],
+   "v": [
+    [
+     277,
+     285
+    ]
+   ]
+  },
+  {
+   "id": "r3-console",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kabinet",
+    "sub": "tv",
+    "w": 150,
+    "d": 30,
+    "h": 30,
+    "mount": "floating",
+    "finish": "veneer",
+    "wood": "walnut",
+    "top": "same",
+    "handle": "push",
+    "layout": [
+     {
+      "k": "drawers",
+      "n": 1,
+      "pos": "even",
+      "sh": 0,
+      "wr": 1
+     },
+     {
+      "k": "drawers",
+      "n": 1,
+      "pos": "even",
+      "sh": 0,
+      "wr": 1
+     }
+    ]
+   },
+   "img": "spots/r3-console.webp",
+   "p": [
+    4.526,
+    0.529,
+    -12.772
+   ],
+   "v": [
+    [
+     280,
+     312
+    ],
+    [
+     363,
+     381
+    ]
+   ],
+   "q": [
+    [
+     4.076,
+     0.529,
+     -12.772
+    ],
+    [
+     4.976,
+     0.529,
+     -12.772
+    ]
+   ]
+  },
+  {
+   "id": "r4-coffee",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "coffee",
+    "topShape": "rect",
+    "base": "slab",
+    "legStyle": "block",
+    "w": 120,
+    "d": 60,
+    "h": 38,
+    "thick": 5,
+    "topMat": "wood",
+    "wood": "walnut",
+    "baseMat": "wood",
+    "edge": "eased"
+   },
+   "img": "spots/r4-coffee.webp",
+   "p": [
+    4.096,
+    0.292,
+    -15.045
+   ],
+   "v": [
+    [
+     282,
+     318
+    ]
+   ]
+  },
+  {
+   "id": "pouf-rajut",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kursi",
+    "sub": "ottoman",
+    "construction": "pouf",
+    "shape": "round",
+    "w": 59,
+    "d": 59,
+    "h": 41,
+    "uph": "velvet",
+    "color": "emerald"
+   },
+   "img": "spots/pouf-rajut.webp",
+   "p": [
+    3.686,
+    0.295,
+    -16.82
+   ],
+   "v": [
+    [
+     287,
+     312
+    ],
+    [
+     446,
+     480
+    ]
+   ]
+  },
+  {
+   "id": "r4-sofa",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kursi",
+    "sub": "sofa",
+    "shape": "lurus",
+    "seats": "3",
+    "w": 220,
+    "d": 95,
+    "frame": "woodPlatform",
+    "arm": "track",
+    "back": "cushion",
+    "seatC": "split",
+    "seatTuft": "plain",
+    "uph": "linen",
+    "color": "natural",
+    "legFinish": "wood",
+    "wood": "walnut",
+    "leg": "plinth",
+    "pillows": 0,
+    "bolsters": 0,
+    "stitch": "clean"
+   },
+   "img": "spots/r4-sofa.webp",
+   "p": [
+    5.326,
+    0.565,
+    -15.045
+   ],
+   "v": [
+    [
+     297,
+     380
+    ]
+   ],
+   "q": [
+    [
+     5.326,
+     0.565,
+     -15.705
+    ],
+    [
+     5.326,
+     0.565,
+     -14.385
+    ]
+   ]
+  },
+  {
+   "id": "meja-drum-batu",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "side",
+    "topShape": "round",
+    "base": "drum",
+    "dia": 44,
+    "h": 55,
+    "topMat": "stone",
+    "stone": "slate",
+    "baseMat": "stone"
+   },
+   "img": "spots/meja-drum-batu.webp",
+   "p": [
+    5.596,
+    0.396,
+    -16.7
+   ],
+   "v": [
+    [
+     319,
+     369
+    ]
+   ]
+  },
+  {
+   "id": "rak-walnut-ceruk",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kabinet",
+    "sub": "bookshelf",
+    "w": 65,
+    "d": 36,
+    "h": 260,
+    "finish": "solid",
+    "wood": "walnut",
+    "handle": "push",
+    "mount": "plinth",
+    "layout": [
+     {
+      "k": "oDoor",
+      "n": 0,
+      "pos": "top",
+      "sh": 4,
+      "wr": 1,
+      "hd": "",
+      "ac": [
+       "led"
+      ]
+     }
+    ]
+   },
+   "img": "spots/rak-walnut-ceruk.webp",
+   "p": [
+    5.866,
+    1.75,
+    -17.295
+   ],
+   "v": [
+    [
+     327,
+     366
+    ]
+   ]
+  },
+  {
+   "id": "r5-bed",
+   "kind": "custom",
+   "cfg": {
+    "cat": "divan",
+    "sub": "platform",
+    "mattress": "160",
+    "headboard": "woodpanel",
+    "hbH": 100,
+    "hbW": "wall",
+    "uph": "linen",
+    "color": "sand",
+    "wood": "oak",
+    "mount": "floating",
+    "extras": [
+     "mattressinc"
+    ]
+   },
+   "img": "spots/r5-bed.webp",
+   "p": [
+    4.706,
+    0.936,
+    -9.52
+   ],
+   "v": [
+    [
+     387,
+     453
+    ]
+   ],
+   "q": [
+    [
+     4.706,
+     0.936,
+     -10.528
+    ],
+    [
+     4.706,
+     0.936,
+     -8.512
+    ]
+   ]
+  },
+  {
+   "id": "r5-ottoman",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kursi",
+    "sub": "ottoman",
+    "construction": "upholstered",
+    "shape": "round",
+    "tuft": "plain",
+    "w": 56,
+    "d": 56,
+    "h": 40,
+    "uph": "velvet",
+    "color": "ink"
+   },
+   "img": "spots/r5-ottoman.webp",
+   "p": [
+    4.316,
+    0.306,
+    -11.82
+   ],
+   "v": [
+    [
+     434,
+     465
+    ]
+   ]
+  },
+  {
+   "id": "konsol-koridor",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kabinet",
+    "sub": "dresser",
+    "w": 125,
+    "d": 45,
+    "h": 87,
+    "finish": "solid",
+    "wood": "walnut",
+    "top": "stone",
+    "topStone": "carrara",
+    "handle": "knob",
+    "metal": "brass",
+    "mount": "legs",
+    "leg": "straight"
+   },
+   "img": "spots/konsol-koridor.webp",
+   "p": [
+    3.4,
+    0.626,
+    -21.483
+   ],
+   "v": [
+    [
+     449,
+     470
+    ]
+   ]
+  },
+  {
+   "id": "meja-samping-koridor-a",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "side",
+    "topShape": "round",
+    "base": "pedestal",
+    "dia": 46,
+    "h": 60,
+    "topMat": "wood",
+    "wood": "walnut",
+    "baseMat": "wood"
+   },
+   "img": "spots/meja-samping-koridor-a.webp",
+   "p": [
+    0.34,
+    0.432,
+    -18.97
+   ],
+   "v": [
+    [
+     457,
+     491
+    ]
+   ]
+  },
+  {
+   "id": "r6-sofa",
+   "kind": "custom",
+   "cfg": {
+    "cat": "kursi",
+    "sub": "sofa",
+    "shape": "chaisekiri",
+    "w": 285,
+    "d": 100,
+    "arm": "pillow",
+    "back": "pillow",
+    "seatC": "bench",
+    "uph": "velvet",
+    "color": "terracotta",
+    "leg": "floating",
+    "pillows": 0
+   },
+   "img": "spots/r6-sofa.webp",
+   "p": [
+    -3.75,
+    0.605,
+    -9.67
+   ],
+   "v": [
+    [
+     497,
+     518
+    ]
+   ],
+   "q": [
+    [
+     -3.75,
+     0.605,
+     -10.525
+    ],
+    [
+     -3.75,
+     0.605,
+     -8.815
+    ]
+   ]
+  },
+  {
+   "id": "meja-kopi-r6",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "coffee",
+    "topShape": "round",
+    "base": "drum",
+    "dia": 80,
+    "w": 80,
+    "d": 80,
+    "h": 40,
+    "topMat": "wood",
+    "wood": "oak",
+    "baseMat": "stone",
+    "stone": "slate"
+   },
+   "img": "spots/meja-kopi-r6.webp",
+   "p": [
+    -3.1,
+    0.303,
+    -9.17
+   ],
+   "v": [
+    [
+     500,
+     518
+    ]
+   ]
+  },
+  {
+   "id": "meja-samping-r6",
+   "kind": "custom",
+   "cfg": {
+    "cat": "meja",
+    "sub": "side",
+    "topShape": "round",
+    "base": "drum",
+    "dia": 40,
+    "h": 50,
+    "topMat": "wood",
+    "wood": "teak",
+    "baseMat": "wood"
+   },
+   "img": "spots/meja-samping-r6.webp",
+   "p": [
+    -4.28,
+    0.36,
+    -7.82
+   ],
+   "v": [
+    [
+     508,
+     518
+    ]
+   ]
+  }
+ ]
+}
