@@ -1,10 +1,17 @@
-// Cloudflare Workers — situs statis XIONCO (tanpa kode server).
+// Cloudflare Workers — situs statis XIONCO + API kecil untuk /pricesubmit.
 // Dipakai oleh deploy command "npx wrangler deploy" di dashboard Cloudflare.
+// Halaman & aset = file statis; worker/index.js hanya berjalan untuk alamat yang bukan file (/api/prices).
+// D1 "xionco-pricesubmit" dibuat otomatis oleh wrangler saat deploy pertama (tanpa database_id).
 {
   "name": "xionco-web",
+  "main": "worker/index.js",
   "compatibility_date": "2025-09-01",
   "assets": {
     "directory": "./",
+    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash"
-  }
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "xionco-pricesubmit" }
+  ]
 }

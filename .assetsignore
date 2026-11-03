@@ -18,3 +18,5 @@ assets/library/hdri/*_2k.hdr
 TASKS.md
 # proyek aplikasi Android (sumber, tidak ditayangkan)
 apps
+# kode Worker /api/prices (C111) — dijalankan Cloudflare, bukan file situs
+worker

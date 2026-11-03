@@ -448,7 +448,7 @@
   /* ======================================================================
      Panggung: apa yang berdiri di tengah
      ====================================================================== */
-  var HOME_ID = 'guise';                  // C109 (pemilik): produk tampilan utama = GUISE 3 seater (dulu CUBIX)
+  var HOME_ID = 'guise', HOME_V = 'Faux-BLACK';   // C109/C110 (pemilik): tampilan utama = GUISE 3 seater, varian Black faux leather (dulu CUBIX)
   var furniture = { kind: 'cubix' };       // furnitur terakhir (cubix atau produk pilihan)
   var stageKind = 'cubix';
   function cubixDetail() {
@@ -4555,7 +4555,12 @@
   if (XW.ok) { applyLighting(); if (themeNow() === 'light') XW.setTheme('light', 0); applyBg(); applyLook(); applyFree(); applyPlinth(); }
   // kayu koleksi global (Developer Settings › Kayu koleksi) — semua komponen berlabel gelap / terang / natural
   if (XW.ok && XW.setWood) fetch('../data/wood.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) { if (j && j.classes) XW.setWood(j.classes); }).catch(function () {});
-  if (byId[HOME_ID]) showProduct(byId[HOME_ID]); else cubixDetail();   // C109: panggung dibuka dengan GUISE 3 seater
+  (function () {   // C109/C110: panggung dibuka dengan GUISE 3 seater · Black faux leather
+    var hp = byId[HOME_ID]; if (!hp) { cubixDetail(); return; }
+    var hv = (hp.variants || []).map(function (v) { return v.key; }).indexOf(HOME_V);
+    if (hv >= 0 && !vsel[hp.id]) vsel[hp.id] = { v: hv, s: subDef(hp.variants[hv]), touched: true };
+    showProduct(hp);
+  })();
   function warm() {
     // siapkan potongan foto beberapa karya populer agar pergantian di panggung instan
     XV.PRODUCTS.slice(0, 6).concat(XV.MUSE).forEach(function (m) { var im = new Image(); im.src = src(m.img, 768); });

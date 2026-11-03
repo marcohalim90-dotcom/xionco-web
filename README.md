@@ -275,6 +275,10 @@ Versi mayor baru (`v6/`) hanya bila desainnya sudah benar-benar berbeda. Yang la
 
 ## Online (hosting)
 
+**/pricesubmit/** (3 Nov 2026) — salinan Customize untuk tim mengisi selisih harga & catatan per kartu. Disimpan lewat
+`worker/index.js` (`/api/prices`) ke Cloudflare D1 `xionco-pricesubmit` (binding `DB` di `wrangler.jsonc`, dibuat otomatis saat deploy).
+Riwayat lengkap: `GET /api/prices?all=1` · per jenis: `GET /api/prices?sub=kursi.sofa`. Harga situs tidak berubah otomatis.
+
 Hosting gratis yang selalu ter-update: **GitHub** (menyimpan kode + riwayat) → **Cloudflare Pages** (menayangkan situs).
 Setiap perubahan yang di-*push* ke GitHub otomatis online dalam ±1 menit.
 

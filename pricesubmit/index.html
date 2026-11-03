@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="id" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>XIONCO · Price submit</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Maison XIONCO — furnitur minimalis dengan pengerjaan tanpa kompromi, diproduksi sendiri di empat pabrik di Jawa. Pilih koleksi, rancang sofa modular dalam 3D, dan konsultasi privat.">
+  <meta name="theme-color" content="#0f0c0a">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.xionco.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Inter:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="css/v5.css">
+  <link rel="stylesheet" href="css/price-submit.css">
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js') + ' ps';
+    window.XV_PRICE = 1;   // C111: salinan khusus tim isi harga Customize (lihat js/price-submit.js)
+    if (location.hash.indexOf('#/customize') !== 0) history.replaceState(null, '', location.pathname + location.search + '#/customize');
+    // tema & bahasa tersimpan dipasang sebelum halaman tampil (tanpa kedip)
+    (function (d) { try { d.setAttribute('data-theme', localStorage.getItem('xv5_theme') === 'light' ? 'light' : 'dark'); d.lang = localStorage.getItem('xv5_lang') === 'id' ? 'id' : 'en'; } catch (e) { d.setAttribute('data-theme', 'dark'); } })(document.documentElement);
+  </script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4.5l8 6.5v8.5h-5.5v-5.5h-5v5.5H4z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="6" height="6" rx=".6"/><rect x="13.5" y="4.5" width="6" height="6" rx=".6"/><rect x="4.5" y="13.5" width="6" height="6" rx=".6"/><rect x="13.5" y="13.5" width="6" height="6" rx=".6"/></symbol>
+  <symbol id="i-sofa" viewBox="0 0 24 24"><path d="M5.5 11V8.5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2V11"/><path d="M3.5 12.5a1.5 1.5 0 0 1 3 0v1.5h11v-1.5a1.5 1.5 0 0 1 3 0V17h-17z"/><path d="M5.5 17v1.5M18.5 17v1.5"/></symbol>
+  <symbol id="i-factory" viewBox="0 0 24 24"><path d="M3.5 19.5v-8l5 3v-3l5 3v-3l5 3V4.5h2v15z"/><path d="M7 16.5h2M11.5 16.5h2M16 16.5h2"/></symbol>
+  <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="1.5"/><path d="M9 7.5V5.5h6v2M3.5 12.5h17"/></symbol>
+  <symbol id="i-frame" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx=".6"/><path d="m4.5 16 4.5-4.5 4 4 2.5-2.5 4 4"/><circle cx="15.5" cy="8.5" r="1.4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 18.5 5.6 15A7.5 7.5 0 1 1 9 18.2z"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.9v.2"/></symbol>
+  <symbol id="i-room" viewBox="0 0 24 24"><path d="M3.5 18.5h17"/><path d="M5 18.5v-5h6v5M13 18.5v-8h6v8"/><path d="M6.5 13.5V11h3v2.5"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 8.5h13l-1 11h-11z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M20 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="18.5" cy="12" r="1.3"/></symbol>
+  <symbol id="i-cube" viewBox="0 0 24 24"><path d="m12 3.5 7.5 4.2v8.6L12 20.5l-7.5-4.2V7.7z"/><path d="m4.5 7.7 7.5 4.3 7.5-4.3M12 12v8.5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.6"/><path d="M12 3.5v2.2M12 18.3v2.2M20.5 12h-2.2M5.7 12H3.5M18 6l-1.6 1.6M7.6 16.4 6 18M18 18l-1.6-1.6M7.6 7.6 6 6"/><circle cx="12" cy="12" r="5.6"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="1.2"/><path d="M12 2.5v3.5M12 18v3.5M2.5 12H6M18 12h3.5"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="1.6"/><path d="M3.5 10h17M7 14.5h3.5"/></symbol>
+  <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M4 15.5 15.5 4l4.5 4.5L8.5 20z"/><path d="m8 11.5 1.8 1.8M10.5 9l1.2 1.2M13 6.5l1.8 1.8M5.5 14l1.2 1.2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 20.5s-6-5.6-6-10.2a6 6 0 0 1 12 0c0 4.6-6 10.2-6 10.2z"/><circle cx="12" cy="10.3" r="2.2"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 19.5s-7-4.3-7-9.4A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.1c0 5.1-7 9.4-7 9.4z"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3.5 7.5h10v9h-10zM13.5 10.5h4l3 3v3h-7z"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4.5 19.5l1.1-3.6A8 8 0 1 1 8.4 18.6z"/><path d="M9 8.6c.2-.5.6-.6.9-.6h.4c.2 0 .4.1.5.4l.6 1.5c.1.3 0 .5-.1.7l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.2.5-.2.7-.1l1.5.6c.3.1.4.3.4.5v.4c0 .3-.1.7-.6.9-.6.3-1.6.4-3.1-.3a8.3 8.3 0 0 1-3.6-3.6c-.7-1.5-.6-2.5-.3-3.1z"/></symbol>
+</svg>
+
+<canvas class="world" id="world" aria-hidden="true"></canvas>
+<div class="world-fallback" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__c"><svg viewBox="0 0 22 12"><path d="M6 1 1 6l5 5M16 1l5 5-5 5"/></svg></span></div>
+
+<!-- pembuka -->
+<div class="veil" id="veil" role="status" aria-live="polite">
+  <svg class="veil__logo" viewBox="-1 -1 208 30" aria-hidden="true"><path class="logo-path"/></svg>
+</div>
+
+<!-- bar atas: hanya logo & tas -->
+<header class="top">
+  <a class="top__logo" href="#/" data-go="home" aria-label="Maison XIONCO — beranda"><svg viewBox="0 0 206 28" aria-hidden="true"><path class="logo-path"/></svg></a><span class="top__ps">Price submit</span>
+  <div class="top__actions">
+    <a class="top__link" data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener">Konsultasi</a>
+    <button class="top__ic" id="userBtn" type="button" data-go="profil" aria-label="Profil"><svg><use href="#i-user"/></svg></button>
+    <button class="top__bag" id="bagBtn" type="button" data-go="tas" aria-label="Tas belanja"><svg><use href="#i-bag"/></svg><span id="bagCount">0</span></button>
+  </div>
+</header>
+
+<!-- navigator kiri (seperti versi 1) -->
+<nav class="rail" id="rail" aria-label="Navigasi">
+  <span class="rail__hover" id="railHover" aria-hidden="true"></span>
+  <ul class="rail__group">
+    <li><a class="rail__item" href="#/" data-go="home" data-key="home" style="--i:0"><svg><use href="#i-home"/></svg><span class="rail__label">Beranda</span></a></li>
+  </ul>
+  <ul class="rail__group">
+    <li><a class="rail__item" href="#/koleksi" data-go="koleksi" data-key="koleksi" style="--i:1"><svg><use href="#i-grid"/></svg><span class="rail__label">Koleksi</span></a></li>
+    <li><a class="rail__item" href="#/customize" data-go="customize" data-key="customize" style="--i:2"><svg><use href="#i-ruler"/></svg><span class="rail__label">Customize</span></a></li>
+    <li class="rail__li--d"><a class="rail__item" href="#/manufaktur" data-go="manufaktur" data-key="manufaktur" style="--i:3"><svg><use href="#i-factory"/></svg><span class="rail__label">Manufaktur</span></a></li>
+    <li class="rail__li--d"><a class="rail__item" href="#/bisnis" data-go="bisnis" data-key="bisnis" style="--i:4"><svg><use href="#i-brief"/></svg><span class="rail__label">Bisnis</span></a></li>
+    <li><a class="rail__item" href="#/galeri" data-go="galeri" data-key="galeri" style="--i:5"><svg><use href="#i-frame"/></svg><span class="rail__label">Galeri</span></a></li>
+  </ul>
+  <ul class="rail__group">
+    <li><a class="rail__item" href="#/kontak" data-go="kontak" data-key="kontak" style="--i:6"><svg><use href="#i-chat"/></svg><span class="rail__label">Kontak</span></a></li>
+    <li><button class="rail__item" id="railMore" type="button" data-key="more" style="--i:7" aria-haspopup="menu" aria-expanded="false" aria-controls="moreBox"><svg><use href="#i-more"/></svg><span class="rail__label">More</span></button></li>
+  </ul>
+</nav>
+<!-- MOB: ponsel — navigasi = satu lingkaran mengambang; ketuk → ikon naik satu per satu dari bawah ke atas -->
+<button class="mfab" id="mFab" type="button" aria-label="Menu navigasi" aria-expanded="false" aria-controls="rail"><svg class="mfab__a" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14"/></svg><svg class="mfab__b" aria-hidden="true"><use href="#i-close"/></svg></button>
+<!-- More: kotak pilihan yang keluar saat item More di rail di-hover (di luar rail karena rail ber-overflow tersembunyi) -->
+<div class="box more" id="moreBox" role="menu" aria-label="More">
+  <a class="more__item more__item--m" href="#/manufaktur" data-go="manufaktur" data-more-key="manufaktur" role="menuitem"><svg><use href="#i-factory"/></svg><span>Manufaktur</span></a>
+  <a class="more__item more__item--m" href="#/bisnis" data-go="bisnis" data-more-key="bisnis" role="menuitem"><svg><use href="#i-brief"/></svg><span>Bisnis</span></a>
+  <a class="more__item" href="#/ruang" data-go="ruang" data-more-key="ruang" role="menuitem"><svg><use href="#i-room"/></svg><span>Ruang</span><b id="roomCount" data-n="0"></b></a>
+  <a class="more__item" href="#/setelan" data-go="setelan" data-more-key="setelan" role="menuitem"><svg><use href="#i-gear"/></svg><span>Pengaturan</span></a>
+  <a class="more__item" href="#/cubix" data-go="cubix" data-more-key="cubix" role="menuitem"><svg><use href="#i-cube"/></svg><span>Konfigurasi CUBIX</span></a>
+</div>
+
+<!-- Grid layout CUBIX: tampak atas, 1 kotak = 1 modul (64 cm) -->
+<aside class="picker cbx-grid" id="cbxGrid" aria-hidden="true" aria-label="Grid layout">
+  <button class="panel__close" type="button" data-grid-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+  <p class="ph__e">CUBIX</p><h3 class="pane__t">Grid layout</h3>
+  <p class="note">Pilih tipe, lalu klik kotak untuk menambah atau mengganti. Depan sofa ada di bawah.</p>
+  <div class="og cbx-tools" id="cbxTools"></div>
+  <div class="cbx-cells" id="cbxCells"></div>
+</aside>
+
+<!-- tambah barang ke Ruang (katalog & rancangan) tanpa pindah halaman -->
+<aside class="picker room-add" id="roomAddBox" aria-hidden="true" aria-label="Tambah barang">
+  <button class="panel__close" type="button" data-ra-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+  <p class="ph__e">Ruang</p><h3 class="pane__t">Tambah barang</h3>
+  <label class="srch"><svg><use href="#i-search"/></svg><input id="raSearch" type="search" placeholder="Cari sofa, meja, lampu…" autocomplete="off" aria-label="Cari barang"></label>
+  <div class="chips" id="raCats"></div>
+  <div class="tiles tiles--3" id="raGrid"></div>
+  <p class="note" id="raEmpty" hidden></p>
+</aside>
+
+<!-- editor ruangan: muncul saat tembok / lantai / plafon / objek ruangan diketuk -->
+<aside class="picker shell-ed" id="shellEd" aria-hidden="true" aria-label="Ruangan">
+  <button class="panel__close" type="button" data-shell-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+  <p class="ph__e" id="shellE">Ruangan</p><h3 class="pane__t" id="shellT">Tembok</h3>
+  <div id="shellBody"></div>
+</aside>
+
+<!-- menu klik kanan di panggung (isi dibuat app.js sesuai yang diklik) -->
+<div class="box more ctx" id="ctxMenu" role="menu" aria-label="Opsi"></div>
+
+<!-- kotak deskripsi (kanan): teks ditulis ulang saat menu disorot -->
+<aside class="desc" id="desc" aria-live="polite">
+  <p class="desc__n" id="descN">Maison XIONCO</p>
+  <h1 class="desc__t" id="descT">Quality shouldn't be a luxury</h1>
+  <p class="desc__p" id="descP">Furnitur minimalis dengan pengerjaan tanpa kompromi — dirancang dan diproduksi sendiri di empat pabrik kami di Jawa.</p>
+  <p class="desc__m" id="descM">34 karya · 4 pabrik · garansi 3 tahun</p>
+</aside>
+
+<!-- rincian objek di panggung: nama, detail, harga -->
+<div class="detail" id="detail" aria-live="polite">
+  <div class="detail__name"><b id="dName">CUBIX Modular</b><span id="dSub">3 Seater</span></div>
+  <dl class="detail__cols" id="dCols"></dl>
+  <div class="detail__price" id="dPriceBox"><span id="dPriceK">Estimasi</span><b id="dPrice">IDR 0</b><s id="dWas"></s></div>
+  <a class="detail__act" id="dAct" href="#" aria-label="Aksi"><svg><use href="#i-plus"/></svg><span id="dActT">Tambah</span></a>
+</div>
+
+<!-- Ruang kosong: ajakan memilih preset langsung di panggung -->
+<div class="gwalk" id="gwalk" aria-hidden="true">
+  <canvas class="gwalk__c" id="gwalkC"></canvas>
+  <canvas class="gwalk__c" id="gwalk3" hidden></canvas>
+  <div class="gwspots" id="gwSpots"></div>
+  <div class="gwcard" id="gwCard" role="dialog" aria-hidden="true" aria-label="Info produk"></div>
+  <span class="gwalk__ln gwalk__ln--t"></span><span class="gwalk__ln gwalk__ln--l"></span><span class="gwalk__ln gwalk__ln--r"></span>
+  <p class="gwalk__t">Galeri<small id="gwalkVer"></small></p>
+  <nav class="gwalk__nav" id="gwalkNav" aria-label="Ruang"></nav>
+  <p class="gwalk__room"><b id="gwalkN">01 / 07</b><i></i><span id="gwalkName">Lobi</span></p>
+  <p class="gwalk__hint" id="gwalkHint">Gulir untuk berjalan</p>
+  <button class="gwalk__btn" id="gwalkBtn" type="button" aria-label="Karya terpilih" title="Karya terpilih"><svg><use href="#i-frame"/></svg></button>
+  <span class="gwalk__bar"><i id="gwalkBar"></i></span>
+</div>
+<div class="rstage" id="roomStage" aria-hidden="true"><p class="eyebrow">Ruang Anda masih kosong</p><p class="rstage__t">Mulai dari preset</p><div class="rstage__b" id="roomStageB"></div><p class="rstage__n">atau tambah barang satu per satu dari panel</p></div>
+
+<button class="recenter" id="recenter" type="button" aria-label="Kembali ke posisi awal"><svg><use href="#i-target"/></svg></button>
+
+<!-- panel kanan: konten tiap menu bergeser masuk di sini.
+     Struktur seragam (5.01.02): .ph (nomor · label · judul) → isi → .foot (aksi menempel di bawah) -->
+<aside class="panel" id="panel" aria-hidden="true">
+  <button class="panel__close" type="button" data-go="home" aria-label="Tutup panel"><svg><use href="#i-close"/></svg></button>
+
+  <!-- KOLEKSI -->
+  <section class="pane" data-pane="koleksi" aria-label="Koleksi">
+    <div class="pane__scroll" id="kolList">
+      <header class="ph"><span class="ph__n">01</span><div><p class="ph__e">Koleksi</p><h2 class="ph__t">Semua karya <em id="kCount">0</em></h2></div></header>
+      <!-- cari & filter (kategori xionco.shop) — menempel saat daftar digulir -->
+      <div class="kbar" id="kBar">
+        <div class="kbar__row">
+          <label class="srch"><svg><use href="#i-search"/></svg><input id="kSearch" type="search" placeholder="Cari sofa, meja, lampu…" data-ph-m="Cari…" autocomplete="off" aria-label="Cari di koleksi"></label>
+          <button class="kflt" type="button" id="kFlt" aria-expanded="false" aria-controls="kFltBox"><svg><use href="#i-filter"/></svg><span>Filter</span><em id="kFltN"></em></button>
+        </div>
+        <div class="kact" id="kAct" hidden></div>
+      </div>
+      <div class="tiles" id="kGrid"></div>
+      <p class="empty" id="kEmpty">Tidak ada karya yang cocok.</p>
+    </div>
+    <div class="pane__scroll pd" id="pd" aria-hidden="true">
+      <div class="pd__bar">
+        <button class="back" type="button" id="pdBack"><svg><use href="#i-back"/></svg><span>Koleksi</span></button>
+        <div class="pd__step"><button type="button" id="pdPrev" aria-label="Sebelumnya"><svg><use href="#i-back"/></svg></button><span id="pdN"></span><button type="button" id="pdNext" aria-label="Berikutnya"><svg><use href="#i-arrow"/></svg></button></div>
+      </div>
+      <header class="pd__head"><p class="ph__e" id="pdCat"></p><h3 class="ph__t" id="pdName"></h3><p class="pd__type" id="pdType"></p></header>
+      <div class="pd__photo tile__img" id="pdPhoto" hidden></div>
+      <div class="pd__price" id="pdPrice"></div>
+      <div class="pd__var" id="pdVar"></div>
+      <div class="pd__var" id="pdSub"></div>
+      <!-- Advance: kotak samping berisi ukuran, semua varian, warna kain/bantal (CUBIX), warna kaki (tertutup) -->
+      <div class="pd__acts" id="pdActs">
+        <button class="pd__ab" type="button" id="pdAdv" aria-expanded="false" aria-controls="pdAdvBox"><span>Advance</span><svg><use href="#i-arrow"/></svg></button>
+      </div>
+      <!-- informasi produk seperti xionco.shop: Overview · Specification (data/specs.json) -->
+      <div class="pdt" id="pdTabs">
+        <div class="pdt__b" role="tablist"><button type="button" role="tab" class="is-on" data-pt="ov" aria-selected="true">Overview</button><button type="button" role="tab" data-pt="sp" aria-selected="false">Specification</button></div>
+        <div class="pdt__p" data-pp="ov">
+          <dl class="kv" id="pdSpec"></dl>
+          <p class="txt pd__desc" id="pdDesc"></p>
+          <button type="button" class="vmore pd__more" id="pdMore" hidden><span>More details</span><svg><use href="#i-arrow"/></svg></button>
+          <div class="pd__box" id="pdBox" hidden></div>
+        </div>
+        <div class="pdt__p" data-pp="sp" id="pdSp" hidden></div>
+      </div>
+      <!-- aksi beli selalu terlihat (menempel di bawah panel) -->
+      <div class="foot pd__foot" id="pdFoot">
+        <div class="buy" id="pdBuy">
+          <div class="qty"><button type="button" id="pdMinus" aria-label="Kurangi"><svg><use href="#i-minus"/></svg></button><span id="pdQty">1</span><button type="button" id="pdPlus" aria-label="Tambah"><svg><use href="#i-plus"/></svg></button></div>
+          <button class="btn btn--line btn--ic" type="button" id="pdAdd" aria-label="Ke tas" title="Ke tas"><svg><use href="#i-bag"/></svg></button>
+          <button class="btn btn--gold" type="button" id="pdNow"><svg><use href="#i-card"/></svg><span>Beli</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOMIZE: satu halaman gulir dengan tab (spesifikasi js/custom-spec.js · 3D js/maker.js) -->
+  <section class="pane" data-pane="customize" aria-label="Customize">
+    <div class="pane__scroll cz" id="czScroll">
+      <header class="ph"><span class="ph__n">02</span><div><p class="ph__e">Customize</p><h2 class="ph__t">Rancang milik Anda</h2></div></header>
+      <div class="cz__base" id="czBase" hidden></div>
+      <nav class="tabs cz__tabs" id="czTabs" aria-label="Bagian customize"></nav>
+      <div class="cz__body" id="czBody"></div>
+      <div class="foot cz__foot" id="czFoot"></div>
+    </div>
+  </section>
+
+  <!-- MANUFAKTUR -->
+  <section class="pane" data-pane="manufaktur" aria-label="Manufaktur">
+    <div class="pane__scroll">
+      <header class="ph"><span class="ph__n">03</span><div><p class="ph__e">Manufaktur</p><h2 class="ph__t">Empat pabrik, satu standar</h2></div></header>
+      <p class="txt lede">Dari kayu mentah hingga kemasan, setiap tahap dikerjakan sendiri — tidak ada detail yang lolos.</p>
+      <ol class="stages" id="stages"></ol>
+      <button class="lnk" type="button" id="stageAll"><span>Lihat seluruh rute</span><svg><use href="#i-arrow"/></svg></button>
+      <div class="figs" id="figs">
+        <div><b data-count="4">0</b><span>Pabrik di Jawa</span></div>
+        <div><b data-count="30" data-suffix="+">0</b><span>Sofa per hari</span></div>
+        <div><b data-count="100" data-suffix="+">0</b><span>Item kecil per hari</span></div>
+        <div><b data-count="80" data-suffix="+">0</b><span>Pekerja &amp; kreatif</span></div>
+        <div><b data-count="3" data-prefix="1–">0</b><span>Hari kerja kirim</span></div>
+        <div><b data-count="3">0</b><span>Tahun garansi</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BISNIS -->
+  <section class="pane" data-pane="bisnis" aria-label="XIONCO for Business">
+    <div class="pane__scroll">
+      <header class="ph"><span class="ph__n">04</span><div><p class="ph__e">Bisnis</p><h2 class="ph__t">XIONCO for Business</h2></div></header>
+      <p class="txt lede">Produk custom, saran desain interior, kolaborasi, atau proyek B2B — penawaran dalam 1 jam.</p>
+      <ul class="services" id="services"></ul>
+      <div class="figs figs--4">
+        <div><b>1 jam</b><span>Penawaran</span></div>
+        <div><b>0%</b><span>Cicilan</span></div>
+        <div><b>3 thn</b><span>Garansi</span></div>
+        <div><b>1–3 hr</b><span>Pengiriman</span></div>
+      </div>
+      <form class="form" id="bform" novalidate>
+        <p class="sh"><span>Permintaan penawaran</span></p>
+        <div class="fgrid">
+          <label class="fld"><span>Nama</span><input id="fName" required autocomplete="name"></label>
+          <label class="fld"><span>WhatsApp</span><input id="fPhone" required inputmode="tel" autocomplete="tel"></label>
+          <label class="fld"><span>Jenis proyek</span><select id="fType"><option>Kantor</option><option>Hotel &amp; hospitality</option><option>Retail</option><option>Residensial</option><option>Lainnya</option></select></label>
+          <label class="fld"><span>Nilai proyek</span><select id="fValue"><option>&lt; IDR 50 juta</option><option>IDR 50–250 juta</option><option>IDR 250 juta – 1 M</option><option>&gt; IDR 1 M</option></select></label>
+          <label class="fld fld--full"><span>Kebutuhan (opsional)</span><textarea id="fNeed" rows="3"></textarea></label>
+        </div>
+        <button class="btn btn--gold btn--full" type="submit"><svg><use href="#i-wa"/></svg><span>Kirim via WhatsApp</span></button>
+        <p class="note" id="bNote">Pesan dikirim melalui WhatsApp resmi XIONCO.</p>
+      </form>
+      <p class="sh"><span>Dipercaya oleh</span></p>
+      <p class="clients" id="clients"></p>
+    </div>
+  </section>
+
+  <!-- GALERI -->
+  <section class="pane" data-pane="galeri" aria-label="Galeri">
+    <div class="pane__scroll">
+      <header class="ph"><span class="ph__n">05</span><div><p class="ph__e">Galeri</p><h2 class="ph__t">Ruang yang diwujudkan</h2></div></header>
+      <p class="gsets__h" id="galSetsH" hidden>Versi ruang</p>
+      <div class="gsets" id="galSets"></div>
+      <button class="btn btn--line btn--full gal__walk" id="galWalk" type="button" hidden><svg><use href="#i-frame"/></svg><span>Jelajahi ruang</span></button>
+      <div class="gal" id="gal"></div>
+    </div>
+  </section>
+
+  <!-- KONTAK -->
+  <section class="pane" data-pane="kontak" aria-label="Kontak">
+    <div class="pane__scroll">
+      <header class="ph"><span class="ph__n">06</span><div><p class="ph__e">Kontak</p><h2 class="ph__t">Mari wujudkan ruang Anda</h2></div></header>
+      <p class="txt lede">Tim kami siap membantu memilih, merancang, hingga mengirim — konsultasi privat tanpa biaya.</p>
+      <a class="btn btn--gold btn--full" data-wa="Halo XIONCO, saya ingin konsultasi privat." href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span>Konsultasi via WhatsApp</span></a>
+      <dl class="kv kv--contact">
+        <dt>Showroom</dt><dd>Jl. Ciputat Raya No. 8, Jakarta Selatan 12310</dd>
+        <dt>WhatsApp</dt><dd><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener">+62 822-4040-8055</a></dd>
+        <dt>Instagram</dt><dd><a href="https://www.instagram.com/xionco.official/" target="_blank" rel="noopener">@xionco.official</a></dd>
+        <dt>Toko online</dt><dd><a href="https://xionco.shop/" target="_blank" rel="noopener">xionco.shop</a></dd>
+      </dl>
+      <p class="links">
+        <a href="#/info/tentang">Tentang</a>
+        <a href="#/info/garansi">Garansi</a>
+        <a href="#/info/pengembalian">Pengembalian</a>
+        <a href="#/info/privasi">Privasi</a>
+        <a href="#/info/syarat">Syarat</a>
+      </p>
+      <p class="note">© 2026 PT Halim Inti Gahara</p>
+      <p class="note">Model 3D pihak ketiga (CC BY 4.0): <a href="https://sketchfab.com/3d-models/39d113d5868d473caf71e928d1d313a6" target="_blank" rel="noopener">Queen-bed</a> — lugher3d.com · <a href="https://sketchfab.com/3d-models/0e8e009f398249b9bc13e8ff7078530a" target="_blank" rel="noopener">Sofa Chair</a> — PatelDev · <a href="https://sketchfab.com/3d-models/c723fa0a1ac3478790192acdb39161b0" target="_blank" rel="noopener">Wall Light</a> — Lucas Garnier · <a href="https://sketchfab.com/3d-models/88e43eb5dc55498dace0bda014603b3d" target="_blank" rel="noopener">Executive Office Chair</a> — subhashssimon · <a href="https://sketchfab.com/3d-models/ac90b3ea2cc742a49405bec08d5ddcd4" target="_blank" rel="noopener">Table Lamp</a> — siotech2011 · <a href="https://sketchfab.com/3d-models/693529b6817a4632bc812394a48f06b0" target="_blank" rel="noopener">Old Desk Lamp</a> — Maxence Rouillet · <a href="https://sketchfab.com/3d-models/efab224280fd4c3993c808107f7c0b38" target="_blank" rel="noopener">Macbook Pro 13 inch 2020</a> — timblewee. Manikin skala: Blender Studio Human Base Meshes &amp; burning_barb (CC0).</p>
+    </div>
+  </section>
+
+  <!-- INFORMASI (27 Okt, pemilik): Tentang, Garansi, Pengembalian, Privasi, Syarat — isi dari kebijakan xionco.com yang sudah
+       tayang, disesuaikan dengan situs ini. Hal yang perlu dipastikan pemilik: Ledger XIONCO Informasi (informasi/ledger, :5182).
+       28 Okt: dibuka dari Pengaturan (bukan rel); tombol kembali ke Pengaturan. -->
+  <section class="pane" data-pane="info" aria-label="Informasi">
+    <div class="pane__scroll">
+      <button class="back info__back" type="button" data-go="setelan"><svg><use href="#i-back"/></svg><span>Pengaturan</span></button>
+      <header class="ph"><span class="ph__n"><svg><use href="#i-info"/></svg></span><div><p class="ph__e">Informasi</p><h2 class="ph__t">Tentang &amp; ketentuan</h2></div></header>
+      <nav class="tabs tabs--5" id="infoTabs" role="tablist" aria-label="Informasi">
+        <button type="button" role="tab" data-info="tentang"><i>01</i><span>Tentang</span></button>
+        <button type="button" role="tab" data-info="garansi"><i>02</i><span>Garansi</span></button>
+        <button type="button" role="tab" data-info="pengembalian"><i>03</i><span>Pengembalian</span></button>
+        <button type="button" role="tab" data-info="privasi"><i>04</i><span>Privasi</span></button>
+        <button type="button" role="tab" data-info="syarat"><i>05</i><span>Syarat</span></button>
+      </nav>
+
+      <article class="doc" data-info-doc="tentang" role="tabpanel">
+        <h3 class="doc__t">Tentang XIONCO</h3>
+        <p class="txt">XIONCO lahir dari satu pertanyaan: mengapa kualitas harus menjadi kemewahan? Kami merancang dan membuat sendiri furnitur minimalis yang tegas, jujur pada material, dan dibuat untuk dipakai lama — dari Jakarta, untuk rumah dan ruang kerja di seluruh Indonesia.</p>
+        <h4>Cara kami merancang</h4>
+        <p class="txt">Kejernihan bentuk, menahan diri, dan kejujuran material. Estetika monokrom kami berangkat dari geometri brutalis, tekstur industrial, dan kesederhanaan Skandinavia, dibaca dengan rasa Asia Tenggara. Prinsipnya sederhana: kami hanya merilis produk yang lebih baik dari yang sudah ada.</p>
+        <h4>Dibuat sendiri, di empat pabrik</h4>
+        <dl class="kv">
+          <dt>Jepara · Mantingan</dt><dd>Pengolahan kayu, pengeringan bahan baku, komponen</dd>
+          <dt>Cirendeu</dt><dd>Finishing, pengelasan, lini multiplek &amp; HPL</dd>
+          <dt>Pondok Pinang I</dt><dd>Jok &amp; pelapisan kain (upholstery)</dd>
+          <dt>Pondok Pinang II</dt><dd>Pemeriksaan &amp; pengemasan akhir</dd>
+          <dt>Kapasitas</dt><dd>30+ sofa atau 100 produk kecil per hari</dd>
+          <dt>Tim</dt><dd>80+ pengrajin &amp; kreatif</dd>
+        </dl>
+        <h4>Dipercaya</h4>
+        <p class="txt">Proyek untuk SOGO, H&amp;M, BRI, BCA, Trans7, Neo Soho, dan Forbes Indonesia — kantor, studio media, lobi publik, hingga rumah tinggal.</p>
+        <h4>Perusahaan</h4>
+        <dl class="kv">
+          <dt>Badan usaha</dt><dd>PT Halim Inti Gahara</dd>
+          <dt>Showroom</dt><dd>Jl. Ciputat Raya No. 8, Pondok Pinang, Jakarta Selatan 12310</dd>
+          <dt>WhatsApp</dt><dd><a data-wa="Halo XIONCO" href="#" target="_blank" rel="noopener">+62 822-4040-8055</a></dd>
+        </dl>
+      </article>
+
+      <article class="doc" data-info-doc="garansi" role="tabpanel" hidden>
+        <h3 class="doc__t">Garansi</h3>
+        <p class="txt">Setiap produk XIONCO dijamin baru dan bebas cacat produksi. Masa garansi dihitung sejak produk diterima dan berbeda menurut material:</p>
+        <dl class="kv kv--num">
+          <dt>Rangka kayu solid &amp; multiplek</dt><dd>3 tahun</dd>
+          <dt>Komponen logam (baja, aluminium, besi)</dt><dd>3 tahun</dd>
+          <dt>Engsel, rel &amp; hardware</dt><dd>3 tahun</dd>
+          <dt>Stainless &amp; komponen dapur</dt><dd>3 tahun</dd>
+          <dt>Busa high-density</dt><dd>2 tahun</dd>
+          <dt>Laminasi (HPL, multiboard)</dt><dd>2 tahun</dd>
+          <dt>Cermin akrilik</dt><dd>2 tahun</dd>
+          <dt>Kain &amp; tekstil jok</dt><dd>1 tahun</dd>
+        </dl>
+        <h4>Yang ditanggung</h4>
+        <ul class="doc__l">
+          <li>Rangka kayu retak, melengkung, atau terbelah pada pemakaian wajar di dalam ruangan.</li>
+          <li>Logam berkarat karena cacat produksi, sambungan las lepas, atau rangka patah.</li>
+          <li>Busa kehilangan bentuk atau kekenyalan secara nyata pada pemakaian rumah tangga.</li>
+          <li>Kain sobek pada pemakaian wajar, atau warna pudar melebihi kewajaran (bukan karena terpapar matahari langsung terus-menerus).</li>
+          <li>Laminasi mengelupas, menggelembung, atau berubah warna berat.</li>
+          <li>Cermin akrilik terkelupas lapisannya, buram, retak, atau terdistorsi karena produksi.</li>
+          <li>Engsel, rel, dan soft-close yang tidak berfungsi.</li>
+        </ul>
+        <h4>Yang tidak ditanggung</h4>
+        <ul class="doc__l">
+          <li>Keausan wajar karena pemakaian, termasuk cekungan busa kurang dari 10% tinggi aslinya.</li>
+          <li>Kerusakan karena kecelakaan, kelalaian, hewan peliharaan, benda tajam, bahan kimia, panas, atau air.</li>
+          <li>Variasi alami kayu — serat, warna, dan mata kayu — yang justru menjadi karakter material.</li>
+          <li>Produk yang diubah atau diperbaiki pihak selain XIONCO.</li>
+          <li>Pemakaian di luar ruangan, beban melebihi anjuran, atau perawatan yang tidak sesuai petunjuk.</li>
+          <li>Bencana alam dan keadaan kahar lainnya.</li>
+        </ul>
+        <h4>Cara klaim</h4>
+        <ol class="doc__l">
+          <li>Hubungi kami melalui WhatsApp paling lambat 7 hari setelah cacat ditemukan.</li>
+          <li>Sertakan nomor pesanan atau invoice, foto atau video bagian yang cacat, dan keterangan singkat.</li>
+          <li>Bila perlu, tim kami memeriksa di lokasi atau meminta produk dikirim untuk diperiksa.</li>
+          <li>Setelah klaim disetujui, kami memperbaiki, mengganti komponen, atau mengganti dengan material setara atau lebih baik bila material asli tidak lagi tersedia.</li>
+        </ol>
+        <p class="txt">Biaya perbaikan atau penggantian, termasuk pengiriman di dalam Indonesia, kami tanggung. Garansi berlaku untuk pembeli pertama dan tidak dapat dipindahtangankan.</p>
+      </article>
+
+      <article class="doc" data-info-doc="pengembalian" role="tabpanel" hidden>
+        <h3 class="doc__t">Pengembalian</h3>
+        <p class="txt">Bila produk tidak sesuai harapan Anda, ajukan pengembalian dalam <b>5 hari</b> sejak produk diterima. Produk harus dalam kondisi baru, belum dipakai, tanpa kerusakan, dan lengkap dengan kemasan asli serta aksesorisnya.</p>
+        <h4>Tidak dapat dikembalikan</h4>
+        <ul class="doc__l">
+          <li>Produk custom atau yang dibuat sesuai pesanan, termasuk rancangan dari Customize.</li>
+          <li>Produk clearance, obral, atau bagian dari program tukar promo.</li>
+          <li>Salah memilih warna atau varian oleh pembeli.</li>
+          <li>Produk yang rusak karena pemakaian atau perawatan yang tidak tepat, atau sudah diubah.</li>
+        </ul>
+        <h4>Cara mengajukan</h4>
+        <ol class="doc__l">
+          <li>Hubungi kami melalui WhatsApp dalam 5 hari sejak produk diterima.</li>
+          <li>Sebutkan nomor pesanan, produk, dan alasannya — sertakan foto bila ada kerusakan.</li>
+          <li>Anda menerima nomor pengembalian (RA) dari tim kami.</li>
+          <li>Kemas produk dalam kemasan asli bersama semua aksesoris dan buku petunjuk, lalu tempel nomor RA.</li>
+          <li>Kirim dengan jasa pengiriman yang dapat dilacak, dan simpan nomor resinya sampai dana kembali.</li>
+        </ol>
+        <h4>Ongkos kirim</h4>
+        <p class="txt">Ongkos kirim pengembalian ditanggung pembeli, kecuali produk cacat atau terjadi kesalahan dari pihak kami. Untuk penukaran, biaya kemasan dan pengiriman dapat dikenakan.</p>
+        <h4>Pengembalian dana</h4>
+        <p class="txt">Dana dikembalikan ke metode pembayaran semula, paling lambat 14 hari kerja setelah produk kami terima dan periksa — termasuk pajak dan biaya program perlindungan yang Anda bayar.</p>
+        <h4>Produk rusak saat diterima</h4>
+        <p class="txt">Hubungi kami segera dengan foto kerusakan. Kami mengganti, memperbaiki, atau mengembalikan dana tanpa biaya tambahan.</p>
+      </article>
+
+      <article class="doc" data-info-doc="privasi" role="tabpanel" hidden>
+        <h3 class="doc__t">Privasi</h3>
+        <p class="txt">Kami memakai data Anda hanya untuk melayani pesanan dan konsultasi Anda. Kami tidak menjual atau menyewakan data Anda kepada siapa pun. Kebijakan ini berlaku untuk situs Maison XIONCO, dikelola PT Halim Inti Gahara.</p>
+        <h4>Data yang kami terima</h4>
+        <ul class="doc__l">
+          <li>Data yang Anda isi saat memesan atau berkonsultasi: nama, nomor WhatsApp atau telepon, email, alamat pengiriman, dan catatan.</li>
+          <li>Isi pesanan dan rancangan custom Anda.</li>
+          <li>Sumber kunjungan (misalnya parameter iklan seperti utm_source) yang ikut tercatat bersama pesanan.</li>
+        </ul>
+        <h4>Tersimpan di perangkat Anda</h4>
+        <p class="txt">Tas belanja, rancangan, riwayat pesanan, dan pengaturan tampilan disimpan di browser perangkat ini, bukan di akun. Menghapus data situs di browser akan menghapusnya. Situs ini tidak memakai cookie iklan atau analitik pihak ketiga.</p>
+        <h4>Untuk apa data dipakai</h4>
+        <ul class="doc__l">
+          <li>Memproses pesanan, pembayaran, dan pengiriman.</li>
+          <li>Konfirmasi dan konsultasi melalui WhatsApp.</li>
+          <li>Layanan purnajual dan klaim garansi.</li>
+          <li>Informasi promosi — hanya bila Anda setuju.</li>
+          <li>Mencegah penipuan dan penyalahgunaan.</li>
+        </ul>
+        <h4>Pihak yang menerima data</h4>
+        <p class="txt">Kurir dan ekspedisi rekanan, penyedia pembayaran, dan penyedia layanan situs — hanya sebatas yang diperlukan dan untuk tujuan tersebut — serta aparat bila diwajibkan oleh hukum.</p>
+        <h4>Penyimpanan &amp; hak Anda</h4>
+        <p class="txt">Catatan transaksi kami simpan sesuai kewajiban pajak dan akuntansi. Anda berhak melihat, memperbaiki, meminta salinan, membatasi, atau menghapus data Anda, dan berhenti menerima promosi kapan saja — cukup hubungi kami melalui WhatsApp. Kami tidak dengan sengaja mengumpulkan data anak di bawah 13 tahun.</p>
+      </article>
+
+      <article class="doc" data-info-doc="syarat" role="tabpanel" hidden>
+        <h3 class="doc__t">Syarat &amp; ketentuan</h3>
+        <p class="txt">Dengan memesan melalui Maison XIONCO, Anda menyetujui syarat berikut. Penjual adalah PT Halim Inti Gahara, Jl. Ciputat Raya No. 8, Pondok Pinang, Jakarta Selatan.</p>
+        <h4>Harga &amp; produk</h4>
+        <ul class="doc__l">
+          <li>Harga dalam Rupiah, mengikuti xionco.shop, dan dapat berubah sewaktu-waktu.</li>
+          <li>Foto dan model 3D adalah gambaran. Warna di layar, serat kayu, dan tekstur kain dapat sedikit berbeda dari produk asli.</li>
+          <li>Kesalahan harga atau keterangan dapat kami koreksi, termasuk setelah pesanan dibuat. Bila Anda tidak ingin melanjutkan, pesanan dibatalkan dan dana kembali penuh.</li>
+        </ul>
+        <h4>Pemesanan &amp; pembayaran</h4>
+        <ul class="doc__l">
+          <li>Pesanan sah setelah dikonfirmasi tim kami. Kami dapat menolak atau membatalkan pesanan — misalnya bila ada indikasi penipuan — dengan pengembalian dana penuh.</li>
+          <li>Metode pembayaran yang tersedia ditampilkan saat pembayaran.</li>
+          <li>Transfer bank hanya ke rekening perusahaan: <b>BCA 498 884 4444</b> a.n. PT Halim Inti Gahara. Kami tidak pernah meminta transfer ke rekening pribadi.</li>
+        </ul>
+        <h4>Pengiriman</h4>
+        <dl class="kv">
+          <dt>Jabodetabek</dt><dd>Kurir XIONCO, gratis ongkir &amp; pemasangan standar, 1–4 hari kerja sejak pesanan siap</dd>
+          <dt>Luar Jabodetabek</dt><dd>Ekspedisi rekanan dari Jakarta Selatan, ongkir dibayar pembeli sesuai volume</dd>
+        </dl>
+        <p class="txt">Untuk luar Jabodetabek, estimasi ongkir diinformasikan sebelum dikirim; selisih dengan tagihan akhir umumnya di bawah Rp50.000. Packing kayu sangat disarankan — kerusakan dalam pengiriman tanpa packing kayu di luar tanggung jawab kami, tetapi kami membantu klaim asuransinya.</p>
+        <h4>Pesanan custom</h4>
+        <p class="txt">Harga di Customize adalah estimasi. Harga final, ukuran, material, dan jadwal produksi dikonfirmasi tim kami sebelum produksi dimulai. Produk custom tidak dapat dikembalikan, tetapi tetap mendapat garansi.</p>
+        <h4>Hak kekayaan intelektual</h4>
+        <p class="txt">Desain, foto, model 3D, dan merek di situs ini milik PT Halim Inti Gahara atau pemberi lisensinya (model 3D pihak ketiga tercantum di halaman Kontak). Penggunaan ulang memerlukan izin tertulis.</p>
+        <h4>Batas tanggung jawab</h4>
+        <p class="txt">Tanggung jawab kami terbatas pada perbaikan, penggantian, atau pengembalian dana sesuai Garansi dan Pengembalian. Kami tidak bertanggung jawab atas keterlambatan karena keadaan kahar seperti bencana alam, kerusuhan, atau gangguan di luar kendali kami.</p>
+        <h4>Hukum &amp; sengketa</h4>
+        <p class="txt">Syarat ini tunduk pada hukum Republik Indonesia. Sengketa diselesaikan secara musyawarah terlebih dahulu; bila tidak tercapai, melalui arbitrase sesuai UU No. 30 Tahun 1999, atau Pengadilan Negeri Jakarta.</p>
+      </article>
+      <p class="note doc__upd">Diperbarui 27 Oktober 2026 · PT Halim Inti Gahara</p>
+    </div>
+  </section>
+
+  <!-- TAS -->
+  <section class="pane" data-pane="penawaran" aria-label="Penawaran">
+    <div class="pane__scroll">
+      <header class="ph"><span class="ph__n"><svg><use href="#i-card"/></svg></span><div><p class="ph__e">Penawaran khusus</p><h2 class="ph__t" id="qT">Memuat penawaran…</h2></div></header>
+      <div id="qBody"></div>
+    </div>
+  </section>
+
+  <section class="pane" data-pane="tas" aria-label="Tas belanja">
+    <div class="pane__scroll pane__scroll--foot">
+      <header class="ph"><span class="ph__n"><svg><use href="#i-bag"/></svg></span><div><p class="ph__e">Tas belanja</p><h2 class="ph__t">Tas Anda <em id="bagItems">0</em></h2></div></header>
+      <ul class="list" id="bagList"></ul>
+      <div class="empty-card" id="bagEmpty"><p class="txt">Tas masih kosong.</p><div class="btns"><a class="btn btn--line" href="#/koleksi" data-go="koleksi"><span>Lihat koleksi</span></a><a class="btn btn--line" href="#/customize" data-go="customize"><span>Customize</span></a></div></div>
+      <div class="foot" id="bagFoot">
+        <dl class="kv kv--sum"><dt>Subtotal</dt><dd id="bagTotal">IDR 0</dd></dl>
+        <p class="note">Ongkir &amp; pemasangan dihitung di checkout sesuai alamat.</p>
+        <button class="btn btn--gold btn--full" id="bagCheckout" type="button"><svg><use href="#i-card"/></svg><span>Checkout</span></button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- PENGATURAN -->
+  <section class="pane" data-pane="setelan" aria-label="Pengaturan">
+    <div class="pane__scroll">
+      <header class="ph"><span class="ph__n"><svg><use href="#i-gear"/></svg></span><div><p class="ph__e">Pengaturan</p><h2 class="ph__t">Tampilan &amp; informasi</h2></div></header>
+      <div class="rows">
+        <div class="row"><span>Bahasa</span><div class="seg" id="setLang"><button type="button" data-lang="id">Indonesia</button><button type="button" data-lang="en">English</button></div></div>
+        <div class="row"><span>Tema</span><div class="seg" id="setTheme"><button type="button" data-theme="dark">Gelap</button><button type="button" data-theme="light">Terang</button></div></div>
+        <div class="row"><span>Pencahayaan</span><div class="seg" id="setMood"><button type="button" data-mood="siang">Siang</button><button type="button" data-mood="senja">Senja</button><button type="button" data-mood="malam">Malam</button><button type="button" data-mood="manual">Manual</button></div></div>
+        <div class="row"><span>Background</span><div class="seg" id="setBg"><button type="button" data-bg="default">Default</button><button type="button" data-bg="studio">Studio</button><button type="button" data-bg="classic">Classic</button><button type="button" data-bg="grid">Garis</button></div></div>
+        <div class="bgc" id="setBgC" hidden></div>
+        <div class="row"><span title="Pantulan di lantai panggung">Refleksi lantai</span><div class="seg" id="setRefl"><button type="button" data-refl="0">Off</button><button type="button" data-refl="1">Low</button><button type="button" data-refl="2">Mid</button><button type="button" data-refl="3">High</button></div></div>
+        <div class="row"><span>Efek render</span><div class="seg" id="setLook"><button type="button" data-look="classic">Klasik</button><button type="button" data-look="real">Realistis</button></div></div>
+        <div class="row"><span>Info layout</span><div class="seg" id="setCzl"><button type="button" data-czl="1" title="Semua pilihan di panel kanan">I</button><button type="button" data-czl="2" title="Pilihan panjang di kotak sebelah panel">II</button><button type="button" data-czl="3" title="Cermin II: sidebar kanan, panel kiri">III</button></div></div>
+        <div class="row"><span title="Pembanding ukuran: pria 170 cm · wanita 160 cm · anak 110 cm">Pembanding</span><div class="seg" id="setHuman"><button type="button" data-hum="0">Tanpa</button><button type="button" data-hum="pria">Pria</button><button type="button" data-hum="wanita">Wanita</button><button type="button" data-hum="anak">Anak</button></div></div>
+        <div class="row"><span title="Otomatis: mulai ringan, naik ke kualitas penuh bila perangkat lancar">Grafis</span><div class="seg" id="setGfx"><button type="button" data-gfx="auto">Otomatis</button><button type="button" data-gfx="lite">Ringan</button><button type="button" data-gfx="hd">Tinggi&#8288;</button></div></div>
+        <div class="row row--hd"><span title="Simpan semua model 3D & tekstur di perangkat agar tampil seketika">Paket HD</span><div class="hd"><button class="hd__btn" type="button" id="setHd">Unduh</button><button class="hd__rm" type="button" id="setHdRm" hidden>Hapus</button></div></div>
+        <div class="hdbar" id="setHdBar" hidden><i></i></div>
+        <div class="row"><span title="Basic: lebar, dalam, tinggi · Advance: semua ukuran (dudukan, kaki, lengan, tebal top …) dari data toko dan diukur dari model 3D">Ukuran</span><div class="seg" id="setDims"><button type="button" data-dims="0">Off</button><button type="button" data-dims="1">Basic</button><button type="button" data-dims="2">Advance</button></div></div>
+      </div>
+      <div class="lights" id="setLights" hidden></div>
+      <!-- 28 Okt (pemilik): "informasi masukan di dalam pengaturan" — Informasi tidak lagi di rel; tiap bagian membuka panel #/info/<bagian> -->
+      <p class="sh setinfo__h"><span>Informasi</span></p>
+      <nav class="setinfo" aria-label="Informasi">
+        <a href="#/info/tentang"><span>Tentang</span><em>Cerita, pabrik &amp; perusahaan</em><svg><use href="#i-arrow"/></svg></a>
+        <a href="#/info/garansi"><span>Garansi</span><em>Masa jaminan per material</em><svg><use href="#i-arrow"/></svg></a>
+        <a href="#/info/pengembalian"><span>Pengembalian</span><em>Retur 5 hari &amp; dana kembali</em><svg><use href="#i-arrow"/></svg></a>
+        <a href="#/info/privasi"><span>Privasi</span><em>Data yang kami terima &amp; simpan</em><svg><use href="#i-arrow"/></svg></a>
+        <a href="#/info/syarat"><span>Syarat</span><em>Harga, bayar, kirim &amp; custom</em><svg><use href="#i-arrow"/></svg></a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- PROFIL -->
+  <section class="pane" data-pane="ruang" aria-label="Ruang">
+    <div class="pane__scroll">
+      <header class="ph"><span class="ph__n"><svg><use href="#i-room"/></svg></span><div><p class="ph__e">Ruang</p><h2 class="ph__t">Tata beberapa furnitur</h2></div></header>
+      <p class="txt" style="margin:-6px 0 16px">Furnitur yang Anda tambahkan tampil bersama di panggung. Geser di panggung untuk memindahkan (menempel ke grid, tembok & furnitur lain; tahan Alt untuk bebas); klik tengah di furnitur untuk memutar, di latar untuk menggeser tampilan. Ketuk tembok, lantai atau plafon untuk mengubahnya.</p>
+      <button class="btn btn--line btn--full cbx-gbtn" type="button" id="roomAddBtn" aria-controls="roomAddBox"><svg><use href="#i-plus"/></svg><span>Tambah barang</span></button>
+      <div class="cbx-g" id="roomShell"></div>
+      <div class="cbx-g" id="roomPre"></div>
+      <ul class="list" id="roomList"></ul>
+      <div class="empty-card" id="roomEmpty"><p class="txt">Ruang masih kosong. Pilih preset atau tambah barang.</p></div>
+      <div class="foot" id="roomFoot" hidden><div class="co-total"><span class="eyebrow">Total ruang</span><b class="price" id="roomTotal"></b></div><button class="btn btn--ghost btn--full" type="button" id="roomClear"><span>Kosongkan ruang</span></button></div>
+    </div>
+  </section>
+
+  <section class="pane" data-pane="cubix" aria-label="Konfigurasi CUBIX">
+    <div class="pane__scroll">
+      <header class="ph"><span class="ph__n"><svg><use href="#i-cube"/></svg></span><div><p class="ph__e">CUBIX</p><h2 class="ph__t">Konfigurasi</h2></div></header>
+      <p class="txt" style="margin:-6px 0 16px">Tambahkan modul lalu geser di panggung — modul menempel satu sama lain. Ketuk modul untuk memutar, membalik atau menghapus.</p>
+      <button class="btn btn--line btn--full cbx-gbtn" type="button" id="cbxGridBtn" aria-controls="cbxGrid"><svg><use href="#i-grid"/></svg><span>Grid layout</span></button>
+      <div id="cbxBody"></div>
+      <div class="foot" id="cbxFoot"><div class="co-total"><span class="eyebrow">Total</span><b class="price" id="cbxTotal"></b></div><p class="cbx-save" id="cbxSave"></p>
+        <div class="cbx-acts"><button class="btn btn--line btn--ic" type="button" id="cbxRoom" title="Ke ruang" aria-label="Ke ruang"><svg><use href="#i-room"/></svg></button><button class="btn btn--gold btn--full" type="button" id="cbxBag"><svg><use href="#i-bag"/></svg><span>Ke tas</span></button></div></div>
+    </div>
+  </section>
+
+  <section class="pane" data-pane="profil" aria-label="Profil">
+    <div class="pane__scroll">
+      <header class="ph"><span class="ph__n" id="pfAvatar"><svg><use href="#i-user"/></svg></span><div><p class="ph__e">Profil</p><h2 class="ph__t" id="pfTitle">Akun Anda</h2></div></header>
+      <div id="pfBody"></div>
+    </div>
+  </section>
+</aside>
+
+<!-- Filter Koleksi: kategori xionco.shop bergambar di kotak samping panel -->
+<aside class="adv kfb" id="kFltBox" aria-hidden="true">
+  <div class="kfb__h"><p class="eyebrow">Filter</p><button type="button" class="kfb__reset" id="kFltReset">Reset</button></div>
+  <div id="kFltBody"></div>
+</aside>
+
+<!-- Advance (halaman produk): Ke ruang & Tanya di kotak samping panel -->
+<aside class="adv" id="pdAdvBox" aria-hidden="true" data-mode="adv">
+  <!-- urutan: ukuran (model 3D asli) → semua varian → warna kain & bantal (CUBIX) → warna kaki & base (tertutup) → Customize / Ke ruang / Tanya -->
+  <div class="adv__main">
+  <p class="eyebrow">Advance</p>
+  <div class="pc" id="pdPc" hidden></div>
+  <div class="adv__var" id="pdAdvVar"></div>
+  <div class="adv__var" id="pdAdvSub"></div>
+  <div class="adv__var" id="pdAdvCbx"></div>
+  <div class="pc pc--m" id="pdPcM" hidden></div>
+  <button class="adv__o" type="button" id="pdCustom"><svg><use href="#i-ruler"/></svg><span><b id="pdCustomT">Sesuaikan</b><em id="pdCustomE">Ukuran &amp; warna kaki</em></span></button>
+  <button class="adv__o" type="button" id="pdCfg" hidden><svg><use href="#i-cube"/></svg><span><b>Konfigurasi</b><em>Susun modul CUBIX</em></span></button>
+  <button class="adv__o" type="button" id="pdRoom"><svg><use href="#i-room"/></svg><span><b>Ke ruang</b><em>Tata di ruangan Anda</em></span></button>
+  <a class="adv__o" id="pdWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span><b id="pdWaText">Tanya</b><em>Chat WhatsApp XIONCO</em></span></a>
+  </div>
+</aside>
+
+<!-- Customize Box 2: pilihan lebih dari 4 tampil di kotak kiri panel -->
+<aside class="picker" id="czPicker" aria-hidden="true">
+  <button class="panel__close" type="button" data-pick-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+  <p class="eyebrow" id="czPickE"></p>
+  <p class="pane__t" id="czPickT"></p>
+  <div class="cz-grid" id="czPickGrid"></div>
+</aside>
+
+<!-- pop-up tengah: rincian estimasi & kirim rancangan -->
+<!-- CHECKOUT: kotak besar di tengah (overlay), 3 kolom — kontak & alamat · pengiriman & pembayaran · ringkasan (payment gateway: js/pay.js) -->
+<div class="co-ov" id="coOv" role="dialog" aria-modal="true" aria-label="Checkout" aria-hidden="true">
+  <div class="co-ov__bg" data-co-close></div>
+  <div class="co-ov__box">
+    <header class="co-ov__h"><span class="ph__n"><svg><use href="#i-card"/></svg></span><div><p class="ph__e">Checkout</p><h2 class="ph__t">Selesaikan pesanan</h2></div>
+      <button class="co-ov__x" type="button" data-co-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button></header>
+    <div class="co-ov__scroll" id="payScroll"><div id="coBody"></div></div>
+  </div>
+</div>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal__box" role="dialog" aria-modal="true">
+    <button class="panel__close" type="button" data-modal-close aria-label="Tutup"><svg><use href="#i-close"/></svg></button>
+    <div class="modal__body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="mlabels" id="mLabels" aria-hidden="true"></div>
+<div class="dim" id="dim" aria-hidden="true"><i></i><span id="dimText">248 cm</span></div>
+<svg class="dims" id="dims" aria-hidden="true"></svg>
+<svg class="dims dims--hum" id="humLine" aria-hidden="true"></svg>
+<div class="dimcard" id="dimCard" aria-hidden="true"></div>
+<p class="notice" id="notice" role="status" aria-live="polite"></p>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script>
+  (function (w, d) {
+    var u = 'https://unpkg.com/', t = 'three@0.147.0/';
+    if (!w.THREE) ['build/three.min.js', 'examples/js/geometries/RoundedBoxGeometry.js', 'examples/js/environments/RoomEnvironment.js', 'examples/js/controls/OrbitControls.js']
+      .forEach(function (f) { d.write('<script src="' + u + t + f + '"><\/script>'); });
+    if (!w.gsap) d.write('<script src="' + u + 'gsap@3.13.0/dist/gsap.min.js"><\/script>');
+  })(window, document);
+</script>
+<script src="js/data.js"></script>
+<script src="js/catalog.js"></script>
+<script src="../shared/db.js"></script>
+<script src="js/cutout.js"></script>
+<script src="js/texlib-extra.js"></script>
+<script src="js/texlib.js"></script>
+<script src="js/world.js"></script>
+<script src="js/galeri3d.js"></script>
+<script src="js/custom-spec.js"></script>
+<script src="js/spec-meja.js"></script>
+<script src="js/spec-kabinet.js"></script>
+<script src="js/spec-divan.js"></script>
+<script>
+  /* pembuat model 3D Customize (±440 KB) tidak dimuat di awal: diunduh saat pertama dibutuhkan
+     atau di belakang layar setelah halaman siap (app.js). Urutan tetap: parts → maker → mk-*. */
+  (function () {
+    var P = null, FILES = ['js/parts.js', 'js/maker.js', 'js/mk-meja.js', 'js/mk-kabinet.js', 'js/mk-divan.js'];
+    window.XNeedMaker = function () {
+      if (!P) P = FILES.reduce(function (pr, f) { return pr.then(function () { return new Promise(function (ok, no) { var s = document.createElement('script'); s.src = f; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }); }, Promise.resolve());
+      P.catch(function () { P = null; });
+      return P;
+    };
+  })();
+</script>
+<script src="js/i18n.js"></script>
+<script src="js/logos.js"></script>
+<script src="js/pay.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script src="js/price-submit.js"></script>
+</body>
+</html>
