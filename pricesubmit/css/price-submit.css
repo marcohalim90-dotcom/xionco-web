@@ -39,6 +39,11 @@ html.ps .top__logo { pointer-events: none; }
 @media (hover: hover) and (pointer: fine) { .psbase:hover { background: var(--gold-a); } }
 
 @media (max-width: 1100px) { .psbox { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .psbox__k { grid-column: 1 / -1; } }
+/* kotak sempit (mengikuti lebar kotak deskripsi, mis. saat kotak "Lihat semua" terbuka): 2 kolom, bisa digulir */
+.psbox.is-narrow { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 10px; overflow-y: auto; overscroll-behavior: contain; }
+.psbox.is-narrow .psbox__k, .psbox.is-narrow .psbox__f--p, .psbox.is-narrow .psbox__f--n { grid-column: 1 / -1; }
+.psbox.is-narrow .psbox__f--n textarea { height: 44px; }
+.psbox.is-narrow .psbox__a { min-width: 0; }
 @media (max-width: 760px) {
   .psbox { z-index: 60; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 10px; padding: 12px 40px 12px 14px; overflow-y: auto; overscroll-behavior: contain; }
   .psbox__k { grid-column: 1 / -1; }

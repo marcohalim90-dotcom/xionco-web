@@ -55,6 +55,7 @@
     if (!r || !r.width) { box.style.transform = 'translate3d(16px,' + (vh - box.offsetHeight - 16) + 'px,0)'; return; }
     var w = Math.min(Math.max(r.width, 320), vw - 24), x = Math.max(12, Math.min(vw - w - 12, r.left + (r.width - w) / 2));
     box.style.width = w + 'px';
+    if (box.classList.contains('is-narrow') !== (w < 680)) box.classList.toggle('is-narrow', w < 680);   // kotak deskripsi menyempit saat kotak "Lihat semua" terbuka → isi kotak harga 2 kolom
     var above = r.top + r.height / 2 > vh / 2, y0 = above ? 8 : r.bottom + gap, lim = above ? r.top - gap - 8 : vh - y0 - 8;
     var pn = document.getElementById('panel'), pr = pn && pn.getBoundingClientRect();   // ponsel: lembar Customize di bawah — kotak berhenti di atasnya
     if (!above && pr && pr.height && pr.top > y0 + 120) lim = Math.min(lim, pr.top - y0 - 8);
@@ -145,15 +146,14 @@
     loading = pr; pr.sub = sub;
     return pr;
   }
-  function cardKey(el, c) {
-    var lay = el.getAttribute('data-lay');
-    if (lay) { var m = lay.split(':'); return m.length === 2 && !/^(col|cols|wr)$/.test(m[0]) ? { grp: 'lay.' + m[0], opt: m[1] } : null; }   // pilih kolom / tambah-kurang kolom / lebar = navigasi, bukan harga
-    var g = el.closest('[data-g]'), v = el.getAttribute('data-v');
-    if (!g || v == null) return null;
-    var id = g.getAttribute('data-g');
-    if (id === '_cat' || id === '_sub') return null;
-    return { grp: id, opt: v, ctx: id === 'color' ? c.uph : '' };
+  // kunci kartu dari atributnya (dibaca saat klik: kotak "Lihat semua" menggambar ulang isinya sesudah memilih, kartu lama lepas dari halaman)
+  function cardInfo(el) { var g = el.closest('[data-g]'); return { lay: el.getAttribute('data-lay'), gid: g && g.getAttribute('data-g'), v: el.getAttribute('data-v'), title: el.getAttribute('title') }; }
+  function keyFrom(f, c) {
+    if (f.lay) { var m = f.lay.split(':'); return m.length === 2 && !/^(col|cols|wr)$/.test(m[0]) ? { grp: 'lay.' + m[0], opt: m[1] } : null; }   // pilih kolom / tambah-kurang kolom / lebar = navigasi, bukan harga
+    if (!f.gid || f.v == null || f.gid === '_cat' || f.gid === '_sub') return null;
+    return { grp: f.gid, opt: f.v, ctx: f.gid === 'color' ? c.uph : '' };
   }
+  function cardKey(el, c) { return keyFrom(cardInfo(el), c); }
   function mark() {
     var c = P.cz(); if (!c || subOf(c) !== savedSub) return;
     document.querySelectorAll('.cz-card, .cz-o').forEach(function (el) {
@@ -168,13 +168,13 @@
     if (e.target.closest('#psBox')) return;
     var el = e.target.closest('.cz-card, .cz-o, [data-lay]');
     if (!el || el.hasAttribute('data-pick') || el.hasAttribute('data-exp') || !el.closest('#panel, #czPicker, .picker, .cz')) return;
-    var g = el.closest('[data-g]'), gid = g && g.getAttribute('data-g');
+    var f = cardInfo(el);   // sekarang, sebelum Customize menggambar ulang kartunya
     setTimeout(function () {   // pilihan diterapkan dulu oleh Customize, lalu kotak dibuka
       var c = P.cz(); if (!c) return;
-      if (gid === '_cat' || gid === '_sub') { openBase(); return; }
-      var k = cardKey(el, c); if (!k) return;
+      if (f.gid === '_cat' || f.gid === '_sub') { openBase(); return; }
+      var k = keyFrom(f, c); if (!k) return;
       var gr = /^lay\./.test(k.grp) ? null : group(c, k.grp), o = gr ? XC.opts(gr, c).filter(function (x) { return String(x.id) === String(k.opt); })[0] : null;
-      k.label = gr ? L(gr) + ' · ' + (o ? L(o) : k.opt) : (LAY[k.grp] ? T(LAY[k.grp]) + ' · ' : '') + (el.getAttribute('title') || k.opt);
+      k.label = gr ? L(gr) + ' · ' + (o ? L(o) : k.opt) : (LAY[k.grp] ? T(LAY[k.grp]) + ' · ' : '') + (f.title || k.opt);
       openCard(k);
     }, 0);
   }, true);
