@@ -923,7 +923,9 @@
       var shell = /^(tight|low|camel|wavy|scallop|sloping|bolster)$/.test(back), loose = back === 'cushion' || back === 'pillow', floatB = back === 'floating';
       if (back === 'scallop') BT = 'channelV';
       if (BT !== 'plain' && loose && !/^(button|channelH|biscuit)$/.test(BT)) BT = BT === 'diamond' ? 'button' : 'channelH';
-      var Hb = back === 'low' ? Math.min(H, SH + Math.max(.16, (H - SH) * .55)) : H, HbS = woodF && back !== false ? Hb - .035 : Hb;
+      var Hb = back === 'low' ? Math.min(H, SH + Math.max(.16, (H - SH) * .55)) : H, HbS = woodF && back !== false && !loose ? Hb - .035 : Hb;
+      // C115 (pemilik): rangka penopang sandaran selalu lebih rendah dari bantal sandaran lepas (bantal menonjol 6–12 cm di atasnya)
+      var HbF = loose ? HbS - Math.max(.06, Math.min(.12, (HbS - SH) * .25)) : HbS;
       var varies = /^(camel|wavy|scallop|sloping)$/.test(back), lanes = back === 'scallop' ? Math.max(3, Math.round(li / .155)) : 0;
       var topF = varies ? XP.backTop(back, li, HbS, { n: o.n, lanes: lanes, SH: SH, side: o.slopeSide || 1 }) : null, topAt = topF ? function (x) { return topF(x - cx); } : function () { return HbS; };
       var tight = o.seatC === 'tight', contChan = shell && !varies && BT === 'channelV' && STF === 'channel' && (tight || o.seatC === 'bench');
@@ -966,7 +968,7 @@
           if (th > thX) { ft += (th - thX) / Math.cos(a); bz = -D / 2 + ft; zSB = bz; }
           else if (th < thN) { ft = Math.max(.07, ft - (thN - th) / Math.cos(a)); bz = -D / 2 + ft; zSB = bz; }
           th = Math.max(.14, Math.min(.24, th));
-          box(g, li + .002, HbS - y0, ft, F2, cx, y0 + (HbS - y0) / 2, -D / 2 + ft / 2, .03);
+          box(g, li + .002, HbF - y0, ft, F2, cx, y0 + (HbF - y0) / 2, -D / 2 + ft / 2, .03);   // rangka penopang (C115: di bawah puncak bantal)
           var hg = (HbS - .012 - yb - th * Math.sin(a)) / Math.cos(a), cyB = yb + th / 2 * Math.sin(a) + hg / 2 * Math.cos(a), czB = bz + th / 2 * Math.cos(a) + hg / 2 * Math.sin(a) - rB * .25;
           var zbf = czB + th / 2 * Math.cos(a) + hg / 2 * Math.sin(a), ybf = yb + th * Math.sin(a);
           faceZ = function (y) { return zbf - (y - ybf) * ta; };
@@ -983,12 +985,12 @@
       var chanArm = BT === 'channelV' && shell && !varies;
       var armAt = function (side) {
         var has = side < 0 ? o.armL : o.armR, corner = side < 0 ? o.cornerL : o.cornerR, xo = side * len / 2, w = side < 0 ? awL : awR;
-        if (woodF) { woodArm(g, side, xo, w, D, y0, has ? Math.min(o.armH, Hb) : y0, { infill: armSt === 'cane' ? 'cane' : /^(wood|none)$/.test(armSt) ? null : 'uph', rearH: back !== false ? Hb - .035 : null, noRest: !has }); return; }
+        if (woodF) { woodArm(g, side, xo, w, D, y0, has ? Math.min(o.armH, Hb) : y0, { infill: armSt === 'cane' ? 'cane' : /^(wood|none)$/.test(armSt) ? null : 'uph', rearH: back !== false ? (loose ? HbF : Hb) - .035 : null, noRest: !has }); return; }
         if (has) sofaArm(g, F2, ST, armSt, side, xo, w, D, y0, armTop(o, Hb), 0, chanArm, yS, { nails: nails, woodEnd: woodEnd, armTuft: BT === 'diamond' && /^(scroll|rolled|english)$/.test(armSt) ? 'diamond' : null });
         else if (corner) sofaArm(g, F2, ST, 'corner', side, xo, w, D, y0, Hb, 0, chanArm, yS, {});
       };
       armAt(-1); armAt(1);
-      if (woodF && back !== false) box(g, len - .03, .035, .05, WOOD(), 0, Hb - .0175, -D / 2 + .03, .008);   // rel atas sandaran kayu
+      if (woodF && back !== false) box(g, len - .03, .035, .05, WOOD(), 0, (loose ? HbF : Hb) - .0175, -D / 2 + .03, .008);   // rel atas sandaran kayu (C115: bantal lepas menonjol di atasnya)
       // bantal hias, bolster, bola
       var btnB = /^(button|diamond)$/.test(BT) ? .009 : 0, btnS = STF === 'button' ? .008 : 0;
       var pl = o.pill, ySp = (contChan ? SH : (tight ? yS + cr * .2 : yS + cr * .15)) + btnS;
@@ -1235,10 +1237,11 @@
       // ujung naik (lengan / sandaran rebah) memakai profil sandaran sofa yang diputar 90°
       var te = .2, endAt = function (s, Hh, recl) {
         var gE = new T.Group(), Dl = 2 * te, zfB = -Dl / 2 + te + (Hh - yS) * Math.tan(recl) * .5, li = mz1 - mz0;
-        var bs = backShell(gE, F, ST, 0, li, Dl, y0, yS, function () { return Hh; }, zfB, Math.tan(recl), BTe === 'plain' ? 'plain' : BTe, { F2: F2 });
+        var cushE = s === (form === 'onearmR' ? 1 : -1) && bk === 'end' && /^onearm/.test(form), HhS = cushE ? Hh - Math.max(.06, Math.min(.12, (Hh - yS) * .25)) : Hh;   // C115: ujung penopang di bawah puncak bantal lepas
+        var bs = backShell(gE, F, ST, 0, li, Dl, y0, yS, function () { return HhS; }, zfB, Math.tan(recl), BTe === 'plain' ? 'plain' : BTe, { F2: F2 });
         gE.rotation.y = s < 0 ? Math.PI / 2 : -Math.PI / 2; gE.position.set(s < 0 ? mx0 + Dl / 2 : mx1 - Dl / 2, 0, (mz0 + mz1) / 2); g.add(gE);
-        if (s === (form === 'onearmR' ? 1 : -1) && bk === 'end' && /^onearm/.test(form)) {   // bantal sandaran lepas bersandar di ujung
-          var th = .12, hg = Math.max(.2, Hh - yS - .1), yb = yS - .002, cyE = yb + hg / 2 * Math.cos(recl) + th / 2 * Math.sin(recl), czE = zfB - (cyE - yS) * Math.tan(recl) + th / 2 / Math.cos(recl) - .001;
+        if (cushE) {   // bantal sandaran lepas bersandar di ujung, puncaknya setinggi total
+          var th = .12, hg = Math.max(.2, Hh - .012 - yS), yb = yS - .002, cyE = yb + hg / 2 * Math.cos(recl) + th / 2 * Math.sin(recl), czE = zfB - (cyE - yS) * Math.tan(recl) + th / 2 / Math.cos(recl) - .001;
           cushion(gE, li - .08, th, hg, F, 0, cyE, czE, fo(FL, { r: .035, cr: .008, bu: .004, sag: 0, wr: 0, st: ST, rx: Math.PI / 2 - recl, tuft: tuftOf(BTe === 'channelH' ? 'channelH' : BTe, 'back') }));
           zfB += th / Math.cos(recl) * .85;
         }
@@ -1422,7 +1425,7 @@
     function woodLounge(o, W, D, style, np, pm) {
       var Wd = WOOD(), F = FAB(), FL = o.fill, bw = .04, bt = .045, xs = W / 2 - bw / 2, ah = Math.min(o.armH, o.H - .08), SH = o.SH, ch = Math.max(.1, (.12 + FL.dh) * FL.hk), yR = SH - ch;
       var zf = D / 2 - .05, zb = -D / 2 + .06, bars = [], B = function (a2, b2, w0, t0, w1, t1, up) { bars.push(XP.bar(a2, b2, w0, t0, .007, { w1: w1 || w0, t1: t1 || t0, up: up })); };
-      var backTop = o.H;
+      var backTop = o.back === 'cane' ? o.H : o.H - Math.max(.06, Math.min(.12, (o.H - o.SH) * .25));   // C115: rel atas rangka di bawah puncak bantal sandaran
       if (style === 'zframe') {
         [-1, 1].forEach(function (s) { var x = s * xs; B([x, ah - .015, zb - .02], [x, ah - .015, zf + .046], bt, .03, bt, .03, [1, 0, 0]); B([x, ah - .03, zf], [x, .036, zb + .02], bt, bw, bt * .8, bw, [1, 0, 0]); B([x, .0235, zb - .01], [x, .0235, zf + .02], bt, .04, bt, .04, [1, 0, 0]); if (feet) feet.push([x, zb], [x, zf]); });
       } else if (style === 'compass') {
@@ -1443,7 +1446,7 @@
       // bantal duduk & sandaran (bantal lepas)
       var sw = 2 * xs - bw - .012, sd = zfr - zbr + .02;
       cushion(root, sw, ch, sd, F, 0, yR + ch / 2, (zfr + zbr) / 2 + .01, fo(FL, { st: o.st, tuft: tuftOf(o.seatTuft, 'seat') }));
-      var bh = yBt - .03 - (SH + .02), bth = .11;
+      var bh = o.H - .012 - (SH + .02), bth = .11;   // C115: bantal sandaran sampai tinggi total, menonjol di atas rel rangka
       if (o.back !== 'cane') {
         var by = SH + .02 + bh / 2 * Math.cos(recl), bz = zbr - (by - yR) * Math.tan(recl) + bth / 2 / Math.cos(recl) + .02;
         cushion(root, sw - .02, bth, bh, F, 0, by, bz, fo(FL, { r: .035, cr: .01, bu: .004, sag: 0, st: o.st, rx: Math.PI / 2 - recl, tuft: tuftOf(o.backTuft, 'back') }));
