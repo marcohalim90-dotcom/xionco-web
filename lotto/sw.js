@@ -1,7 +1,7 @@
 // Service worker /lotto/: aplikasi undian tetap jalan tanpa internet setelah dibuka sekali.
 // Strategi: tampilkan dari cache (cepat & offline), lalu perbarui cache di belakang layar.
 // Revisi file terlihat pada pembukaan berikutnya. Ganti VERSION bila daftar file berubah.
-const VERSION = 'xionco-lotto-1';
+const VERSION = 'xionco-lotto-2';
 const FILES = ['./', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

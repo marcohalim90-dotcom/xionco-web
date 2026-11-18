@@ -196,6 +196,15 @@ dialog::backdrop{background:rgba(2,2,5,.78)}
 .btn-danger{background:var(--bad);border-color:var(--bad);color:#1a0603;font-weight:800}
 .btn-danger:hover{background:#ff9184}
 .btns{display:flex;gap:10px;flex-wrap:wrap}
+.toggles{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.tg{position:relative;display:inline-flex;align-items:center;gap:12px;height:48px;padding:0 18px 0 12px;border-radius:999px;border:1px solid var(--line-2);font-size:15px;font-weight:500;color:var(--ink-2);cursor:pointer}
+.tg input{position:absolute;opacity:0;pointer-events:none}
+.tg-ui{position:relative;width:44px;height:26px;border-radius:999px;background:var(--dim-2);border:1px solid var(--line-2);transition:background .2s,border-color .2s}
+.tg-ui::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--muted);transition:transform .25s var(--ease-out),background .2s}
+.tg input:checked + .tg-ui{background:#1c1626;border-color:rgba(255,181,71,.7);box-shadow:0 0 12px rgba(255,181,71,.25)}
+.tg input:checked + .tg-ui::after{transform:translateX(18px);background:var(--amber)}
+.tg input:focus-visible + .tg-ui{outline:2px solid var(--amber);outline-offset:3px}
+.tg:has(input:checked){color:var(--ink)}
 .meta{margin:10px 0 0;font-size:14px;font-weight:500;color:var(--ink-2)}
 .meta.warn{color:var(--amber)}
 .gold{color:var(--amber)}
@@ -355,6 +364,16 @@ dialog.ask[open] .ask-ic{animation:askShake .5s .15s ease-in-out}
         <button class="btn btn-gold" id="pdf">Download PDF kartu</button>
         <button class="btn" id="csv">Download daftar (.csv)</button>
       </div>
+    </div>
+    <div class="d-sec">
+      <h3>Suara &amp; getar</h3>
+      <p class="desc">Bunyi kocok, detik melambat, dan dentum saat angka keluar. Getar hanya terasa bila tablet punya motor getar.</p>
+      <div class="toggles">
+        <label class="tg"><input type="checkbox" id="pref-sound"><span class="tg-ui"></span><span>Suara</span></label>
+        <label class="tg"><input type="checkbox" id="pref-haptic"><span class="tg-ui"></span><span>Getar</span></label>
+        <button class="btn" id="fx-test">Coba bunyi &amp; getar</button>
+      </div>
+      <p class="meta" id="haptic-meta" hidden></p>
     </div>
     <div class="d-sec">
       <h3>Backup &amp; pulihkan</h3>
@@ -866,7 +885,7 @@ const str = v => (typeof v === 'string' ? v : '');
 const freshRound = () => ({ plan: [], n: 0, targets: [] });
 const freshCoupon = () => ({ drawn: [] });
 const fresh = () => ({
-  prizes: Array(TOTAL).fill(''), date: '', dist: '00-99',
+  prizes: Array(TOTAL).fill(''), date: '', dist: '00-99', prefs: { sound: true, haptic: true },
   main: range(0, MAIN).map(freshRound),
   coupon: range(MAIN, TOTAL).map(freshCoupon),
 });
@@ -875,6 +894,7 @@ function normalize(raw) {
   if (!raw || typeof raw !== 'object') return d;
   if (Array.isArray(raw.prizes)) d.prizes = d.prizes.map((_, i) => str(raw.prizes[i]));
   d.date = str(raw.date);
+  if (raw.prefs && typeof raw.prefs === 'object') d.prefs = { sound: raw.prefs.sound !== false, haptic: raw.prefs.haptic !== false };
   if (Number.isInteger(raw.lastOpened) && raw.lastOpened >= 0 && raw.lastOpened < TOTAL) d.lastOpened = raw.lastOpened;
   if (typeof raw.dist === 'string') d.dist = raw.dist;
   if (Array.isArray(raw.main)) d.main = d.main.map((_, i) => {
@@ -922,6 +942,7 @@ function ask(title, msg, yes) {
     $('#ask-no').onclick = () => done(false);
     dlg.addEventListener('close', onClose);
     dlg.showModal();
+    fx.warn();
     $('#ask-no').focus();
   });
 }
@@ -1158,14 +1179,102 @@ function renderBoard() {
   btn.textContent = empty ? 'ANGKA HABIS' : 'UNDI ANGKA';
   btn.disabled = busy() || empty;
 }
-function goHome() { if (busy()) return; renderHome(); show('home'); }
+function goHome() { if (busy()) return; fx.nav(); renderHome(); show('home'); }
 function openRound(r) {
   if (busy()) return;
   ui.r = r;
+  fx.nav();
   state.lastOpened = r; save();
   if (isMain(r) && state.main[r].n > 0) { renderBoard(); show('board'); }
   else { renderFocus(); show('focus'); }
 }
+
+// ---------------- suara & getar ----------------
+// Bunyi dibuat langsung dengan Web Audio (tanpa file, tetap offline). Tingkat (game-juice):
+//  T1 sering: detik putaran (pelan, jarak min 35 ms, tanpa getar)
+//  T2: tekan UNDI, detik melambat, tutup ke papan, sel baru menyala, pindah layar
+//  T3: angka mendarat (bunyi berlapis + getar kuat); peringatan & reset. Getar paling rapat 1x per 90 ms.
+const fx = (() => {
+  let ctx = null, out = null, noiseBuf = null, lastBuzz = 0;
+  const last = {};
+  const AC = window.AudioContext || window.webkitAudioContext;
+  function audio() {
+    if (!state.prefs.sound || !AC) return null;
+    if (!ctx) {
+      ctx = new AC();
+      out = ctx.createGain(); out.gain.value = 0.8;
+      const comp = ctx.createDynamicsCompressor();
+      out.connect(comp); comp.connect(ctx.destination);
+    }
+    if (ctx.state !== 'running') ctx.resume().catch(() => {});
+    return ctx;
+  }
+  const guard = (name, ms) => { const t = performance.now(); if (last[name] && t - last[name] < ms) return false; last[name] = t; return true; };
+  const jit = semi => Math.pow(2, ((Math.random() * 2 - 1) * semi) / 12);
+  function tone(freq, dur, o = {}) {
+    const c = audio(); if (!c) return;
+    const t = c.currentTime + (o.at || 0), osc = c.createOscillator(), g = c.createGain();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(freq, t);
+    if (o.slide) osc.frequency.exponentialRampToValueAtTime(Math.max(20, freq * o.slide), t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(o.gain || 0.2, t + (o.attack || 0.005));
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(g); g.connect(out); osc.start(t); osc.stop(t + dur + 0.03);
+  }
+  function noise(dur, o = {}) {
+    const c = audio(); if (!c) return;
+    if (!noiseBuf) {
+      noiseBuf = c.createBuffer(1, c.sampleRate, c.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    const t = c.currentTime + (o.at || 0), s = c.createBufferSource(), fl = c.createBiquadFilter(), g = c.createGain();
+    s.buffer = noiseBuf; fl.type = o.filter || 'bandpass'; fl.Q.value = o.q || 0.8;
+    fl.frequency.setValueAtTime(o.freq || 2000, t);
+    if (o.sweepTo) fl.frequency.exponentialRampToValueAtTime(o.sweepTo, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(o.gain || 0.1, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(fl); fl.connect(g); g.connect(out); s.start(t); s.stop(t + dur + 0.03);
+  }
+  // force: momen besar (mendarat, reset) selalu bergetar, menimpa getar kecil yang baru lewat
+  function buzz(pattern, force) {
+    if (!state.prefs.haptic || !navigator.vibrate) return;
+    const t = performance.now(); if (!force && t - lastBuzz < 90) return; lastBuzz = t;
+    try { navigator.vibrate(pattern); } catch (e) {}
+  }
+  return {
+    canVibrate: !!navigator.vibrate,
+    unlock() { audio(); },
+    // tekan UNDI: desis naik + nada naik, ketukan getar pendek
+    press() { tone(420 * jit(.3), .14, { type: 'triangle', gain: .12, slide: 1.9 }); noise(.22, { gain: .06, freq: 700, sweepTo: 5000 }); buzz(14); },
+    // detik saat bola dikocok (sering, jadi pelan dan tanpa getar)
+    tick() { if (guard('tick', 35)) tone(2100 * jit(.6), .02, { type: 'square', gain: .018 }); },
+    // detik saat melambat: makin jarang makin rendah; getar halus pada detik-detik terakhir
+    slowTick(gap) { tone((2200 - Math.min(gap, 300) * 3) * jit(.3), .035, { type: 'square', gain: .045 }); if (gap > 160) buzz(10); },
+    // angka mendarat: dentum bawah + akor naik + kilau, getar kuat
+    land() {
+      tone(90, .55, { gain: .5, slide: .45 });
+      noise(.3, { gain: .14, freq: 500, filter: 'lowpass' });
+      [523.25, 659.25, 783.99, 1046.5].forEach((fr, i) => tone(fr, 1.1, { type: 'triangle', gain: .085, at: .05 + i * .07, attack: .01 }));
+      tone(2093, .8, { gain: .03, at: .34, attack: .02 });
+      buzz([50, 40, 120], true);
+    },
+    // tutup angka ke papan: desis turun
+    close() { noise(.24, { gain: .05, freq: 3500, sweepTo: 500 }); },
+    // sel baru menyala di papan
+    cell() { tone(880 * jit(.3), .16, { gain: .07, slide: 1.5, at: .08 }); },
+    // pindah layar (pilih hadiah / kembali)
+    nav() { if (guard('nav', 80)) tone(620 * jit(.2), .07, { gain: .05 }); },
+    // peringatan sebelum reset
+    warn() { tone(196, .2, { type: 'sawtooth', gain: .05 }); tone(174.6, .26, { type: 'sawtooth', gain: .045, at: .13 }); buzz(35); },
+    // reset dijalankan: sapuan turun
+    reset() { tone(700, .5, { type: 'triangle', gain: .1, slide: .3 }); noise(.45, { gain: .05, freq: 2600, sweepTo: 280 }); buzz([20, 40, 20], true); },
+    // tombol uji di pengaturan
+    test() { this.land(); },
+  };
+})();
 
 // ---------------- undi: berputar terus sampai layar diklik ----------------
 let spinTimer = null;
@@ -1189,7 +1298,7 @@ function startSpin(pool) {
   const orb = $('#orb'), num = $('#orb-num');
   orb.className = 'orb rolling';
   rampRim(RIM_FAST, 450);
-  const tick = () => { num.textContent = pad2(pool[Math.floor(Math.random() * pool.length)]); spinTimer = setTimeout(tick, reduce ? 160 : 55); };
+  const tick = () => { num.textContent = pad2(pool[Math.floor(Math.random() * pool.length)]); fx.tick(); spinTimer = setTimeout(tick, reduce ? 160 : 55); };
   tick();
 }
 function stopSpin(val, pool) {
@@ -1201,11 +1310,13 @@ function stopSpin(val, pool) {
     const total = reduce ? 400 : 1500;
     const step = () => {
       num.textContent = pad2(pool[Math.floor(Math.random() * pool.length)]);
+      fx.slowTick(d);
       t += d; d *= 1.17;
       if (t < total) setTimeout(step, d);
       else {
         num.textContent = pad2(val);
         orb.className = 'orb'; void orb.offsetWidth; orb.className = 'orb landed';
+        fx.land();
         resolve();
       }
     };
@@ -1225,6 +1336,7 @@ function closeHold() {
   ui.phase = 'idle';
   document.body.classList.remove('live');
   ui.fresh = p.val;
+  fx.close(); fx.cell();
   renderBoard(); show('board');
   $('#b-draw').focus();
 }
@@ -1242,6 +1354,7 @@ function startDraw() {
     val = pool[C.randInt(pool.length)];
   }
   ui.pending = { r, val, pool };
+  fx.press();
   ui.phase = 'rolling';
   renderFocus(); show('focus');
   $('#f-draw').blur(); $('#b-draw').blur();
@@ -1279,6 +1392,10 @@ function renderSettings() {
   $$('[data-prize]').forEach(el => { el.value = state.prizes[Number(el.dataset.prize)]; });
   $('#dist').value = state.dist;
   $('#date').value = state.date;
+  $('#pref-sound').checked = state.prefs.sound;
+  $('#pref-haptic').checked = state.prefs.haptic;
+  $('#haptic-meta').textContent = 'Browser ini tidak mendukung getar.';
+  $('#haptic-meta').hidden = fx.canVibrate;
   renderSummary();
   renderDistMeta();
   renderCheck();
@@ -1408,6 +1525,7 @@ async function onReset(btn) {
   all.forEach(b => { b.disabled = true; });
   btn.classList.add('resetting');
   btn.textContent = 'Mengulang…';
+  fx.reset();
   await sleep(reduce ? 80 : 800);
   list.forEach(r => {
     if (isMain(r)) state.main[r] = freshRound(); else state.coupon[r - MAIN] = freshCoupon();
@@ -1456,6 +1574,12 @@ $('#chk-btn').addEventListener('click', () => {
 });
 $('#chk-no').addEventListener('keydown', e => { if (e.key === 'Enter') $('#chk-btn').click(); });
 $('#pdf').addEventListener('click', onPdf);
+$('#pref-sound').addEventListener('change', e => { state.prefs.sound = e.target.checked; save(); if (e.target.checked) fx.nav(); });
+$('#pref-haptic').addEventListener('change', e => { state.prefs.haptic = e.target.checked; save(); if (e.target.checked && navigator.vibrate) navigator.vibrate(30); });
+$('#fx-test').addEventListener('click', () => fx.test());
+// suara baru boleh menyala setelah sentuhan pertama (aturan browser): buka kuncinya di klik/ketuk pertama
+document.addEventListener('click', () => fx.unlock(), { once: true, capture: true });
+document.addEventListener('keydown', () => fx.unlock(), { once: true, capture: true });
 $('#csv').addEventListener('click', onCsv);
 $('#backup').addEventListener('click', onBackup);
 $('#restore').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) onRestore(f); });
